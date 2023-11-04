@@ -1,0 +1,4 @@
+accessWidener	v1  named
+
+accessible   class   net/minecraft/text/Style
+accessible   field   net/minecraft/client/gui/widget/SimpleButton x Ljava/lang/Integer;

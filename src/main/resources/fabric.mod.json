@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "earthhack-fabric",
+  "version": "2.0.0",
+  "name": "3arthh4ck",
+  "description": "A 1.20.1 Utility Mod.",
+  "authors": [
+    "3arthqu4ke",
+    "oHare",
+    "Megyn",
+    "Gerald"
+  ],
+  "continued-authors": [
+    "nukkkiz",
+    "Ai_2473",
+    "dabigbulletz638",
+    "08HvH",
+    "CrystalEU",
+    "GentlemanMC",
+    "Cubic"
+  ],
+  "contact": {
+    "website": "https://github.com/3arthqu4ke/3arthh4ck",
+    "repo": "https://github.com/3arthqu4ke/3arthh4ck"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "me.earth.earthhack.impl.Earthhack"
+    ],
+    "main": [
+      "me.earth.earthhack.impl.Earthhack"
+    ]
+    },
+  "mixins": [
+    "mixins.earth.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
