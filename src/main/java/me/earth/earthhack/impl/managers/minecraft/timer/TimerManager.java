@@ -3,6 +3,7 @@ package me.earth.earthhack.impl.managers.minecraft.timer;
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.IMinecraft;
+import me.earth.earthhack.impl.core.mixins.util.ITimer;
 
 public class TimerManager extends SubscriberImpl implements Globals {
     private static final ModuleCache<Timer> MODULE =
