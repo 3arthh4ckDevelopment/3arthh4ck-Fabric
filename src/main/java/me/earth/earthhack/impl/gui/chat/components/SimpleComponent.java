@@ -18,7 +18,7 @@ public class SimpleComponent extends AbstractTextComponent
     }
 
     @Override
-    public String get()
+    public String getText()
     {
         return text;
     }

@@ -1,4 +1,7 @@
 accessWidener	v1  named
 
-accessible   class   net/minecraft/text/Style
-accessible   field   net/minecraft/client/gui/widget/SimpleButton x Ljava/lang/Integer;
+accessible class net/minecraft/text/Style
+accessible field net/minecraft/client/gui/widget/SimpleButton x Ljava/lang/Integer;
+accessible field net/minecraft/util/math/Direction HORIZONTAL [Lnet/minecraft/util/math/Direction;
+accessible method net/minecraft/text/MutableText x (Lnet/minecraft/text/TextContent;Ljava/util/List;Lnet/minecraft/text/Style;)V
+accessible method net/minecraft/text/Style x (Lnet/minecraft/text/TextColor;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Lnet/minecraft/text/ClickEvent;Lnet/minecraft/text/HoverEvent;Ljava/lang/String;Lnet/minecraft/util/Identifier;)V

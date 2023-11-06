@@ -4,9 +4,11 @@ import me.earth.earthhack.impl.event.events.render.Render3DEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.FacingBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 final class ListenerRender extends ModuleListener<Step, Render3DEvent>
 {
@@ -33,7 +35,7 @@ final class ListenerRender extends ModuleListener<Step, Render3DEvent>
                 module.renderPos(up2);
             }
 
-            for (EnumFacing facing : EnumFacing.HORIZONTALS)
+            for (Direction facing : Direction.HORIZONTAL)
             {
                 BlockPos off = pos.offset(facing);
                 if (!mc.world.getBlockState(off).getMaterial().blocksMovement())

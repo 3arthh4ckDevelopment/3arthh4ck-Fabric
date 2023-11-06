@@ -1,11 +1,13 @@
 package me.earth.earthhack.impl.util.minecraft;
 
-import me.earth.earthhack.api.util.interfaces.Globals;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
 
-public class ItemUtil implements Globals
+/**
+ * ... == would suffice probably
+ */
+public class ItemUtil
 {
     public static boolean isThrowable(Item item)
     {
@@ -20,7 +22,7 @@ public class ItemUtil implements Globals
 
     public static boolean areSame(Block block1, Block block2)
     {
-        return Block.getRawIdFromState(block1.getDefaultState()) == Block.getRawIdFromState(block2.getDefaultState());
+        return areSame(block1.asItem(), block2.asItem());
     }
 
     public static boolean areSame(Item item1, Item item2)

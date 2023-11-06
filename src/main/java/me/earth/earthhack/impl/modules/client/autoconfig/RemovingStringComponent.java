@@ -53,7 +53,7 @@ public class RemovingStringComponent
     }
 
     @Override
-    public String get()
+    public String getText()
     {
         return setting.getName()
                 + TextColor.GRAY

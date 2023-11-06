@@ -58,7 +58,7 @@ public abstract class SettingComponent<T, S extends Setting<T>>
     }
 
     @Override
-    public String get()
+    public String getText()
     {
         return setting.getName() + TextColor.GRAY + " : " + TextColor.WHITE;
     }
@@ -66,7 +66,7 @@ public abstract class SettingComponent<T, S extends Setting<T>>
     @Override
     public String getUnformattedComponentText()
     {
-        return this.get();
+        return this.getText();
     }
 
     @Override
