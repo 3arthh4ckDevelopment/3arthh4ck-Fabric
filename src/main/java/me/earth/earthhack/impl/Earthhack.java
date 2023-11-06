@@ -20,10 +20,10 @@ public class Earthhack implements ModInitializer, ClientModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("\n\nInitializing 3arthh4ck-fabric.");
+        LOGGER.info("\n\n ------------------ Initializing 3arthh4ck Fabric ------------------ \n");
         Managers.load();
         LOGGER.info("Prefix is " + Commands.getPrefix());
-        LOGGER.info("\n3arthh4ck initialized.\n");
+        LOGGER.info("\n\n ------------------ 3arthh4ck Fabric initialized ------------------ \n");
     }
 
     @Override

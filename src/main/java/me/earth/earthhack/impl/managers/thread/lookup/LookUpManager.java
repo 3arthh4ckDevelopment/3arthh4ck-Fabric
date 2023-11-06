@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.managers.thread.lookup;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.util.thread.LookUpUtil;
 import me.earth.earthhack.impl.util.thread.ThreadUtil;
 
@@ -16,6 +17,15 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class LookUpManager implements Globals
 {
+    /** The Cooldown between internet connections */
+    private static final long CONNECTION_COOLDOWN;
+
+    static
+    {
+        Earthhack.getLogger().info("Connection Timeout: 800");
+        CONNECTION_COOLDOWN = 800; //TODO: tweaker and dev arguments
+    }
+
     private volatile ScheduledExecutorService service;
     private final AtomicLong last = new AtomicLong();
 

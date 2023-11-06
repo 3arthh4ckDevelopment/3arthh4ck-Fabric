@@ -26,7 +26,7 @@ public abstract class AbstractTextComponent extends MutableText
         }
 
         @Override
-        public String get() {
+        public String getText() {
             return null;
         }
 
@@ -72,7 +72,7 @@ public abstract class AbstractTextComponent extends MutableText
         return this.wrap;
     }
 
-    public abstract String get();
+    public abstract String getText();
 
     public abstract String getUnformattedComponentText();
 
@@ -92,7 +92,7 @@ public abstract class AbstractTextComponent extends MutableText
         }
         else
         {
-            return this.get().equals(((AbstractTextComponent) o).get());
+            return this.getText().equals(((AbstractTextComponent) o).getText());
         }
     }
 
@@ -106,7 +106,7 @@ public abstract class AbstractTextComponent extends MutableText
     public String toString()
     {
         return "CustomComponent{text='"
-                + this.get()
+                + this.getText()
                 + '\''
                 + ", siblings="
                 + this.getSiblings()

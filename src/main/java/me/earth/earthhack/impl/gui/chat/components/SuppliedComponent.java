@@ -25,7 +25,7 @@ public class SuppliedComponent extends AbstractTextComponent
      * If you don't want that, use those methods to set them to null.
      *
      * @param supplier the supplier supplying what is returned by
-     *                 {@link SuppliedComponent#get()}.
+     *                 {@link SuppliedComponent#getText()}.
      */
     public SuppliedComponent(Supplier<String> supplier)
     {
@@ -45,7 +45,7 @@ public class SuppliedComponent extends AbstractTextComponent
     }
 
     @Override
-    public String get() {
+    public String getText() {
         return null;
     }
 

@@ -2,6 +2,10 @@ package me.earth.earthhack.impl.gui.chat.components.values;
 
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
+import me.earth.earthhack.impl.gui.chat.components.SuppliedComponent;
+import net.minecraft.text.MutableText;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 /**
  * A ValueComponent.
@@ -28,7 +32,7 @@ public class ValueComponent extends SuppliedComponent
             }
 
             if (setting instanceof StringSetting
-                    && ((StringSetting) setting).isPassword())
+                && ((StringSetting) setting).isPassword())
             {
                 return ((StringSetting) setting).censor();
             }
@@ -40,7 +44,7 @@ public class ValueComponent extends SuppliedComponent
     }
 
     @Override
-    public TextComponentString createCopy()
+    public MutableText createCopy()
     {
         ValueComponent copy = new ValueComponent(setting);
         copy.setStyle(this.getStyle().createShallowCopy());

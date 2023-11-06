@@ -35,4 +35,9 @@ public class DefaultData<M extends Module> extends AbstractData<M>
         return "A " + module.getCategory().toString() + " module.";
     }
 
+    @Override
+    public String[] getAliases() {
+        return new String[]{};
+    }
+
 }

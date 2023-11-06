@@ -26,10 +26,10 @@ public class ActionManager extends SubscriberImpl {
                             case STOP_SPRINTING:
                                 sprinting = false;
                                 break;
-                            case START_SNEAKING:
+                            case PRESS_SHIFT_KEY:
                                 sneaking = true;
                                 break;
-                            case STOP_SNEAKING:
+                            case RELEASE_SHIFT_KEY:
                                 sneaking = false;
                                 break;
                             default:

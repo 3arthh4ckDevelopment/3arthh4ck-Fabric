@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.gui.chat.factory;
 
 import me.earth.earthhack.api.setting.Setting;
+import me.earth.earthhack.impl.gui.chat.components.SettingComponent;
 
 /**
  * A factory that creates {@link SettingComponent}s.

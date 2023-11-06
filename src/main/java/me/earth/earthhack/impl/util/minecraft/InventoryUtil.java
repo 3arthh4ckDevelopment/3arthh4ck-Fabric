@@ -145,9 +145,8 @@ public class InventoryUtil implements Globals
         for (int i = 9; i < 45; i++)
         {
             ItemStack stack = mc.player
-                    .getInventory()Container
                     .getInventory()
-                    .get(i);
+                    .getStack(i);
 
             if (condition.test(stack))
             {
@@ -478,7 +477,7 @@ public class InventoryUtil implements Globals
 
         int invSlot = containerToSlots(slot);
         if (invSlot != -1) {
-            mc.player.getInventory().setInventorySlotContents(invSlot, stack);
+            mc.player.getInventory().setStack(invSlot, stack);
         }
     }
 
@@ -541,9 +540,9 @@ public class InventoryUtil implements Globals
     {
         return inSlot.isEmpty()
                 || inSlot.getItem() == stack.getItem()
-                && inSlot.getMaxStackSize() > 1
+                && inSlot.isStackable()
                 && (!inSlot.getHasSubtypes()
-                || inSlot.getMetadata() == stack.getMetadata())
+                || inSlot.getNbt() == stack.getNbt())
                 && ItemStack.areItemStackTagsEqual(inSlot, stack);
     }
 
@@ -573,7 +572,7 @@ public class InventoryUtil implements Globals
                 && stack1.getName().equals(stack2.getName())
                 && stack1.getItem() == stack1.getItem()
                 && stack1.getSubtypes() == stack2.getHasSubtypes()
-                && stack1.getData() == stack2.getMetadata()
+                && stack1.getNbt() == stack2.getNbt()
                 && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
