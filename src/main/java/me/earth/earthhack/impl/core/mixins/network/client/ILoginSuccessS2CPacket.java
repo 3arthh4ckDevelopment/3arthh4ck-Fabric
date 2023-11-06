@@ -8,5 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(LoginSuccessS2CPacket.class)
 public interface ILoginSuccessS2CPacket {
     @Accessor("profile")
-    public void setProfile(GameProfile profile);
+    void setProfile(GameProfile profile);
 }

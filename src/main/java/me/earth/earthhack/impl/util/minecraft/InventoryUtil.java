@@ -145,9 +145,8 @@ public class InventoryUtil implements Globals
         for (int i = 9; i < 45; i++)
         {
             ItemStack stack = mc.player
-                    .getInventory()Container
                     .getInventory()
-                    .get(i);
+                    .getStack(i);
 
             if (condition.test(stack))
             {
@@ -210,7 +209,7 @@ public class InventoryUtil implements Globals
 
     public static int findBlock(Block block, boolean xCarry)
     {
-        if (ItemUtil.areSame(mc.player.getInventory().getItemStack(), block))
+        if (ItemUtil.areSame(mc.player.getInventory().getMainHandStack(), block))
         {
             return -2;
         }
