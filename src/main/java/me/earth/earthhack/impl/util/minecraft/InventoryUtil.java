@@ -211,7 +211,7 @@ public class InventoryUtil implements Globals
 
     public static int findBlock(Block block, boolean xCarry)
     {
-        if (ItemUtil.areSame(mc.player.getInventory().getItemStack(), block))
+        if (ItemUtil.areSame(mc.player.getInventory().getMainHandStack(), block))
         {
             return -2;
         }
