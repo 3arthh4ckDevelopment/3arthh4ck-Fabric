@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.modules.client.autoconfig;
 
 import me.earth.earthhack.api.module.Module;
+import me.earth.earthhack.impl.gui.chat.clickevents.SmartClickEvent;
 import me.earth.earthhack.impl.gui.chat.components.setting.DefaultComponent;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.TextColor;
@@ -31,24 +32,25 @@ public class RemovingStringComponent
                             false,
                             false,
                             false,
-                            new SmartClickEvent(ClickEvent.Action.RUN_COMMAND),
-                            event)
-                            .setHoverEvent(event)
-                            .setClickEvent(
-                                    new SmartClickEvent
-                                            (ClickEvent.Action.RUN_COMMAND)
-                                    {
-                                        @Override
-                                        public String getValue()
-                                        {
-                                            return Commands.getPrefix()
-                                                    + "hiddensetting "
-                                                    + module.getName()
-                                                    + " \""
-                                                    + setting.getName()
-                                                    + "\" remove";
-                                        }
-                                    })));
+                            new SmartClickEvent
+                                    (ClickEvent.Action.RUN_COMMAND)
+                            {
+                                @Override
+                                public String getValue()
+                                {
+                                    return Commands.getPrefix()
+                                            + "hiddensetting "
+                                            + module.getName()
+                                            + " \""
+                                            + setting.getName()
+                                            + "\" remove";
+                                }
+                            },
+                            new HoverEvent(
+                                    HoverEvent.Action.SHOW_TEXT,
+                                    Text.empty().append("Removes this Setting")
+                            )
+                    )));
         }
     }
 

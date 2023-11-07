@@ -14,7 +14,7 @@ public class DefaultComponent<T, S extends Setting<T>>
         ValueComponent value = new ValueComponent(setting);
         value.getStyle().setClickEvent(this.getStyle().getClickEvent());
         value.getStyle().setHoverEvent(this.getStyle().getHoverEvent());
-        this.appendSibling(value);
+        this.append(value);
     }
 
 }

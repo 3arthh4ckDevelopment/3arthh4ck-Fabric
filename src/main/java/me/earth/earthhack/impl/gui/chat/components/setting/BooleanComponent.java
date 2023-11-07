@@ -9,8 +9,6 @@ import me.earth.earthhack.impl.gui.chat.factory.ComponentFactory;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.event.ClickEvent;
 
 public class BooleanComponent extends SettingComponent<Boolean, BooleanSetting>
 {
@@ -42,7 +40,7 @@ public class BooleanComponent extends SettingComponent<Boolean, BooleanSetting>
                     });
         }
 
-        this.appendSibling(value);
+        this.append(value);
     }
 
     @Override

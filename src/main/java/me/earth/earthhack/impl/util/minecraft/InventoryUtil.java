@@ -10,6 +10,8 @@ import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
@@ -366,8 +368,8 @@ public class InventoryUtil implements Globals
 
     public static boolean isHolding(Entity entity, Item item)
     {
-        ItemStack mainHand = entity.getHandItems();
-        ItemStack offHand  = entity.getHeldItemOffhand();
+        ItemStack mainHand = ((PlayerEntity) entity).getInventory().getMainHandStack();
+        ItemStack offHand  = ((PlayerEntity) entity).getInventory().getStack(45); // offhand
 
         return ItemUtil.areSame(mainHand, item)
                 || ItemUtil.areSame(offHand, item);
@@ -375,16 +377,16 @@ public class InventoryUtil implements Globals
 
     public static boolean isHolding(Entity entity, Block block)
     {
-        ItemStack mainHand = entity.getHeldItemMainhand();
-        ItemStack offHand  = entity.getHeldItemOffhand();
+        ItemStack mainHand = ((PlayerEntity) entity).getInventory().getMainHandStack();
+        ItemStack offHand  = ((PlayerEntity) entity).getInventory().getStack(45);
 
         return ItemUtil.areSame(mainHand, block)
                 || ItemUtil.areSame(offHand, block);
     }
 
     /**
-     * Returns {@link EnumHand#OFF_HAND} if the given
-     * slot is -2 otherwise {@link EnumHand#MAIN_HAND}.
+     * Returns {@link Hand#OFF_HAND} if the given
+     * slot is -2 otherwise {@link Hand#MAIN_HAND}.
      *
      * @return the Hand for the given slot.
      */
@@ -403,7 +405,7 @@ public class InventoryUtil implements Globals
     }
 
     /**
-     * @return <tt>true</tt> if {@link Minecraft#currentScreen}
+     * @return <tt>true</tt> if {@link net.minecraft.client.MinecraftClient#currentScreen}
      *          is a screen on which we can clickSlot all
      *          Slots of the Inventory (with Armor and Offhand).
      */
@@ -448,8 +450,8 @@ public class InventoryUtil implements Globals
 
     /**
      * @param slot the slot to get.
-     * @return {@link Container#getInventory()#get(int)} for the
-     *          {@link Minecraft#player}s getInventory()Container.
+     * @return {@link PlayerEntity#getInventory()#get(int)} for the
+     *          {@link net.minecraft.client.MinecraftClient#player}s getInventory()Container.
      */ // TODO: ensure that this is used everywhere where needed
     public static ItemStack get(int slot)
     {
@@ -530,7 +532,7 @@ public class InventoryUtil implements Globals
      * <p>-have the same item as the second stack.</p>
      * <p>-have a maxStackSize > 1.</p>
      * <p>-No Subtypes, or the same MetaData as the second stack.</p>
-     * <p>-{@link ItemStack#areItemStackTagsEqual(ItemStack, ItemStack)}</p>
+     * <p>-{@link ItemStack#areEqual(ItemStack, ItemStack)}</p>
      *
      * @param inSlot the stack in the slot
      * @param stack the stack placed inside inSlot.
@@ -541,9 +543,9 @@ public class InventoryUtil implements Globals
         return inSlot.isEmpty()
                 || inSlot.getItem() == stack.getItem()
                 && inSlot.isStackable()
-                && (!inSlot.getHasSubtypes()
+                && (!inSlot.hasNbt()
                 || inSlot.getNbt() == stack.getNbt())
-                && ItemStack.areItemStackTagsEqual(inSlot, stack);
+                && ItemStack.areEqual(inSlot, stack);
     }
 
     /**
@@ -571,9 +573,8 @@ public class InventoryUtil implements Globals
         return empty1 == empty2
                 && stack1.getName().equals(stack2.getName())
                 && stack1.getItem() == stack1.getItem()
-                && stack1.getSubtypes() == stack2.getHasSubtypes()
                 && stack1.getNbt() == stack2.getNbt()
-                && ItemStack.areItemStackTagsEqual(stack1, stack2);
+                && ItemStack.areEqual(stack1, stack2);
     }
 
     /**

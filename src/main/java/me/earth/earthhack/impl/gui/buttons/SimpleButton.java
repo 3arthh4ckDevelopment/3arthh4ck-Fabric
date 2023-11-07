@@ -1,10 +1,9 @@
 package me.earth.earthhack.impl.gui.buttons;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.util.Identifier;
+
 public class SimpleButton extends ButtonWidget
 {
     protected static final Identifier LOCATION =
@@ -35,6 +34,7 @@ public class SimpleButton extends ButtonWidget
         /* Can be implemented by the button. */
     }
 
+    /*
     public void drawButton(MinecraftClient mc, int mouseX, int mouseY, float partialTicks)
     {
         if (this.visible)
@@ -55,4 +55,6 @@ public class SimpleButton extends ButtonWidget
                     this.height);
         }
     }
+    this is unused, so i won't port it rn
+     */
 }

@@ -4,8 +4,7 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.gui.chat.components.SuppliedComponent;
 import net.minecraft.text.MutableText;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.text.Text;
 
 /**
  * A ValueComponent.
@@ -44,14 +43,14 @@ public class ValueComponent extends SuppliedComponent
     }
 
     @Override
-    public MutableText createCopy()
+    public MutableText copy()
     {
         ValueComponent copy = new ValueComponent(setting);
         copy.setStyle(this.getStyle().createShallowCopy());
 
-        for (ITextComponent sibling : this.getSiblings())
+        for (Text sibling : this.getSiblings())
         {
-            copy.appendSibling(sibling.createCopy());
+            copy.append(sibling.copy());
         }
 
         return copy;

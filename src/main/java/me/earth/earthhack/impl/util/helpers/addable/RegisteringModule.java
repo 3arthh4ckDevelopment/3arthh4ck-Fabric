@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.util.helpers.addable;
 
 import me.earth.earthhack.api.module.data.ModuleData;
 import me.earth.earthhack.api.module.util.Category;
+import me.earth.earthhack.api.setting.GeneratedSettings;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.impl.util.helpers.addable.setting.Removable;
 

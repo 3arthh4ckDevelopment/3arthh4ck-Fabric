@@ -9,6 +9,7 @@ import me.earth.earthhack.impl.managers.client.FileManager;
 import me.earth.earthhack.impl.managers.client.ModuleManager;
 import me.earth.earthhack.impl.managers.client.PlayerManager;
 import me.earth.earthhack.impl.managers.client.PluginManager;
+import me.earth.earthhack.impl.managers.client.macro.MacroManager;
 import me.earth.earthhack.impl.managers.config.ConfigManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.ActionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.NCPManager;
@@ -23,6 +24,7 @@ import java.io.IOException;
  */
 public class Managers
 {
+    public static final MacroManager MACRO          = new MacroManager();
     public static final ChatManager CHAT            = new ChatManager();
     public static final FileManager FILES           = new FileManager();
     public static final ModuleManager MODULES       = new ModuleManager();
@@ -41,7 +43,7 @@ public class Managers
     public static void load() {
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
-        subscribe(TIMER, CHAT, ACTION, NCP, FILES);
+        subscribe(TIMER, MACRO, CHAT, ACTION, NCP, FILES);
         Earthhack.getLogger().info("Loading Commands");
         COMMANDS.init();
         subscribe(COMMANDS);
