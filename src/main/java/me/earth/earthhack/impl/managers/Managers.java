@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.managers.minecraft.movement.ActionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.NCPManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.RotationManager;
 import me.earth.earthhack.impl.managers.minecraft.timer.TimerManager;
+import me.earth.earthhack.impl.managers.thread.ThreadManager;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUpManager;
 
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class Managers
     public static final LookUpManager LOOK_UP       = new LookUpManager();
     public static final RotationManager ROTATION    = new RotationManager();
     public static final ConfigManager CONFIG        = new ConfigManager();
+    public static final ThreadManager THREAD        = new ThreadManager();
 
     /**
      * Loads all Managers, starts the Event System and loads Plugins.

@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import net.fabricmc.api.ClientModInitializer;
@@ -25,7 +26,6 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
         Managers.load();
         LOGGER.info("Prefix is " + Commands.getPrefix());
         LOGGER.info("\n\n ------------------ 3arthh4ck-fabric initialized. ------------------ \n");
-        // TODO: Runtime.getRuntime().addShutdownHook(new Thread(() ->  Managers.CONFIG.save()));
     }
 
     @Override
@@ -36,5 +36,10 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
     public static Logger getLogger()
     {
         return LOGGER;
+    }
+
+    public static boolean isRunning()
+    {
+        return ((IMinecraftClient) mc).isEarthhackRunning();
     }
 }

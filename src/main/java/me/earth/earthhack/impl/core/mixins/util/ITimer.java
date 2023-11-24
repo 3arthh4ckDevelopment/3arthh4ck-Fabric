@@ -1,12 +1,13 @@
 package me.earth.earthhack.impl.core.mixins.util;
 
-import net.minecraft.world.timer.Timer;
+import net.minecraft.client.render.RenderTickCounter;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(Timer.class)
+@Mixin(RenderTickCounter.class)
 public interface ITimer
 {
-//    @Accessor(value = "tickLength")
-//    void setTickLength(float length);
+    @Accessor(value = "lastFrameDuration")
+    void setTickLength(float length);
 
 }

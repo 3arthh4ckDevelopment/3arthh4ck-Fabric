@@ -11,7 +11,7 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import net.minecraft.util.math.Box;
 
 import java.awt.*;
-
+// TODO: DisablingModule, ListenerRender
 public class Step extends BlockESPModule
 {
     protected final Setting<StepESP> esp = registerBefore(
@@ -52,7 +52,7 @@ public class Step extends BlockESPModule
         this.listeners.add(new ListenerStep(this));
         this.listeners.add(new ListenerDestroy(this));
         this.listeners.add(new ListenerBreak(this));
-        this.listeners.add(new ListenerRender(this));
+        // this.listeners.add(new ListenerRender(this));
         this.listeners.add(new ListenerWorldClient(this));
         this.listeners.add(new ListenerPreMotionUpdate(this));
         register(new BooleanSetting("Compatibility", false));

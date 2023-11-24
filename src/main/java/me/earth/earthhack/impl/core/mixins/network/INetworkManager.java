@@ -35,7 +35,7 @@ public interface INetworkManager
     default Packet<?> sendPacketNoEvent(Packet<?> packetIn, boolean post) {
         return packetIn;
     }
-
+    /*
     default boolean isPingBypass() {
         // this statement is correct but is also overridden in the Mixin and the PbNetworkManager
         return this instanceof PbNetworkManager;
@@ -89,5 +89,5 @@ public interface INetworkManager
 
         return new DisconnectEvent(component, (ClientPlayNetworkHandler) this);
     }
-
+    */
 }
