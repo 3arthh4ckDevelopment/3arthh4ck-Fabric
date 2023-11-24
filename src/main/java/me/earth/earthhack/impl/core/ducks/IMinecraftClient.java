@@ -1,11 +1,12 @@
 package me.earth.earthhack.impl.core.ducks;
 
 import com.mojang.datafixers.DataFixer;
+import net.minecraft.client.render.RenderTickCounter;
 
 /**
- * Duck interface for {@link net.minecraft.client.Minecraftent}.
+ * Duck interface for {@link net.minecraft.client.MinecraftClient}.
  */
-public interface IMinecraft
+public interface IMinecraftClient
 {
     /**
      * Accessor for mc.rightClickDelayTimer.
@@ -26,18 +27,7 @@ public interface IMinecraft
      *
      * @return minecraft's timer.
      */
-//    Timer getTimer();
-
-    /**
-     * Allows you to invoke
-     * -rightClickMouse,
-     * -clickMouse,
-     * -middleClickMouse
-     * based on the given ClickType.
-     *
-     * @param type the type of click.
-     */
-    void click(Click type);
+    RenderTickCounter getTimer();
 
     /** @return the current gameloop, will be incremented every gameloop. */
     int getGameLoop();
@@ -45,19 +35,9 @@ public interface IMinecraft
     /** @return <tt>true</tt> if 3arthh4ck is running. */
     boolean isEarthhackRunning();
 
-    /** Polls all scheduled tasks and runs them. */
-    void runScheduledTasks();
 
     /** @return Minecraft's DataFixer (as MetadataSerializer's replacement). */
 
     DataFixer getDataFixer();
-
-    /** Mouse Button to click with. */
-    enum Click
-    {
-        RIGHT,
-        LEFT,
-        MIDDLE
-    }
 
 }

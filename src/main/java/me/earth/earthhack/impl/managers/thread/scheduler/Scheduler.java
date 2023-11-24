@@ -3,7 +3,7 @@ package me.earth.earthhack.impl.managers.thread.scheduler;
 import me.earth.earthhack.api.event.bus.EventListener;
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.IMinecraft;
+import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.event.events.misc.GameLoopEvent;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.client.MinecraftClient;
@@ -27,7 +27,7 @@ public class Scheduler extends SubscriberImpl implements Globals {
                     @Override
                     public void invoke(GameLoopEvent event)
                     {
-                        gameLoop  = ((IMinecraft) mc).getGameLoop(); // will NOT :fire: work
+                        gameLoop  = ((IMinecraftClient) mc).getGameLoop(); // will NOT :fire: work
 
                         executing = true;
                         CollectionUtil.emptyQueue(scheduled, Runnable::run);
@@ -86,7 +86,7 @@ public class Scheduler extends SubscriberImpl implements Globals {
         if (mc.isOnThread())
         {
             if (executing || checkGameLoop
-                    && gameLoop != ((IMinecraft) mc).getGameLoop())
+                    && gameLoop != ((IMinecraftClient) mc).getGameLoop())
             {
                 toSchedule.add(runnable);
             }
