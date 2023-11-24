@@ -13,7 +13,9 @@
   ],
   "client": [
     "MixinMinecraftClient",
-    "entity.living.player.MixinClientPlayerInteractionManager"
+    "entity.living.player.MixinClientPlayerInteractionManager",
+    "gui.MixinChatHud",
+    "gui.MixinInGameHud"
   ],
   "injectors": {
     "defaultRequire": 1

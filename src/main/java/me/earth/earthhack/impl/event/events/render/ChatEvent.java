@@ -6,12 +6,7 @@ import net.minecraft.text.MutableText;
 
 public abstract class ChatEvent extends Event
 {
-    protected final IChatHud gui;
-
-    public ChatEvent(IChatHud gui)
-    {
-        this.gui = gui;
-    }
+    public ChatEvent() {}
 
     public abstract void invoke();
 
@@ -19,16 +14,13 @@ public abstract class ChatEvent extends Event
     {
         private boolean sent;
 
-        public Clear(IChatHud gui, boolean sent)
+        public Clear(boolean sent)
         {
-            super(gui);
+            super();
         }
 
         @Override
-        public void invoke()
-        {
-            gui.invokeClearChat(sent);
-        }
+        public void invoke() { }
 
         public boolean clearsSent()
         {
@@ -43,9 +35,9 @@ public abstract class ChatEvent extends Event
 
     public static class Log extends ChatEvent
     {
-        public Log(IChatHud gui)
+        public Log()
         {
-            super(gui);
+            super();
         }
 
         @Override
@@ -65,7 +57,7 @@ public abstract class ChatEvent extends Event
                     int updateCounter,
                     boolean displayOnly)
         {
-            super(gui);
+            super();
             this.chatComponent = chatComponent;
             this.chatLineId    = chatLineId;
             this.updateCounter = updateCounter;
@@ -73,13 +65,7 @@ public abstract class ChatEvent extends Event
         }
 
         @Override
-        public void invoke()
-        {
-            gui.invokeSetChatLine(chatComponent,
-                    chatLineId,
-                    updateCounter,
-                    displayOnly);
-        }
+        public void invoke() { }
 
         public MutableText getChatComponent()
         {

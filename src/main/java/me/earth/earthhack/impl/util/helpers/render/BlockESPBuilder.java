@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.util.helpers.render;
 
 import me.earth.earthhack.api.setting.Setting;
+import me.earth.earthhack.impl.util.render.RenderUtil;
 import net.minecraft.util.math.Box;
 
 import java.awt.*;
