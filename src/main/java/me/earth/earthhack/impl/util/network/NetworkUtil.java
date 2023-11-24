@@ -43,7 +43,7 @@ public class NetworkUtil implements Globals
      * {@link INetworkManager#sendPacketNoEvent(Packet, boolean)}.
      *
      * @param packet the packet to send.
-     * @param post if a post event should be send.
+     * @param post if a post event should be sent.
      * @return the packet or null if failed.
      */
     public static Packet<?> sendPacketNoEvent(Packet<?> packet, boolean post)

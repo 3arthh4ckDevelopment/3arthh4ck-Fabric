@@ -3,13 +3,16 @@ package me.earth.earthhack.impl.util.minecraft;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
+import me.earth.earthhack.impl.util.network.PacketUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CraftingScreen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
@@ -366,6 +369,7 @@ public class InventoryUtil implements Globals
 
     public static boolean isHolding(Entity entity, Item item)
     {
+        ZombieEntity
         ItemStack mainHand = entity.getHandItems();
         ItemStack offHand  = entity.getHeldItemOffhand();
 
@@ -403,7 +407,7 @@ public class InventoryUtil implements Globals
     }
 
     /**
-     * @return <tt>true</tt> if {@link Minecraft#currentScreen}
+     * @return <tt>true</tt> if {@link MinecraftClient#currentScreen}
      *          is a screen on which we can clickSlot all
      *          Slots of the Inventory (with Armor and Offhand).
      */
@@ -429,7 +433,7 @@ public class InventoryUtil implements Globals
     }
 
     /**
-     * Calls {@link net.minecraft.client.multiplayer.PlayerControllerMP#
+     * Calls {@link net.minecraft.client.network.ClientPlayerInteractionManager#
      * clickSlot(int, int, int, SlotActionType, EntityPlayer)}
      * for the arguments:
      * <p>-0
@@ -448,8 +452,8 @@ public class InventoryUtil implements Globals
 
     /**
      * @param slot the slot to get.
-     * @return {@link Container#getInventory()#get(int)} for the
-     *          {@link Minecraft#player}s getInventory()Container.
+     * @return {@link #getInventory()#get(int)} for the
+     *          {@link MinecraftClient#player}s getInventory()Container.
      */ // TODO: ensure that this is used everywhere where needed
     public static ItemStack get(int slot)
     {

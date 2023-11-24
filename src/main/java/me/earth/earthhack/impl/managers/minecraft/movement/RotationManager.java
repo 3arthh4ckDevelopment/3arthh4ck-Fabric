@@ -4,6 +4,7 @@ import me.earth.earthhack.api.event.bus.EventListener;
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.core.ducks.entity.IPlayerEntity;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.managers.Managers;
@@ -16,7 +17,7 @@ import net.minecraft.util.math.MathHelper;
  * reported to or, via SPacketPlayerPosLook,
  * set by the server.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ConstantConditions"})
 public class RotationManager extends SubscriberImpl implements Globals
 {
     private final PositionManager positionManager;
@@ -55,25 +56,13 @@ public class RotationManager extends SubscriberImpl implements Globals
                 float yaw = packet.getYaw();
                 float pitch = packet.getPitch();
 
-                if (packet.getFlags()
-                        .contains(SPacketPlayerPosLook.EnumFlags.X_ROT))
-                {
-                    yaw += mc.player.rotationYaw;
-                }
-
-                if (packet.getFlags()
-                        .contains(SPacketPlayerPosLook.EnumFlags.Y_ROT))
-                {
-                    pitch += mc.player.rotationPitch;
-                }
-
                 if (mc.player != null)
                 {
                     setServerRotations(yaw, pitch);
                 }
             }
         });
-        this.listeners.add(new EventListener<MotionUpdateEvent>
+        this.listeners.add(new EventListener<>
                 (MotionUpdateEvent.class, Integer.MIN_VALUE)
         {
             @Override
@@ -186,16 +175,16 @@ public class RotationManager extends SubscriberImpl implements Globals
      *
      * @param packetIn the packet to read.
      */
-    public void readCPacket(CPacketPlayer packetIn)
+    public void readCPacket(PlayerMoveC2SPacket packetIn)
     {
         // Prevents us from sending the same rotations again, if we spoofed
         // them with the packet instead of MotionUpdateEvent.
-        ((IEntityPlayerSP) mc.player)
+        ((IPlayerEntity) mc.player)
                 .setLastReportedYaw(packetIn.getYaw(
-                        ((IEntityPlayerSP) mc.player).getLastReportedYaw()));
-        ((IEntityPlayerSP) mc.player)
+                        ((IPlayerEntity) mc.player).getLastReportedYaw()));
+        ((IPlayerEntity) mc.player)
                 .setLastReportedPitch(packetIn.getPitch(
-                        ((IEntityPlayerSP) mc.player).getLastReportedPitch()));
+                        ((IPlayerEntity) mc.player).getLastReportedPitch()));
 
         setServerRotations(packetIn.getYaw(last_yaw), packetIn.getPitch(last_pitch));
         // set(packetIn.getYaw(renderYaw), packetIn.getPitch(renderPitch));
@@ -204,12 +193,12 @@ public class RotationManager extends SubscriberImpl implements Globals
 
     private void set(float yaw, float pitch)
     {
-        if (mc.player.ticksExisted == ticksExisted)
+        if (mc.player.age == ticksExisted)
         {
             return;
         }
 
-        ticksExisted = mc.player.ticksExisted;
+        ticksExisted = mc.player.age;
         prevYaw      = renderYaw;
         prevPitch    = renderPitch;
 
@@ -268,8 +257,8 @@ public class RotationManager extends SubscriberImpl implements Globals
         float result = offsetIn;
         float offset;
 
-        double xDif = mc.player.posX - mc.player.prevPosX;
-        double zDif = mc.player.posZ - mc.player.prevPosZ;
+        double xDif = mc.player.getPos().x - mc.player.prevX;
+        double zDif = mc.player.getPos().z - mc.player.prevZ;
 
         if (xDif * xDif + zDif * zDif > 0.0025000002f)
         {
@@ -285,7 +274,7 @@ public class RotationManager extends SubscriberImpl implements Globals
             }
         }
 
-        if (mc.player.swingProgress > 0.0F)
+        if (mc.player.handSwingProgress > 0.0F)
         {
             result = yaw;
         }

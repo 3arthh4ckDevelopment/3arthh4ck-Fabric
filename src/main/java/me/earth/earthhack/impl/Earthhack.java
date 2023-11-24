@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl;
 
+import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import net.fabricmc.api.ClientModInitializer;
@@ -10,8 +11,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * {@link me.earth.earthhack.impl.core.mixins.MixinMinecraftClient}
  */
-
-public class Earthhack implements ModInitializer, ClientModInitializer {
+public class Earthhack implements ModInitializer, ClientModInitializer, Globals {
 
     private static final Logger LOGGER = LogManager.getLogger("3arthh4ck");
     public static final String NAME = "3arthh4ck";
@@ -20,10 +20,12 @@ public class Earthhack implements ModInitializer, ClientModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("\n\n ------------------ Initializing 3arthh4ck Fabric ------------------ \n");
+        LOGGER.info("\n\n ------------------ Initializing 3arthh4ck-fabric. ------------------ \n");
+        mc.getWindow().setTitle(NAME + " - " + VERSION);
         Managers.load();
         LOGGER.info("Prefix is " + Commands.getPrefix());
-        LOGGER.info("\n\n ------------------ 3arthh4ck Fabric initialized ------------------ \n");
+        LOGGER.info("\n\n ------------------ 3arthh4ck-fabric initialized. ------------------ \n");
+        // TODO: Runtime.getRuntime().addShutdownHook(new Thread(() ->  Managers.CONFIG.save()));
     }
 
     @Override

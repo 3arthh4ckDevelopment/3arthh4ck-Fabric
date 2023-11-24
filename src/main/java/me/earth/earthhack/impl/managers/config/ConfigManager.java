@@ -7,7 +7,6 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.config.helpers.*;
 import me.earth.earthhack.impl.util.misc.io.BiIOConsumer;
 import me.earth.earthhack.impl.util.misc.io.IOConsumer;
-import me.earth.earthhack.pingbypass.PingBypass;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,15 +17,10 @@ public class ConfigManager extends AbstractRegister<ConfigHelper<?>>
     public ConfigManager()
     {
         super(new LinkedHashMap<>());
-        // this.registered.put("macro",  new MacroConfigHelper(Managers.MACRO)); //TODO: IMPLEMENT WITH MACROS
-        // this.registered.put("hud",    new HudConfigHelper(Managers.ELEMENTS)); //TODO: IMPLEMENT WITH HUDEDITOR
+        // this.registered.put("macro",  new MacroConfigHelper(Managers.MACRO)); // TODO: IMPLEMENT WITH MACROS
+        // this.registered.put("hud",    new HudConfigHelper(Managers.ELEMENTS)); // TODO: IMPLEMENT WITH HUDEDITOR
         this.registered.put("friend", new FriendConfigHelper());
         this.registered.put("enemy",  new EnemyConfigHelper());
-
-        if (!PingBypass.isServer()) {
-            this.registered.put("bind",   new BindConfigHelper());
-        }
-
         // load modules last!
         this.registered.put("module", new ModuleConfigHelper(Managers.MODULES));
     }
