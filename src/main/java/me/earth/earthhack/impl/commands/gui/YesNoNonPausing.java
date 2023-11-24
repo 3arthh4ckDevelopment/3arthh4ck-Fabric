@@ -23,5 +23,4 @@ public class YesNoNonPausing extends RealmsLongConfirmationScreen
                 messageLine2In,
                 yesNoQuestion);
     }
-
 }

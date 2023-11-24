@@ -10,8 +10,10 @@ import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 
 import java.util.Objects;
 
@@ -58,7 +60,7 @@ public abstract class AbstractStackCommand extends Command implements Globals
             {
                 Scheduler.getInstance().schedule(() ->
                     mc.setScreen(
-                        new YesNoNonPausing((result, id) ->
+                        new YesNoNonPausing((result) ->
                         {
                             mc.setScreen(null);
                             if (result)
@@ -69,9 +71,10 @@ public abstract class AbstractStackCommand extends Command implements Globals
                                         ghost);
                             }
                         },
-                        TextColor.RED + "Your inventory is full.",
-                        "Should your MainHand Slot be replaced?",
-                        1337)));
+                        RealmsLongConfirmationScreen.Type.WARNING,
+                        Text.empty().append(TextColor.RED + "Your inventory is full."),
+                                Text.empty().append("Should your MainHand Slot be replaced?"),
+                        true)));
                 return;
             }
         }

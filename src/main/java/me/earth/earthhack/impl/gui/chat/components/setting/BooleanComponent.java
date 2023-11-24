@@ -9,6 +9,7 @@ import me.earth.earthhack.impl.gui.chat.factory.ComponentFactory;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 
 public class BooleanComponent extends SettingComponent<Boolean, BooleanSetting>
 {
@@ -22,7 +23,7 @@ public class BooleanComponent extends SettingComponent<Boolean, BooleanSetting>
 
         if (setting.getContainer() instanceof Module)
         {
-            value.getStyle().setClickEvent(
+            value.getStyle().withClickEvent(
                     new SmartClickEvent(ClickEvent.Action.RUN_COMMAND)
                     {
                         @Override

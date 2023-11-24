@@ -252,7 +252,7 @@ public class LookUpUtil implements Globals
         if (mc.getNetworkHandler() != null)
         {
             List<PlayerListEntry> infoMap = new ArrayList<>(
-                    mc.getNetworkHandler().getPlayerInfoMap());
+                    mc.getNetworkHandler().getPlayerList());
             PlayerListEntry profile =
                     infoMap.stream()
                             .filter(info -> TextUtil.startsWith(
