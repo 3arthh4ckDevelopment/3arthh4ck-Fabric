@@ -11,7 +11,8 @@
     "util.MixinClickEvent"
   ],
   "client": [
-    "MixinMinecraftClient"
+    "MixinMinecraftClient",
+    "entity.living.player.MixinClientPlayerInteractionManager"
   ],
   "injectors": {
     "defaultRequire": 1
