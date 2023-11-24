@@ -9,6 +9,7 @@ import me.earth.earthhack.impl.managers.client.FileManager;
 import me.earth.earthhack.impl.managers.client.ModuleManager;
 import me.earth.earthhack.impl.managers.client.PlayerManager;
 import me.earth.earthhack.impl.managers.client.PluginManager;
+import me.earth.earthhack.impl.managers.client.macro.MacroManager;
 import me.earth.earthhack.impl.managers.config.ConfigManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.ActionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.NCPManager;
@@ -24,15 +25,16 @@ import java.io.IOException;
  */
 public class Managers
 {
+    public static final MacroManager MACRO          = new MacroManager();
+    public static final PlayerManager FRIENDS       = new PlayerManager();
+    public static final PlayerManager ENEMIES       = new PlayerManager();
+    public static final ModuleManager MODULES       = new ModuleManager();
     public static final ChatManager CHAT            = new ChatManager();
     public static final FileManager FILES           = new FileManager();
-    public static final ModuleManager MODULES       = new ModuleManager();
     public static final CommandManager COMMANDS     = new CommandManager();
     public static final TimerManager TIMER          = new TimerManager();
     public static final NCPManager NCP              = new NCPManager();
     public static final ActionManager ACTION        = new ActionManager();
-    public static final PlayerManager ENEMIES       = new PlayerManager();
-    public static final PlayerManager FRIENDS       = new PlayerManager();
     public static final LookUpManager LOOK_UP       = new LookUpManager();
     public static final RotationManager ROTATION    = new RotationManager();
     public static final ConfigManager CONFIG        = new ConfigManager();
@@ -43,7 +45,7 @@ public class Managers
     public static void load() {
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
-        subscribe(TIMER, CHAT, ACTION, NCP, FILES);
+        subscribe(TIMER, CHAT, ROTATION, ACTION, MACRO, NCP, FILES);
         Earthhack.getLogger().info("Loading Commands");
         COMMANDS.init();
         subscribe(COMMANDS);

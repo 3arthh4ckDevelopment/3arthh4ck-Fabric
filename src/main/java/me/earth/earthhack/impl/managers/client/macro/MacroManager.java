@@ -25,7 +25,7 @@ public class MacroManager extends IterationRegister<Macro>
     public MacroManager()
     {
         listeners.add(
-            new EventListener<KeyboardEvent>
+            new EventListener<>
                 (KeyboardEvent.class, 100)
         {
             @Override
