@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
-import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -57,31 +56,13 @@ public class PositionManager extends SubscriberImpl implements Globals
                         double y = packet.getY();
                         double z = packet.getZ();
 
-                        if (packet.getFlags()
-                                .contains(EntityPositionS2CPacket.EnumFlags.X))
-                        {
-                            x += player.posX;
-                        }
-
-                        if (packet.getFlags()
-                                .contains(EntityPositionS2CPacket .EnumFlags.Y))
-                        {
-                            y += player.posY;
-                        }
-
-                        if (packet.getFlags()
-                                .contains(EntityPositionS2CPacket.EnumFlags.Z))
-                        {
-                            z += player.posZ;
-                        }
-
                         last_x = MathHelper.clamp(x, -3.0E7, 3.0E7);
                         last_y = y;
                         last_z = MathHelper.clamp(z, -3.0E7, 3.0E7);
                         if (SET_SELF) {
-                            player.serverPosX = EntityTracker.getPositionLong(last_x);
-                            player.serverPosY = EntityTracker.getPositionLong(last_y);
-                            player.serverPosZ = EntityTracker.getPositionLong(last_z);
+                            player.prevX = getPositionLong(last_x);
+                            player.prevY = getPositionLong(last_y);
+                            player.prevZ = getPositionLong(last_z);
                         }
 
                         onGround = false;
@@ -163,9 +144,9 @@ public class PositionManager extends SubscriberImpl implements Globals
         last_z = packetIn.getZ(mc.player.getZ());
         PlayerEntity player;
         if (SET_SELF && (player = mc.player) != null) {
-            player.serverPosX = EntityTracker.getPositionLong(last_x);
-            player.serverPosY = EntityTracker.getPositionLong(last_y);
-            player.serverPosZ = EntityTracker.getPositionLong(last_z);
+            player.prevX = getPositionLong(last_x);
+            player.prevY = getPositionLong(last_y);
+            player.prevZ = getPositionLong(last_z);
         }
 
         setOnGround(packetIn.isOnGround());
@@ -187,12 +168,13 @@ public class PositionManager extends SubscriberImpl implements Globals
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean canEntityBeSeen(Entity entity)
     {
-        // return mc.world.raycastBlock(
-        //         new Vec3d(last_x, last_y + mc.player.getEyeHeight(entity.getPose()), last_z),
-        //         new Vec3d(entity.getX(), entity.getY() + entity.getEyeHeight(entity.getPose()), entity.getZ()),
-        //         false,
-        //         true,
-        //         false) == null;
+       // return mc.world.raycastBlock(
+       //         new Vec3d(last_x, last_y + mc.player.getEyeHeight(entity.getPose()), last_z),
+       //         new Vec3d(entity.getX(), entity.getY() + entity.getEyeHeight(entity.getPose()), entity.getZ()),
+       //         null,
+       //         entity.getBoundingBox(),
+       //         false) == null;
+        return false;
     }
 
     public void set(double x, double y, double z)
@@ -225,7 +207,7 @@ public class PositionManager extends SubscriberImpl implements Globals
 
     /**
      * Indicates that a module is currently
-     * spoofing the position and it shouldn't
+     * spoofing the position, and it shouldn't
      * be spoofed by others.
      *
      * @return <tt>true</tt> if blocking.
@@ -233,6 +215,15 @@ public class PositionManager extends SubscriberImpl implements Globals
     public boolean isBlocking()
     {
         return blocking;
+    }
+
+    /**
+     * No more EntityTracker so I put this here.
+     * @param value
+     * @return
+     */
+    private long getPositionLong(double value) {
+        return MathHelper.lfloor(value * 4096.0);
     }
 
 }
