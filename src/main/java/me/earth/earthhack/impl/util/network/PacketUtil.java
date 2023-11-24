@@ -1,7 +1,9 @@
 package me.earth.earthhack.impl.util.network;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.mixins.network.ICPacketUseEntity;
+import me.earth.earthhack.impl.core.mixins.network.IPlayerInteractEntityC2S;
 import me.earth.earthhack.impl.core.mixins.network.IClientPlayNetworkHandler;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -10,21 +12,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
-import net.minecraft.util.ClickType;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
-import java.util.Set;
-
+@SuppressWarnings({"unused", "ConstantConditions"})
 public class PacketUtil implements Globals
 {
-   //  public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO
-   //  {
-   //      return ((IEnumConnectionState) a.HANDSHAKING)
-   //              .getStatesByClass()
-   //              .keySet();
-   //  }
+  // public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO
+  // {
+  //     return ((IEnumConnectionState) a.HANDSHAKING)
+  //             .getStatesByClass()
+  //             .keySet();
+  // }
 
     public static void handlePosLook(EntityPositionS2CPacket packetIn,
                                      Entity entity,
@@ -108,15 +111,17 @@ public class PacketUtil implements Globals
     /**
      * Produces a {@link PlayerActionC2SPacket} for the given id.
      *
-     * @param id the id the packet should attack.
+     * @param entity the entity the packet should attack.
      * @return a packet that will attack the entity when sent.
      */
-    @SuppressWarnings("ConstantConditions")
-    public static PlayerActionC2SPacket attackPacket(int id)
+    public static PlayerInteractEntityC2SPacket attackPacket(Entity entity)
     {
-        PlayerActionC2SPacket  packet = new PlayerActionC2SPacket();
-        ((ICPacketUseEntity) packet).setEntityId(id);
-        ((ICPacketUseEntity) packet).setAction(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM); // TODO: ATTACK!!!!!!!!
+
+        PlayerInteractEntityC2SPacket packet = PlayerInteractEntityC2SPacket.attack(entity, mc.player.isSneaking());
+        //noinspection ConstantConditions
+        ((IPlayerInteractEntityC2S) packet).setEntityId(entity.getId());
+        //noinspection ConstantConditions
+        ((IPlayerInteractEntityC2S) packet).setAction(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM); // TODO: ATTACK!!!!!!!!
 
         return packet;
     }
@@ -135,14 +140,6 @@ public class PacketUtil implements Globals
     {
         mc.getNetworkHandler().sendPacket(
                 PlayerInteractEntityC2SPacket.attack(entity, mc.player.isSneaking()));
-        mc.getNetworkHandler().sendPacket(
-                new HandSwingC2SPacket(Hand.MAIN_HAND));
-    }
-
-    public static void attack(int id)
-    {
-        mc.getNetworkHandler().sendPacket(
-                attackPacket(id));
         mc.getNetworkHandler().sendPacket(
                 new HandSwingC2SPacket(Hand.MAIN_HAND));
     }
@@ -170,8 +167,9 @@ public class PacketUtil implements Globals
                              float y,
                              float z)
     {
+        BlockHitResult result = new BlockHitResult(new Vec3d(x, y, z), facing, on, false);
         mc.getNetworkHandler().sendPacket(
-                new PlayerInteractEntityC2SPacket(on, facing, hand, x, y, z));
+                new PlayerInteractBlockC2SPacket(hand, result, 0));
     }
 
     public static void teleport(int id)
@@ -186,18 +184,23 @@ public class PacketUtil implements Globals
     }
 
     public static void click(int windowIdIn,
+                             int actionNumberIn,
                              int slotIdIn,
                              int usedButtonIn,
-                             ClickType modeIn,
-                             ItemStack clickedItemIn,
-                             short actionNumberIn)
+                             SlotActionType modeIn,
+                             ItemStack clickedItemIn)
     {
-        mc.getNetworkHandler().sendPacket(new ClickSlotC2SPacket(windowIdIn,
+        Int2ObjectMap<ItemStack> map = new Int2ObjectArrayMap<>();
+        map.put(1, clickedItemIn);
+
+        mc.getNetworkHandler().sendPacket(new ClickSlotC2SPacket(
+                windowIdIn,
+                actionNumberIn,
                 slotIdIn,
                 usedButtonIn,
                 modeIn,
                 clickedItemIn,
-                actionNumberIn));
+                map));
     }
 
     /*--------------- Utility for creating CPacketPlayers ---------------*/

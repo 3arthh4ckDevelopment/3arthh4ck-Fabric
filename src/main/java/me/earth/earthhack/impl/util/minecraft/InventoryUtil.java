@@ -1,17 +1,18 @@
 package me.earth.earthhack.impl.util.minecraft;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.core.ducks.network.IClientPlayerInteractionManager;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
+import me.earth.earthhack.impl.util.network.PacketUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.gui.screen.ingame.CraftingScreen;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,8 +24,10 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.function.Predicate;
 
+@SuppressWarnings({"ConstantConditions", "unused"})
 public class InventoryUtil implements Globals
 {
+    // deprecated. should be changed
     public static final ItemStack ILLEGAL_STACK =
             new ItemStack(Item.fromBlock(Blocks.BEDROCK));
 
@@ -94,7 +97,7 @@ public class InventoryUtil implements Globals
         if (mc.player != null)
         {
             PacketUtil.click(
-                    0, 0, 0, SlotActionType.PICKUP, ILLEGAL_STACK, (short) 0);
+                    0, 0, 0, 0, SlotActionType.PICKUP, ILLEGAL_STACK);
         }
     }
 
@@ -366,8 +369,8 @@ public class InventoryUtil implements Globals
 
     public static boolean isHolding(Entity entity, Item item)
     {
-        ItemStack mainHand = entity.getHandItems();
-        ItemStack offHand  = entity.getHeldItemOffhand();
+        ItemStack mainHand = entity.getHandItems().iterator().next().copyAndEmpty();
+        ItemStack offHand  = entity.getHandItems().iterator().next().copyAndEmpty();
 
         return ItemUtil.areSame(mainHand, item)
                 || ItemUtil.areSame(offHand, item);
@@ -375,16 +378,16 @@ public class InventoryUtil implements Globals
 
     public static boolean isHolding(Entity entity, Block block)
     {
-        ItemStack mainHand = entity.getHeldItemMainhand();
-        ItemStack offHand  = entity.getHeldItemOffhand();
+        ItemStack mainHand = entity.getHandItems().iterator().next().copyAndEmpty();
+        ItemStack offHand  = entity.getHandItems().iterator().next().copyAndEmpty();
 
         return ItemUtil.areSame(mainHand, block)
                 || ItemUtil.areSame(offHand, block);
     }
 
     /**
-     * Returns {@link EnumHand#OFF_HAND} if the given
-     * slot is -2 otherwise {@link EnumHand#MAIN_HAND}.
+     * Returns {@link Hand#OFF_HAND} if the given
+     * slot is -2 otherwise {@link Hand#MAIN_HAND}.
      *
      * @return the Hand for the given slot.
      */
@@ -403,7 +406,7 @@ public class InventoryUtil implements Globals
     }
 
     /**
-     * @return <tt>true</tt> if {@link Minecraft#currentScreen}
+     * @return <tt>true</tt> if {@link MinecraftClient#currentScreen}
      *          is a screen on which we can clickSlot all
      *          Slots of the Inventory (with Armor and Offhand).
      */
@@ -415,7 +418,7 @@ public class InventoryUtil implements Globals
 
     public static int getServerItem()
     {
-        return ((IPlayerControllerMP) mc.interactionManager).getItem();
+        return ((IClientPlayerInteractionManager) mc.interactionManager).getItem();
     }
 
     /**
@@ -425,11 +428,11 @@ public class InventoryUtil implements Globals
      */
     public static void syncItem()
     {
-        ((IPlayerControllerMP) mc.interactionManager).syncItem();
+        ((IClientPlayerInteractionManager) mc.interactionManager).syncItem();
     }
 
     /**
-     * Calls {@link net.minecraft.client.multiplayer.PlayerControllerMP#
+     * Calls {@link net.minecraft.client.network.ClientPlayerInteractionManager#
      * clickSlot(int, int, int, SlotActionType, EntityPlayer)}
      * for the arguments:
      * <p>-0
@@ -448,16 +451,16 @@ public class InventoryUtil implements Globals
 
     /**
      * @param slot the slot to get.
-     * @return {@link Container#getInventory()#get(int)} for the
-     *          {@link Minecraft#player}s getInventory()Container.
+     * @return {@link Inventory()#get(int)} for the
+     *          {@link MinecraftClient#player}'s getInventory() Container.
      */ // TODO: ensure that this is used everywhere where needed
     public static ItemStack get(int slot)
     {
-        if (slot == -2)
-        {
-            return mc.player.getInventory().getStack(slot);
-        }
-
+        // for now since I honestly don't know how to go about this.
+        // if (slot == -2)
+        // {
+        //     return mc.player.getInventory().getStack(slot);
+        // }
         return mc.player.getInventory().getStack(slot);
     }
 
@@ -530,7 +533,7 @@ public class InventoryUtil implements Globals
      * <p>-have the same item as the second stack.</p>
      * <p>-have a maxStackSize > 1.</p>
      * <p>-No Subtypes, or the same MetaData as the second stack.</p>
-     * <p>-{@link ItemStack#areItemStackTagsEqual(ItemStack, ItemStack)}</p>
+     * <p>-{@link ItemStack#areEqual(ItemStack, ItemStack)}</p>
      *
      * @param inSlot the stack in the slot
      * @param stack the stack placed inside inSlot.
@@ -541,9 +544,9 @@ public class InventoryUtil implements Globals
         return inSlot.isEmpty()
                 || inSlot.getItem() == stack.getItem()
                 && inSlot.isStackable()
-                && (!inSlot.getHasSubtypes()
+                && (!inSlot.hasNbt()
                 || inSlot.getNbt() == stack.getNbt())
-                && ItemStack.areItemStackTagsEqual(inSlot, stack);
+                && ItemStack.areItemsEqual(inSlot, stack);
     }
 
     /**
@@ -571,9 +574,8 @@ public class InventoryUtil implements Globals
         return empty1 == empty2
                 && stack1.getName().equals(stack2.getName())
                 && stack1.getItem() == stack1.getItem()
-                && stack1.getSubtypes() == stack2.getHasSubtypes()
                 && stack1.getNbt() == stack2.getNbt()
-                && ItemStack.areItemStackTagsEqual(stack1, stack2);
+                && ItemStack.areItemsEqual(stack1, stack2);
     }
 
     /**
