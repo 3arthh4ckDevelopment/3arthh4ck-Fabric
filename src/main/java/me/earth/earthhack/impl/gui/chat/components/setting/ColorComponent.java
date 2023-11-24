@@ -12,13 +12,7 @@ import me.earth.earthhack.impl.gui.chat.util.ColorEnum;
 import me.earth.earthhack.impl.gui.chat.util.RainbowEnum;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.TextColor;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.Text;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
+import net.minecraft.text.*;
 
 import java.awt.*;
 import java.util.function.Supplier;
@@ -49,7 +43,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
                             e.getCommand(setting, true, m))
                 )));
 
-            this.appendSibling(supply(() -> e.getValue(setting) + "", 0)
+            this.append(supply(() -> e.getValue(setting) + "", 0)
                     .setStyle(new Style()
                             .setHoverEvent(
                                 new HoverEvent(
@@ -79,25 +73,25 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
                 ? TextColor.GREEN : TextColor.RED) + " Sync", 1)
             .setStyle(new Style()
             .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                new TextComponentString("Un/Sync this color.")))
+                Text.empty().append("Un/Sync this color.")))
             .setClickEvent(
                 new SuppliedRunnableClickEvent(() -> () ->
                     setting.setSync(!setting.isSync())))));
 
-        this.appendSibling(supply(() -> (setting.isRainbow()
+        this.append(supply(() -> (setting.isRainbow()
                 ? TextColor.GREEN : TextColor.RED) + " Rainbow", 1)
             .setStyle(new Style()
                 .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    new TextComponentString("Make this color rainbow.")))
+                    Text.empty().append("Make this color rainbow.")))
                 .setClickEvent(
                     new SuppliedRunnableClickEvent(() -> () ->
                             setting.setRainbow(!setting.isRainbow())))));
 
-        this.appendSibling(supply(() -> (setting.isStaticRainbow()
+        this.append(supply(() -> (setting.isStaticRainbow()
             ? TextColor.GREEN : TextColor.RED) + " Static", 1)
             .setStyle(new Style()
             .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    new TextComponentString(
+                    Text.empty().append(
                         "Make this color a static rainbow.")))
             .setClickEvent(
                 new SuppliedRunnableClickEvent(() -> () ->
@@ -106,7 +100,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
         // even more settings:
         for (RainbowEnum r : RainbowEnum.values())
         {
-            this.appendSibling(supply(() ->
+            this.append(supply(() ->
                     TextColor.GRAY + " +" + r.getColor(), 2)
                 .setStyle(new Style()
                 .setHoverEvent(getFloatEvent(r.name(), true))
@@ -114,12 +108,12 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
                     new SuppliedRunnableClickEvent(() ->
                             r.getCommand(setting, true, m)))));
 
-            this.appendSibling(supply(() -> r.getValue(setting) + "", 2)
+            this.append(supply(() -> r.getValue(setting) + "", 2)
                     .setStyle(new Style()
                         .setHoverEvent(
                                 new HoverEvent(
                                         HoverEvent.Action.SHOW_TEXT,
-                                        new TextComponentString(r.name() +
+                                        Text.empty().append(r.name() +
                                             " " + r.getRange())))
                         .setClickEvent(new ClickEvent(
                                 ClickEvent.Action.RUN_COMMAND,
@@ -130,7 +124,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
                                         + "\"" + setting.getName() + "\"")
                         )));
 
-            this.appendSibling(supply(() ->
+            this.append(supply(() ->
                     TextColor.GRAY + "- " + TextColor.RESET, 2)
                 .setStyle(new Style()
                     .setHoverEvent(getFloatEvent(r.name(), false))
@@ -140,7 +134,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
                     ))));
         }
 
-        this.appendSibling(new TextComponentString(
+        this.append(Text.empty().append(
                 TextColor.GRAY + " \u2699")
             .setStyle(new Style()
                 .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
@@ -183,7 +177,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
     {
         return ChatComponentUtil.setOffset(
             new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                new TextComponentString((incr ? "In" : "De")
+                Text.empty().append((incr ? "In" : "De")
                     + "crement " + color.toLowerCase()
                     + " value by 1. Hold: " + TextColor.RED + "ALT "
                     + TextColor.WHITE + ": 10," + TextColor.RED + " RCTRL"
@@ -197,7 +191,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
     {
         return ChatComponentUtil.setOffset(
             new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                new TextComponentString((incr ? "In" : "De")
+                Text.empty().append((incr ? "In" : "De")
                     + "crement " + color.toLowerCase()
                     + " value by 0.1. Hold: " + TextColor.RED + "ALT "
                     + TextColor.WHITE + ": 1.0, " + TextColor.RED
@@ -222,7 +216,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
     }
 
     @Override
-    public TextComponentString createCopy()
+    public MutableText copy()
     {
         ColorComponent component = new ColorComponent(this.setting);
         component.otherSettings = this.otherSettings;

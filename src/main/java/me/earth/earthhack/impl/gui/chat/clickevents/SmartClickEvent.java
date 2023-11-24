@@ -14,12 +14,13 @@ public abstract class SmartClickEvent extends ClickEvent
      *
      * @param theAction the action.
      */
-    public SmartClickEvent(Action theAction)
+    public SmartClickEvent(ClickEvent.Action theAction)
     {
         super(theAction, "$smart_click_value$");
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public abstract String getValue();
 
     @Override

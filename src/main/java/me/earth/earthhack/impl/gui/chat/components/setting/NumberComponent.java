@@ -11,11 +11,10 @@ import me.earth.earthhack.impl.gui.chat.util.ChatComponentUtil;
 import me.earth.earthhack.impl.gui.chat.util.IncrementationUtil;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 
 public class NumberComponent<N extends Number, E extends NumberSetting<N>>
         extends SettingComponent<N, NumberSetting<N>>
@@ -29,7 +28,7 @@ public class NumberComponent<N extends Number, E extends NumberSetting<N>>
 
         if (!(setting.getContainer() instanceof Module))
         {
-            this.appendSibling(new ValueComponent(setting));
+            this.append(new ValueComponent(setting));
             return;
         }
 
@@ -108,9 +107,9 @@ public class NumberComponent<N extends Number, E extends NumberSetting<N>>
                             + TextColor.WHITE + ": 10%"));
         }
 
-        this.appendSibling(new TextComponentString(TextColor.GRAY
-                + " + "
-                + TextColor.WHITE)
+        this.append(Text.empty().append(TextColor.GRAY
+                        + " + "
+                        + TextColor.WHITE)
                 .setStyle(new Style()
                         .setHoverEvent(ChatComponentUtil.setOffset(plus))
                         .setClickEvent(
@@ -129,7 +128,7 @@ public class NumberComponent<N extends Number, E extends NumberSetting<N>>
                                 }
                             })));
 
-        this.appendSibling(new ValueComponent(setting)
+        this.append(new ValueComponent(setting)
                 .setStyle(new Style()
                     .setHoverEvent(ChatComponentUtil.setOffset(numberHover))
                     .setClickEvent(new ClickEvent(
@@ -140,7 +139,7 @@ public class NumberComponent<N extends Number, E extends NumberSetting<N>>
                                     + " "
                                     + "\"" + setting.getName() + "\""))));
 
-        this.appendSibling(new TextComponentString(
+        this.append(Text.empty().append(
                 TextColor.GRAY + " - " + TextColor.RESET)
                 .setStyle(new Style()
                         .setHoverEvent(ChatComponentUtil.setOffset(minus))

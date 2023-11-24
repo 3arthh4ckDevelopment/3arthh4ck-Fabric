@@ -10,9 +10,9 @@ import me.earth.earthhack.impl.gui.chat.components.values.ValueComponent;
 import me.earth.earthhack.impl.gui.chat.factory.IComponentFactory;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.TextColor;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.util.text.event.HoverEvent;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Style;
 
 public class EnumComponent<A extends Enum<A>>
         extends SettingComponent<A, EnumSetting<A>>
@@ -25,12 +25,12 @@ public class EnumComponent<A extends Enum<A>>
         super(setting);
         if (!(setting.getContainer() instanceof Module))
         {
-            this.appendSibling(
+            this.append(
                     new ValueComponent(setting).setStyle(this.getStyle()));
             return;
         }
 
-        this.appendSibling(new ValueComponent(setting)
+        this.append(new ValueComponent(setting)
                 .setStyle(
                     new Style()
                         .setHoverEvent(new HoverEvent(
