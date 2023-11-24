@@ -9,8 +9,10 @@ import me.earth.earthhack.impl.managers.client.FileManager;
 import me.earth.earthhack.impl.managers.client.ModuleManager;
 import me.earth.earthhack.impl.managers.client.PlayerManager;
 import me.earth.earthhack.impl.managers.client.PluginManager;
+import me.earth.earthhack.impl.managers.config.ConfigManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.ActionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.NCPManager;
+import me.earth.earthhack.impl.managers.minecraft.movement.RotationManager;
 import me.earth.earthhack.impl.managers.minecraft.timer.TimerManager;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUpManager;
 
@@ -32,6 +34,8 @@ public class Managers
     public static final PlayerManager ENEMIES       = new PlayerManager();
     public static final PlayerManager FRIENDS       = new PlayerManager();
     public static final LookUpManager LOOK_UP       = new LookUpManager();
+    public static final RotationManager ROTATION    = new RotationManager();
+    public static final ConfigManager CONFIG        = new ConfigManager();
 
     /**
      * Loads all Managers, starts the Event System and loads Plugins.
