@@ -35,13 +35,20 @@ public abstract class ChatEvent extends Event
 
     public static class Log extends ChatEvent
     {
-        public Log()
+        private final String message;
+
+        public Log(String message)
         {
             super();
+            this.message = message;
         }
 
         @Override
         public void invoke() { }
+
+        public String getMessage(){
+            return message;
+        }
     }
 
     public static class Send extends ChatEvent
