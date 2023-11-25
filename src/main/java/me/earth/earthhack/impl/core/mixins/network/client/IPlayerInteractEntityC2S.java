@@ -1,4 +1,4 @@
-package me.earth.earthhack.impl.core.mixins.network;
+package me.earth.earthhack.impl.core.mixins.network.client;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
@@ -13,7 +13,7 @@ public interface IPlayerInteractEntityC2S
 {
     void setEntityId(int entityId);
 
-    void setAction(PlayerActionC2SPacket.Action action);
+    void setAction(PlayerInteractEntityC2SPacket.InteractTypeHandler action);
 
     void setVec(Vec3d vec3d);
 
@@ -21,11 +21,10 @@ public interface IPlayerInteractEntityC2S
 
     int getEntityID();
 
-    PlayerInteractEntityC2SPacket getAction();
+    PlayerInteractEntityC2SPacket.InteractTypeHandler getAction();
 
     Vec3d getHitVec();
 
-    Hand getHand();
 
     Entity getAttackedEntity();
 

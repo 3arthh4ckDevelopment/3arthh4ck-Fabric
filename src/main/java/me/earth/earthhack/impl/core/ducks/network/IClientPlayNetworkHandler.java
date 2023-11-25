@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.core.ducks.network;
 
+import com.mojang.authlib.GameProfile;
 import me.earth.earthhack.impl.event.events.network.DisconnectEvent;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -54,4 +55,10 @@ public interface IClientPlayNetworkHandler
     default DisconnectEvent getDisconnect(MutableText component) {
         return new DisconnectEvent(component, (ClientPlayNetworkHandler) this);
     }
+
+    boolean isDoneLoadingTerrain();
+
+    void setDoneLoadingTerrain(boolean loaded);
+
+    void setGameProfile(GameProfile gameProfile);
 }
