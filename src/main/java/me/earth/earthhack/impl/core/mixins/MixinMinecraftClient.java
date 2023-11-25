@@ -41,10 +41,6 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     @Unique
     private int gameLoop = 0;
 
-    @Final
-    @Shadow
-    private static Logger LOGGER;
-
     /**
      * Sets the Window Title of Minecraft.
      * Applied through Mixin due to Display.setTitle being deprecated.

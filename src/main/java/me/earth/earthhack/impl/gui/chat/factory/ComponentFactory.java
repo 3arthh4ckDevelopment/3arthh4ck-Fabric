@@ -26,8 +26,8 @@ public class ComponentFactory
         register(BooleanSetting.class, BooleanComponent::new);
         register(StringSetting.class, StringComponent::new);
 
-        FACTORIES.put((Class<? extends Setting<?>>) EnumSetting.class, EnumComponent.FACTORY);
-        FACTORIES.put((Class<? extends Setting<?>>) NumberSetting.class, NumberComponent.FACTORY);
+        // FACTORIES.put((Class<? extends Setting<?>>) EnumSetting.class, EnumComponent.FACTORY);
+        // FACTORIES.put((Class<? extends Setting<?>>) NumberSetting.class, NumberComponent.FACTORY);
     }
 
     public static <E, T extends Setting<E>> IComponentFactory<?, ?>

@@ -22,7 +22,6 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
     @Override
     public void onInitialize() {
         LOGGER.info("\n\n ------------------ Initializing 3arthh4ck-fabric. ------------------ \n");
-        mc.getWindow().setTitle(NAME + " - " + VERSION);
         Managers.load();
         LOGGER.info("Prefix is " + Commands.getPrefix());
         LOGGER.info("\n\n ------------------ 3arthh4ck-fabric initialized. ------------------ \n");

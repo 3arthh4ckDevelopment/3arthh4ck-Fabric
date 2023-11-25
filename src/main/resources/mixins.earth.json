@@ -15,7 +15,8 @@
     "MixinMinecraftClient",
     "entity.living.player.MixinClientPlayerInteractionManager",
     "gui.MixinChatHud",
-    "gui.MixinInGameHud"
+    "gui.MixinInGameHud",
+    "network.MixinClientPlayNetworkHandler"
   ],
   "injectors": {
     "defaultRequire": 1
