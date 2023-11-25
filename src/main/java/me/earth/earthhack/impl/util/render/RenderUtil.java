@@ -1,27 +1,34 @@
 package me.earth.earthhack.impl.util.render;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.Earthhack;
 import net.minecraft.client.gl.VertexBuffer;
-import net.minecraft.client.render.Frustum;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.Window;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import org.lwjgl.BufferUtils;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+
+// TODO: One Mutable.BlockPos for the MainThread
+// TODO: One Mutable Box (aabb) for the MainThread
+// TODO: One Frustum for the MainThread
+//  That way we don't need to instantiate neither of them at all
+//  Which could actually save quite the cost, since we render often
 public class RenderUtil implements Globals {
     private static final Window wnd;
     private final static GlShader IMAGE_SHADER = GlShader.createShader("image");
     public final static GlShader BLUR_SHADER = GlShader.createShader("blur");
     // todo vertexbuffers
-    private static final VertexBuffer BLOCK_FILL_BUFFER = new VertexBuffer(VertexFormats.POSITION);
-    private static final VertexBuffer BLOCK_OUTLINE_BUFFER = new VertexBuffer(VertexFormats.POSITION);
+    private static final VertexBuffer BLOCK_FILL_BUFFER = new VertexBuffer(VertexBuffer.Usage.STATIC);
+    private static final VertexBuffer BLOCK_OUTLINE_BUFFER = new VertexBuffer(VertexBuffer.Usage.STATIC);
 
     public final static FloatBuffer screenCoords = BufferUtils.createFloatBuffer(3);
     public final static IntBuffer viewport = BufferUtils.createIntBuffer(16);
@@ -37,86 +44,95 @@ public class RenderUtil implements Globals {
         // genOpenGlBuffers();
     }
 
+    public static void updateMatrices()
+    {
+        // glGetFloat(GL_MODELVIEW_MATRIX, modelView);
+        // glGetFloat(GL_PROJECTION_MATRIX, projection);
+        // glGetInteger(GL_VIEWPORT, viewport);
+        // GLUProjection.getInstance().updateMatrices(viewport, modelView, projection,
+        //         (float) wnd.getScaledWidth() / (float) mc.getWindow().getWidth(),
+        //         (float) wnd.getScaledHeight() / (float) mc.getWindow().getHeight());
+    }
+    
     // TODO: perhaps programmatically gen vbos when settings in block esp modules change to support gradient rendering and differed boxes?
     // TODO: vbos for planes + streamline code for
-    /*
+    
     public static void genOpenGlBuffers()
     {
-        if (OpenGlHelper.vboSupported)
-        {
+      //  if (OpenGlHelper.areVbosSupported()) // todo
+      //  {
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferBuilder = tessellator.getBuffer();
-            bufferBuilder.begin(GL_QUADS, DefaultVertexFormats.POSITION);
-            AxisAlignedBB bb = new AxisAlignedBB(0, 0, 0, 1, 1, 1); // one block
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+            Box bb = new Box(0, 0, 0, 1, 1, 1); // one block
             // filled box
-            bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.maxZ);
 
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.minZ);
 
-            bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.minZ);
 
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.maxZ);
 
-            bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.maxZ);
 
-            bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
-            // contains all position data for drawing a filled cube
-            bufferBuilder.finishDrawing();
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.minZ);
+            // contains all vertexition data for drawing a filled cube
+            bufferBuilder.end();
             bufferBuilder.reset();
-            ByteBuffer byteBuffer = bufferBuilder.getByteBuffer();
+            ByteBuffer byteBuffer = bufferBuilder.end().getVertexBuffer();
             // BLOCK_FILL_BUFFER.bindBuffer();
-            BLOCK_FILL_BUFFER.bufferData(byteBuffer);
+            // TODO: BLOCK_FILL_BUFFER.upload(byteBuffer);
             // BLOCK_FILL_BUFFER.unbindBuffer();
 
-            bufferBuilder.begin(GL_LINE_STRIP, DefaultVertexFormats.POSITION);
-            bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
-            bufferBuilder.finishDrawing();
+            bufferBuilder.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION);
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.minX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.maxZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.minY, bb.minZ);
+            bufferBuilder.vertex(bb.maxX, bb.maxY, bb.minZ);
+            bufferBuilder.vertex(bb.minX, bb.maxY, bb.minZ);
+            bufferBuilder.end();
             bufferBuilder.reset();
-            ByteBuffer outlineBuffer = bufferBuilder.getByteBuffer();
-            // BLOCK_OUTLINE_BUFFER.bindBuffer();
-            BLOCK_OUTLINE_BUFFER.bufferData(outlineBuffer);
-            // BLOCK_OUTLINE_BUFFER.unbindBuffer();
+            ByteBuffer outlineBuffer = bufferBuilder.end().getVertexBuffer();
+            // BLOCK_OUTLINE_BUFFER.bind();
+            // TODO: BLOCK_OUTLINE_BUFFER.upload(outlineBuffer);
+            // BLOCK_OUTLINE_BUFFER.unbind();
 
-        }
-        else
-        {
+      //  }
+      //  else
+      //  {
             Earthhack.getLogger().info("VBOs not supported, skipping.");
-        }
+      //  }
     }
-    */
 
     public static void renderBox(double x, double y, double z)
     {
@@ -129,7 +145,7 @@ public class RenderUtil implements Globals {
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, 12, 0);
-        BLOCK_FILL_BUFFER.draw(GL_QUADS);
+        BLOCK_FILL_BUFFER.draw(/*GL_QUADS*/);
         BLOCK_FILL_BUFFER.unbind();
         glDisableClientState(GL_VERTEX_ARRAY);
         glTranslated(-(x - viewX), -(y - viewY), -(z - viewZ));
@@ -177,12 +193,12 @@ public class RenderUtil implements Globals {
         glPopMatrix();
     }
 
-    public static void renderBox(BlockPos pos, Color color, float height)
+    public static void renderBox(BlockPos vertex, Color color, float height)
     {
         glPushMatrix();
         glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-        Box bb = Interpolation.interpolatePos(pos, height);
+        Box bb = Interpolation.interpolatePos(vertex, height);
         startRender();
         drawOutline(bb, 1.5f, color);
         endRender();

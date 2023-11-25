@@ -13,6 +13,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
 import net.minecraft.text.Text;
 
 import java.util.Objects;
@@ -108,8 +109,8 @@ public abstract class AbstractStackCommand extends Command implements Globals
         mc.player.getInventory().setStack(slot, stack);
         if (mc.player.isCreative())
         {
-            mc.player.connection.sendPacket(
-                    new CPacketCreativeInventoryAction(slot, stack));
+            mc.getNetworkHandler().sendPacket(
+                    new CreativeInventoryActionC2SPacket(slot, stack));
         }
         else if (mc.isInSingleplayer())
         {

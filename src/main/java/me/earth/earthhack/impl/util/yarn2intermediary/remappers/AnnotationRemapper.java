@@ -1,7 +1,7 @@
-package me.earth.earthhack.impl.util.yarn2notch.remappers;
+package me.earth.earthhack.impl.util.yarn2intermediary.remappers;
 
-import me.earth.earthhack.impl.util.yarn2notch.Mapping;
-import me.earth.earthhack.impl.util.yarn2notch.MappingUtil;
+import me.earth.earthhack.impl.util.yarn2intermediary.Mapping;
+import me.earth.earthhack.impl.util.yarn2intermediary.MappingUtil;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;

@@ -1,7 +1,7 @@
-package me.earth.earthhack.impl.util.yarn2notch;
+package me.earth.earthhack.impl.util.yarn2intermediary;
 
 import me.earth.earthhack.impl.core.util.AsmUtil;
-import me.earth.earthhack.impl.util.yarn2notch.remappers.*;
+import me.earth.earthhack.impl.util.yarn2intermediary.remappers.*;
 import org.objectweb.asm.tree.ClassNode;
 
 public class ASMRemapper

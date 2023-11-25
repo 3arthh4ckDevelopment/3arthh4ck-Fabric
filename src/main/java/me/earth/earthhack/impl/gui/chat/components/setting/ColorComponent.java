@@ -36,21 +36,21 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
         {
             this.append(supply(() ->
                     TextColor.GRAY + " +" + e.getTextColor(), 0)
-                .setStyle(new Style()
-                    .setHoverEvent(getHoverEvent(e.name(), true))
-                    .setClickEvent(
+                .setStyle(Style.EMPTY
+                    .withHoverEvent(getHoverEvent(e.name(), true))
+                    .withClickEvent(
                         new SuppliedRunnableClickEvent(() ->
                             e.getCommand(setting, true, m))
                 )));
 
             this.append(supply(() -> e.getValue(setting) + "", 0)
-                    .setStyle(new Style()
-                            .setHoverEvent(
+                    .setStyle(Style.EMPTY
+                            .withHoverEvent(
                                 new HoverEvent(
                                     HoverEvent.Action.SHOW_TEXT,
                                     Text.empty().append(e.name() +
                                                             " <0 - 255>")))
-                            .setClickEvent(new ClickEvent(
+                            .withClickEvent(new ClickEvent(
                                     ClickEvent.Action.RUN_COMMAND,
                                     Commands.getPrefix()
                                             + "hiddensetting "
@@ -61,9 +61,9 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
 
             this.append(supply(() ->
                     TextColor.GRAY + "- " + TextColor.RESET, 0)
-                .setStyle(new Style()
-                .setHoverEvent(getHoverEvent(e.name(), false))
-                .setClickEvent(
+                .setStyle(Style.EMPTY
+                .withHoverEvent(getHoverEvent(e.name(), false))
+                .withClickEvent(
                     new SuppliedRunnableClickEvent(() ->
                             e.getCommand(setting, false, m)))));
         }
@@ -71,29 +71,29 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
         // more settings:
         this.append(supply(() -> (setting.isSync()
                 ? TextColor.GREEN : TextColor.RED) + " Sync", 1)
-            .setStyle(new Style()
-            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+            .setStyle(Style.EMPTY
+            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                 Text.empty().append("Un/Sync this color.")))
-            .setClickEvent(
+            .withClickEvent(
                 new SuppliedRunnableClickEvent(() -> () ->
                     setting.setSync(!setting.isSync())))));
 
         this.append(supply(() -> (setting.isRainbow()
                 ? TextColor.GREEN : TextColor.RED) + " Rainbow", 1)
-            .setStyle(new Style()
-                .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+            .setStyle(Style.EMPTY
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                     Text.empty().append("Make this color rainbow.")))
-                .setClickEvent(
+                .withClickEvent(
                     new SuppliedRunnableClickEvent(() -> () ->
                             setting.setRainbow(!setting.isRainbow())))));
 
         this.append(supply(() -> (setting.isStaticRainbow()
             ? TextColor.GREEN : TextColor.RED) + " Static", 1)
-            .setStyle(new Style()
-            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+            .setStyle(Style.EMPTY
+            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                     Text.empty().append(
                         "Make this color a static rainbow.")))
-            .setClickEvent(
+            .withClickEvent(
                 new SuppliedRunnableClickEvent(() -> () ->
                     setting.setStaticRainbow(!setting.isStaticRainbow())))));
 
@@ -102,20 +102,20 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
         {
             this.append(supply(() ->
                     TextColor.GRAY + " +" + r.getColor(), 2)
-                .setStyle(new Style()
-                .setHoverEvent(getFloatEvent(r.name(), true))
-                .setClickEvent(
+                .setStyle(Style.EMPTY
+                .withHoverEvent(getFloatEvent(r.name(), true))
+                .withClickEvent(
                     new SuppliedRunnableClickEvent(() ->
                             r.getCommand(setting, true, m)))));
 
             this.append(supply(() -> r.getValue(setting) + "", 2)
-                    .setStyle(new Style()
-                        .setHoverEvent(
+                    .setStyle(Style.EMPTY
+                        .withHoverEvent(
                                 new HoverEvent(
                                         HoverEvent.Action.SHOW_TEXT,
                                         Text.empty().append(r.name() +
                                             " " + r.getRange())))
-                        .setClickEvent(new ClickEvent(
+                        .withClickEvent(new ClickEvent(
                                 ClickEvent.Action.RUN_COMMAND,
                                 Commands.getPrefix()
                                         + "hiddensetting "
@@ -126,9 +126,9 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
 
             this.append(supply(() ->
                     TextColor.GRAY + "- " + TextColor.RESET, 2)
-                .setStyle(new Style()
-                    .setHoverEvent(getFloatEvent(r.name(), false))
-                    .setClickEvent(
+                .setStyle(Style.EMPTY
+                    .withHoverEvent(getFloatEvent(r.name(), false))
+                    .withClickEvent(
                         new SuppliedRunnableClickEvent(() ->
                                 r.getCommand(setting, false, m)
                     ))));
@@ -136,8 +136,8 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
 
         this.append(Text.empty().append(
                 TextColor.GRAY + " \u2699")
-            .setStyle(new Style()
-                .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+            .setStyle(Style.EMPTY
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                     new SuppliedComponent(() ->
                     {
                         switch (this.otherSettings)
@@ -152,7 +152,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting>
                                 throw new IllegalStateException();
                         }
                     })))
-                .setClickEvent(
+                .withClickEvent(
                         new SuppliedRunnableClickEvent(() -> () ->
                             this.otherSettings = (++this.otherSettings) % 3))));
     }

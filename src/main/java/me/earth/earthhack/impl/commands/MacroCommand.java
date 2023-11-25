@@ -81,7 +81,7 @@ public class MacroCommand extends Command
                         TextColor.AQUA + macro.getName());
 
                 macroComp.setStyle(
-                    new Style().setHoverEvent(
+                    Style.EMPTY.withHoverEvent(
                         ChatComponentUtil.setOffset(
                             new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                Text.empty().append("Bind: "

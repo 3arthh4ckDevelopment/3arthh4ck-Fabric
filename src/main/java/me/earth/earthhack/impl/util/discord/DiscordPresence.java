@@ -7,7 +7,7 @@ public class DiscordPresence {
     private final RPC module;
     private Thread thread;
 
-    public DiscordPresence(RPC module){
+    public DiscordPresence(RPC module) {
         this.module = module;
     }
 

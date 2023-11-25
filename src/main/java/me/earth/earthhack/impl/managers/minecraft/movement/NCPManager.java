@@ -10,6 +10,7 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -78,16 +79,26 @@ public class NCPManager extends SubscriberImpl implements Globals
                         {
                             endedSneak = true;
                             mc.player.networkHandler.sendPacket(
-                                    new PlayerActionC2SPacket(mc.player,
-                                            PlayerActionC2SPacket.Action.STOP_SNEAKING));
+                                new PlayerInputC2SPacket(
+                                        mc.player.sidewaysSpeed,
+                                        mc.player.forwardSpeed,
+                                        mc.player.input.jumping,
+                                        false
+                                )
+                            );
                         }
 
                         if (Managers.ACTION.isSprinting())
                         {
                             endedSprint = true;
                             mc.player.networkHandler.sendPacket(
-                                    new PlayerActionC2SPacket(mc.player,
-                                            PlayerActionC2SPacket.Action.STOP_SPRINTING));
+                                new PlayerInputC2SPacket( // TODO: CHINESE... fix needed
+                                        (float) (mc.player.isSprinting() ? mc.player.sidewaysSpeed - ((mc.player.sidewaysSpeed / 100) * 1.3) : mc.player.sidewaysSpeed),
+                                        (float) (mc.player.isSprinting() ? mc.player.forwardSpeed - ((mc.player.forwardSpeed / 100) * 1.3) : mc.player.forwardSpeed),
+                                        mc.player.input.jumping,
+                                        mc.player.input.sneaking
+                                )
+                            );
                         }
                     }
                 });

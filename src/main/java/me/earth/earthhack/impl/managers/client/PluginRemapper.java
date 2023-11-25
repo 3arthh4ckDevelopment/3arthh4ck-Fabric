@@ -2,8 +2,8 @@ package me.earth.earthhack.impl.managers.client;
 
 import me.earth.earthhack.impl.core.Core;
 import me.earth.earthhack.impl.util.misc.URLUtil;
-import me.earth.earthhack.impl.util.yarn2notch.Mapping;
-import me.earth.earthhack.impl.util.yarn2notch.Yarn2NotchService;
+import me.earth.earthhack.impl.util.yarn2intermediary.Mapping;
+import me.earth.earthhack.impl.util.yarn2intermediary.Yarn2IntermediaryService;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.jar.*;
 
-public class PluginRemapper extends Yarn2NotchService
+public class PluginRemapper extends Yarn2IntermediaryService
 {
     public File[] remap(Collection<File> files)
             throws IOException, URISyntaxException

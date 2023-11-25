@@ -1,4 +1,4 @@
-package me.earth.earthhack.impl.util.yarn2notch;
+package me.earth.earthhack.impl.util.yarn2intermediary;
 
 import me.earth.earthhack.impl.util.misc.collections.ArrayUtil;
 import org.objectweb.asm.Handle;

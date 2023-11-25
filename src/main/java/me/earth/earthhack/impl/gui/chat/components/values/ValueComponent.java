@@ -46,7 +46,7 @@ public class ValueComponent extends SuppliedComponent
     public MutableText copy()
     {
         ValueComponent copy = new ValueComponent(setting);
-        copy.setStyle(this.getStyle().createShallowCopy());
+        copy.setStyle(this.getStyle());
 
         for (Text sibling : this.getSiblings())
         {

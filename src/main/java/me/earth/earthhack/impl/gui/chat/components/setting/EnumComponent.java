@@ -32,11 +32,11 @@ public class EnumComponent<A extends Enum<A>>
 
         this.append(new ValueComponent(setting)
                 .setStyle(
-                    new Style()
-                        .setHoverEvent(new HoverEvent(
+                    Style.EMPTY
+                        .withHoverEvent(new HoverEvent(
                                 HoverEvent.Action.SHOW_TEXT,
                                 new EnumHoverComponent<>(setting)))
-                        .setClickEvent(new SmartClickEvent
+                        .withClickEvent(new SmartClickEvent
                                 (ClickEvent.Action.RUN_COMMAND)
                         {
                             @Override

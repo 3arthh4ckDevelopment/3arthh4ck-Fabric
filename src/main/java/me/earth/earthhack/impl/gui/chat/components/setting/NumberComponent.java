@@ -110,9 +110,9 @@ public class NumberComponent<N extends Number, E extends NumberSetting<N>>
         this.append(Text.empty().append(TextColor.GRAY
                         + " + "
                         + TextColor.WHITE)
-                .setStyle(new Style()
-                        .setHoverEvent(ChatComponentUtil.setOffset(plus))
-                        .setClickEvent(
+                .setStyle(Style.EMPTY
+                        .withHoverEvent(ChatComponentUtil.setOffset(plus))
+                        .withClickEvent(
                             new SmartClickEvent
                                 (ClickEvent.Action.RUN_COMMAND)
                             {
@@ -129,9 +129,9 @@ public class NumberComponent<N extends Number, E extends NumberSetting<N>>
                             })));
 
         this.append(new ValueComponent(setting)
-                .setStyle(new Style()
-                    .setHoverEvent(ChatComponentUtil.setOffset(numberHover))
-                    .setClickEvent(new ClickEvent(
+                .setStyle(Style.EMPTY
+                    .withHoverEvent(ChatComponentUtil.setOffset(numberHover))
+                    .withClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,
                             Commands.getPrefix()
                                     + "hiddensetting "
@@ -141,9 +141,9 @@ public class NumberComponent<N extends Number, E extends NumberSetting<N>>
 
         this.append(Text.empty().append(
                 TextColor.GRAY + " - " + TextColor.RESET)
-                .setStyle(new Style()
-                        .setHoverEvent(ChatComponentUtil.setOffset(minus))
-                        .setClickEvent(
+                .setStyle(Style.EMPTY
+                        .withHoverEvent(ChatComponentUtil.setOffset(minus))
+                        .withClickEvent(
                                 new SmartClickEvent
                                         (ClickEvent.Action.RUN_COMMAND)
                                 {

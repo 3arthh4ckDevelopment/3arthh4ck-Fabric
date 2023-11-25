@@ -18,8 +18,8 @@ public class BooleanComponent extends SettingComponent<Boolean, BooleanSetting>
         super(setting);
 
         ValueComponent value = new ValueComponent(setting);
-        value.setStyle(new Style()
-                .setHoverEvent(ComponentFactory.getHoverEvent(setting)));
+        value.setStyle(Style.EMPTY
+                .withHoverEvent(ComponentFactory.getHoverEvent(setting)));
 
         if (setting.getContainer() instanceof Module)
         {

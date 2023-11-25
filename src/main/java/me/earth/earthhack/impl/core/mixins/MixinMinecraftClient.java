@@ -41,8 +41,8 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     @Unique
     private int gameLoop = 0;
 
-    @Shadow
     @Final
+    @Shadow
     private static Logger LOGGER;
 
     /**

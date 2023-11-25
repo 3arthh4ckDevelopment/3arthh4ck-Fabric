@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.gui.buttons;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class SimpleButton extends ButtonWidget
@@ -14,22 +15,27 @@ public class SimpleButton extends ButtonWidget
     protected final int hoveredX;
     protected final int hoveredY;
 
+    protected final PressAction action;
+
     public SimpleButton(int buttonID,
                         int xPos,
                         int yPos,
                         int textureX,
                         int textureY,
                         int hoveredX,
-                        int hoveredY)
-    {
-        super(buttonID, xPos, yPos, 20, 20, "");
+                        int hoveredY,
+                        PressAction action,
+                        String message)
+    { // TODO de-china
+        super(buttonID, xPos, yPos, 20, Text.of(message), action, null);
         this.textureX = textureX;
         this.textureY = textureY;
         this.hoveredX = hoveredX;
         this.hoveredY = hoveredY;
+        this.action = action;
     }
 
-    public void onClick(Screen parent, int id)
+    public void onPress(Screen parent, int id)
     {
         /* Can be implemented by the button. */
     }

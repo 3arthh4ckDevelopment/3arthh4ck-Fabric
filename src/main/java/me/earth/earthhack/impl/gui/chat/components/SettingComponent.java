@@ -37,8 +37,8 @@ public abstract class SettingComponent<T, S extends Setting<T>>
         super(setting.getName());
 
         this.setting = setting;
-        this.setStyle(new Style()
-                .setHoverEvent(ComponentFactory.getHoverEvent(setting)));
+        this.setStyle(Style.EMPTY
+                .withHoverEvent(ComponentFactory.getHoverEvent(setting)));
 
         ((ITextComponentBase) this)
                 .setFormattingHook(new SimpleTextFormatHook(this));

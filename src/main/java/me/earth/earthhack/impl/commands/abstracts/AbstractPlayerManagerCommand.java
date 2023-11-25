@@ -6,7 +6,6 @@ import me.earth.earthhack.api.command.PossibleInputs;
 import me.earth.earthhack.api.util.TextUtil;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.commands.gui.YesNoNonPausing;
-import me.earth.earthhack.impl.core.mixins.util.IStyle;
 import me.earth.earthhack.impl.gui.chat.clickevents.RunnableClickEvent;
 import me.earth.earthhack.impl.gui.chat.util.ChatComponentUtil;
 import me.earth.earthhack.impl.managers.Managers;
@@ -255,14 +254,14 @@ public abstract class AbstractPlayerManagerCommand extends Command
                             + (players.hasNext()
                                 ? ", "
                                 : ""))
-                    .setStyle(((IStyle) Style.EMPTY)
-                            .setHoverEvent(ChatComponentUtil.setOffset(
+                    .setStyle(Style.EMPTY
+                            .withHoverEvent(ChatComponentUtil.setOffset(
                                 new HoverEvent(
                                     HoverEvent.Action.SHOW_TEXT,
                                         Text.empty().append("UUID: " +
                                             manager.getPlayersWithUUID()
                                                     .get(name)))))
-                            .setClickEvent(new RunnableClickEvent(() ->
+                            .withClickEvent(new RunnableClickEvent(() ->
                             {
                                 Screen before = mc.currentScreen;
                                 mc.setScreen(new YesNoNonPausing(

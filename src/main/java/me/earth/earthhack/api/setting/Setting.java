@@ -54,7 +54,7 @@ public abstract class Setting<T> extends Observable<SettingEvent<T>>
      * Sets this settings value from String.
      *
      * @param string the string to set the value from.
-     * @return true if successful.
+     * @return SettingResult.SUCCESSFUL if successful.
      */
     public abstract SettingResult fromString(String string);
 

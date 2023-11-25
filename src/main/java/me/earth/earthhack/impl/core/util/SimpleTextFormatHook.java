@@ -29,7 +29,7 @@ public class SimpleTextFormatHook implements Supplier<String>
     {
         StringBuilder sb = new StringBuilder();
 
-        for (Text component : base)
+        for (Text component : base.getSiblings())
         {
             sb.append(component.getContent().toString());
         }

@@ -9,6 +9,7 @@ import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class RemovingStringComponent
         extends DefaultComponent<String, RemovingString>
@@ -25,15 +26,10 @@ public class RemovingStringComponent
 
             this.append(Text.empty().append(
                     TextColor.RED + " Remove ")
-                    .setStyle(new Style(
-                            TextColor.WHITE,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            new SmartClickEvent
-                                    (ClickEvent.Action.RUN_COMMAND)
+                    .setStyle(Style.EMPTY
+                        .withColor(Formatting.WHITE)
+                        .withClickEvent(
+                            new SmartClickEvent(ClickEvent.Action.RUN_COMMAND)
                             {
                                 @Override
                                 public String getValue()
@@ -45,12 +41,9 @@ public class RemovingStringComponent
                                             + setting.getName()
                                             + "\" remove";
                                 }
-                            },
-                            new HoverEvent(
-                                    HoverEvent.Action.SHOW_TEXT,
-                                    Text.empty().append("Removes this Setting")
-                            )
-                    )));
+                            })
+                        .withHoverEvent(event))
+            );
         }
     }
 

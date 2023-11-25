@@ -1,4 +1,4 @@
-package me.earth.earthhack.impl.util.yarn2notch;
+package me.earth.earthhack.impl.util.yarn2intermediary;
 
 import me.earth.earthhack.impl.util.misc.StreamUtil;
 
@@ -11,7 +11,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 
-public class Yarn2NotchService {
+public class Yarn2IntermediaryService {
     private final ASMRemapper remapper = new ASMRemapper();
 
     public void remap(URL from, URL to)

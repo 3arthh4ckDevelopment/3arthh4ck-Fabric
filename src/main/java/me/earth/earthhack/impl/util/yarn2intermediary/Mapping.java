@@ -1,4 +1,4 @@
-package me.earth.earthhack.impl.util.yarn2notch;
+package me.earth.earthhack.impl.util.yarn2intermediary;
 
 import java.io.BufferedReader;
 import java.io.IOException;
