@@ -15,7 +15,7 @@ public class SimpleButton extends ButtonWidget
     protected final int hoveredX;
     protected final int hoveredY;
 
-    protected final PressAction action;
+    public final PressAction action;
 
     public SimpleButton(int buttonID,
                         int xPos,

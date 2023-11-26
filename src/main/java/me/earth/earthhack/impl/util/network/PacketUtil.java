@@ -120,9 +120,8 @@ public class PacketUtil implements Globals
         PlayerInteractEntityC2SPacket packet = PlayerInteractEntityC2SPacket.attack(entity, mc.player.isSneaking());
         //noinspection ConstantConditions
         ((IPlayerInteractEntityC2S) packet).setEntityId(entity.getId());
-        //noinspection ConstantConditions
-        ((IPlayerInteractEntityC2S) packet).setAction(PlayerActionC2SPacket.Action.RELEASE_USE_ITEM); // TODO: ATTACK!!!!!!!!
-
+        // //noinspection ConstantConditions
+        // ((IPlayerInteractEntityC2S) packet).setAction(PlayerInteractEntityC2SPacket.attack); // TODO: ATTACK!!!!!!!!
         return packet;
     }
 
