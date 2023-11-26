@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -34,13 +36,13 @@ public class PositionManager extends SubscriberImpl implements Globals
     {
         // TODO Just changed all prios to MIN_VALUE, check if that is fine
         this.listeners.add(
-                new EventListener<PacketEvent.Receive<EntityPositionS2CPacket>>
+                new EventListener<PacketEvent.Receive<PlayerPositionLookS2CPacket>>
                         (PacketEvent.Receive.class,
                                 Integer.MIN_VALUE,
                                 EntityPositionS2CPacket.class)
                 {
                     @Override
-                    public void invoke(PacketEvent.Receive<EntityPositionS2CPacket> event)
+                    public void invoke(PacketEvent.Receive<PlayerPositionLookS2CPacket> event)
                     {
                         PlayerEntity player = mc.player;
                         if (player == null) {
@@ -51,10 +53,28 @@ public class PositionManager extends SubscriberImpl implements Globals
                             return;
                         }
 
-                        EntityPositionS2CPacket packet = event.getPacket();
+                        PlayerPositionLookS2CPacket packet = event.getPacket();
                         double x = packet.getX();
                         double y = packet.getY();
                         double z = packet.getZ();
+
+                        if (packet.getFlags()
+                                .contains(PositionFlag.X))
+                        {
+                            x += player.getX();
+                        }
+
+                        if (packet.getFlags()
+                                .contains(PositionFlag.Y))
+                        {
+                            y += player.getY();
+                        }
+
+                        if (packet.getFlags()
+                                .contains(PositionFlag.Z))
+                        {
+                            z += player.getZ();
+                        }
 
                         last_x = MathHelper.clamp(x, -3.0E7, 3.0E7);
                         last_y = y;
@@ -66,7 +86,7 @@ public class PositionManager extends SubscriberImpl implements Globals
                         }
 
                         onGround = false;
-                        teleportID = packet.getId();
+                        teleportID = packet.getTeleportId();
                     }
                 });
         this.listeners.add(
