@@ -1,11 +1,15 @@
 package me.earth.earthhack.impl.core.mixins;
 
 import com.mojang.datafixers.DataFixer;
+import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.event.events.client.ShutDownEvent;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.modules.Caches;
+import me.earth.earthhack.impl.modules.client.management.Management;
+import me.earth.earthhack.impl.modules.client.media.Media;
 import net.minecraft.client.MinecraftClient;
 
 import net.minecraft.client.render.RenderTickCounter;
@@ -37,6 +41,10 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     */
 
     @Unique
+    private static final ModuleCache<Management> MANAGEMENT =
+            Caches.getModule(Management.class);
+
+    @Unique
     private static boolean isEarthhackRunning = true;
     @Unique
     private int gameLoop = 0;
@@ -49,7 +57,9 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     @Inject(method = "getWindowTitle", at = @At("RETURN"), cancellable = true)
     public void getWindowTitle(CallbackInfoReturnable<String> info)
     {
-        info.setReturnValue(Earthhack.NAME + " - " + Earthhack.VERSION);
+        info.setReturnValue(Earthhack.NAME + " - " + Earthhack.VERSION + (MANAGEMENT.get().toast.getValue()
+                ? " " + MANAGEMENT.get().toastText.getValue()
+                : null));
     }
 
     // can be done with AW, but I'll just do it like this (for now maybe).

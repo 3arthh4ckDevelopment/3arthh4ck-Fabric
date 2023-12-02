@@ -11,6 +11,7 @@ import me.earth.earthhack.impl.managers.client.PlayerManager;
 import me.earth.earthhack.impl.managers.client.PluginManager;
 import me.earth.earthhack.impl.managers.client.macro.MacroManager;
 import me.earth.earthhack.impl.managers.config.ConfigManager;
+import me.earth.earthhack.impl.managers.minecraft.combat.CombatManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.ActionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.NCPManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.PositionManager;
@@ -32,6 +33,7 @@ public class Managers
     public static final ChatManager CHAT           = new ChatManager();
     public static final PlayerManager FRIENDS      = new PlayerManager();
     public static final PlayerManager ENEMIES      = new PlayerManager();
+    public static final CombatManager COMBAT       = new CombatManager();
     public static final ModuleManager MODULES      = new ModuleManager();
     public static final PositionManager POSITION   = new PositionManager();
     public static final RotationManager ROTATION   = new RotationManager();
@@ -49,7 +51,7 @@ public class Managers
     public static void load() {
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
-        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES);
+        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT);
 
 
         Earthhack.getLogger().info("Loading Commands");
