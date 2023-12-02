@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.core.mixins.network.client;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
@@ -14,7 +15,7 @@ public abstract class MixinPlayerInteractEntityC2S implements IPlayerInteractEnt
     public abstract void setEntityId(int entityId);
 
     @Override
-    public void setAction(PlayerInteractEntityC2SPacket.InteractTypeHandler action) {
+    public void setAction(PlayerActionC2SPacket.Action action) {
 
     }
 

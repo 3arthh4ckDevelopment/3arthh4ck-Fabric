@@ -95,6 +95,12 @@ public class PacketEvent<T extends Packet<? extends PacketListener>> extends Eve
         private final Deque<Runnable> postEvents = new ArrayDeque<>();
         private final ClientPlayNetworkHandler networkManager;
 
+        public Receive(T packet)
+        {
+            super(packet);
+            this.networkManager = null;
+        }
+
         public Receive(T packet, ClientPlayNetworkHandler networkManager)
         {
             super(packet);

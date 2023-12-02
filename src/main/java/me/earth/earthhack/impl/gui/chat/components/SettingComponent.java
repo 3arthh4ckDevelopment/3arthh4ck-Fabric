@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.gui.chat.components;
 
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.setting.Setting;
-import me.earth.earthhack.impl.core.mixins.util.IStyle;
 import me.earth.earthhack.impl.core.ducks.util.ITextComponentBase;
 import me.earth.earthhack.impl.core.util.SimpleTextFormatHook;
 import me.earth.earthhack.impl.gui.chat.AbstractTextComponent;
@@ -47,7 +46,7 @@ public abstract class SettingComponent<T, S extends Setting<T>>
 
         if (setting.getContainer() instanceof Module)
         {
-            ((IStyle) this.getStyle()).setClickEvent(
+            (this.getStyle()).withClickEvent(
                     new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                             Commands.getPrefix()
                                     + "hiddensetting "

@@ -13,7 +13,7 @@ public interface IPlayerInteractEntityC2S
 {
     void setEntityId(int entityId);
 
-    void setAction(PlayerInteractEntityC2SPacket.InteractTypeHandler action);
+    void setAction(PlayerActionC2SPacket.Action action);
 
     void setVec(Vec3d vec3d);
 

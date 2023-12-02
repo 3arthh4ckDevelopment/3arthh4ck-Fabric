@@ -102,7 +102,6 @@ public class PacketUtil implements Globals
                 mc.player.prevZ = mc.player.getZ();
                 ((IClientPlayNetworkHandler) mc.getNetworkHandler())
                         .setDoneLoadingTerrain(true);
-
                 mc.setScreen(null);
             }
         });
@@ -120,20 +119,19 @@ public class PacketUtil implements Globals
         PlayerInteractEntityC2SPacket packet = PlayerInteractEntityC2SPacket.attack(entity, mc.player.isSneaking());
         //noinspection ConstantConditions
         ((IPlayerInteractEntityC2S) packet).setEntityId(entity.getId());
-        // //noinspection ConstantConditions
-        // ((IPlayerInteractEntityC2S) packet).setAction(PlayerInteractEntityC2SPacket.attack); // TODO: ATTACK!!!!!!!!
         return packet;
     }
 
-   //  public static void sneak(boolean sneak) TODO TODO TODO
-   //  {
-   //      PingBypass.sendToActualServer(
-   //              new CPacketEntityAction(
-   //                      mc.player,
-   //                      sneak
-   //                              ? EntityA.Action.START_SNEAKING
-   //                              : CPacketEntityAction.Action.STOP_SNEAKING));
-   //  }
+    public static void sneak(boolean sneak) // TODO
+    {
+        mc.getNetworkHandler().getConnection().send(
+            new PlayerInputC2SPacket(
+                    mc.player.sidewaysSpeed,
+                    mc.player.forwardSpeed,
+                    false,
+                    sneak)
+        );
+    }
 
     public static void attack(Entity entity)
     {
@@ -178,8 +176,9 @@ public class PacketUtil implements Globals
 
     public static void sendAction(PlayerActionC2SPacket.Action action)
     {
-        // PingBypass.sendToActualServer(
-        //         new PlayerActionC2SPacket(action, mc.player.getBlockPos(), Direction.DOWN));
+        mc.getNetworkHandler().getConnection().send(
+                new PlayerActionC2SPacket(action, mc.player.getBlockPos(), Direction.DOWN)
+        );
     }
 
     public static void click(int windowIdIn,
