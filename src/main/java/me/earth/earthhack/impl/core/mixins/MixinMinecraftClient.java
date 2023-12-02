@@ -59,7 +59,7 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     {
         info.setReturnValue(Earthhack.NAME + " - " + Earthhack.VERSION + (MANAGEMENT.get().toast.getValue()
                 ? " " + MANAGEMENT.get().toastText.getValue()
-                : null));
+                : ""));
     }
 
     // can be done with AW, but I'll just do it like this (for now maybe).

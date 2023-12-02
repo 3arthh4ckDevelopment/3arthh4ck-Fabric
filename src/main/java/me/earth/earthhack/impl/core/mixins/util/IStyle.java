@@ -1,20 +1,27 @@
 package me.earth.earthhack.impl.core.mixins.util;
 
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import org.spongepowered.asm.mixin.Mixin;
-import net.minecraft.text.Style;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
+import java.util.function.Supplier;
 /**
- * Utility Interface for Styles, since after 1.12.2 they removed setClickEvent() and setHoverEvent().
+ * Duck interface for {@link net.minecraft.text.Style}.
  */
-@Mixin(Style.class)
 public interface IStyle {
-    @Accessor("clickEvent")
-    void setClickEvent(ClickEvent event);
+    void setRightClickEvent(ClickEvent event);
 
-    @Accessor("hoverEvent")
-    void setHoverEvent(HoverEvent event);
+    void setMiddleClickEvent(ClickEvent event);
 
+    ClickEvent getRightClickEvent();
+
+    ClickEvent getMiddleClickEvent();
+
+    void setSuppliedInsertion(Supplier<String> insertion);
+
+    void setRightInsertion(Supplier<String> rightInsertion);
+
+    void setMiddleInsertion(Supplier<String> middleInsertion);
+
+    String getRightInsertion();
+
+    String getMiddleInsertion();
 }

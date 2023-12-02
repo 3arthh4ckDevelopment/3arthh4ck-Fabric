@@ -37,14 +37,14 @@ public class Management extends Module {
     protected final Setting<Boolean> aspectRatio =
             register(new BooleanSetting("ChangeAspectRatio", false));
     protected final Setting<Integer> aspectRatioWidth =
-            register(new NumberSetting<>("AspectRatioWidth", mc.getWindow().getWidth(), 0, mc.getWindow().getWidth()));
+            register(new NumberSetting<>("AspectRatioWidth", 834, 0, 834));
     protected final Setting<Integer> aspectRatioHeight =
-            register(new NumberSetting<>("AspectRatioHeight", mc.getWindow().getHeight(), 0, mc.getWindow().getHeight()));
+            register(new NumberSetting<>("AspectRatioHeight", 834, 0, 834));
     protected final Setting<Boolean> pooledScreenShots =
             register(new BooleanSetting("Pooled-Screenshots", false));
     protected final Setting<Boolean> pauseOnLeftFocus =
             register(new BooleanSetting("PauseOnLeftFocus",
-                    mc.options.pauseOnLostFocus));
+                    true));
     protected final Setting<Boolean> customFogColor =
             register(new BooleanSetting("CustomFogColor", false));
     protected final Setting<Color> fogColor =
@@ -102,28 +102,28 @@ public class Management extends Module {
         {
             event.setValue(false);
             ChatUtil.sendMessage("Clearing TotemPops...");
-            Managers.COMBAT.reset(); // TODO
+            Managers.COMBAT.reset();
         });
         this.pauseOnLeftFocus.addObserver(e ->
             mc.options.pauseOnLostFocus = e.getValue());
 
-        long handle = MinecraftClient.getInstance().getWindow().getHandle();
-
-        if (unfocusedFps.getValue() != 0) {
-            this.listeners.add(new LambdaListener<>(Render2DEvent.class, e -> {
-                if (GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_FOCUSED) != GLFW.GLFW_TRUE) {
-                    if (displayFlag) {
-                        fps = mc.options.getMaxFps().getValue();
-                        displayFlag = false;
-                    }
-                    mc.options.getMaxFps().setValue(unfocusedFps.getValue());
-                }
-                else if (!displayFlag) {
-                    mc.options.getMaxFps().setValue(fps);
-                    displayFlag = true;
-                }
-            }));
-        }
+        // long handle = MinecraftClient.getInstance().getWindow().getHandle();
+//
+        // if (unfocusedFps.getValue() != 0) {
+        //     this.listeners.add(new LambdaListener<>(Render2DEvent.class, e -> {
+        //         if (GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_FOCUSED) != GLFW.GLFW_TRUE) {
+        //             if (displayFlag) {
+        //                 fps = mc.options.getMaxFps().getValue();
+        //                 displayFlag = false;
+        //             }
+        //             mc.options.getMaxFps().setValue(unfocusedFps.getValue());
+        //         }
+        //         else if (!displayFlag) {
+        //             mc.options.getMaxFps().setValue(fps);
+        //             displayFlag = true;
+        //         }
+        //     }));
+        // }
     }
 
     @Override

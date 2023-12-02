@@ -64,12 +64,13 @@ public class FileManager
         handleImageDir(IMAGES);
 
         // nullpointerexception
-        /*
-        for (File file : IMAGES.listFiles())
-        {
-            if (file.isDirectory()) handleImageDir(file);
+        if(IMAGES.listFiles().length > 0){
+            for (File file : IMAGES.listFiles())
+            {
+                if (file.isDirectory()) handleImageDir(file);
+            }
         }
-        */
+
     }
 
     private void handleImageDir(File dir)

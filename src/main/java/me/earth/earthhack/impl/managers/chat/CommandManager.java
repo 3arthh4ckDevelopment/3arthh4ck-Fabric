@@ -10,8 +10,10 @@ import me.earth.earthhack.api.register.exception.AlreadyRegisteredException;
 import me.earth.earthhack.api.register.exception.CantUnregisterException;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.Earthhack;
-import me.earth.earthhack.impl.commands.ModuleCommand;
+import me.earth.earthhack.impl.commands.*;
 import me.earth.earthhack.impl.commands.hidden.FailCommand;
+import me.earth.earthhack.impl.commands.hidden.HListSettingCommand;
+import me.earth.earthhack.impl.commands.hidden.HSettingCommand;
 import me.earth.earthhack.impl.commands.util.CommandUtil;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
@@ -73,7 +75,56 @@ public class CommandManager extends SubscriberImpl
     {
         Earthhack.getLogger().info("Initializing Commands.");
 
-        // Initialize commands here.
+        // commands.add(new ConfigCommand());
+        // commands.add(new FontCommand());
+        commands.add(new FriendCommand());
+        // commands.add(new EnemyCommand());
+        commands.add(new HelpCommand());
+        // commands.add(new HexCommand());
+        // commands.add(new HideCommand());
+        // commands.add(new HistoryCommand());
+        commands.add(new MacroCommand());
+        // commands.add(new LastCommand());
+        commands.add(new ModuleListCommand());
+        // commands.add(new PeekCommand());
+        // commands.add(new PrefixCommand());
+        commands.add(new ToggleCommand());
+        // commands.add(new TimesCommand());
+        // commands.add(new PluginCommand());
+        commands.add(new SayCommand());
+        // commands.add(new GameModeCommand());
+        // commands.add(new JavaScriptCommand());
+        // commands.add(new KitCommand());
+        // commands.add(new Thirty2kCommand());
+        // commands.add(new BindCommand());
+        // commands.add(new ResetCommand());
+        // commands.add(new PbModuleCommand());
+        // commands.add(new PbSyncCommand());
+        // commands.add(new PrintCommand());
+        // commands.add(new ProxyCommand());
+        // commands.add(new QuitCommand());
+        // commands.add(new ConnectCommand());
+        // commands.add(new DisconnectCommand());
+        commands.add(new VClipCommand());
+        commands.add(new HClipCommand());
+        // commands.add(new GiveCommand());
+        // commands.add(new DumpStackCommand());
+        // commands.add(new EnchantCommand());
+        // commands.add(new ShowCommand());
+        // commands.add(new ShrugCommand());
+        // commands.add(new EntityDesyncCommand());
+        // commands.add(new SoundCommand());
+        commands.add(new FolderCommand());
+        // commands.add(new PhobosDotConfirmCommand());
+        // commands.add(new PacketCommandImpl());
+        // commands.add(new PresetCommand());
+        // commands.add(new BookCommand());
+        // commands.add(new ReloadResourceCommand());
+        // commands.add(new GcCommand());
+
+        hidden.add(new HListSettingCommand());
+        // hidden.add(new HModulesCommand());
+        hidden.add(new HSettingCommand());
 
         setupAndConcatenate();
     }

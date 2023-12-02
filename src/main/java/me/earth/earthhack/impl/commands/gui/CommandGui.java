@@ -26,7 +26,7 @@ public class CommandGui extends Screen implements Globals
     private static final Identifier BLACK_PNG =
             new Identifier("earthhack:textures/gui/black.png");
 
-    private final ChatScreen chat = new ChatScreen(Commands.getPrefix());
+    private final ChatScreen chat = new ChatScreen("");
     private final Screen parent;
     private final int id;
 
@@ -35,6 +35,11 @@ public class CommandGui extends Screen implements Globals
         super(Text.of("CommandGui"));
         this.parent = parent;
         this.id = id;
+    }
+
+    public void setText(String text)
+    {
+        this.chat.setText(text);
     }
 
     @Override
