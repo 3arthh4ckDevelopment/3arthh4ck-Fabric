@@ -50,9 +50,10 @@ public class ChatManager extends SubscriberImpl implements Globals
     {
         if (mc.inGameHud != null)
         {
-            message_ids.values().forEach(m ->
-                    m.values().forEach(id ->
-                            ((IChatHud) mc.inGameHud.getChatHud()).earthhack$deleteMessage(id)));
+            mc.inGameHud.getChatHud().clear(true);
+            // message_ids.values().forEach(m ->
+            //         m.values().forEach(id ->
+            //                 ((IChatHud) mc.inGameHud.getChatHud()).earthhack$deleteMessage(id)));
         }
 
         message_ids.clear();
@@ -63,11 +64,7 @@ public class ChatManager extends SubscriberImpl implements Globals
                                            String uniqueWord,
                                            int senderID)
     {
-        Integer id = message_ids
-                .computeIfAbsent(senderID, v -> new ConcurrentHashMap<>())
-                .computeIfAbsent(uniqueWord, v -> counter.next());
-
-        mc.execute(() -> ChatUtil.sendMessage(message, id));
+        mc.execute(() -> ChatUtil.sendMessage(message));
     }
 
     public void sendDeleteMessage(String message,
@@ -78,7 +75,7 @@ public class ChatManager extends SubscriberImpl implements Globals
                 .computeIfAbsent(senderID, v -> new ConcurrentHashMap<>())
                 .computeIfAbsent(uniqueWord, v -> counter.next());
 
-        ChatUtil.sendMessage(message, id);
+        ChatUtil.sendMessage(message);
     }
 
     public void deleteMessage(String uniqueWord, int senderID)
@@ -102,7 +99,7 @@ public class ChatManager extends SubscriberImpl implements Globals
                 .computeIfAbsent(senderID, v -> new ConcurrentHashMap<>())
                 .computeIfAbsent(uniqueWord, v -> counter.next());
 
-        ChatUtil.sendMessage(component, id);
+        ChatUtil.sendMessage(component);
     }
 
     /**

@@ -3,6 +3,7 @@ package me.earth.earthhack.impl.util.text;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.gui.IChatHud;
 import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
@@ -14,26 +15,21 @@ public class ChatUtil implements Globals {
 
     public static void sendMessage(String message)
     {
-        sendMessage(message, 0);
-    }
-
-    public static void sendMessage(String message, int id)
-    {
         sendMessage(Text.of(
-                message == null ? "null" : message), id);
+                message == null ? "null" : message));
     }
 
-    public static void sendMessage(Text messageContent, int id) {
+    public static void sendMessage(Text messageContent) {
         if (mc.world == null)
             return;
         MutableText message = Text.empty();
         message.append(messageContent);
         
-        ((IChatHud) mc.inGameHud.getChatHud()).earthhack$addMessage(message, id);
+        mc.inGameHud.getChatHud().addMessage(message);
     }
 
     public static void deleteMessage(int id) {
-        applyIfPresent(g -> g.earthhack$deleteMessage(id));
+        // TODO: mc.inGameHud.getChatHud().removeMessage();
     }
 
     public static void applyIfPresent(Consumer<IChatHud> consumer)

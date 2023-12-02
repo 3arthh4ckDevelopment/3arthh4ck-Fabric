@@ -7,7 +7,6 @@
     "MixinMinecraftClient",
     "network.MixinClientConnection",
     "network.client.ILoginSuccessS2CPacket",
-    "network.client.MixinPlayerInteractEntityC2S",
     "util.ITimer",
     "util.MixinClickEvent"
   ],

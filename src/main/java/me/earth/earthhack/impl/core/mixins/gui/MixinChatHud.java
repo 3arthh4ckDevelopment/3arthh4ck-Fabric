@@ -41,7 +41,7 @@ public class MixinChatHud {
             at = @At("HEAD"),
             cancellable = true)
     public void addMessage(Text message, CallbackInfo info) {
-        ChatEvent.Send event = new ChatEvent.Send((IChatHud) client.inGameHud.getChatHud(), Text.literal(message.getString()), 0, 0, true);
+        ChatEvent.Send event = new ChatEvent.Send(null, Text.literal(message.getString()), 0, 0, true);
         Bus.EVENT_BUS.post(event);
 
         if (event.isCancelled())

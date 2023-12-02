@@ -4,8 +4,6 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public interface IChatHud {
-    void earthhack$addMessage(Text message, int id);
-    void earthhack$deleteMessage(int id);
     boolean replace(MutableText component,
                     int id,
                     boolean wrap,
