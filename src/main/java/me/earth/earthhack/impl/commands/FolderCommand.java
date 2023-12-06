@@ -1,9 +1,12 @@
 package me.earth.earthhack.impl.commands;
 
 import me.earth.earthhack.api.command.Command;
+import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.commands.util.CommandDescriptions;
+import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.fabricmc.loader.api.FabricLoader;
 
 import java.awt.*;
 import java.io.IOException;
@@ -22,6 +25,7 @@ public class FolderCommand extends Command
     {
         try
         {
+            //TODO: fix
             Desktop.getDesktop().open(Paths.get("earthhack").toFile());
         }
         catch (IOException e)
