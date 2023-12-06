@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FileManager
 {
     private static final File EARTHHACK_ROOT = FabricLoader.getInstance().getGameDir().resolve(Earthhack.MOD_ID).toFile();
-    private static final File IMAGES = new File(FabricLoader.getInstance().getGameDirectory() + "/earthhack/images");
-    private static final File MODELS = new File(FabricLoader.getInstance().getGameDirectory() + "/earthhack/models");
-    private static final File SHADERS = new File(FabricLoader.getInstance().getGameDirectory() + "/earthhack/shaders");
+    private static final File IMAGES = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/images");
+    private static final File MODELS = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/models");
+    private static final File SHADERS = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/shaders");
 
 
     private final Map<String, GifImage> gifs = new ConcurrentHashMap<>();
@@ -45,6 +46,9 @@ public class FileManager
 
     public void init()
     {
+        if (!EARTHHACK_ROOT.exists()) {
+            EARTHHACK_ROOT.mkdir();
+        }
 
         if (!IMAGES.exists())
         {
@@ -63,8 +67,7 @@ public class FileManager
 
         handleImageDir(IMAGES);
 
-        // nullpointerexception
-        if(IMAGES.listFiles().length > 0){
+        if (IMAGES.listFiles() != null && IMAGES.listFiles().length > 0) {
             for (File file : IMAGES.listFiles())
             {
                 if (file.isDirectory()) handleImageDir(file);

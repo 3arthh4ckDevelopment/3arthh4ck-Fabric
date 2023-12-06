@@ -10,7 +10,8 @@
     "network.server.IEntityVelocityUpdateS2CPacket",
     "network.server.IExplosionS2CPacket",
     "util.ITimer",
-    "util.MixinClickEvent"
+    "util.MixinClickEvent",
+    "util.MixinHoverEvent"
   ],
   "client": [
     "MixinMinecraftClient",
