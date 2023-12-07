@@ -19,6 +19,8 @@ import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
+import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
+import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
@@ -87,13 +89,13 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new WebAura());
 
         /* ------ MISC ------ */
-        // this.forceRegister(new Announcer());
+        this.forceRegister(new Announcer());
         // this.forceRegister(new AntiAim());
         // this.forceRegister(new AntiPackets());
         // this.forceRegister(new AntiPotion());
         // this.forceRegister(new AntiVanish());
         // this.forceRegister(new AutoEat());
-        // this.forceRegister(new AutoLog());
+        this.forceRegister(new AutoLog());
         // this.forceRegister(new AutoReconnect());
         // this.forceRegister(new AutoRespawn());
         // this.forceRegister(new BuildHeight());

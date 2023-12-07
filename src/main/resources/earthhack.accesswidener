@@ -3,6 +3,7 @@ accessWidener	v1  named
 accessible class net/minecraft/text/Style
 accessible field net/minecraft/client/gui/widget/SimpleButton x Ljava/lang/Integer;
 accessible field net/minecraft/util/math/Direction HORIZONTAL [Lnet/minecraft/util/math/Direction;
+accessible method net/minecraft/client/gui/screen/ConnectScreen <init> (Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;)V
 
 # BlockBox (mutable bb)
 accessible field net/minecraft/util/math/BlockBox minX I

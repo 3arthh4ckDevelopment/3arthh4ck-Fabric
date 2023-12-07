@@ -4,14 +4,14 @@ import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.pingbypass.PingBypassModule;
-import me.earth.earthhack.impl.modules.client.pingbypass.guis.GuiConnectingPingBypass;
 import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
 import me.earth.earthhack.impl.util.text.TextColor;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
-
-import java.io.IOException;
 
 public class LogScreen extends Screen implements Globals
 {
@@ -21,7 +21,6 @@ public class LogScreen extends Screen implements Globals
     private final AutoLog autoLog;
     private final ServerInfo data;
     private final String message;
-    private GuiButton autoLogButton;
     private final int textHeight;
 
     public LogScreen(AutoLog autoLog, String message, ServerInfo data)
@@ -30,54 +29,49 @@ public class LogScreen extends Screen implements Globals
         this.autoLog = autoLog;
         this.message = message;
         this.data = data;
-        this.textHeight = mc.fontRenderer.FONT_HEIGHT;
+        this.textHeight = mc.textRenderer.fontHeight;
+
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) { }
-
-    @Override
-    public void initGui()
+    public void init()
     {
-        this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, Math.min(this.height / 2 + this.textHeight / 2 + mc.fontRenderer.FONT_HEIGHT, this.height - 30), (data == null ? TextColor.RED : TextColor.WHITE) + "Reconnect"));
-        autoLogButton = new GuiButton(1, this.width / 2 - 100, Math.min(this.height / 2 + this.textHeight / 2 + mc.fontRenderer.FONT_HEIGHT, this.height - 30) + 23, getButtonString());
-        this.buttonList.add(autoLogButton);
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, Math.min(this.height / 2 + this.textHeight / 2 + mc.fontRenderer.FONT_HEIGHT, this.height - 30) + 46, "Back to server list"));
-    }
+        if (this.client != null) {
+            clearChildren();
 
-    @Override
-    @SuppressWarnings("RedundantThrows")
-    protected void actionPerformed(GuiButton button) throws IOException
-    {
-        if (button.id == 0 && data != null)
-        {
-            if (PINGBYPASS.isEnabled())
-            {
-                mc.displayGuiScreen(new GuiConnectingPingBypass(new GuiMainMenu(), mc, data));
-            }
-            else
-            {
-                mc.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), mc, data));
-            }
-        }
-        else if (button.id == 1)
-        {
-            autoLog.toggle();
-            autoLogButton.displayString = getButtonString();
-        }
-        else if (button.id == 2)
-        {
-            mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
+            addSelectableChild(ButtonWidget.builder(Text.of((data == null ? TextColor.RED : TextColor.WHITE) + "Reconnect"), (button) -> {
+                if (data != null && this.client != null)
+                    this.client.setScreen(new ConnectScreen(new TitleScreen(), Text.of("Failed to reconnect")));
+                /*
+                if (PINGBYPASS.isEnabled())
+                {
+                    mc.displayGuiScreen(new GuiConnectingPingBypass(new GuiMainMenu(), mc, data));
+                }
+                else
+                {
+                    mc.setScreen(new ConnectScreen(new TitleScreen(), "Failed to reconnect"));
+                }
+                 */
+            }).dimensions(this.width / 2 - 100, Math.min(this.height / 2 + this.textHeight / 2 + textHeight, this.height - 30), 200, 20).build());
+
+            addSelectableChild(ButtonWidget.builder(Text.of(getButtonString()), (button) -> {
+                autoLog.toggle();
+                button.setMessage(Text.of(getButtonString()));
+            }).dimensions(this.width / 2 - 100, Math.min(this.height / 2 + this.textHeight / 2 + textHeight, this.height - 30) + 23, 200, 20).build());
+
+
+            addSelectableChild(ButtonWidget.builder(Text.of("Back to server list"), (button) -> {
+                this.client.setScreen(new MultiplayerScreen(new TitleScreen()));
+            }).dimensions(this.width / 2 - 100, Math.min(this.height / 2 + this.textHeight / 2 + textHeight, this.height - 30) + 46, 200, 20).build());
         }
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks)
     {
-        this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer, this.message, this.width / 2, this.height / 2 - this.textHeight / 2 - this.fontRenderer.FONT_HEIGHT * 2, 0xffffffff);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        // this.drawDefaultBackground();
+        // this.drawCenteredString(this.textRenderer, this.message, this.width / 2, this.height / 2 - this.textHeight / 2 - this.textHeight * 2, 0xffffffff);
+        super.render(context, mouseX, mouseY, partialTicks);
     }
 
     private String getButtonString()

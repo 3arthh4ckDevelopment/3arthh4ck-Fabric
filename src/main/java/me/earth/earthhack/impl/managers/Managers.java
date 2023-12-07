@@ -12,11 +12,13 @@ import me.earth.earthhack.impl.managers.client.PluginManager;
 import me.earth.earthhack.impl.managers.client.macro.MacroManager;
 import me.earth.earthhack.impl.managers.config.ConfigManager;
 import me.earth.earthhack.impl.managers.minecraft.combat.CombatManager;
+import me.earth.earthhack.impl.managers.minecraft.combat.TargetManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.ActionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.NCPManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.PositionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.RotationManager;
 import me.earth.earthhack.impl.managers.minecraft.timer.TimerManager;
+import me.earth.earthhack.impl.managers.thread.EntityProvider;
 import me.earth.earthhack.impl.managers.thread.ThreadManager;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUpManager;
 
@@ -42,6 +44,8 @@ public class Managers
     public static final NCPManager NCP             = new NCPManager();
     public static final LookUpManager LOOK_UP      = new LookUpManager();
     public static final ConfigManager CONFIG       = new ConfigManager();
+    public static final TargetManager TARGET       = new TargetManager();
+    public static final EntityProvider ENTITIES    = new EntityProvider();
     public static final FileManager FILES          = new FileManager();
     public static final CommandManager COMMANDS    = new CommandManager();
 
@@ -51,7 +55,7 @@ public class Managers
     public static void load() {
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
-        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT);
+        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT, TARGET, ENTITIES);
 
 
         Earthhack.getLogger().info("Loading Commands");
