@@ -1,0 +1,34 @@
+version: 2
+updates:
+
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "12:00"
+      timezone: "Europe/Berlin"
+    assignees:
+      - "Ai2473"
+      - "nukiz"
+    reviewers:
+      - "Ai2473"
+      - "nukiz"
+    commit-message:
+      prefix: "gradle"
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "12:00"
+      timezone: "Europe/Berlin"
+    assignees:
+      - "Ai2473"
+      - "nukiz"
+    reviewers:
+      - "Ai2473"
+      - "nukiz"
+    commit-message:
+      prefix: "github-actions"
+      include: "scope"
