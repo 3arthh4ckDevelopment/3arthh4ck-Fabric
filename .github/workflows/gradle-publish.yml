@@ -14,13 +14,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: gradle/wrapper-validation-action@v1
+
       - name: Set Java 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: corretto
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Build with Gradle
-        run: gradlew build
+        run: ./gradlew build
+
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3
         with:
