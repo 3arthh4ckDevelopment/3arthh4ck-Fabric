@@ -39,6 +39,7 @@ public abstract class Module extends SettingContainer
     private final AtomicBoolean inOnEnable  = new AtomicBoolean();
     boolean registered;
 
+
     private final Setting<String> name;
     private final Setting<Bind> bind =
             register(new BindSetting("Bind", Bind.none()));
@@ -50,9 +51,13 @@ public abstract class Module extends SettingContainer
     private final Setting<Toggle> bindMode =
             register(new EnumSetting<>("Toggle", Toggle.Normal))
                     .setComplexity(Complexity.Medium);
+    private final Setting<Boolean> visibility =
+            register(new BooleanSetting("Visible", true))
+                    .setVisibility(false);
 
-    private final Category category;
+    private Category category;
     private ModuleData<?> data;
+    public boolean searchVisibility = visibility.getValue();
 
     /**
      * Creates a new Module. It's important that the given name
@@ -90,9 +95,10 @@ public abstract class Module extends SettingContainer
             onDisable();
         }
     }
+
     /**
      *
-     * @return the actual name for the module. (e.g. When display name is KillAura, this would return KillAura.)
+     * @return the actual name for the module. (e.g. When display name is Aura, this would return KillAura.)
      */
     @Override
     public String getName()
@@ -110,12 +116,18 @@ public abstract class Module extends SettingContainer
         return name.getValue();
     }
 
+    /**
+     * Set the display name for the module
+     */
     @Override
     public void setDisplayName(String name)
     {
         this.name.setValue(name);
     }
 
+    /**
+     * Change the module state (enabled/disabled)
+     */
     public final void toggle() {
         if (isEnabled())
             disable();
@@ -145,6 +157,7 @@ public abstract class Module extends SettingContainer
     {
         return enableCheck.get();
     }
+
     /**
      *
      * @return the display info (Stuff in the ArrayList between [] brackets. (e.g. AutoCrystal [target].))
@@ -154,6 +167,7 @@ public abstract class Module extends SettingContainer
     {
         return null;
     }
+
     /**
      *
      * @return the category of the module
@@ -161,6 +175,11 @@ public abstract class Module extends SettingContainer
     public Category getCategory()
     {
         return category;
+    }
+
+    public void setCategory(Category category)
+    {
+        this.category = category;
     }
 
     /**
@@ -176,6 +195,7 @@ public abstract class Module extends SettingContainer
         if (data != null)
             this.data = data;
     }
+
     /**
      *
      * @return the key-bind for the module.
@@ -184,6 +204,7 @@ public abstract class Module extends SettingContainer
     {
         return bind.getValue();
     }
+
     /**
      *
      * @param bind The key-bind we set for a module.
@@ -203,6 +224,7 @@ public abstract class Module extends SettingContainer
     {
         this.hidden.setValue(hidden);
     }
+
     /**
      *
      * @return whether the module is hidden in the Arraylist.
@@ -211,6 +233,16 @@ public abstract class Module extends SettingContainer
     public Hidden isHidden()
     {
         return hidden.getValue();
+    }
+
+    public boolean isVisible()
+    {
+        return visibility.getValue();
+    }
+
+    public void setShown(boolean shown)
+    {
+        visibility.setValue(shown);
     }
 
     protected void onEnable()

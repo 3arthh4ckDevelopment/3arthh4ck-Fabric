@@ -1,14 +1,10 @@
 package me.earth.earthhack.impl.core.mixins.gui;
 
 import me.earth.earthhack.api.event.bus.instance.Bus;
-import me.earth.earthhack.impl.core.ducks.gui.IChatHud;
 import me.earth.earthhack.impl.event.events.render.ChatEvent;
-import net.fabricmc.fabric.api.registry.LootEntryTypeRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.client.main.Main;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinChatHud {
     @Final
     @Shadow
-    private MinecraftClient client;
+    private MinecraftClient client; //TODO: is this variable needed?
 
     @Inject(
         method = "clear",

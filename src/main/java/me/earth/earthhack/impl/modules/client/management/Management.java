@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
+import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.setting.Complexity;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.*;
@@ -17,6 +18,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * { TODO: me.earth.earthhack.impl.core.mixins.util.MixinScreenShotHelper }
@@ -28,6 +30,8 @@ public class Management extends Module {
             register(new BooleanSetting("LogoutPops", false));
     protected final Setting<Boolean> friend =
             register(new BooleanSetting("SelfFriend", true));
+    public final Setting<Boolean> pluginSection =
+            register(new BooleanSetting("PluginSection", true));
     protected final Setting<Boolean> soundRemove =
             register(new BooleanSetting("SoundRemove", true));
     protected final Setting<Integer> deathTime =
@@ -134,6 +138,12 @@ public class Management extends Module {
             lastProfile = mc.getSession().getProfile();
             Managers.FRIENDS.add(lastProfile.getName(), lastProfile.getId());
         }
+        pluginsUpdate(pluginSection.getValue());
+    }
+
+    private void pluginsUpdate(boolean isSeparated) {
+        for (Map.Entry<Module, Category> entry : PluginsCategory.getInstance().getPluginsModuleList().entrySet())
+            entry.getKey().setCategory(isSeparated ? PluginsCategory.getInstance().getCategory() : entry.getValue());
     }
 
     public boolean isUsingCustomFogColor()

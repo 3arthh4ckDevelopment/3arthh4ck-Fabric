@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.util.render;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.Earthhack;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.Window;
@@ -23,7 +24,7 @@ import static org.lwjgl.opengl.GL11.*;
 //  That way we don't need to instantiate neither of them at all
 //  Which could actually save quite the cost, since we render often
 public class RenderUtil implements Globals {
-    private static final Window wnd;
+    private static Window wnd;
     private final static GlShader IMAGE_SHADER = GlShader.createShader("image");
     public final static GlShader BLUR_SHADER = GlShader.createShader("blur");
     // todo vertexbuffers
@@ -411,6 +412,15 @@ public class RenderUtil implements Globals {
         glColor4f(r, g, b, a);
     }
 
+    public static void scissor(float x, float y, float x1, float y1)
+    {
+        wnd = mc.getWindow();
+        double scale = wnd.getScaleFactor();
+        glScissor((int) (x * scale),
+                (int) ((wnd.getScaledHeight() - y1) * scale),
+                (int)((x1 - x) * scale),
+                (int)((y1 - y) * scale));
+    }
 
     public static void startRender()
     {
@@ -440,6 +450,11 @@ public class RenderUtil implements Globals {
         glCullFace(GL_BACK);
         glPopMatrix();
         glPopAttrib();
+    }
+
+    public static boolean mouseWithinBounds(double mouseX, double mouseY, double x, double y, double width, double height)
+    {
+        return (mouseX >= x && mouseX <= (x + width)) && (mouseY >= y && mouseY <= (y + height));
     }
 
 }

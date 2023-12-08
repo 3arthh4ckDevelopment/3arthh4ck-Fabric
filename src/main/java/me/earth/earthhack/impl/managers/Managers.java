@@ -18,6 +18,8 @@ import me.earth.earthhack.impl.managers.minecraft.movement.NCPManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.PositionManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.RotationManager;
 import me.earth.earthhack.impl.managers.minecraft.timer.TimerManager;
+import me.earth.earthhack.impl.managers.render.ColorManager;
+import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.managers.thread.EntityProvider;
 import me.earth.earthhack.impl.managers.thread.ThreadManager;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUpManager;
@@ -41,6 +43,8 @@ public class Managers
     public static final RotationManager ROTATION   = new RotationManager();
     public static final ActionManager ACTION       = new ActionManager();
     public static final TimerManager TIMER         = new TimerManager();
+    public static final TextRenderer TEXT          = new TextRenderer();
+    public static final ColorManager COLOR         = new ColorManager();
     public static final NCPManager NCP             = new NCPManager();
     public static final LookUpManager LOOK_UP      = new LookUpManager();
     public static final ConfigManager CONFIG       = new ConfigManager();
@@ -55,7 +59,7 @@ public class Managers
     public static void load() {
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
-        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT, TARGET, ENTITIES);
+        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT, TARGET, ENTITIES, COLOR, TEXT);
 
 
         Earthhack.getLogger().info("Loading Commands");

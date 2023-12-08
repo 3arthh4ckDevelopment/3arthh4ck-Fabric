@@ -10,11 +10,14 @@ import me.earth.earthhack.api.util.interfaces.Nameable;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// No need for builder pattern as for now, its almost always just 2 parameters.
 public abstract class Setting<T> extends Observable<SettingEvent<T>>
-        implements Jsonable, Nameable {
+        implements Jsonable, Nameable
+{
     public final AtomicInteger changeId = new AtomicInteger();
 
     private Complexity complexity = Complexity.Beginner;
+    private Boolean visibility = true;
 
     protected final String name;
     protected final T initial;
@@ -27,10 +30,6 @@ public abstract class Setting<T> extends Observable<SettingEvent<T>>
         this.name    = nameIn;
         this.initial = initialValue;
         this.value   = initialValue;
-    }
-
-    public Complexity getComplexity() {
-        return complexity;
     }
 
     @Override
@@ -147,8 +146,22 @@ public abstract class Setting<T> extends Observable<SettingEvent<T>>
         return false;
     }
 
+    public Complexity getComplexity() {
+        return complexity;
+    }
+
     public Setting<T> setComplexity(Complexity complexity) {
         this.complexity = complexity;
         return this;
     }
+
+    public Boolean getVisibility() {
+        return visibility;
+    }
+
+    public Setting<T> setVisibility(Boolean visibility) {
+        this.visibility = visibility;
+        return this;
+    }
+
 }
