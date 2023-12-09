@@ -2,8 +2,6 @@ package me.earth.earthhack.impl.util.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;

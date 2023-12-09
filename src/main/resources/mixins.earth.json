@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinMinecraftClient",
+    "item.IItemTool",
     "network.MixinClientConnection",
     "network.client.ILoginSuccessS2CPacket",
     "network.server.IEntityVelocityUpdateS2CPacket",

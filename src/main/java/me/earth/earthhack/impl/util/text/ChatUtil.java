@@ -3,7 +3,6 @@ package me.earth.earthhack.impl.util.text;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.gui.IChatHud;
 import net.minecraft.client.gui.hud.ChatHud;
-import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 

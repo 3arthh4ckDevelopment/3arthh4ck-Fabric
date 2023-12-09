@@ -8,7 +8,8 @@ import me.earth.earthhack.impl.event.events.misc.GameLoopEvent;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.client.MinecraftClient;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Scheduler extends SubscriberImpl implements Globals {
     private static final Scheduler INSTANCE = new Scheduler();

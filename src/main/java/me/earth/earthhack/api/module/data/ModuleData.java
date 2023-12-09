@@ -4,7 +4,8 @@ import me.earth.earthhack.api.config.preset.ModulePreset;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.SettingContainer;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Container for a Modules data:

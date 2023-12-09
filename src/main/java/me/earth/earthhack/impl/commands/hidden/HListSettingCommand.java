@@ -4,18 +4,13 @@ import me.earth.earthhack.api.command.Command;
 import me.earth.earthhack.api.command.Completer;
 import me.earth.earthhack.api.command.PossibleInputs;
 import me.earth.earthhack.api.module.Module;
-import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.commands.util.CommandScheduler;
-import me.earth.earthhack.impl.gui.chat.util.ChatComponentUtil;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.thread.scheduler.Scheduler;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
-import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
 import me.earth.earthhack.impl.util.text.ChatIDs;
-import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.text.*;
 
 //TODO: pages when too many settings (With +- component)?
 //TODO: maybe a ChatScreen Handler, to update ChatLines etc?

@@ -3,7 +3,6 @@ package me.earth.earthhack.impl.gui.font;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
-import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;
 import org.lwjgl.opengl.GL11;
 

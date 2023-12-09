@@ -1,15 +1,19 @@
 package me.earth.earthhack.impl.util.minecraft.entity;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.boss.*;
-import net.minecraft.entity.boss.dragon.*;
-import net.minecraft.entity.decoration.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EyeOfEnderEntity;
+import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.entity.projectile.thrown.*;
-import net.minecraft.entity.vehicle.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.ShulkerBulletEntity;
+import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
+import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.entity.vehicle.MinecartEntity;
 
 import java.awt.*;
 import java.util.function.Supplier;

@@ -21,20 +21,21 @@ import java.util.List;
 public class EntityProvider extends SubscriberImpl implements Globals
 {
     private volatile List<PlayerEntity> players;
+    private volatile List<Entity> genericEntities;
     private volatile List<Entity> entities;
 
     public EntityProvider()
     {
         this.players  = Collections.emptyList();
         this.entities = Collections.emptyList();
-        /* this.listeners.add(new EventListener<TickEvent>(TickEvent.class)
+        this.listeners.add(new EventListener<>(TickEvent.class)
         {
             @Override
             public void invoke(TickEvent event)
             {
                 update();
             }
-        }); */
+        });
         this.listeners.add(new EventListener<>(
                 TickEvent.PostWorldTick.class) {
             @Override
@@ -128,6 +129,14 @@ public class EntityProvider extends SubscriberImpl implements Globals
         }
 
         return null;
+    }
+
+    public static List<Entity> filterEntityByClass(Class<? extends Entity> classEntity, List<Entity> entityList) { //TODO: move this to a util (?)
+        List<Entity> filteredEntities = new ArrayList<>();
+        for (Entity entity : entityList)
+            if (entity.getClass() == classEntity)
+                filteredEntities.add(entity);
+        return filteredEntities;
     }
 
 }

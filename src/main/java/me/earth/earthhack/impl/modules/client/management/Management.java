@@ -8,14 +8,10 @@ import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.setting.Complexity;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.*;
-import me.earth.earthhack.impl.event.events.render.Render2DEvent;
-import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.CooldownBypass;
 import me.earth.earthhack.impl.util.text.ChatUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.util.Map;

@@ -1,15 +1,12 @@
 package me.earth.earthhack.impl.gui.click;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.impl.gui.click.component.Component;
 import me.earth.earthhack.impl.gui.click.component.impl.ColorComponent;
-import me.earth.earthhack.impl.gui.click.component.impl.KeybindComponent;
 import me.earth.earthhack.impl.gui.click.component.impl.ModuleComponent;
-import me.earth.earthhack.impl.gui.click.component.impl.StringComponent;
 import me.earth.earthhack.impl.gui.click.frame.Frame;
 import me.earth.earthhack.impl.gui.click.frame.impl.CategoryFrame;
 import me.earth.earthhack.impl.gui.click.frame.impl.DescriptionFrame;

@@ -9,14 +9,9 @@ import me.earth.earthhack.impl.event.events.client.ShutDownEvent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
-import me.earth.earthhack.impl.modules.client.media.Media;
 import net.minecraft.client.MinecraftClient;
-
 import net.minecraft.client.render.RenderTickCounter;
-import org.apache.logging.log4j.Logger;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;

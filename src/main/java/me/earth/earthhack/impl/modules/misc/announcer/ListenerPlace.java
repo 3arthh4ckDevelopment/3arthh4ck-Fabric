@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.modules.misc.announcer;
 
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
-import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.misc.announcer.util.AnnouncementType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.EndCrystalItem;

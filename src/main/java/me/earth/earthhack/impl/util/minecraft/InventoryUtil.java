@@ -433,7 +433,7 @@ public class InventoryUtil implements Globals
 
     /**
      * Calls {@link net.minecraft.client.network.ClientPlayerInteractionManager#
-     * clickSlot(int, int, int, SlotActionType, EntityPlayer)}
+     * clickSlot(int, int, int, SlotActionType, PlayerEntity)}
      * for the arguments:
      * <p>-0
      * <p>-the given slot.

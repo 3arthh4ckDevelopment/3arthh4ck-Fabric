@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.util.render;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.Earthhack;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.Window;

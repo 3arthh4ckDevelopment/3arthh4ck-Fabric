@@ -14,7 +14,6 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.media.Media;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.realms.dto.PlayerInfo;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;

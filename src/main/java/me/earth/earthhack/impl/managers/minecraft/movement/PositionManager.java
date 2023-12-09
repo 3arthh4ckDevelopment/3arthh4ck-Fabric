@@ -192,7 +192,7 @@ public class PositionManager extends SubscriberImpl implements Globals
        //         new Vec3d(last_x, last_y + mc.player.getEyeHeight(entity.getPose()), last_z),
        //         new Vec3d(entity.getX(), entity.getY() + entity.getEyeHeight(entity.getPose()), entity.getZ()),
        //         null,
-       //         entity.getBoundingBox(),
+       //         entity.getCollisionShape(),
        //         false) == null;
         return false;
     }

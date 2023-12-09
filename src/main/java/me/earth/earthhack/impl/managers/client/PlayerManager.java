@@ -7,7 +7,6 @@ import me.earth.earthhack.impl.managers.client.event.PlayerEventType;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUp;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.Text;
 
 import java.util.Collection;
 import java.util.Map;

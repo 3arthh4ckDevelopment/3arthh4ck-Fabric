@@ -11,6 +11,7 @@ import me.earth.earthhack.impl.managers.client.PlayerManager;
 import me.earth.earthhack.impl.managers.client.PluginManager;
 import me.earth.earthhack.impl.managers.client.macro.MacroManager;
 import me.earth.earthhack.impl.managers.config.ConfigManager;
+import me.earth.earthhack.impl.managers.minecraft.BlockStateManager;
 import me.earth.earthhack.impl.managers.minecraft.combat.CombatManager;
 import me.earth.earthhack.impl.managers.minecraft.combat.TargetManager;
 import me.earth.earthhack.impl.managers.minecraft.movement.ActionManager;
@@ -23,6 +24,7 @@ import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.managers.thread.EntityProvider;
 import me.earth.earthhack.impl.managers.thread.ThreadManager;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUpManager;
+import me.earth.earthhack.impl.managers.thread.safety.SafetyManager;
 
 import java.io.IOException;
 
@@ -45,9 +47,11 @@ public class Managers
     public static final TimerManager TIMER         = new TimerManager();
     public static final TextRenderer TEXT          = new TextRenderer();
     public static final ColorManager COLOR         = new ColorManager();
+    public static final SafetyManager SAFETY       = new SafetyManager();
     public static final NCPManager NCP             = new NCPManager();
     public static final LookUpManager LOOK_UP      = new LookUpManager();
     public static final ConfigManager CONFIG       = new ConfigManager();
+    public static final BlockStateManager BLOCKS   = new BlockStateManager();
     public static final TargetManager TARGET       = new TargetManager();
     public static final EntityProvider ENTITIES    = new EntityProvider();
     public static final FileManager FILES          = new FileManager();
@@ -59,7 +63,7 @@ public class Managers
     public static void load() {
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
-        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT, TARGET, ENTITIES, COLOR, TEXT);
+        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT, TARGET, ENTITIES, COLOR, TEXT, BLOCKS);
 
 
         Earthhack.getLogger().info("Loading Commands");

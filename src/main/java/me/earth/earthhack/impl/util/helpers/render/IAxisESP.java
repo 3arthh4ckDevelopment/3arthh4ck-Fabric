@@ -6,7 +6,7 @@ import net.minecraft.util.math.Box;
 @FunctionalInterface
 public interface IAxisESP
 {
-    /** Draws a BlockESP at the given AxisAlignedBB. */
+    /** Draws a BlockESP at the given Box. */
     void render(Box bb);
 
 }

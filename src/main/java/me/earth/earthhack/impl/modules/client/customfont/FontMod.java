@@ -100,7 +100,6 @@ public class FontMod extends Module
             if (font != null)
             {
                 int finalI = i;
-                /*
                 component.append(
                         new SuppliedComponent(() ->
                                 (font.equals(fontName.getValue())
@@ -110,8 +109,8 @@ public class FontMod extends Module
                                         + (finalI == fonts.size() - 1
                                         ? ""
                                         : ", "))
-                                .setStyle(new Style()
-                                        .setClickEvent(new SmartClickEvent
+                                .setStyle(Style.EMPTY.withClickEvent(
+                                        new SmartClickEvent
                                                 (ClickEvent.Action.RUN_COMMAND)
                                         {
                                             @Override
@@ -122,8 +121,6 @@ public class FontMod extends Module
                                                         + "\"" + font + "\"";
                                             }
                                         })));
-                                        //TODO: fix
-                 */
             }
         }
 

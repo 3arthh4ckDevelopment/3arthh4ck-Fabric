@@ -1,6 +1,7 @@
 package me.earth.earthhack.api.observable;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Observable<T> {
     private final List<Observer<? super T>> observers = new LinkedList<>();

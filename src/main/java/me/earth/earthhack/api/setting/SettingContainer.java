@@ -1,6 +1,9 @@
 package me.earth.earthhack.api.setting;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SettingContainer
 {

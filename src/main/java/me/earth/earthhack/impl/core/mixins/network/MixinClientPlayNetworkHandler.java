@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.core.mixins.network;
 
 import com.mojang.authlib.GameProfile;
 import me.earth.earthhack.api.event.bus.instance.Bus;
-import me.earth.earthhack.impl.core.ducks.gui.IChatHud;
 import me.earth.earthhack.impl.core.ducks.network.IClientPlayNetworkHandler;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.events.render.ChatEvent;

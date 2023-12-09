@@ -27,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 public class ImageUtil implements Globals {
     public static BufferedImage createFlipped(BufferedImage image)

@@ -17,7 +17,6 @@ import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.modules.client.debug.Debug;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.modules.client.media.Media;
-import me.earth.earthhack.impl.modules.client.pingbypass.PingBypassModule;
 import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;

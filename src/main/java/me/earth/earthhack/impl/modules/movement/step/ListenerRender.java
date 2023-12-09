@@ -1,11 +1,6 @@
 package me.earth.earthhack.impl.modules.movement.step;
 
 // import me.earth.earthhack.impl.event.events.render.Render3DEvent;
-import me.earth.earthhack.impl.event.listeners.ModuleListener;
-import me.earth.earthhack.impl.util.math.position.PositionUtil;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 /*
 final class ListenerRender extends ModuleListener<Step, Render3DEvent>
 {
@@ -41,9 +36,9 @@ final class ListenerRender extends ModuleListener<Step, Render3DEvent>
                 }
 
                 off = off.up();
-                IBlockState state = mc.world.getBlockState(off);
+                BlockState state = mc.world.getBlockState(off);
                 if (state.getMaterial().blocksMovement()
-                    && state.getBoundingBox(mc.world, off)
+                    && state.getCollisionShape(mc.world, off)
                         == Block.FULL_BLOCK_AABB)
                 {
                     if (esp == StepESP.Bad)
@@ -54,7 +49,7 @@ final class ListenerRender extends ModuleListener<Step, Render3DEvent>
                     continue;
                 }
 
-                IBlockState up = mc.world.getBlockState(off.up());
+                BlockState up = mc.world.getBlockState(off.up());
                 if (up.getMaterial().blocksMovement())
                 {
                     if (esp == StepESP.Bad)

@@ -1,9 +1,7 @@
 package me.earth.earthhack.impl.gui.font;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
-import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.util.text.TextColor;

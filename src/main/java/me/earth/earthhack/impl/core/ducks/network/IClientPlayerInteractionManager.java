@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.core.ducks.network;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 
 /**

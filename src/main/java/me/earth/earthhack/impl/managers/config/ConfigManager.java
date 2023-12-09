@@ -4,7 +4,10 @@ import me.earth.earthhack.api.config.ConfigHelper;
 import me.earth.earthhack.api.register.AbstractRegister;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.managers.config.helpers.*;
+import me.earth.earthhack.impl.managers.config.helpers.CurrentConfig;
+import me.earth.earthhack.impl.managers.config.helpers.EnemyConfigHelper;
+import me.earth.earthhack.impl.managers.config.helpers.FriendConfigHelper;
+import me.earth.earthhack.impl.managers.config.helpers.ModuleConfigHelper;
 import me.earth.earthhack.impl.util.misc.io.BiIOConsumer;
 import me.earth.earthhack.impl.util.misc.io.IOConsumer;
 
