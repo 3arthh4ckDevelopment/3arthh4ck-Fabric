@@ -5,20 +5,19 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinMinecraftClient",
-    "item.IItemTool",
     "network.MixinClientConnection",
     "network.client.ILoginSuccessS2CPacket",
     "network.server.IEntityVelocityUpdateS2CPacket",
     "network.server.IExplosionS2CPacket",
     "util.ITimer",
-    "util.MixinClickEvent",
-    "util.MixinHoverEvent"
+    "util.MixinClickEvent"
   ],
   "client": [
     "MixinMinecraftClient",
     "entity.living.player.MixinClientPlayerInteractionManager",
     "gui.MixinChatHud",
     "gui.MixinInGameHud",
+    "gui.MixinTitleScreen",
     "network.MixinClientPlayNetworkHandler"
   ],
   "injectors": {

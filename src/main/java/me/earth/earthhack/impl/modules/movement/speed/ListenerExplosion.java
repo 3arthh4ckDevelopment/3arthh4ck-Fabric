@@ -53,11 +53,11 @@ final class ListenerExplosion extends
                         module.distance +=
                                 module.lastExp * module.multiplier.getValue();
 
-                        if (mc.player.getVelocity().y > 0)
+                        if (mc.player.getVelocity().getY() > 0)
                         {
                             mc.player.setVelocity(
                                     mc.player.getVelocity().withAxis(Direction.Axis.Y,
-                                            mc.player.getVelocity().y * module.vertical.getValue())
+                                            mc.player.getVelocity().getY() * module.vertical.getValue())
                             );
                         }
                     });

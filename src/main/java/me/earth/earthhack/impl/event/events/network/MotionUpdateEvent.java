@@ -15,7 +15,7 @@ import net.minecraft.entity.Entity;
  * {@link
  * me.earth.earthhack.api.event.bus.api.EventBus#postReversed(Object, Class)}.
  *
- * ^^^ TODO
+ * // ^^^ TODO
  */
 @SuppressWarnings("unused")
 public class MotionUpdateEvent extends StageEvent implements Globals
