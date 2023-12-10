@@ -588,7 +588,7 @@ public class AutoTrap extends ObbyListenerModule<ListenerAutoTrap>
                     return bestPos;
                 }
 
-                Direction helpingFace = BlockUtil.getFacing(helping, mc.world /* HELPER */);
+                Direction helpingFace = BlockUtil.getFacing(helping, HELPER.getClientWorld());
                 byte blockingFactor = helpingEntityCheck(helping);
                 if (helpingFace == null)
                 {
