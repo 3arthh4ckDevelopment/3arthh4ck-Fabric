@@ -8,6 +8,8 @@ import me.earth.earthhack.impl.event.listeners.ReceiveListener;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Map;
@@ -26,26 +28,16 @@ public class BlockStateManager extends SubscriberImpl implements Globals
     public BlockStateManager()
     {
         this.listeners.add(
-            new ReceiveListener<>(SPacketBlockChange.class, event ->
+            new ReceiveListener<>(BlockUpdateS2CPacket.class, event ->
         {
-            SPacketBlockChange packet = event.getPacket();
-            process(packet.getBlockPosition(), packet.getBlockState());
+            BlockUpdateS2CPacket packet = event.getPacket();
+            process(packet.getPos(), packet.getState());
         }));
         this.listeners.add(
-            new ReceiveListener<>(SPacketMultiBlockChange.class, event ->
+            new ReceiveListener<>(ExplosionS2CPacket.class, event ->
         {
-            SPacketMultiBlockChange packet = event.getPacket();
-            for (SPacketMultiBlockChange.BlockUpdateData data :
-                    packet.getChangedBlocks())
-            {
-                process(data.getPos(), data.getBlockState());
-            }
-        }));
-        this.listeners.add(
-            new ReceiveListener<>(SPacketExplosion.class, event ->
-        {
-            SPacketExplosion packet = event.getPacket();
-            for (BlockPos pos : packet.getAffectedBlockPositions())
+            ExplosionS2CPacket packet = event.getPacket();
+            for (BlockPos pos : packet.getAffectedBlocks())
             {
                 process(pos, Blocks.AIR.getDefaultState());
             }
