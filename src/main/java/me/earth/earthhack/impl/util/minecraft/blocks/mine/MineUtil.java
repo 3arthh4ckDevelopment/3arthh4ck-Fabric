@@ -1,14 +1,13 @@
 package me.earth.earthhack.impl.util.minecraft.blocks.mine;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.block.IBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
 public class MineUtil implements Globals
@@ -17,7 +16,6 @@ public class MineUtil implements Globals
     public static boolean canHarvestBlock(BlockPos pos, ItemStack stack)
     {
         BlockState state = mc.world.getBlockState(pos);
-        state = state.getActualState(mc.world, pos);
         Block block = state.getBlock();
         if (state.isToolRequired())
         {
@@ -26,45 +24,10 @@ public class MineUtil implements Globals
 
         if (stack.isEmpty())
         {
-            return stack.canHarvestBlock(state);
+            return stack.getItem().isSuitableFor(state); //TODO: check
         }
 
-        String tool = ((IBlock) block).getHarvestToolNonForge(state);
-        if (tool == null)
-        {
-            return stack.canHarvestBlock(state);
-        }
-
-        int toolLevel = -1;
-        if (stack.getItem() instanceof ToolItem)
-        {
-            String toolClass = null;
-            if (stack.getItem() instanceof PickaxeItem)
-            {
-                toolClass = "pickaxe";
-            }
-            else if (stack.getItem() instanceof AxeItem)
-            {
-                toolClass = "axe";
-            }
-            else if (stack.getItem() instanceof SwordItem)
-            {
-                toolClass = "shovel";
-            }
-            
-            if (tool.equals(toolClass))
-            {
-                toolLevel = ((ToolItem) stack.getItem()).getMaterial()
-                                                         .getHarvestLevel();
-            }
-        }
-
-        if (toolLevel < 0)
-        {
-            return stack.canHarvestBlock(state);
-        }
-
-        return toolLevel >= ((IBlock) block).getHarvestLevelNonForge(state);
+        return false;
     }
 
     public static int findBestTool(BlockPos pos)
@@ -150,19 +113,19 @@ public class MineUtil implements Globals
             }
         }
 
-        if (mc.player.isPotionActive(StatusEffects.HASTE))
+        if (mc.player.hasStatusEffect(StatusEffects.HASTE))
         {
             //noinspection ConstantConditions
             digSpeed *= 1.0F 
-                + (mc.player.getActivePotionEffect(StatusEffects.HASTE)
+                + (mc.player.getStatusEffect(StatusEffects.HASTE)
                             .getAmplifier() + 1) * 0.2F;
         }
 
-        if (mc.player.isPotionActive(StatusEffects.MINING_FATIGUE))
+        if (mc.player.hasStatusEffect(StatusEffects.MINING_FATIGUE))
         {
             float miningFatigue;
             //noinspection ConstantConditions
-            switch (mc.player.getActivePotionEffect(StatusEffects.MINING_FATIGUE)
+            switch (mc.player.getStatusEffect(StatusEffects.MINING_FATIGUE)
                              .getAmplifier())
             {
                 case 0:
@@ -182,8 +145,8 @@ public class MineUtil implements Globals
             digSpeed *= miningFatigue;
         }
 
-        if (mc.player.isInsideOfMaterial(Material.WATER)
-                && !EnchantmentHelper.getAquaAffinityModifier(mc.player))
+        if (mc.player.isInsideWaterOrBubbleColumn()
+                && !EnchantmentHelper.hasAquaAffinity(mc.player))
         {
             digSpeed /= 5.0F;
         }

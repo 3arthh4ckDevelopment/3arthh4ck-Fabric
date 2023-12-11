@@ -40,6 +40,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -113,7 +114,7 @@ public abstract class ObbyModule extends BlockPlacingModule
     /** Timer to manage attackDelay */
     public final StopWatch attackTimer = new StopWatch();
     /** The attack packet for a blocking crystal */
-    public CPacketUseEntity attacking = null;
+    public PlayerInteractEntityC2SPacket attacking = null;
 
     protected ObbyModule(String name, Category category)
     {
@@ -286,7 +287,7 @@ public abstract class ObbyModule extends BlockPlacingModule
     @Override
     public boolean entityCheck(BlockPos pos)
     {
-        CPacketUseEntity attackPacket = null;
+        PlayerInteractEntityC2SPacket attackPacket = null;
         boolean crystals = false;
         float currentDmg = Float.MAX_VALUE;
         for (Entity entity : mc.world
@@ -315,7 +316,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                     currentDmg = damage;
                     if (pop.getValue().shouldPop(damage, popTime.getValue()))
                     {
-                        attackPacket = new CPacketUseEntity(entity);
+                        attackPacket = new PlayerInteractEntityC2SPacket(entity);
                         continue;
                     }
                 }

@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.util.network;
 
+import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import me.earth.earthhack.api.util.interfaces.Globals;
@@ -9,6 +10,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
@@ -22,7 +24,7 @@ import net.minecraft.util.math.Vec3d;
 @SuppressWarnings({"unused", "ConstantConditions"})
 public class PacketUtil implements Globals
 {
-  // public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO
+  // public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO: do what
   // {
   //     return ((IEnumConnectionState) a.HANDSHAKING)
   //             .getStatesByClass()
@@ -298,6 +300,15 @@ public class PacketUtil implements Globals
     {
         NetworkUtil.sendPacketNoEvent(
                 positionRotation(x, y, z, yaw, pitch, onGround));
+    }
+
+    public static PacketByteBuf writeBufferPacket(int id) {
+        // From Mio Client
+        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+        buf.writeVarInt(id);
+        buf.writeVarInt(1);
+        buf.writeBoolean(mc.player.isSneaking());
+        return buf;
     }
 
 }

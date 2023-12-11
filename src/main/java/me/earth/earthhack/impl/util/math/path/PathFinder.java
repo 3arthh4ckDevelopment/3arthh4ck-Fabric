@@ -12,7 +12,7 @@ import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -29,14 +29,14 @@ public class PathFinder implements Globals
         (b,d,e) ->
         {
             if (e == null
-                || !e.preventEntitySpawning
+                /*|| !e.preventEntitySpawning */
                 || EntityUtil.isDead(e)
                 || !PositionUtil.intersects(e.getBoundingBox(), b))
             {
                 return true;
             }
 
-            if (d != null && e instanceof EntityEnderCrystal)
+            if (d != null && e instanceof EndCrystalEntity)
             {
                 d.getBlockingEntities().add(new BlockingEntity(e, b));
                 return false;

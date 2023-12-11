@@ -1,13 +1,17 @@
 package me.earth.earthhack.impl.util.helpers.blocks;
 
+import io.netty.buffer.Unpooled;
 import me.earth.earthhack.impl.util.helpers.blocks.modes.Rotate;
 import me.earth.earthhack.impl.util.math.path.BlockingEntity;
 import me.earth.earthhack.impl.util.math.path.Pathable;
 import me.earth.earthhack.impl.util.math.raytrace.Ray;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockingType;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 
 public class ObbyUtil
 {
@@ -47,7 +51,11 @@ public class ObbyUtil
 
         if (target != null)
         {
-            module.attacking = new CPacketUseEntity(target);
+            PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+            buf.writeVarInt(target.getId());
+            buf.writeVarInt(1); //TODO: refactor
+            buf.writeBoolean(MinecraftClient.getInstance().player.isSneaking());
+            module.attacking = new PlayerInteractEntityC2SPacket(buf);
         }
         else if (crystalFound
                 && module.blockingType.getValue() != BlockingType.Crystals)

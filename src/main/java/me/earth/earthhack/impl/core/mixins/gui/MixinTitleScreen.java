@@ -1,12 +1,9 @@
 package me.earth.earthhack.impl.core.mixins.gui;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.commands.gui.CommandGui;
 import me.earth.earthhack.impl.commands.gui.EarthhackButton;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -34,11 +31,12 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                     remap = false))
     public void buttonHook(CallbackInfo info)
     {
+        /*
         TitleScreen _this = TitleScreen.class.cast(this);
         int x = 2; int y = 0; int w = 2; int h = 0;
         for (Drawable draw : this.drawables)
         {
-            if(draw instanceof ButtonWidget button) {
+            if (draw instanceof ButtonWidget button) {
                 if (button.getMessage().getString().toLowerCase().contains("quit"))
                 {
                     x = button.getX();
@@ -52,6 +50,8 @@ public abstract class MixinTitleScreen extends Screen implements Globals
 
         earthhackButton = this.addDrawableChild(
                 new EarthhackButton(2500, x + w + 4, y + h + 4, a -> mc.setScreen(new CommandGui(_this, 2501))));
+                //TODO: fix
+         */
     }
 
 }

@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 public class RayTracer implements Globals
 {
     private static final Predicate<Entity> PREDICATE =
-        Predicates.and(EntitySelectors.NOT_SPECTATING,
+        Predicates.and(EntityStatuses.NOT_SPECTATING,
                        e -> e != null && e.canBeCollidedWith());
 
     public static RayTraceResult rayTraceEntities(World world,
@@ -134,8 +135,7 @@ public class RayTracer implements Globals
 
                 if (hitDistance < distance || distance == 0.0)
                 {
-                    if (entity.getLowestRidingEntity()
-                            == from.getLowestRidingEntity())
+                    if (entity.getFirstPassenger() == from)
                         // TODO: && !entity.canRiderInteract()) for Vanilla?
                     {
                         if (distance == 0.0)

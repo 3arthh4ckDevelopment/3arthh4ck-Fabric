@@ -114,7 +114,7 @@ public class RayTraceFactory implements Globals
         {
             float[] r = rots(on, facing, from, access, state);
             Vec3d look = RotationUtil.getVec3d(r[0], r[1]);
-            double d = mc.playerController.getBlockReachDistance();
+            double d = mc.interactionManager.getReachDistance();
             Vec3d rotations = start.add(look.x * d, look.y * d, look.z * d);
             RayTraceResult result = RayTracer.trace(mc.world,
                                                     access,

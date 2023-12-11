@@ -7,19 +7,20 @@ import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.network.PacketUtil;
 import net.minecraft.entity.decoration.EndCrystalEntity;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 
 public class InstantAttackListener<M extends InstantAttackingModule>
-        extends ModuleListener<M, PacketEvent.Receive<SPacketSpawnObject>>
+        extends ModuleListener<M, PacketEvent.Receive<EntitySpawnS2CPacket>>
 {
     public InstantAttackListener(M module)
     {
-        super(module, PacketEvent.Receive.class, SPacketSpawnObject.class);
+        super(module, PacketEvent.Receive.class, EntitySpawnS2CPacket.class);
     }
 
     @Override
-    public void invoke(PacketEvent.Receive<SPacketSpawnObject> event)
+    public void invoke(PacketEvent.Receive<EntitySpawnS2CPacket> event)
     {
-        SPacketSpawnObject packet = event.getPacket();
+        EntitySpawnS2CPacket packet = event.getPacket();
         if (mc.player == null
             || packet.getType() != 51
             || !module.getTimer().passed(module.getBreakDelay())

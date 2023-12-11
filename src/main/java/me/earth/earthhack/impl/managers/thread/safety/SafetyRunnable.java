@@ -126,11 +126,11 @@ public class SafetyRunnable implements Globals, SafeRunnable
         int y = middle.getY();
         int z = middle.getZ();
         int maxRadius = Sphere.getRadius(6.0);
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable pos = new BlockPos.Mutable();
         for (int i = 1; i < maxRadius; i++)
         {
             Vec3i v = Sphere.get(i);
-            pos.setPos(x + v.getX(), y + v.getY(), z + v.getZ());
+            pos.set(x + v.getX(), y + v.getY(), z + v.getZ());
             if (BlockUtil.canPlaceCrystal(
                         pos, true, newerVersion, crystals, newVerEntities, 0)
                     || bedCheck && BlockUtil.canPlaceBed(pos, newerVersion))

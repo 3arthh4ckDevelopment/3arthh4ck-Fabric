@@ -178,9 +178,9 @@ public class PositionUtil implements Globals
                 (int) (bb.minZ + bb.maxZ) / 2);
     }
 
-    public static boolean intersects(VoxelShape bb, BlockPos pos)
+    public static boolean intersects(Box bb, BlockPos pos)
     {
-        return bb.getBoundingBox().intersects(pos.getX(),
+        return bb.intersects(pos.getX(),
                 pos.getY(),
                 pos.getZ(),
                 pos.getX() + 1,

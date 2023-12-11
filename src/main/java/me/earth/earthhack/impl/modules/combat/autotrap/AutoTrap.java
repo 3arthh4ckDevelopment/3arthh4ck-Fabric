@@ -103,7 +103,6 @@ public class AutoTrap extends ObbyListenerModule<ListenerAutoTrap>
         super("AutoTrap", Category.Combat);
         this.setData(new AutoTrapData(this));
         this.listeners.add(new ListenerBlockChange(this));
-        this.listeners.add(new ListenerMultiBlockChange(this));
     }
 
     @Override

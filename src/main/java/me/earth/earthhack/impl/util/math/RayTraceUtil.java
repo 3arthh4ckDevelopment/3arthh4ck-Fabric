@@ -10,13 +10,10 @@ import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-
-import java.util.Optional;
 
 // TODO: better rayTrace for 2b2t. Find the part of the block we can see
 public class RayTraceUtil implements Globals
@@ -51,12 +48,12 @@ public class RayTraceUtil implements Globals
 
     public static RayTraceResult getRayTraceResult(float yaw, float pitch)
     {
-        return getRayTraceResult(yaw, pitch, mc.playerController.getBlockReachDistance());
+        return getRayTraceResult(yaw, pitch, mc.interactionManager.getReachDistance());
     }
 
     public static RayTraceResult getRayTraceResultWithEntity(float yaw, float pitch, Entity from)
     {
-        return getRayTraceResult(yaw, pitch, mc.playerController.getBlockReachDistance(), from);
+        return getRayTraceResult(yaw, pitch, mc.interactionManager.getReachDistance(), from);
     }
     
     public static RayTraceResult getRayTraceResult(float yaw, float pitch, float distance)
@@ -69,11 +66,15 @@ public class RayTraceUtil implements Globals
         Vec3d vec3d     = PositionUtil.getEyePos(from);
         Vec3d lookVec   = RotationUtil.getVec3d(yaw, pitch);
         Vec3d rotations = vec3d.add(lookVec.x * d, lookVec.y * d, lookVec.z * d);
+        /*
         return Optional.ofNullable(
-            mc.world.raycast(new RaycastContext(vec3d, rotations, RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.NONE, from))) //TODO: check
+            mc.world.raycast(new RaycastContext(vec3d, rotations, RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.NONE, from)))
                       .orElseGet(() ->
-          new RayTraceResult(HitResult.Type.MISS,
-                  new Vec3d(0.5, 1.0, 0.5), Direction.UP, BlockPos.ORIGIN));
+          // new BlockHitResult(RayTraceResult.Type.MISS, new Vec3d(0.5, 1.0, 0.5), Direction.UP, BlockPos.ORIGIN));
+          new BlockHitResult(new Vec3d(0.5, 1.0, 0.5), Direction.UP, BlockPos.ORIGIN, false));
+
+         *///TODO: REMAKE
+        return null;
     }
 
     public static boolean canBeSeen(double x, double y, double z, Entity by)
@@ -89,7 +90,7 @@ public class RayTraceUtil implements Globals
     public static boolean canBeSeen(Vec3d toSee, double x, double y, double z, float eyeHeight)
     {
         Vec3d start = new Vec3d(x, y + eyeHeight, z);
-        return mc.world.rayTraceBlocks(start, toSee, false, true, false) == null;
+        return mc.world.raycast(new RaycastContext(start, toSee, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, mc.player)).isInsideBlock(); //TODO: check
     }
 
     public static boolean canBeSeen(Entity toSee, LivingEntity by)

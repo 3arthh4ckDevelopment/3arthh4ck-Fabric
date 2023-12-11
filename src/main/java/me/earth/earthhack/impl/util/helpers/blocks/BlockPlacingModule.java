@@ -33,6 +33,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
@@ -163,7 +164,7 @@ public abstract class BlockPlacingModule extends DisablingModule
                                                        f[2]));
         if (placeSwing.getValue() == PlaceSwing.Always)
         {
-            packets.add(new CPacketAnimation(InventoryUtil.getHand(slot)));
+            packets.add(new HandSwingC2SPacket(InventoryUtil.getHand(slot)));
         }
 
         // Simulate PlayerControllerMP behaviour.
