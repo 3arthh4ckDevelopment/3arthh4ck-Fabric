@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpectralArrowItem;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -91,7 +91,7 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
         else if (module.autoRelease.getValue()
                 && !mc.player.getActiveItemStack().isEmpty())
         {
-            Potion type = PotionUtils.getPotionFromItem(arrow);
+            Potion type = PotionUtil.getPotion(arrow);
             if (arrow.getItem() instanceof SpectralArrowItem)
             {
                 type = Arrows.SPECTRAL;

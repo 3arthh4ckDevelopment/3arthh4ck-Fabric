@@ -20,6 +20,7 @@ import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
+import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -83,20 +84,20 @@ public class SetDeadManager extends SubscriberImpl implements Globals
             }
         });
         this.listeners.add(
-            new EventListener<PacketEvent.Receive<SPacketDestroyEntities>>
+            new EventListener<PacketEvent.Receive<EntitiesDestroyS2CPacket>>
                 (PacketEvent.Receive.class,
                         Integer.MAX_VALUE,
-                        SPacketDestroyEntities.class)
+                        EntitiesDestroyS2CPacket.class)
         {
             @Override
             public void invoke
-                    (PacketEvent.Receive<SPacketDestroyEntities> event)
+                    (PacketEvent.Receive<EntitiesDestroyS2CPacket> event)
             {
                 // With this on the main thread there's no reason
                 // why we need all the concurrency stuff...?
                 mc.execute(() ->
                 {
-                    for (int id : event.getPacket().getEntityIDs())
+                    for (int id : event.getPacket().getEntityIds())
                     {
                         confirmKill(id);
                     }

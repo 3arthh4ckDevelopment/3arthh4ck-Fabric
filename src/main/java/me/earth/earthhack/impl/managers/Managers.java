@@ -12,6 +12,7 @@ import me.earth.earthhack.impl.managers.client.PluginManager;
 import me.earth.earthhack.impl.managers.client.macro.MacroManager;
 import me.earth.earthhack.impl.managers.config.ConfigManager;
 import me.earth.earthhack.impl.managers.minecraft.BlockStateManager;
+import me.earth.earthhack.impl.managers.minecraft.TPSManager;
 import me.earth.earthhack.impl.managers.minecraft.combat.CombatManager;
 import me.earth.earthhack.impl.managers.minecraft.combat.SetDeadManager;
 import me.earth.earthhack.impl.managers.minecraft.combat.SwitchManager;
@@ -51,6 +52,7 @@ public class Managers
     public static final TextRenderer TEXT          = new TextRenderer();
     public static final ColorManager COLOR         = new ColorManager();
     public static final SetDeadManager SET_DEAD    = new SetDeadManager();
+    public static final TPSManager TPS             = new TPSManager();
     public static final SafetyManager SAFETY       = new SafetyManager();
     public static final NCPManager NCP             = new NCPManager();
     public static final LookUpManager LOOK_UP      = new LookUpManager();
@@ -67,7 +69,11 @@ public class Managers
     public static void load() {
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
-        subscribe(TIMER, CHAT, POSITION, ROTATION, ACTION, FILES, COMBAT, TARGET, ENTITIES, COLOR, TEXT, BLOCKS, SET_DEAD);
+        subscribe(TIMER, CHAT, POSITION,
+                ROTATION, ACTION, FILES,
+                COMBAT, TARGET, ENTITIES,
+                COLOR, TEXT, BLOCKS,
+                SET_DEAD, TPS);
 
 
         Earthhack.getLogger().info("Loading Commands");
