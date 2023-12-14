@@ -4,8 +4,7 @@ accessible class net/minecraft/text/Style
 accessible field net/minecraft/client/gui/widget/SimpleButton x Ljava/lang/Integer;
 accessible field net/minecraft/util/math/Direction HORIZONTAL [Lnet/minecraft/util/math/Direction;
 accessible method net/minecraft/entity/Entity unsetRemoved ()V
-accessible field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory; #remove this if possible, i don't like it
-accessible field net/minecraft/entity/LivingEntity limbAnimator Lnet/minecraft/entity/LimbAnimator; # patch this
+accessible method net/minecraft/client/gui/screen/ConnectScreen <init> (Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;)V
 
 # BlockBox (mutable bb)
 accessible field net/minecraft/util/math/BlockBox minX I
@@ -22,3 +21,9 @@ accessible method net/minecraft/client/gui/screen/ChatScreen setText (Ljava/lang
 
 # Network
 accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler
+
+# Fakeplayer
+accessible field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory; #remove this if possible, i don't like it
+mutable field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory; #remove as well
+accessible field net/minecraft/entity/LivingEntity limbAnimator Lnet/minecraft/entity/LimbAnimator;
+mutable field net/minecraft/entity/LivingEntity limbAnimator Lnet/minecraft/entity/LimbAnimator;

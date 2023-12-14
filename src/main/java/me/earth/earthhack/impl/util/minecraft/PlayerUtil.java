@@ -14,9 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 
@@ -73,8 +71,8 @@ public class PlayerUtil implements Globals {
     }
 
     public static PlayerEntity copyPlayer(PlayerEntity playerIn, boolean animations) {
-        int count = playerIn.getItemInUseCount();
-        PlayerEntity copy = new PlayerEntity(mc.world, new GameProfile(UUID.randomUUID(), playerIn.getName().getString())) {
+        int count = playerIn.getInventory().getStack(playerIn.getInventory().selectedSlot).getCount();
+        PlayerEntity copy = new PlayerEntity(mc.world, playerIn.getBlockPos(), playerIn.headYaw, new GameProfile(UUID.randomUUID(), playerIn.getName().getString())) { //TODO: check if it is head yaw or body
             @Override public boolean isSpectator() {
                 return false;
             }
@@ -83,7 +81,7 @@ public class PlayerUtil implements Globals {
                 return false;
             }
 
-            @Override public int getItemInUseCount() { return count; }
+            //@Override public int getItemInUseCount() { return count; }
         };
         if (animations) {
             copy.setSneaking(playerIn.isSneaking());
@@ -93,7 +91,6 @@ public class PlayerUtil implements Globals {
             copy.inventory = playerIn.inventory;
         }
         copy.preferredHand = playerIn.preferredHand;
-        copy.ticksExisted = playerIn.ticksExisted;
         copy.setId(playerIn.getId());
         copy.copyFrom(playerIn); //TODO: check
         return copy;
@@ -107,7 +104,7 @@ public class PlayerUtil implements Globals {
     public static void removeFakePlayer(PlayerEntity fakePlayer) {
         mc.execute(() -> {
             FAKE_PLAYERS.remove(fakePlayer.getId());
-            fakePlayer.isDead = true; // setDead might be overridden
+            fakePlayer.kill(); // setDead might be overridden
             if (mc.world != null) {
                 mc.world.removeEntity(fakePlayer.getId(), Entity.RemovalReason.KILLED);
             }
