@@ -104,8 +104,8 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
             }
 
             lastType = type;
-            float ticks = mc.player.getHeldItem(hand).getMaxItemUseDuration()
-                    - mc.player.getItemInUseCount()
+            float ticks = mc.player.getStackInHand(hand).getMaxDamage()
+                    -  mc.player.getActiveItem().getCount()
                     - (module.tpsSync.getValue() ? 20.0f - Managers.TPS.getTps()
                                                  : 0.0f);
             if (ticks >= module.releaseTicks.getValue()
@@ -122,12 +122,8 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
     private boolean blocked()
     {
         BlockPos pos = PositionUtil.getPosition();
-        return mc.world.getBlockState(pos.up())
-                       .getMaterial()
-                       .blocksMovement()
-                || mc.world.getBlockState(pos.up(2))
-                           .getMaterial()
-                           .blocksMovement();
+        return mc.world.getBlockState(pos.up()).blocksMovement()
+                || mc.world.getBlockState(pos.up(2)).blocksMovement();
     }
 
 }
