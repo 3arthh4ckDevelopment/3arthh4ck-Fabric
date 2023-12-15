@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.util.helpers.blocks;
 
+import io.netty.buffer.Unpooled;
 import me.earth.earthhack.api.event.bus.EventListener;
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.event.events.Stage;
@@ -30,6 +31,8 @@ import me.earth.earthhack.impl.util.minecraft.blocks.BlockingType;
 import me.earth.earthhack.impl.util.minecraft.blocks.SpecialBlocks;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.ncp.Visible;
+import me.earth.earthhack.impl.util.network.PacketUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,8 +42,12 @@ import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.EntityS2CPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -230,10 +237,8 @@ public abstract class ObbyModule extends BlockPlacingModule
         List<Packet<?>> toRemove = new ArrayList<>();
         for (Packet<?> p : packets)
         {
-            if (p instanceof CPacketPlayerTryUseItemOnBlock)
+            if (p instanceof PlayerActionC2SPacket c)
             {
-                CPacketPlayerTryUseItemOnBlock c =
-                        (CPacketPlayerTryUseItemOnBlock) p;
 
                 BlockPos pos =
                         c.getPos().offset(c.getDirection());

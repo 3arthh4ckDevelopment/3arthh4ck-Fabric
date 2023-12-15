@@ -14,7 +14,9 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageEffects;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
@@ -353,8 +355,7 @@ public class DamageUtil implements Globals
                 ((densityDistance * densityDistance + distance)
                         / 2.0 * 7.0 * 12.0 + 1.0));
 
-        DamageSource damageSource = DamageSource.causeExplosionDamage(
-                new Explosion(mc.world, mc.player, x, y, z, power, false, Explosion.DestructionType.DESTROY));
+        DamageSource damageSource = new Explosion(mc.world, mc.player, x, y, z, power, false, Explosion.DestructionType.DESTROY).getDamageSource();
 
         ICachedDamage cache = (ICachedDamage) base;
         int armorValue = cache.getArmorValue();

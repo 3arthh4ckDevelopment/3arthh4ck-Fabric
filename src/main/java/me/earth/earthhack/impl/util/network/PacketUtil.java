@@ -302,13 +302,4 @@ public class PacketUtil implements Globals
                 positionRotation(x, y, z, yaw, pitch, onGround));
     }
 
-    public static PacketByteBuf writeBufferPacket(int id) {
-        // From Mio Client
-        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-        buf.writeVarInt(id);
-        buf.writeVarInt(1);
-        buf.writeBoolean(mc.player.isSneaking());
-        return buf;
-    }
-
 }

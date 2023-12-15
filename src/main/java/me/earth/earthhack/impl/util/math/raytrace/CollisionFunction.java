@@ -15,7 +15,8 @@ public interface CollisionFunction
     /**
      * {@link IBlockProperties#collisionRayTrace(World, BlockPos, Vec3d, Vec3d)}
      */
-    CollisionFunction DEFAULT = IBlockProperties::collisionRayTrace;
+    // CollisionFunction DEFAULT = IBlockProperties::collisionRayTrace; //TODO: fix
+    CollisionFunction DEFAULT = null;
 
     RayTraceResult collisionRayTrace(BlockState state, World worldIn, BlockPos pos, Vec3d start, Vec3d end);
 }

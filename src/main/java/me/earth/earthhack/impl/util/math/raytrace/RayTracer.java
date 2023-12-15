@@ -314,7 +314,7 @@ public class RayTracer implements Globals
                 Block block = state.getBlock();
 
                 if ((!ignoreBlockWithoutBoundingBox
-                    || state.getCollisionBoundingBox(access, pos)
+                    || state.getCollisionShape(access, pos)
                         != null)
                     && (block.canCollideCheck(state, stopOnLiquid)
                         || collideCheck != null
@@ -479,7 +479,7 @@ public class RayTracer implements Globals
 
                     if (!ignoreBlockWithoutBoundingBox
                             || state1.getBlock() == Blocks.NETHER_PORTAL
-                            || state1.getCollisionBoundingBox(access, pos)
+                            || state1.getCollisionShape(access, pos)
                                 != null)
                     {
                         if ((block1.canCollideCheck(state1, stopOnLiquid)
