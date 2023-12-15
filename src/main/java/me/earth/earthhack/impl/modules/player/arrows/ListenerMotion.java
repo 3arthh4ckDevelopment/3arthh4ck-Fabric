@@ -72,13 +72,13 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
             }
 
             PlayerEntity player = RotationUtil.getRotationPlayer();
-            if (player.motionX != 0 || player.motionZ != 0)
+            if (player.getVelocity().getX() != 0 || player.getVelocity().getZ() != 0)
             {
                 //event.setPitch(-10.0f);
-                Vec3d vec3d = player.getPositionVector().add(
-                    player.motionX,
-                    player.motionY + player.getEyeHeight(player.getPose()),
-                    player.motionZ);
+                Vec3d vec3d = player.getPos().add(
+                    player.getVelocity().getX(),
+                    player.getVelocity().getY() + player.getEyeHeight(player.getPose()),
+                    player.getVelocity().getZ());
                 float[] rotations = RotationUtil.getRotations(vec3d);
                 event.setYaw(rotations[0]);
                 event.setPitch(rotations[1]);
@@ -89,7 +89,7 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
             }
         }
         else if (module.autoRelease.getValue()
-                && !mc.player.getActiveItemStack().isEmpty())
+                && !mc.player.getActiveItem().isEmpty())
         {
             Potion type = PotionUtil.getPotion(arrow);
             if (arrow.getItem() instanceof SpectralArrowItem)
@@ -112,7 +112,7 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
                     && ticks <= module.maxTicks.getValue())
             {
                 Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
-                    mc.playerController.onStoppedUsingItem(mc.player));
+                    mc.interactionManager.stopUsingItem(mc.player));
                 module.fast = module.preCycle.getValue() && cycle;
                 module.timer.reset();
             }

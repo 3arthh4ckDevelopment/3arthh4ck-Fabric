@@ -35,6 +35,8 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.ActionResult;
@@ -150,19 +152,19 @@ public abstract class BlockPlacingModule extends DisablingModule
         }
         else if (rotate.getValue() == Rotate.Packet)
         {
-            packets.add(new CPacketPlayer.Rotation(helpingRotations[0],
-                                                   helpingRotations[1],
-                                                   getPlayer().isOnGround()));
+            packets.add(new PlayerMoveC2SPacket.LookAndOnGround(helpingRotations[0],
+                    helpingRotations[1],
+                    getPlayer().isOnGround()));
         }
 
         float[] f = RayTraceUtil.hitVecToPlaceVec(on, hitVec);
         Hand hand = InventoryUtil.getHand(slot);
-        packets.add(new CPacketPlayerTryUseItemOnBlock(on,
-                                                       facing,
-                                                       hand,
-                                                       f[0],
-                                                       f[1],
-                                                       f[2]));
+        // packets.add(new PlayerInteractBlockC2SPacket(hand,
+        //                                                facing,
+        //                                                hand,
+        //                                                f[0],
+        //                                                f[1],
+        //                                                f[2]));
         if (placeSwing.getValue() == PlaceSwing.Always)
         {
             packets.add(new HandSwingC2SPacket(InventoryUtil.getHand(slot)));

@@ -40,7 +40,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -53,6 +56,7 @@ import java.util.List;
 /**
  * A {@link BlockPlacingModule} with more functionality.
  */
+@SuppressWarnings("ConstantConditions")
 public abstract class ObbyModule extends BlockPlacingModule
         implements AttackingModule
 {
@@ -226,17 +230,15 @@ public abstract class ObbyModule extends BlockPlacingModule
     {
         // Kinda eh but whatever
         boolean awaitingSwing = false;
-        CPacketPlayer.Rotation rotation = null;
+        PlayerMoveC2SPacket.LookAndOnGround rotation = null;
         List<Packet<?>> toRemove = new ArrayList<>();
         for (Packet<?> p : packets)
         {
-            if (p instanceof CPacketPlayerTryUseItemOnBlock)
+            if (p instanceof PlayerInteractBlockC2SPacket c)
             {
-                CPacketPlayerTryUseItemOnBlock c =
-                        (CPacketPlayerTryUseItemOnBlock) p;
 
                 BlockPos pos =
-                        c.getPos().offset(c.getDirection());
+                        c.getBlockHitResult().getBlockPos().offset(c.getBlockHitResult().getSide());
 
                 for (Entity entity :
                         mc.world.getOtherEntities( // only entities
@@ -259,12 +261,12 @@ public abstract class ObbyModule extends BlockPlacingModule
                     }
                 }
             }
-            else if (p instanceof CPacketPlayer.Rotation)
+            else if (p instanceof PlayerMoveC2SPacket.LookAndOnGround)
             {
-                rotation = (CPacketPlayer.Rotation) p;
+                rotation = (PlayerMoveC2SPacket.LookAndOnGround) p;
             }
             else if (awaitingSwing
-                    && p instanceof CPacketAnimation)
+                    && p instanceof HandSwingC2SPacket)
             {
                 awaitingSwing = false;
                 toRemove.add(p);
@@ -281,7 +283,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                 && !(Managers.ACTION.isSneaking()
                     || packets.stream()
                               .anyMatch(p ->
-                                SpecialBlocks.ACCESS_CHECK.test(p, HELPER)));
+                                SpecialBlocks.ACCESS_CHECK.test(p, HELPER.getClientWorld())));
     }
 
     @Override
@@ -316,7 +318,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                     currentDmg = damage;
                     if (pop.getValue().shouldPop(damage, popTime.getValue()))
                     {
-                        attackPacket = new PlayerInteractEntityC2SPacket(entity);
+                        attackPacket = PlayerInteractEntityC2SPacket.attack(entity, mc.player.isSneaking());
                         continue;
                     }
                 }

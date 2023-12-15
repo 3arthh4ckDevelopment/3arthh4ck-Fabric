@@ -4,6 +4,9 @@ import me.earth.earthhack.api.event.bus.EventListener;
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.util.math.StopWatch;
+import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
+import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
+
 /**
  * Some servers block certain packets, especially
  * CPacketUseEntity for around 10 ticks (~ 500 ms) after you
@@ -19,31 +22,31 @@ public class SwitchManager extends SubscriberImpl
     public SwitchManager()
     {
         this.listeners.add(
-            new EventListener<PacketEvent.Post<CPacketHeldItemChange>>
-                (PacketEvent.Post.class, CPacketHeldItemChange.class)
+            new EventListener<PacketEvent.Post<UpdateSelectedSlotC2SPacket>>
+                (PacketEvent.Post.class, UpdateSelectedSlotC2SPacket.class)
         {
             @Override
-            public void invoke(PacketEvent.Post<CPacketHeldItemChange> event)
+            public void invoke(PacketEvent.Post<UpdateSelectedSlotC2SPacket> event)
             {
                 timer.reset();
-                last_slot = event.getPacket().getSlotId();
+                last_slot = event.getPacket().getSelectedSlot();
             }
         });
         this.listeners.add(
-            new EventListener<PacketEvent.Receive<SPacketHeldItemChange>>
-                (PacketEvent.Receive.class, SPacketHeldItemChange.class)
+            new EventListener<PacketEvent.Receive<UpdateSelectedSlotS2CPacket>>
+                (PacketEvent.Receive.class, UpdateSelectedSlotS2CPacket.class)
         {
             @Override
-            public void invoke(PacketEvent.Receive<SPacketHeldItemChange> event)
+            public void invoke(PacketEvent.Receive<UpdateSelectedSlotS2CPacket> event)
             {
-                last_slot = event.getPacket().getHeldItemHotbarIndex();
+                last_slot = event.getPacket().getSlot();
             }
         });
     }
 
     /**
      * @return the time in ms that passed since the last
-     *         {@link CPacketHeldItemChange} has been send.
+     *         {@link UpdateSelectedSlotC2SPacket} has been sent.
      */
     public long getLastSwitch()
     {
