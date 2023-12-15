@@ -22,7 +22,7 @@ public class InstantAttackListener<M extends InstantAttackingModule>
     {
         EntitySpawnS2CPacket packet = event.getPacket();
         if (mc.player == null
-            || packet.getType() != 51
+            || packet.getId() != 51
             || !module.getTimer().passed(module.getBreakDelay())
             || Managers.SWITCH.getLastSwitch() < module.getCooldown()
             || DamageUtil.isWeaknessed())
