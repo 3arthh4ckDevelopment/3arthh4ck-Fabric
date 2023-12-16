@@ -16,7 +16,7 @@ public class EarthhackButton extends SimpleButton implements Globals
     @Override
     public void onPress(Screen parent, int id)
     {
-        mc.setScreen(new CommandGui(parent, id));
+        mc.setScreen(new CommandGui(parent));
     }
 
 }

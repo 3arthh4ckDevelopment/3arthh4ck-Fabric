@@ -43,7 +43,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                 0, 40, 20,
                 EARTHHACK_TEXTURES,
                 256, 256,
-                button -> this.client.setScreen(new CommandGui(_this, 2501))));
+                button -> this.client.setScreen(new CommandGui(_this))));
     }
 
 }

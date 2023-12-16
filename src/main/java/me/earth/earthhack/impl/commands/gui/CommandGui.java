@@ -7,18 +7,23 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.Window;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
+@Environment(EnvType.CLIENT)
 public class CommandGui extends Screen implements Globals
 {
     private static final SettingCache<Boolean, BooleanSetting, Commands> BACK =
@@ -26,20 +31,44 @@ public class CommandGui extends Screen implements Globals
     private static final Identifier BLACK_PNG =
             new Identifier("earthhack:textures/gui/black.png");
 
-    private final ChatScreen chat = new ChatScreen("");
+    protected TextFieldWidget chatField;
+    ChatInputSuggestor chatInputSuggestor;
     private final Screen parent;
-    private final int id;
 
-    public CommandGui(Screen parent, int id)
+    public CommandGui(Screen parent)
     {
-        super(Text.of("CommandGui"));
+        super(Text.literal("CommandGui"));
         this.parent = parent;
-        this.id = id;
+    }
+
+    @Override
+    protected void init() {
+        this.chatField = new TextFieldWidget(this.client.advanceValidatingTextRenderer, 4, this.height - 12, this.width - 4, 12, Text.translatable("chat.editBox")){
+
+            @Override
+            protected MutableText getNarrationMessage() {
+                return super.getNarrationMessage().append(chatInputSuggestor.getNarration());
+            }
+        };
+        this.chatField.setMaxLength(256);
+        this.chatField.setDrawsBackground(false);
+        this.chatField.setText("+");
+        this.chatField.setChangedListener(this::onChatFieldUpdate);
+        this.chatField.setFocusUnlocked(false);
+        this.addSelectableChild(this.chatField);
+        this.chatInputSuggestor = new ChatInputSuggestor(this.client, this, this.chatField, this.textRenderer, false, false, 1, 10, true, -805306368);
+        this.setInitialFocus(this.chatField);
+    }
+
+    private void onChatFieldUpdate(String chatText) {
+        String string = this.chatField.getText();
+        this.chatInputSuggestor.setWindowActive(!string.equals("+"));
+        this.chatInputSuggestor.refresh();
     }
 
     public void setText(String text)
     {
-        this.chat.setText(text);
+        this.chatField.setText(text);
     }
 
     @Override
@@ -51,20 +80,21 @@ public class CommandGui extends Screen implements Globals
             return false;
         }
 
-        this.chat.charTyped(typedChar, keyCode);
+        this.chatField.charTyped(typedChar, keyCode);
         return false;
     }
 
     @Override
     public void close()
     {
-        this.chat.close();
+        this.client.setScreen(parent);
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTicks)
     {
-        Window wnd = super.client.getWindow();
+        super.render(context, mouseX, mouseY, partialTicks);
+        Window wnd = this.client.getWindow();
 
         if (BACK.getValue())
         {
@@ -97,7 +127,7 @@ public class CommandGui extends Screen implements Globals
         GL11.glTranslatef(0.0f, wnd.getScaledHeight() - 48, 0.0f);
         mc.inGameHud.getChatHud().render(context, mc.inGameHud.getTicks(), mouseX, mouseY);
         GL11.glPopMatrix();
-        this.chat.render(context, mouseX, mouseY, partialTicks);
+        this.chatField.render(context, mouseX, mouseY, partialTicks);
         super.render(context, mouseX, mouseY, partialTicks);
     }
 }
