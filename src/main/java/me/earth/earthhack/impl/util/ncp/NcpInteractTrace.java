@@ -3,8 +3,6 @@ package me.earth.earthhack.impl.util.ncp;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.shape.VoxelShape;
 
 public class NcpInteractTrace extends NcpTrace implements Globals {
     protected final boolean strict = false;
@@ -40,13 +38,13 @@ public class NcpInteractTrace extends NcpTrace implements Globals {
         // BlockProperties.F_LIQUID | BlockProperties.F_IGN_PASSABLE | BlockProperties.F_STAIRS | BlockProperties.F_VARIABLE
         if (!state.isSolid()
             || state.isLiquid()
-            || !state.canCollideCheck(state, false) // <- TODO: check that one
+            // || !state.canCollideCheck(state, false) // <- TODO: check that one
         ) {
 
             return false;
         }
         // !blockAccess.isFullBounds(blockX, blockY, blockZ) <- TODO?????
-        return getAverageEdgeLength(state.getCollisionShape(mc.world, pos).getBoundingBox()) == 1.0;
+        return state.getCollisionShape(mc.world, pos).getBoundingBox().getAverageSideLength() == 1.0;
     }
 
     public boolean isTargetBlock() {
@@ -67,14 +65,6 @@ public class NcpInteractTrace extends NcpTrace implements Globals {
 
         collides = true;
         return false;
-    }
-
-    private double getAverageEdgeLength(Box box)
-    {
-        double d0 = box.maxX - box.minX;
-        double d1 = box.maxY - box.minY;
-        double d2 = box.maxZ - box.minZ;
-        return (d0 + d1 + d2) / 3.0D;
     }
 
 }

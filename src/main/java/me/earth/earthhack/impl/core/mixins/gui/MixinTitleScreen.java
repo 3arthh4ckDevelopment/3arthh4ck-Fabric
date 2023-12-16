@@ -3,6 +3,7 @@ package me.earth.earthhack.impl.core.mixins.gui;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.commands.gui.CommandGui;
 import me.earth.earthhack.impl.commands.gui.EarthhackButton;
+import me.earth.earthhack.impl.gui.buttons.SimpleButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -22,7 +23,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
     }
 
     @Unique
-    private EarthhackButton earthhackButton;
+    private ButtonWidget earthhackButton;
 
     @Inject(
             method = "init",
@@ -36,10 +37,10 @@ public abstract class MixinTitleScreen extends Screen implements Globals
     {
         TitleScreen _this = TitleScreen.class.cast(this);
 
-        earthhackButton = (EarthhackButton) ButtonWidget.builder(Text.literal("3arthh4ck"),
+        earthhackButton = ButtonWidget.builder(Text.literal("3arthh4ck"),
                 button -> mc.setScreen(new CommandGui(_this, 2500)))
                 .tooltip(Tooltip.of(Text.literal("Opens the 3arthh4ck Command GUI.")))
-                .dimensions(this.width / 2 + 2 + 98 + 4, this.height / 4 + 48 + 72 + 12, 20, 20)
+                .dimensions(this.width / 2 + 2 + 98 + 4, this.height / 4 + 48 + 72 + 12 - (20 + 4 * 4), 20, 20)
                 .build();
 
         this.addDrawableChild(earthhackButton);

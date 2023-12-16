@@ -22,9 +22,9 @@ public class LogoutSpot extends TimeStamp implements Globals
     public LogoutSpot(PlayerEntity player)
     {
         this.name = player.getName().toString();
-        this.model = new StaticModelPlayer(PlayerUtil.copyPlayer(player),
+        this.model = new StaticModelPlayer<>(PlayerUtil.copyPlayer(player),
                 player instanceof AbstractClientPlayerEntity && (player).getType().equals("slim"),
-                0);
+                null);
         this.model.disableArmorLayers();
         this.boundingBox = player.getBoundingBox();
         this.x = player.getX();

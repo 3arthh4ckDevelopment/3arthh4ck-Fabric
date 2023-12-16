@@ -11,12 +11,16 @@ import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.*;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
@@ -29,8 +33,8 @@ import java.util.stream.Collectors;
 public class RayTracer implements Globals
 {
     private static final Predicate<Entity> PREDICATE =
-        Predicates.and(EntityStatuses.NOT_SPECTATING,
-                       e -> e != null && e.canBeCollidedWith());
+        Predicates.and(e -> !e.isSpectator(),
+                       e -> e != null && e.isCollidable());
 
     public static RayTraceResult rayTraceEntities(World world,
                                                   Entity from,
@@ -115,23 +119,25 @@ public class RayTracer implements Globals
 
         for (Entity entity : entities)
         {
+            // TODO: vv very hacky fix, there's probably a better way for this!!! vv
             Box bb = entity.getBoundingBox()
-                            .expand(entity.getCollisionBorderSize());
-
-            RayTraceResult result = bb.raycast(eyePos, intercept);
+                            .expand(entity.getTargetingMargin());
+            List<Box> boxes = new ArrayList<>();
+            boxes.add(bb);
+            BlockHitResult result = Box.raycast(boxes, eyePos, intercept, entity.getBlockPos());
 
             if (bb.contains(eyePos))
             {
                 if (distance >= 0.0)
                 {
                     pointedEntity = entity;
-                    hitVec = result == null ? eyePos : result.hitVec;
+                    hitVec = result == null ? eyePos : result.getPos();
                     distance = 0.0;
                 }
             }
             else if (result != null)
             {
-                double hitDistance = eyePos.distanceTo(result.hitVec);
+                double hitDistance = eyePos.distanceTo(result.getPos());
 
                 if (hitDistance < distance || distance == 0.0)
                 {
@@ -141,13 +147,13 @@ public class RayTracer implements Globals
                         if (distance == 0.0)
                         {
                             pointedEntity = entity;
-                            hitVec = result.hitVec;
+                            hitVec = result.getPos();
                         }
                     }
                     else
                     {
                         pointedEntity = entity;
-                        hitVec = result.hitVec;
+                        hitVec = result.getPos();
                         distance = hitDistance;
                     }
                 }
@@ -207,11 +213,11 @@ public class RayTracer implements Globals
     }
 
     /**
-     * {@link World#rayTraceBlocks(Vec3d, Vec3d, boolean, boolean, boolean)}.
+     * {@link World#raycastBlock(Vec3d, Vec3d, BlockPos, VoxelShape, BlockState)}.
      * But allows you to use a custom {@link ClientWorld}.
      *
      * @param world used for
-     * {@link BlockState#collisionRayTrace(World, BlockPos, Vec3d, Vec3d)}.
+     * {@link BlockState#getCameraCollisionShape(BlockView, BlockPos, ShapeContext)}.
      * @param access gets the BlockStates.
      * @param start the start.
      * @param end the end.
@@ -219,7 +225,7 @@ public class RayTracer implements Globals
      * @param ignoreBlockWithoutBoundingBox ignores blocks without a BB.
      * @param returnLastUncollidableBlock returns last uncollidable block.
      * @return
-     * {@link World#rayTraceBlocks(Vec3d, Vec3d, boolean, boolean, boolean)}.
+     * {@link World#raycastBlock(Vec3d, Vec3d, BlockPos, VoxelShape, BlockState)}.
      */
     public static RayTraceResult trace(World world,
                                        ClientWorld access,
@@ -316,7 +322,7 @@ public class RayTracer implements Globals
                 if ((!ignoreBlockWithoutBoundingBox
                     || state.getCollisionShape(access, pos)
                         != null)
-                    && (block.canCollideCheck(state, stopOnLiquid)
+                    && (state.isSolidBlock(world, pos)
                         || collideCheck != null
                             && collideCheck.test(block, pos, null))
                     && (blockChecker == null
@@ -482,7 +488,7 @@ public class RayTracer implements Globals
                             || state1.getCollisionShape(access, pos)
                                 != null)
                     {
-                        if ((block1.canCollideCheck(state1, stopOnLiquid)
+                        if ((state1.isSolidBlock(world, pos)
                                 || collideCheck != null
                                 && collideCheck.test(block1, pos, enumfacing))
                             && (blockChecker == null

@@ -7,8 +7,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import static me.earth.earthhack.api.util.interfaces.Globals.mc;
-
 public class Visible {
     public static final Visible INSTANCE = new Visible();
 
@@ -38,7 +36,7 @@ public class Visible {
         checker.ticksToCheck = ticks;
         Entity entity = RotationUtil.getRotationPlayer();
         return check(entity.getX(), entity.getY(), entity.getZ(),
-                     entity.getYaw(), entity.getPitch(), pos);
+                entity.getYaw(), entity.getPitch(), pos);
     }
 
     public boolean check(double x, double y, double z,
@@ -47,7 +45,7 @@ public class Visible {
         int blockX = pos.getX();
         int blockY = pos.getY();
         int blockZ = pos.getZ();
-        double eyeY = y + RotationUtil.getRotationPlayer().getEyeHeight(mc.player.getPose());
+        double eyeY = y + RotationUtil.getRotationPlayer().getEyeHeight(RotationUtil.getRotationPlayer().getPose());
         if (isSameBlock(blockX, blockY, blockZ, x, eyeY, z)) {
             collides = false;
         } else {
@@ -60,8 +58,8 @@ public class Visible {
     public static boolean isSameBlock(int x1, int y1, int z1,
                                       double x2, double y2, double z2) {
         return x1 == floor(x2)
-            && z1 == floor(z2)
-            && y1 == floor(y2);
+                && z1 == floor(z2)
+                && y1 == floor(y2);
     }
 
     private boolean checkRayTracing(double eyeX, double eyeY, double eyeZ,
@@ -87,8 +85,8 @@ public class Visible {
         double collideZ = toBlock(eyeZ + dirZ * tCollide, blockZ);
 
         if (tMinX > tMaxY && tMinX > tMaxZ ||
-            tMinY > tMaxX && tMinY > tMaxZ ||
-            tMinZ > tMaxX && tMaxZ > tMaxY) {
+                tMinY > tMaxX && tMinY > tMaxZ ||
+                tMinZ > tMaxX && tMaxZ > tMaxY) {
             collideX = postCorrect(blockX, bdX, collideX);
             collideY = postCorrect(blockY, bdY, collideY);
             collideZ = postCorrect(blockZ, bdZ, collideZ);
@@ -135,7 +133,7 @@ public class Visible {
 
         double eyeOffset = Math.abs(eye - eyeBlock);
         return ((dir < 0.0 ? eyeOffset : 1.0 - eyeOffset)
-            + (double) (Math.abs(blockDiff) - 1)) / Math.abs(dir);
+                + (double) (Math.abs(blockDiff) - 1)) / Math.abs(dir);
     }
 
     private double getMaxTime(double eye, int eyeBlock, double dir, double tMin) {
@@ -164,8 +162,8 @@ public class Visible {
     public static int floor(double num) {
         int floor = (int) num;
         return floor == num
-            ? floor
-            : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);
+                ? floor
+                : floor - (int) (Double.doubleToRawLongBits(num) >>> 63);
     }
 
 }

@@ -8,8 +8,11 @@ import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -25,7 +28,7 @@ public class RayTraceUtil implements Globals
      * Produces a float array of length 3 representing
      * the needed facingX, facingY and facingZ for a
      * CPacketPlayerTryUseItemOnBlock. A similar calculation
-     * is made in {@link net.minecraft.client.multiplayer.PlayerControllerMP#processRightClickBlock(EntityPlayerSP, WorldClient, BlockPos, EnumFacing, Vec3d, EnumHand)}.
+     * is made in {@link net.minecraft.client.network.ClientPlayerInteractionManager#interactBlock(ClientPlayerEntity, Hand, BlockHitResult)}.
      *
      * @param pos the pos.
      * @param hitVec the hitVec.
@@ -110,18 +113,29 @@ public class RayTraceUtil implements Globals
     {
         for (Direction facing : Direction.values())
         {
-            RayTraceResult result = mc.world.rayTraceBlocks(
-             PositionUtil.getEyePos(entity),
-             new Vec3d(
-                pos.getX() + 0.5 + facing.getDirectionVec().getX() * 1.0 / 2.0,
-                pos.getY() + 0.5 + facing.getDirectionVec().getY() * 1.0 / 2.0,
-                pos.getZ() + 0.5 + facing.getDirectionVec().getZ() * 1.0 / 2.0),
-             false,
-             true,
-             false);
+            BlockHitResult result = mc.world.raycast(new RaycastContext(
+                    PositionUtil.getEyePos(entity),
+                    new Vec3d(
+                            pos.getX() + 0.5 + facing.getVector().getX() * 1.0 / 2.0,
+                            pos.getY() + 0.5 + facing.getVector().getY() * 1.0 / 2.0,
+                            pos.getZ() + 0.5 + facing.getVector().getZ() * 1.0 / 2.0),
+                    RaycastContext.ShapeType.OUTLINE,
+                    RaycastContext.FluidHandling.NONE,
+                    entity
+            ));
+
+            //RayTraceResult result = mc.world.raycast(
+            // PositionUtil.getEyePos(entity),
+            // new Vec3d(
+            //    pos.getX() + 0.5 + facing.getVector().getX() * 1.0 / 2.0,
+            //    pos.getY() + 0.5 + facing.getVector().getY() * 1.0 / 2.0,
+            //    pos.getZ() + 0.5 + facing.getVector().getZ() * 1.0 / 2.0),
+            // false,
+            // true,
+            // false);
 
             if (result != null
-                    && result.typeOfHit == RayTraceResult.Type.BLOCK
+                    && result.getType() == BlockHitResult.Type.BLOCK
                     && result.getBlockPos().equals(pos))
             {
                 return facing;
