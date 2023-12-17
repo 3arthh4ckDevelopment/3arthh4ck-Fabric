@@ -7,6 +7,7 @@ import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.setting.Complexity;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.*;
+import me.earth.earthhack.api.util.bind.Bind;
 import me.earth.earthhack.impl.event.events.render.CrosshairEvent;
 import me.earth.earthhack.impl.gui.click.Click;
 import me.earth.earthhack.impl.gui.visibility.PageBuilder;
@@ -15,6 +16,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import net.minecraft.client.gui.screen.Screen;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
@@ -24,7 +26,8 @@ public class ClickGui extends Module
 {
 
     private final Setting<Pages> pages =
-            register(new EnumSetting<>("Page", Pages.General)).setComplexity(Complexity.Medium);
+            register(new EnumSetting<>("Page", Pages.General))
+                    .setComplexity(Complexity.Medium);
 
     /* ---------------- General -------------- */
     public final Setting<Float> guiScale =
@@ -99,10 +102,10 @@ public class ClickGui extends Module
     public final Setting<Integer> searchWidth =
             register(new NumberSetting<>("Search-Width", 160, 100, 1000));
     public final Setting<Float> searchPosX =
-            register(new NumberSetting<>("posX", 500.0f, 0.0f, 2000.0f))
+            register(new NumberSetting<>("Search-X", 500.0f, 0.0f, 2000.0f))
                     .setVisibility(false);
     public final Setting<Float> searchPosY =
-            register(new NumberSetting<>("posY", 18.0f, 0.0f, 1000.0f))
+            register(new NumberSetting<>("Search-Y", 18.0f, 0.0f, 1000.0f))
                     .setVisibility(false);
 
     /* ---------------- CatEars -------------- */
@@ -118,7 +121,7 @@ public class ClickGui extends Module
     public ClickGui()
     {
         super("ClickGui", Category.Client);
-        // setBind(Bind.fromKey(Keyboard.KEY_RSHIFT));
+        setBind(Bind.fromKey(GLFW.GLFW_KEY_RIGHT_SHIFT));
         this.listeners.add(new ListenerScreen(this));
         this.setData(new ClickGuiData(this));
 
@@ -178,8 +181,10 @@ public class ClickGui extends Module
 
         /*
         if (blur.getValue() == BlurStyle.Gaussian && OpenGlHelper.shadersSupported)
-                mc.entityRenderer.loadShader(new Identifier("minecraft", "shaders/post/blur.json"));
+                mc.entityRenderer(new Identifier("minecraft", "shaders/post/blur.json"));
+
          */
+
     }
 
     protected void disableOtherGuis() {
@@ -205,7 +210,6 @@ public class ClickGui extends Module
         /*
         if (OpenGlHelper.shadersSupported)
             mc.entityRenderer.stopUseShader();
-
          */
 
         fromEvent = false;
