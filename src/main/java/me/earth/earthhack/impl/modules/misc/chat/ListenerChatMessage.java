@@ -5,7 +5,6 @@ import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.modules.misc.chat.util.SuffixMode;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
-import net.minecraft.network.play.client.CPacketChatMessage;
 
 public class ListenerChatMessage extends ModuleListener<Chat, PacketEvent.Send<ChatMessageC2SPacket>> {
     public ListenerChatMessage(Chat module){
@@ -15,7 +14,9 @@ public class ListenerChatMessage extends ModuleListener<Chat, PacketEvent.Send<C
     @Override
     public void invoke(PacketEvent.Send<ChatMessageC2SPacket> e){
         if (mc.player != null && mc.world != null) {
-            if (module.suffixMode.getValue() != SuffixMode.None && e.getPacket() instanceof ChatMessageC2SPacket) {
+            if (module.suffixMode.getValue() != SuffixMode.None
+                    && e.getPacket() instanceof ChatMessageC2SPacket)
+            {
                 String message = e.getPacket().chatMessage();
 
                 if (!message.startsWith(Commands.getPrefix())) {
