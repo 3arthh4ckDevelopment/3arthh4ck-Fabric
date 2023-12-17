@@ -12,6 +12,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ClientPlayerEntity.class)
@@ -22,6 +23,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     //         Caches.getModule(Spectate.class);
     // private static final ModuleCache<ElytraFlight> ELYTRA_FLIGHT =
     //         Caches.getModule(ElytraFlight.class);
+    @Unique
     private static final ModuleCache<AutoSprint> SPRINT =
             Caches.getModule(AutoSprint.class);
     // private static final ModuleCache<XCarry> XCARRY =

@@ -34,7 +34,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                     remap = false))
     public void buttonHook(CallbackInfo info)
     {
-        TitleScreen _this = TitleScreen.class.cast(this);
+        // TitleScreen _this = TitleScreen.class.cast(this);
         // noinspection ConstantConditions
         this.addDrawableChild(new TexturedButtonWidget(
                 this.width / 2 + 2 + 98 + 4,
@@ -43,7 +43,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                 0, 40, 20,
                 EARTHHACK_TEXTURES,
                 256, 256,
-                button -> this.client.setScreen(new CommandGui(_this))));
+                button -> this.client.setScreen(new CommandGui(new TitleScreen()))));
     }
 
 }

@@ -36,8 +36,10 @@ public class MixinChatHud {
     @Inject(method = "addMessage(Lnet/minecraft/text/Text;)V",
             at = @At("HEAD"),
             cancellable = true)
-    public void addMessage(Text message, CallbackInfo info) {
-        ChatEvent.Send event = new ChatEvent.Send(null, Text.literal(message.getString()), 0, 0, true);
+    public void addMessage(Text message, CallbackInfo info)
+    {
+        ChatEvent.Send event = new ChatEvent.Send(null,
+                Text.literal(message.getString()), client.inGameHud.getChatHud().getVisibleLineCount(), 0, true);
         Bus.EVENT_BUS.post(event);
 
         if (event.isCancelled())
