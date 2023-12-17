@@ -6,12 +6,17 @@ import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.event.events.client.ShutDownEvent;
+import me.earth.earthhack.impl.event.events.render.GuiScreenEvent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,6 +48,10 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     private static boolean isEarthhackRunning = true;
     @Unique
     private int gameLoop = 0;
+
+    @Shadow
+    public ClientPlayerEntity player;
+
 
     /**
      * Sets the Window Title of Minecraft.
@@ -103,5 +112,25 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
 
         Managers.THREAD.shutDown();
         isEarthhackRunning = false;
+    }
+
+    @Inject(method = "setScreen",
+            at = @At("HEAD"),
+            cancellable = true)
+    private <T extends Screen> void setScreenHook(T screen, CallbackInfo info)
+    {
+        if (player == null && screen instanceof ChatScreen)
+        {
+            info.cancel();
+            return;
+        }
+
+        GuiScreenEvent<T> event = new GuiScreenEvent<>(screen);
+        Bus.EVENT_BUS.post(event, screen == null ? null : screen.getClass());
+
+        if (event.isCancelled())
+        {
+            info.cancel();
+        }
     }
 }
