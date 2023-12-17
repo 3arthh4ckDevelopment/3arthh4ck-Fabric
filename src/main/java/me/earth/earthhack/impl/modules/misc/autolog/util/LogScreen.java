@@ -48,7 +48,7 @@ public class LogScreen extends Screen implements Globals
                 /*
                 if (PINGBYPASS.isEnabled())
                 {
-                    mc.displayGuiScreen(new GuiConnectingPingBypass(new GuiMainMenu(), mc, data));
+                    mc.setScreen(new GuiConnectingPingBypass(new GuiMainMenu(), mc, data));
                 }
                 else
                 {

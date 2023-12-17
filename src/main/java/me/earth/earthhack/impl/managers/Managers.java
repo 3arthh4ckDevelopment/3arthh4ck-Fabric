@@ -5,20 +5,15 @@ import me.earth.earthhack.api.plugin.Plugin;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.managers.chat.ChatManager;
 import me.earth.earthhack.impl.managers.chat.CommandManager;
+import me.earth.earthhack.impl.managers.chat.WrapManager;
 import me.earth.earthhack.impl.managers.client.FileManager;
 import me.earth.earthhack.impl.managers.client.ModuleManager;
 import me.earth.earthhack.impl.managers.client.PlayerManager;
 import me.earth.earthhack.impl.managers.client.PluginManager;
 import me.earth.earthhack.impl.managers.client.macro.MacroManager;
 import me.earth.earthhack.impl.managers.config.ConfigManager;
-import me.earth.earthhack.impl.managers.minecraft.BlockStateManager;
-import me.earth.earthhack.impl.managers.minecraft.ServerManager;
-import me.earth.earthhack.impl.managers.minecraft.ServerTickManager;
-import me.earth.earthhack.impl.managers.minecraft.TPSManager;
-import me.earth.earthhack.impl.managers.minecraft.combat.CombatManager;
-import me.earth.earthhack.impl.managers.minecraft.combat.SetDeadManager;
-import me.earth.earthhack.impl.managers.minecraft.combat.SwitchManager;
-import me.earth.earthhack.impl.managers.minecraft.combat.TargetManager;
+import me.earth.earthhack.impl.managers.minecraft.*;
+import me.earth.earthhack.impl.managers.minecraft.combat.*;
 import me.earth.earthhack.impl.managers.minecraft.movement.*;
 import me.earth.earthhack.impl.managers.minecraft.timer.TimerManager;
 import me.earth.earthhack.impl.managers.render.ColorManager;
@@ -82,8 +77,8 @@ public class Managers
         subscribe(TIMER, CONNECT, CHAT, COMBAT, POSITION, ROTATION, SERVER,
                 ACTION, SPEED, SWITCH, TPS, HOLES, SAFETY, KEYBOARD, COLOR,
                 WRAP, MACRO, NCP, SET_DEAD, BLOCKS, ENTITIES, HEALTH, TICK,
-                FILES, new NoMotionUpdateService(), new PlayerMotionService(),
-                new PotionService());
+                FILES/*, new NoMotionUpdateService(), new PlayerMotionService(),
+                new PotionService()*/);
 
 
         Earthhack.getLogger().info("Loading Commands");
