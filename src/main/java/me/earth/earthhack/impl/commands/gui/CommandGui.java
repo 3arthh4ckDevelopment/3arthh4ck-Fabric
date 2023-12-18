@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.commands.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
@@ -10,18 +9,11 @@ import me.earth.earthhack.impl.modules.client.commands.Commands;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.Window;
-import net.minecraft.text.MutableText;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.lwjgl.opengl.GL11;
 
 @Environment(EnvType.CLIENT)
 public class CommandGui extends Screen implements Globals
@@ -30,10 +22,12 @@ public class CommandGui extends Screen implements Globals
             Caches.getSetting(Commands.class, BooleanSetting.class, "BackgroundGui", false);
     private static final Identifier BLACK_PNG =
             new Identifier("earthhack:textures/gui/black.png");
+    private static final Identifier GUI_TEXTURES =
+            new Identifier("earthhack:textures/gui/gui_textures.png");
 
-    protected TextFieldWidget chatField;
-    ChatInputSuggestor chatInputSuggestor;
     private final Screen parent;
+    private TextFieldWidget textField; // = new CommandChatGui("+"); // todo this, works for now so i cba
+    private TexturedButtonWidget closeButton;
 
     public CommandGui(Screen parent)
     {
@@ -42,33 +36,24 @@ public class CommandGui extends Screen implements Globals
     }
 
     @Override
-    protected void init() {
-        this.chatField = new TextFieldWidget(this.client.advanceValidatingTextRenderer, 4, this.height - 12, this.width - 4, 12, Text.translatable("chat.editBox")){
-
-            @Override
-            protected MutableText getNarrationMessage() {
-                return super.getNarrationMessage().append(chatInputSuggestor.getNarration());
-            }
-        };
-        this.chatField.setMaxLength(256);
-        this.chatField.setDrawsBackground(false);
-        this.chatField.setText("+");
-        this.chatField.setChangedListener(this::onChatFieldUpdate);
-        this.chatField.setFocusUnlocked(false);
-        this.addSelectableChild(this.chatField);
-        this.chatInputSuggestor = new ChatInputSuggestor(this.client, this, this.chatField, this.textRenderer, false, false, 1, 10, true, -805306368);
-        this.setInitialFocus(this.chatField);
-    }
-
-    private void onChatFieldUpdate(String chatText) {
-        String string = this.chatField.getText();
-        this.chatInputSuggestor.setWindowActive(!string.equals("+"));
-        this.chatInputSuggestor.refresh();
-    }
-
-    public void setText(String text)
+    protected void init()
     {
-        this.chatField.setText(text);
+        closeButton = new TexturedButtonWidget(
+                this.width - 20 - 4,
+                4,
+                20, 20,
+                0, 80, 20,
+                GUI_TEXTURES,
+                256, 256,
+                button -> this.client.setScreen(parent));
+        textField = new TextFieldWidget(
+                this.client.textRenderer,
+                2,
+                this.height - 10 - 2,
+                this.width - 4,
+                10,
+                Text.of("+"));
+        textField.setEditable(true);
     }
 
     @Override
@@ -79,9 +64,7 @@ public class CommandGui extends Screen implements Globals
             super.charTyped(typedChar, keyCode);
             return false;
         }
-
-        this.chatField.charTyped(typedChar, keyCode);
-        return false;
+        return textField.charTyped(typedChar, keyCode);
     }
 
     @Override
@@ -90,44 +73,29 @@ public class CommandGui extends Screen implements Globals
         this.client.setScreen(parent);
     }
 
+    public void setText(String textIn) {
+        this.textField.setText(textIn);
+    }
+
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks)
+    public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
-        super.render(context, mouseX, mouseY, partialTicks);
-        Window wnd = this.client.getWindow();
-
-        if (BACK.getValue())
-        {
-            this.renderBackgroundTexture(context);
-        }
-        else
-        {
-            RenderSystem.disableCull();
-            RenderSystem.setShaderFogEnd(0);
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
-            this.mc.getTextureManager().bindTexture(BLACK_PNG);
-            RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
-            bufferbuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-            bufferbuilder.vertex(0.0D, this.height, 0.0D).texture((float) 0.0D, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
-            bufferbuilder.vertex(this.width, this.height, 0.0D).texture((float)this.width / 32.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
-            bufferbuilder.vertex(this.width, 0.0D, 0.0D).texture((float)this.width / 32.0F, 0).color(64, 64, 64, 255).next();
-            bufferbuilder.vertex(0.0D, 0.0D, 0.0D).texture((float) 0.0D, 0).color(64, 64, 64, 255).next();
-            tessellator.draw();
-        }
-
+        super.render(context, mouseX, mouseY, delta);
         RenderSystem.enableBlend();
-        RenderSystem.blendFuncSeparate(
-                GlStateManager.SrcFactor.SRC_ALPHA,
-                GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA,
-                GlStateManager.SrcFactor.ONE,
-                GlStateManager.DstFactor.ZERO
-        );
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.0f, wnd.getScaledHeight() - 48, 0.0f);
-        mc.inGameHud.getChatHud().render(context, mc.inGameHud.getTicks(), mouseX, mouseY);
-        GL11.glPopMatrix();
-        this.chatField.render(context, mouseX, mouseY, partialTicks);
-        super.render(context, mouseX, mouseY, partialTicks);
+        // TODO: overlaps all the drawable children
+        // if(BACK.getValue())
+        // {
+        //     context.setShaderColor(0.25f, 0.25f, 0.25f, 1.0f);
+        //     context.drawTexture(BLACK_PNG, 0, 0, 0, 0.0f, 0.0f, this.width, this.height, 16, 16);
+        //     context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // }
+        // else
+        // {
+        //     renderBackground(context);
+        // }
+        RenderSystem.enableDepthTest();
+        this.addSelectableChild(textField);
+        this.addDrawableChild(textField);
+        this.addDrawableChild(closeButton);
     }
 }

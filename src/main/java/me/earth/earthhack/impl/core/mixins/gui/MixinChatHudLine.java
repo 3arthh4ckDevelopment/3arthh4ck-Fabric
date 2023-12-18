@@ -55,6 +55,7 @@ public abstract class MixinChatHudLine implements IChatHudLine
     @Accessor(value = "content")
     public abstract void setComponent(Text component);
 
+    /*
     @Inject(
             method = "<init>",
             at = @At("RETURN"))
@@ -97,4 +98,5 @@ public abstract class MixinChatHudLine implements IChatHudLine
                         false,
                         AnimationMode.LINEAR));
     }
+    */
 }

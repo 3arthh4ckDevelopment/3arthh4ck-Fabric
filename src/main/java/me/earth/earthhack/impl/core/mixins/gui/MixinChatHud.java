@@ -129,7 +129,7 @@ public abstract class MixinChatHud implements IChatHud
             info.cancel();
         }
     }
-
+    /*
     @Override
     public boolean replace(MutableText component, int id, boolean wrap, boolean returnFirst) {
         boolean set;
@@ -208,7 +208,7 @@ public abstract class MixinChatHud implements IChatHud
 
         return false;
     }
-
+    */
     @Override
     @Accessor(value = "scrolledLines")
     public abstract int getScrollPos();

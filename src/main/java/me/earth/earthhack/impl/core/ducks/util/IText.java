@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  * {@link Text#getWithStyle(Style)} and
  * {@link Text#withoutStyle()}
  */
-public interface ITextComponentBase
+public interface IText
 {
     /**
      * @param hook overrides {@link Text#getWithStyle(Style)}.

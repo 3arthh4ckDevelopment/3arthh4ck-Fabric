@@ -20,7 +20,6 @@ public abstract class MixinTitleScreen extends Screen implements Globals
         super(Text.of("3arthh4ck"));
     }
 
-
     @Unique
     private static final Identifier EARTHHACK_TEXTURES = new Identifier("earthhack:textures/gui/gui_textures.png");
 

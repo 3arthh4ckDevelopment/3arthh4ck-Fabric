@@ -15,6 +15,7 @@ import me.earth.earthhack.impl.gui.visibility.Visibilities;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.glfw.GLFW;
 
@@ -168,6 +169,7 @@ public class ClickGui extends Module
     @Override
     protected void onEnable()
     {
+        ChatUtil.sendMessage("faggtot");
         disableOtherGuis();
         Click.CLICK_GUI.set(this);
         screen = mc.currentScreen instanceof Click ? ((Click) mc.currentScreen).screen : mc.currentScreen;

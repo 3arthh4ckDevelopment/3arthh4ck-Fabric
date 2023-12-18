@@ -21,7 +21,7 @@ public class Commands extends Module {
     public Commands(){
         super("Commands", Category.Client);
         StringSetting prefix = register(new StringSetting("Prefix", "+"));
-        register(new BooleanSetting("BackgroundGui", false));
+        register(new BooleanSetting("BackgroundGui", true));
         prefix.addObserver(s ->
         {
             if (!s.isCancelled())

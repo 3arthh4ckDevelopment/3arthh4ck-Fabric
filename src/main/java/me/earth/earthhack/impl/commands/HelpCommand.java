@@ -72,7 +72,6 @@ public class HelpCommand extends Command implements Globals
 
         ChatUtil.sendMessage(component);
     }
-
     private void setText(String text)
     {
         Screen current = mc.currentScreen;

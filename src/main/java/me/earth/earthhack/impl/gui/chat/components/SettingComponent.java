@@ -2,7 +2,7 @@ package me.earth.earthhack.impl.gui.chat.components;
 
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.setting.Setting;
-import me.earth.earthhack.impl.core.ducks.util.ITextComponentBase;
+import me.earth.earthhack.impl.core.ducks.util.IText;
 import me.earth.earthhack.impl.core.util.SimpleTextFormatHook;
 import me.earth.earthhack.impl.gui.chat.AbstractTextComponent;
 import me.earth.earthhack.impl.gui.chat.factory.ComponentFactory;
@@ -39,9 +39,9 @@ public abstract class SettingComponent<T, S extends Setting<T>>
         this.setStyle(Style.EMPTY
                 .withHoverEvent(ComponentFactory.getHoverEvent(setting)));
 
-        ((ITextComponentBase) this)
+        ((IText) this)
                 .setFormattingHook(new SimpleTextFormatHook(this));
-        ((ITextComponentBase) this)
+        ((IText) this)
                 .setUnFormattedHook(new SimpleTextFormatHook(this));
 
         if (setting.getContainer() instanceof Module)

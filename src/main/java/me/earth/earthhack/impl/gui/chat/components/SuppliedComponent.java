@@ -1,6 +1,6 @@
 package me.earth.earthhack.impl.gui.chat.components;
 
-import me.earth.earthhack.impl.core.ducks.util.ITextComponentBase;
+import me.earth.earthhack.impl.core.ducks.util.IText;
 import me.earth.earthhack.impl.core.util.SimpleTextFormatHook;
 import me.earth.earthhack.impl.gui.chat.AbstractTextComponent;
 import net.minecraft.text.MutableText;
@@ -20,8 +20,8 @@ public class SuppliedComponent extends AbstractTextComponent
 
     /**
      * Sets TextFormatting to a {@link SimpleTextFormatHook} with
-     * {@link ITextComponentBase#setFormattingHook(Supplier)} and
-     * {@link ITextComponentBase#setUnFormattedHook(Supplier)}.
+     * {@link IText#setFormattingHook(Supplier)} and
+     * {@link IText#setUnFormattedHook(Supplier)}.
      * If you don't want that, use those methods to set them to null.
      *
      * @param supplier the supplier supplying what is returned by
@@ -32,9 +32,9 @@ public class SuppliedComponent extends AbstractTextComponent
         super(supplier.get());
         this.supplier = supplier;
 
-        ((ITextComponentBase) this)
+        ((IText) this)
                 .setFormattingHook(new SimpleTextFormatHook(this));
-        ((ITextComponentBase) this)
+        ((IText) this)
                 .setUnFormattedHook(new SimpleTextFormatHook(this));
     }
 

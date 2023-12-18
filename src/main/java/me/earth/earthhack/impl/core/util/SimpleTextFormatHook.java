@@ -1,6 +1,6 @@
 package me.earth.earthhack.impl.core.util;
 
-import me.earth.earthhack.impl.core.ducks.util.ITextComponentBase;
+import me.earth.earthhack.impl.core.ducks.util.IText;
 import me.earth.earthhack.impl.gui.chat.AbstractTextComponent;
 import net.minecraft.text.Text;
 
@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 /**
  * An implementation of {@link Supplier <String>} for
- * {@link ITextComponentBase},
+ * {@link IText},
  * that formats the given TextComponent with nothing
  * but the UnformattedComponentTexts of the component.
  */
