@@ -96,7 +96,7 @@ public class CommandManager extends SubscriberImpl
         // commands.add(new JavaScriptCommand());
         // commands.add(new KitCommand());
         // commands.add(new Thirty2kCommand());
-        // commands.add(new BindCommand());
+        commands.add(new BindCommand());
         // commands.add(new ResetCommand());
         // commands.add(new PbModuleCommand());
         // commands.add(new PbSyncCommand());

@@ -21,7 +21,6 @@ import java.util.List;
 public class EntityProvider extends SubscriberImpl implements Globals
 {
     private volatile List<PlayerEntity> players;
-    private volatile List<Entity> genericEntities;
     private volatile List<Entity> entities;
 
     public EntityProvider()

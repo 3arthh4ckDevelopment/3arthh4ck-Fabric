@@ -1,5 +1,6 @@
 package me.earth.earthhack.api.util.bind;
 
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.pingbypass.input.Keyboard;
 
 /**
@@ -59,12 +60,15 @@ public class Bind
     public static Bind fromString(String stringIn)
     {
         String string = stringIn.toUpperCase();
-        if (string.equals("NONE")) // NONE exists and is 0... maybe fix?
+        ChatUtil.sendMessage("[BINDS] " + string);
+        if (string.equals("NONE") || string.equals("NULL"))
         {
             return none();
         }
-
-        return new Bind(Keyboard.getKeyIndex(string));
+        int key = Keyboard.getKeyIndex(string);
+        if (key == -1)
+            ChatUtil.sendMessage("Wrong bind");
+        return new Bind(key);
     }
 
 }
