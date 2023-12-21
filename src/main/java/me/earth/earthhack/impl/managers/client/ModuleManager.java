@@ -20,18 +20,26 @@ import me.earth.earthhack.impl.modules.client.media.Media;
 import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
+import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
+import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
 import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
 import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
+import me.earth.earthhack.impl.modules.misc.chat.Chat;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
+import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
+import me.earth.earthhack.impl.modules.player.freecam.Freecam;
+import me.earth.earthhack.impl.modules.player.noglitchblocks.NoGlitchBlocks;
+import me.earth.earthhack.impl.modules.player.suicide.Suicide;
 import me.earth.earthhack.impl.modules.player.timer.Timer;
 import me.earth.earthhack.impl.modules.render.ambience.Ambience;
 import me.earth.earthhack.impl.modules.render.holeesp.HoleESP;
+import me.earth.earthhack.impl.modules.render.logoutspots.LogoutSpots;
 
 import java.util.ArrayList;
 
@@ -61,8 +69,6 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Compatibility());
         // this.forceRegister(new Safety());
         // this.forceRegister(new ServerModule());
-        // this.forceRegister(new PbGui());
-        // this.forceRegister(new PbTeleport());
         // this.forceRegister(new TabModule());
         this.forceRegister(new Media());
 
@@ -72,7 +78,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new AnvilAura());
         // this.forceRegister(new AutoArmor());
         this.forceRegister(new AutoCrystal());
-        // this.forceRegister(new AutoTrap());
+        this.forceRegister(new AutoTrap());
         // this.forceRegister(new BedBomb());
         // this.forceRegister(new BedBombRewrite());
         // this.forceRegister(new BowSpam());
@@ -80,7 +86,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new BowKiller());
         // this.forceRegister(new Criticals());
         // this.forceRegister(new CrystalBomber());
-        // this.forceRegister(new HoleFiller());
+        this.forceRegister(new HoleFiller());
         this.forceRegister(new KillAura());
         // this.forceRegister(new LegSwitch());
         // this.forceRegister(new Offhand());
@@ -101,7 +107,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new AutoReconnect());
         // this.forceRegister(new AutoRespawn());
         // this.forceRegister(new BuildHeight());
-        // this.forceRegister(new Chat());
+        this.forceRegister(new Chat());
         // this.forceRegister(new ChorusControl());
         // this.forceRegister(new ExtraTab());
         // this.forceRegister(new Logger());
@@ -114,7 +120,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new NoSoundLag());
         // this.forceRegister(new Nuker());
         // this.forceRegister(new Packets());
-        // this.forceRegister(new PingSpoof());
+        this.forceRegister(new PingSpoof());
         // this.forceRegister(new Portals());
         // this.forceRegister(new SettingSpoof());
         // this.forceRegister(new SkinBlink());
@@ -164,12 +170,12 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new FakePlayer());
         // this.forceRegister(new FastPlace());
         // this.forceRegister(new FastEat());
-        // this.forceRegister(new Freecam());
+        this.forceRegister(new Freecam());
         // this.forceRegister(new LiquidInteract());
         // this.forceRegister(new MiddleClickPearl());
         // this.forceRegister(new MultiTask());
         // this.forceRegister(new NCPTweaks());
-        // this.forceRegister(new NoGlitchBlocks());
+        this.forceRegister(new NoGlitchBlocks());
         // this.forceRegister(new NoHunger());
         // this.forceRegister(new NoRotate());
         // this.forceRegister(new PhaseTrace());
@@ -179,7 +185,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Sorter());
         // this.forceRegister(new Spectate());
         // this.forceRegister(new Speedmine());
-        // this.forceRegister(new Suicide());
+        this.forceRegister(new Suicide());
         // this.forceRegister(new Swing());
         this.forceRegister(new Timer());
         // this.forceRegister(new XCarry());
@@ -192,7 +198,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Fullbright());
         this.forceRegister(new HoleESP());
         // this.forceRegister(new LagOMeter());
-        // this.forceRegister(new LogoutSpots());
+        this.forceRegister(new LogoutSpots());
         // this.forceRegister(new VoidESP());
         // this.forceRegister(new Nametags());
         // this.forceRegister(new NewChunks());

@@ -3,7 +3,7 @@ package me.earth.earthhack.impl.event.events.misc;
 import me.earth.earthhack.api.util.interfaces.Globals;
 
 /**
- * An event, fired everytime {@link net.minecraft.client.MinecraftClient#runTick()} is called,
+ * An event, fired everytime {@link net.minecraft.client.MinecraftClient#tick()} is called,
  * after the rightClickDelayTimer got updated.
  */
 public class TickEvent implements Globals

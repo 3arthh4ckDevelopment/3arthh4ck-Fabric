@@ -22,7 +22,6 @@
     "entity.living.player.MixinClientPlayerInteractionManager",
     "gui.MixinChatHud",
     "gui.MixinChatHudLine",
-    "gui.MixinInGameHud",
     "gui.MixinTitleScreen",
     "network.MixinClientPlayNetworkHandler"
   ],

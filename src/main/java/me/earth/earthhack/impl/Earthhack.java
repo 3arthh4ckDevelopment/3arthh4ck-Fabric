@@ -29,24 +29,7 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
 
     @Override
     public void onInitializeClient() {
-        // ScreenEvents.AFTER_INIT.register((mc, screen, w, h) -> {
-        //     EarthhackButton temp;
-        //     if (screen instanceof TitleScreen)
-        //     {
-        //         int bx = w / 2 + 104;
-        //         int by = h / 4 + 48 + 72 + (-24);
-        //         try {
-        //             bx = (int) screen.width / 2 + 250;
-        //             by = (int) screen.height / 2 - (screen.height / 3);
-        //         } catch (Throwable t) {
-        //             bx = w / 2 + 104;
-        //             by = h / 4 + 48 + 72 + (-24);
-        //         }
-        //         temp = new EarthhackButton(400, bx, by, action -> mc.setScreen(new CommandGui(screen, 400)));
-        //         temp.setTooltip(Tooltip.of(Text.of("In-Game Account Switcher")));
-        //         Screens.getButtons(screen).add(temp);
-        //     }
-        // });
+
     }
 
     public static Logger getLogger()

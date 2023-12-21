@@ -22,7 +22,7 @@ final class ListenerScreen extends ModuleListener<ClickGui, GuiScreenEvent<?>>
             /*
             if(module.blur.getValue() != ClickGui.BlurStyle.Gaussian && OpenGlHelper.areShadersSupported())
                mc.entityRenderer.stopUseShader();
-             */
+            */
         }
     }
 

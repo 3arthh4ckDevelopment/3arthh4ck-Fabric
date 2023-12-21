@@ -1,12 +1,15 @@
 package me.earth.earthhack.impl.gui.click;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.impl.gui.click.component.Component;
 import me.earth.earthhack.impl.gui.click.component.impl.ColorComponent;
+import me.earth.earthhack.impl.gui.click.component.impl.KeybindComponent;
 import me.earth.earthhack.impl.gui.click.component.impl.ModuleComponent;
+import me.earth.earthhack.impl.gui.click.component.impl.StringComponent;
 import me.earth.earthhack.impl.gui.click.frame.Frame;
 import me.earth.earthhack.impl.gui.click.frame.impl.CategoryFrame;
 import me.earth.earthhack.impl.gui.click.frame.impl.DescriptionFrame;
@@ -17,13 +20,19 @@ import me.earth.earthhack.impl.managers.client.ModuleManager;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.pingbypass.modules.SyncModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.NonnullDefault;
 
 import java.awt.*;
@@ -68,7 +77,7 @@ public class Click extends Screen {
             CLICK_GUI.get().descriptionWidth.addObserver(e -> descriptionFrame.setWidth(e.getValue()));
             attached = true;
         }
-
+        ChatUtil.sendMessage("GUI Click initialized!");
         getFrames().clear();
         int x = CLICK_GUI.get().catEars.getValue() ? 14 : 2;
         int y = CLICK_GUI.get().catEars.getValue() ? 14 : 2;
@@ -104,19 +113,22 @@ public class Click extends Screen {
 
         getFrames().forEach(Frame::init);
         oldVal = CLICK_GUI.get().catEars.getValue();
+
     }
 
     @Override
     @NonnullDefault
     public void resize(MinecraftClient mcIn, int w, int h) {
         super.resize(mcIn, w, h);
+        ChatUtil.sendMessage("resize() called!");
         init();
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.render(context, mouseX, mouseY, partialTicks);
-
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        Component.context = context;
+        super.render(context, mouseX, mouseY, delta);
+        ChatUtil.sendMessage("render() called!");
         if (mc.world == null)
         {
             if (BACK.getValue())
@@ -125,21 +137,19 @@ public class Click extends Screen {
             }
             else
             {
-                /*
-                GlStateManager.disableLighting();
-                GlStateManager.disableFog();
+                RenderSystem.disableCull();
+                // RenderSystem.disableFog();
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder bufferbuilder = tessellator.getBuffer();
-                this.mc.getTextureManager().bindTexture(BLACK_PNG);
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                bufferbuilder.pos(0.0D, this.height, 0.0D).tex(0.0D, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).endVertex();
-                bufferbuilder.pos(this.width, this.height, 0.0D).tex((float)this.width / 32.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).endVertex();
-                bufferbuilder.pos(this.width, 0.0D, 0.0D).tex((float)this.width / 32.0F, 0).color(64, 64, 64, 255).endVertex();
-                bufferbuilder.pos(0.0D, 0.0D, 0.0D).tex(0.0D, 0).color(64, 64, 64, 255).endVertex();
+                mc.getTextureManager().bindTexture(BLACK_PNG);
+                RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
+                bufferbuilder.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION_TEXTURE_COLOR);
+                bufferbuilder.vertex(0.0D, this.height, 0.0D).texture(0.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
+                bufferbuilder.vertex(this.width, this.height, 0.0D).texture((float)this.width / 32.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
+                bufferbuilder.vertex(this.width, 0.0D, 0.0D).texture((float)this.width / 32.0F, 0).color(64, 64, 64, 255).next();
+                bufferbuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0F, 0).color(64, 64, 64, 255).next();
                 GL11.glPushMatrix();
                 tessellator.draw();
-                 */
             }
         }
 
@@ -150,10 +160,10 @@ public class Click extends Screen {
 
         if (CLICK_GUI.get().blur.getValue() == ClickGui.BlurStyle.Directional) {
             final Window scaledResolution = MinecraftClient.getInstance().getWindow();
-            // Render2DUtil.drawBlurryRect(0, 0, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), CLICK_GUI.get().blurAmount.getValue(), CLICK_GUI.get().blurSize.getValue());
+            // Render2DUtil.drawBlurryRect(context.getMatrices() , 0, 0, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), CLICK_GUI.get().blurAmount.getValue(), CLICK_GUI.get().blurSize.getValue());
         }
 
-        getFrames().forEach(frame -> frame.drawScreen(context, mouseX, mouseY, partialTicks));
+        getFrames().forEach(frame -> frame.drawScreen(context, mouseX, mouseY, delta));
     }
 
     @Override
@@ -180,10 +190,10 @@ public class Click extends Screen {
         return false;
     }
 
-    /*
+
     @Override
-    public void onGuiClosed() {
-        super.onGuiClosed();
+    public void close() {
+        super.close();
         getFrames().forEach(frame -> {
             for (Component comp : frame.getComponents()) {
                 if (comp instanceof ModuleComponent moduleComponent) {
@@ -199,16 +209,13 @@ public class Click extends Screen {
             }
         });
     }
-     */
 
     public void onGuiOpened() {
         getFrames().forEach(frame -> {
             for (Component comp : frame.getComponents()) {
-                if (comp instanceof ModuleComponent) {
-                    final ModuleComponent moduleComponent = (ModuleComponent) comp;
+                if (comp instanceof ModuleComponent moduleComponent) {
                     for (Component component : moduleComponent.getComponents()) {
-                        if (component instanceof ColorComponent) {
-                            final ColorComponent colorComponent = (ColorComponent) component;
+                        if (component instanceof ColorComponent colorComponent) {
                             float[] hsb = Color.RGBtoHSB(colorComponent.getColorSetting().getRed(), colorComponent.getColorSetting().getGreen(), colorComponent.getColorSetting().getBlue(), null);
                             colorComponent.setHue(hsb[0]);
                             colorComponent.setSaturation(hsb[1]);
@@ -223,10 +230,6 @@ public class Click extends Screen {
 
     public ArrayList<Frame> getFrames() {
         return frames;
-    }
-
-    public void setPingBypass(boolean pingBypass) {
-        this.pingBypass = pingBypass;
     }
 
     public void setAddDescriptionFrame(boolean addDescriptionFrame) {

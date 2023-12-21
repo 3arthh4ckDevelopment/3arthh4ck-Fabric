@@ -6,6 +6,7 @@ import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.event.events.client.ShutDownEvent;
+import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.events.render.GuiScreenEvent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
@@ -132,5 +133,17 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
         {
             info.cancel();
         }
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V",
+                    ordinal = 0,
+                    shift = At.Shift.BEFORE))
+    public void tickHook(CallbackInfo info)
+    {
+        Bus.EVENT_BUS.post(new TickEvent());
     }
 }

@@ -169,7 +169,6 @@ public class ClickGui extends Module
     @Override
     protected void onEnable()
     {
-        ChatUtil.sendMessage("faggtot");
         disableOtherGuis();
         Click.CLICK_GUI.set(this);
         screen = mc.currentScreen instanceof Click ? ((Click) mc.currentScreen).screen : mc.currentScreen;
@@ -177,14 +176,14 @@ public class ClickGui extends Module
         Click gui = newClick();
         if (Caches.getModule(Management.class).get().pluginSection.getValue())
             gui.setCategories(PluginsCategory.getInstance().getCategories());
-        gui.init();
+        // gui.init();
         gui.onGuiOpened();
         mc.setScreen(gui);
+        ChatUtil.sendMessage("setScreen() called!");
 
         /*
         if (blur.getValue() == BlurStyle.Gaussian && OpenGlHelper.shadersSupported)
                 mc.entityRenderer(new Identifier("minecraft", "shaders/post/blur.json"));
-
          */
 
     }
