@@ -18,9 +18,10 @@ public class SettingsModule extends Module {
         data.register(
                 COMPLEXITY,
                 """
-                        - Beginner : these settings can be understood by everyone!
-                        - Medium : requires some knowledge of clients and CrystalPvP.
-                        - Expert : possibly requires knowledge of the code base and can cause serious issues when badly configured.""");
+                        - Beginner : These settings can be understood by everyone!
+                        - Medium : Requires some knowledge of clients and CrystalPvP.
+                        - Expert : Possibly requires knowledge of the clients' codebase and can cause serious issues when badly configured.
+                        - Dev : Not recommended if you don't know what you're doing.""");
         this.setData(data);
     }
 

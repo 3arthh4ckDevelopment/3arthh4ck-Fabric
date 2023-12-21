@@ -45,6 +45,9 @@ public class Management extends Module {
     protected final Setting<Boolean> pauseOnLeftFocus =
             register(new BooleanSetting("PauseOnLeftFocus",
                     true));
+    public final Setting<Boolean> eventDebug =
+            register(new BooleanSetting("DebugEvents",
+                    true));
     protected final Setting<Boolean> customFogColor =
             register(new BooleanSetting("CustomFogColor", false));
     protected final Setting<Color> fogColor =
