@@ -51,6 +51,8 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawCheckMark(float x, float y, int width, int color) {
+        //TODO: rewrite
+        /*
         float f = (color >> 24 & 255) / 255.0f;
         float f1 = (color >> 16 & 255) / 255.0f;
         float f2 = (color >> 8 & 255) / 255.0f;
@@ -79,6 +81,7 @@ public class Render2DUtil implements Globals {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+         */
     }
 
     public static void drawCheckeredBackground(float x, float y, float x2, float y2) {

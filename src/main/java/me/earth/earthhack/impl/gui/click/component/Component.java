@@ -60,6 +60,10 @@ public class Component {
         context.drawTextWithShadow(mc.textRenderer, text, (int) x, (int) y, color);
     }
 
+    protected void drawStringWithShadow(String text, double x, double y, int color, float scale) {
+        context.drawTextWithShadow(mc.textRenderer, text, (int) (x / scale), (int) (y / scale), color);
+    }
+
     public void keyTyped(char character, int keyCode) {
     }
 

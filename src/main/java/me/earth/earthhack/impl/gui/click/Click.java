@@ -160,6 +160,7 @@ public class Click extends Screen {
             // Render2DUtil.drawBlurryRect(context.getMatrices() , 0, 0, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), CLICK_GUI.get().blurAmount.getValue(), CLICK_GUI.get().blurSize.getValue());
         }
 
+        ModuleComponent.context = context;
         getFrames().forEach(frame -> frame.drawScreen(context, mouseX, mouseY, delta));
     }
 

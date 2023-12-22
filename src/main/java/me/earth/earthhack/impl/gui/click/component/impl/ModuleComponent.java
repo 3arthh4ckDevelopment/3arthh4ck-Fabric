@@ -128,8 +128,6 @@ public class ModuleComponent extends Component {
             drawStringWithShadow(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue(), getFinishedX() + getWidth() - 4 - Managers.TEXT.getStringWidth(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue()), getFinishedY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), getModule().isEnabled() ? getClickGui().get().getOnModule().brighter().getRGB() : getClickGui().get().getOffModule().brighter().getRGB());
 
         if (getClickGui().get().showBind.getValue() && !getModule().getBind().toString().equalsIgnoreCase("none")) {
-            GL11.glPushMatrix();
-            GL11.glScalef(0.5f, 0.5f, 0.5f);
             String moduleBinding = getModule().getBind().toString().toLowerCase().replace("none", "-");
             moduleBinding = String.valueOf(moduleBinding.charAt(0)).toUpperCase() + moduleBinding.substring(1);
             if (moduleBinding.length() > 3) {
@@ -137,9 +135,7 @@ public class ModuleComponent extends Component {
             }
             moduleBinding = "[" + moduleBinding + "]";
             float offset = getFinishedX() + getWidth() - Managers.TEXT.getStringWidth(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue());
-            drawStringWithShadow(moduleBinding, (offset - (Managers.TEXT.getStringWidth(moduleBinding) >> 1)) * 2 - 12, (getFinishedY() + getHeight() / 1.5f - (Managers.TEXT.getStringHeightI() >> 1)) * 2.0f, getModule().isEnabled() ? getClickGui().get().getOnModule().brighter().getRGB() : getClickGui().get().getOffModule().brighter().getRGB());
-            GL11.glScalef(1.0f, 1.0f, 1.0f);
-            GL11.glPopMatrix();
+            drawStringWithShadow(moduleBinding, (offset - (Managers.TEXT.getStringWidth(moduleBinding) >> 1)) * 2 - 12, (getFinishedY() + getHeight() / 1.5f - (Managers.TEXT.getStringHeightI() >> 1)) * 2.0f, getModule().isEnabled() ? getClickGui().get().getOnModule().brighter().getRGB() : getClickGui().get().getOffModule().brighter().getRGB(), 0.5f);
         }
         if (isExtended()) {
             for (Component component : getComponents()) {
