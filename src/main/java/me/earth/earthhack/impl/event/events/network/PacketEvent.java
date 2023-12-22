@@ -2,7 +2,7 @@ package me.earth.earthhack.impl.event.events.network;
 
 import me.earth.earthhack.api.event.events.Event;
 import me.earth.earthhack.impl.util.thread.SafeRunnable;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 
@@ -93,7 +93,7 @@ public class PacketEvent<T extends Packet<? extends PacketListener>> extends Eve
     {
         // Could use a PostRunnable, with "shouldScheduleIfCancelled"
         private final Deque<Runnable> postEvents = new ArrayDeque<>();
-        private final ClientPlayNetworkHandler networkManager;
+        private final ClientConnection networkManager;
 
         public Receive(T packet)
         {
@@ -101,7 +101,7 @@ public class PacketEvent<T extends Packet<? extends PacketListener>> extends Eve
             this.networkManager = null;
         }
 
-        public Receive(T packet, ClientPlayNetworkHandler networkManager)
+        public Receive(T packet, ClientConnection networkManager)
         {
             super(packet);
             this.networkManager = networkManager;
@@ -124,7 +124,7 @@ public class PacketEvent<T extends Packet<? extends PacketListener>> extends Eve
             return postEvents;
         }
 
-        public ClientPlayNetworkHandler getNetworkManager()
+        public ClientConnection getNetworkManager()
         {
             return networkManager;
         }

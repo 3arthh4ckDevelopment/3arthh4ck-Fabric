@@ -5,7 +5,7 @@ import me.earth.earthhack.impl.event.events.network.DisconnectEvent;
 import me.earth.earthhack.impl.event.events.network.IntegratedDisconnectEvent;
 import me.earth.earthhack.impl.event.events.network.IntegratedPacketEvent;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.text.MutableText;
@@ -62,10 +62,10 @@ public interface IClientPlayNetworkHandler
 
     default <T extends Packet<?>> PacketEvent.Receive<T> getReceive(T packet) {
         if (isIntegratedServerNetworkManager()) {
-            return new IntegratedPacketEvent.Receive<>(packet, (ClientPlayNetworkHandler) this);
+            return new IntegratedPacketEvent.Receive<>(packet, (ClientConnection) this);
         }
 
-        return new PacketEvent.Receive<>(packet, (ClientPlayNetworkHandler) this);
+        return new PacketEvent.Receive<>(packet, (ClientConnection) this);
     }
 
     default <T extends Packet<?>> PacketEvent.Post<T> getPost(T packet) {
@@ -86,10 +86,10 @@ public interface IClientPlayNetworkHandler
 
     default DisconnectEvent getDisconnect(MutableText component) {
         if (isIntegratedServerNetworkManager()) {
-            return new IntegratedDisconnectEvent(component, (ClientPlayNetworkHandler) this);
+            return new IntegratedDisconnectEvent(component, (ClientConnection) this);
         }
 
-        return new DisconnectEvent(component, (ClientPlayNetworkHandler) this);
+        return new DisconnectEvent(component, (ClientConnection) this);
     }
 
     boolean isDoneLoadingTerrain();

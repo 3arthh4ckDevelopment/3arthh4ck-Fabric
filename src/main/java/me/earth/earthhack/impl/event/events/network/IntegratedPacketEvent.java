@@ -1,6 +1,6 @@
 package me.earth.earthhack.impl.event.events.network;
 
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 
@@ -33,7 +33,7 @@ public class IntegratedPacketEvent<T extends Packet<?>> extends PacketEvent<T> {
     public static class Receive<T extends Packet<? extends PacketListener>>
             extends PacketEvent.Receive<T>
     {
-        public Receive(T packet, ClientPlayNetworkHandler networkManager)
+        public Receive(T packet, ClientConnection networkManager)
         {
             super(packet, networkManager);
         }

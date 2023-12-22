@@ -38,6 +38,7 @@ public class CommandGui extends Screen implements Globals
     @Override
     protected void init()
     {
+        //noinspection ConstantConditions
         closeButton = new TexturedButtonWidget(
                 this.width - 20 - 4,
                 4,
@@ -46,6 +47,7 @@ public class CommandGui extends Screen implements Globals
                 GUI_TEXTURES,
                 256, 256,
                 button -> this.client.setScreen(parent));
+        //noinspection ConstantConditions
         textField = new TextFieldWidget(
                 this.client.textRenderer,
                 2,

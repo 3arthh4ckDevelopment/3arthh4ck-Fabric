@@ -1,6 +1,6 @@
 package me.earth.earthhack.impl.event.events.network;
 
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.text.MutableText;
 
 /**
@@ -9,9 +9,9 @@ import net.minecraft.text.MutableText;
 public class DisconnectEvent
 {
     private final MutableText component;
-    private final ClientPlayNetworkHandler manager;
+    private final ClientConnection manager;
 
-    public DisconnectEvent(MutableText component, ClientPlayNetworkHandler manager)
+    public DisconnectEvent(MutableText component, ClientConnection manager)
     {
         this.component = component;
         this.manager = manager;
@@ -22,7 +22,7 @@ public class DisconnectEvent
         return component;
     }
 
-    public ClientPlayNetworkHandler getManager()
+    public ClientConnection getManager()
     {
         return manager;
     }

@@ -41,9 +41,9 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     @Final
     public ClientPlayNetworkHandler networkHandler;
 
-    private final MinecraftClient mc = MinecraftClient.getInstance();
-    private MotionUpdateEvent.Riding riding;
-    private MotionUpdateEvent motionEvent = new MotionUpdateEvent();
+    @Unique private final MinecraftClient mc = MinecraftClient.getInstance();
+    @Unique private MotionUpdateEvent.Riding riding;
+    @Unique private MotionUpdateEvent motionEvent = new MotionUpdateEvent();
 
     @Override
     @Accessor(value = "lastX")

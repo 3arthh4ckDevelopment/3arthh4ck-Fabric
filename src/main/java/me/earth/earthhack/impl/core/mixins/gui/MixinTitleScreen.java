@@ -33,7 +33,6 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                     remap = false))
     public void buttonHook(CallbackInfo info)
     {
-        // TitleScreen _this = TitleScreen.class.cast(this);
         // noinspection ConstantConditions
         this.addDrawableChild(new TexturedButtonWidget(
                 this.width / 2 + 2 + 98 + 4,

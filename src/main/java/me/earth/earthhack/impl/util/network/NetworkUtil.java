@@ -6,6 +6,7 @@ import me.earth.earthhack.impl.core.ducks.network.IClientPlayNetworkHandler;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.Packet;
 
 public class NetworkUtil implements Globals
@@ -63,13 +64,13 @@ public class NetworkUtil implements Globals
     public static boolean receive(Packet<ClientPlayNetworkHandler> packet)
     {
         if (mc.player != null) {
-            return receive(packet, mc.player.networkHandler);
+            return receive(packet, mc.player.networkHandler.getConnection());
         }
 
         return false;
     }
 
-    public static boolean receive(Packet<ClientPlayNetworkHandler> packet, ClientPlayNetworkHandler manager)
+    public static boolean receive(Packet<ClientPlayNetworkHandler> packet, ClientConnection manager)
     {
         PacketEvent.Receive<?> e = new PacketEvent.Receive<>(packet, manager);
         Bus.EVENT_BUS.post(e, packet.getClass());
