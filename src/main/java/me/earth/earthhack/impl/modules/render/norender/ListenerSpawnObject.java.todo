@@ -1,0 +1,62 @@
+package me.earth.earthhack.impl.modules.render.norender;
+
+import me.earth.earthhack.impl.event.events.network.PacketEvent;
+import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.util.minecraft.entity.EntityType;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+
+final class ListenerSpawnObject extends
+        ModuleListener<NoRender, PacketEvent.Receive<EntitySpawnS2CPacket>>
+{
+    public ListenerSpawnObject(NoRender module)
+    {
+        super(module, PacketEvent.Receive.class, -10, EntitySpawnS2CPacket.class);
+    }
+
+    @Override
+    public void invoke(PacketEvent.Receive<EntitySpawnS2CPacket> event)
+    {
+        if (event.isCancelled()
+            || !module.items.getValue()
+            || !event.getPacket().getEntityType().equals(EntityType.Other))
+        {
+            return;
+        }
+
+        EntitySpawnS2CPacket p = event.getPacket();
+        Entity e = new ItemEntity(mc.world, p.getX(), p.getY(), p.getZ());
+        // DataTracker.updateServerPosition(e, p.getX(), p.getY(), p.getZ());
+        e.setPitch((p.getPitch() * 360) / 256.0f);
+        e.setYaw((p.getYaw() * 360)   / 256.0f);
+        Entity[] parts = e.getPassengerList().toArray(new Entity[0]);
+        if (parts != null)
+        {
+            int id = p.getId() - e.getId();
+            for (Entity part : parts)
+            {
+                part.setId(part.getId() + id);
+            }
+        }
+
+        e.setId(p.getId());
+        e.setUuid(p.getUuid());
+
+        if (p.getEntityData() > 0)
+        {
+            e.setVelocity(p.getVelocityX() / 8000.0,
+                          p.getVelocityY() / 8000.0,
+                          p.getVelocityZ() / 8000.0);
+        }
+
+        event.setCancelled(true);
+        mc.execute(() ->
+        {
+            Managers.SET_DEAD.setDeadCustom(e, Long.MAX_VALUE);
+            module.ids.add(p.getId());
+        });
+    }
+
+}

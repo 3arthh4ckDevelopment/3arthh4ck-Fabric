@@ -30,15 +30,16 @@ import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
-import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
+import me.earth.earthhack.impl.modules.player.arrows.Arrows;
 import me.earth.earthhack.impl.modules.player.freecam.Freecam;
 import me.earth.earthhack.impl.modules.player.noglitchblocks.NoGlitchBlocks;
 import me.earth.earthhack.impl.modules.player.suicide.Suicide;
 import me.earth.earthhack.impl.modules.player.timer.Timer;
 import me.earth.earthhack.impl.modules.render.ambience.Ambience;
+import me.earth.earthhack.impl.modules.render.fullbright.Fullbright;
 import me.earth.earthhack.impl.modules.render.holeesp.HoleESP;
 import me.earth.earthhack.impl.modules.render.logoutspots.LogoutSpots;
 
@@ -151,7 +152,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new LongJump());
         // this.forceRegister(new NoFall());
         // this.forceRegister(new NoMove());
-        this.forceRegister(new NoSlowDown());
+        // TODO: this.forceRegister(new NoSlowDown());
         // this.forceRegister(new PacketFly());
         // this.forceRegister(new Phase());
         // this.forceRegister(new SafeWalk());
@@ -161,7 +162,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new TickShift());
         this.forceRegister(new Velocity());
 
-
+        this.forceRegister(new Arrows());
         // this.forceRegister(new AutoMine());
         // this.forceRegister(new AutoTool());
         // this.forceRegister(new Blink());
@@ -196,7 +197,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new BreadCrumbs());
         // this.forceRegister(new Chams());
         // this.forceRegister(new ESP());
-        // this.forceRegister(new Fullbright());
+        this.forceRegister(new Fullbright());
         this.forceRegister(new HoleESP());
         // this.forceRegister(new LagOMeter());
         this.forceRegister(new LogoutSpots());

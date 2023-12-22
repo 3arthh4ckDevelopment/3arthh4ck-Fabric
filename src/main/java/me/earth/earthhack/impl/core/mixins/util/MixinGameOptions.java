@@ -18,7 +18,8 @@ public abstract class MixinGameOptions
     @Final @Shadow private SimpleOption<Integer> fov;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void initHook(MinecraftClient client, File optionsFile, CallbackInfo ci) {
+    public void initHook(MinecraftClient client, File optionsFile, CallbackInfo ci)
+    {
         this.fov.callbacks = new SimpleOption.ValidatingIntSliderCallbacks(30, 180);
     }
 }
