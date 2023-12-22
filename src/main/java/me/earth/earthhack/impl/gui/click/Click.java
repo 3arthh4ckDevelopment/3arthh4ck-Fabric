@@ -77,7 +77,7 @@ public class Click extends Screen {
             CLICK_GUI.get().descriptionWidth.addObserver(e -> descriptionFrame.setWidth(e.getValue()));
             attached = true;
         }
-        ChatUtil.sendMessage("GUI Click initialized!");
+
         getFrames().clear();
         int x = CLICK_GUI.get().catEars.getValue() ? 14 : 2;
         int y = CLICK_GUI.get().catEars.getValue() ? 14 : 2;
@@ -113,22 +113,19 @@ public class Click extends Screen {
 
         getFrames().forEach(Frame::init);
         oldVal = CLICK_GUI.get().catEars.getValue();
-
     }
 
     @Override
     @NonnullDefault
     public void resize(MinecraftClient mcIn, int w, int h) {
         super.resize(mcIn, w, h);
-        ChatUtil.sendMessage("resize() called!");
         init();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        Component.context = context;
         super.render(context, mouseX, mouseY, delta);
-        ChatUtil.sendMessage("render() called!");
+
         if (mc.world == null)
         {
             if (BACK.getValue())
@@ -230,6 +227,10 @@ public class Click extends Screen {
 
     public ArrayList<Frame> getFrames() {
         return frames;
+    }
+
+    public void setPingBypass(boolean pingBypass) {
+        this.pingBypass = pingBypass;
     }
 
     public void setAddDescriptionFrame(boolean addDescriptionFrame) {

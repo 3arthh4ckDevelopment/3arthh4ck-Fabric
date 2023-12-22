@@ -8,7 +8,9 @@ import me.earth.earthhack.api.setting.Complexity;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.*;
 import me.earth.earthhack.api.util.bind.Bind;
+import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.events.render.CrosshairEvent;
+import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.gui.click.Click;
 import me.earth.earthhack.impl.gui.visibility.PageBuilder;
 import me.earth.earthhack.impl.gui.visibility.Visibilities;
@@ -16,6 +18,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.util.text.ChatUtil;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.glfw.GLFW;
 
@@ -145,6 +148,23 @@ public class ClickGui extends Module
             }
         });
 
+        this.listeners.add(new LambdaListener<>(TickEvent.class, e -> {
+            if (!(mc.currentScreen instanceof ChatScreen)) {
+                ChatUtil.sendMessage("faggtot");
+                disableOtherGuis();
+                Click.CLICK_GUI.set(this);
+                screen = mc.currentScreen instanceof Click ? ((Click) mc.currentScreen).screen : mc.currentScreen;
+                // don't save it since some modules add/del settings
+                Click gui = newClick();
+                if (Caches.getModule(Management.class).get().pluginSection.getValue())
+                    gui.setCategories(PluginsCategory.getInstance().getCategories());
+                gui.init();
+                gui.onGuiOpened();
+                mc.setScreen(gui);
+                disable();
+            }
+        }));
+
     }
 
     public ClickGui(String name) // for PB-Gui and Config-Gui
@@ -169,21 +189,12 @@ public class ClickGui extends Module
     @Override
     protected void onEnable()
     {
-        disableOtherGuis();
-        Click.CLICK_GUI.set(this);
-        screen = mc.currentScreen instanceof Click ? ((Click) mc.currentScreen).screen : mc.currentScreen;
-        // don't save it since some modules add/del settings
-        Click gui = newClick();
-        if (Caches.getModule(Management.class).get().pluginSection.getValue())
-            gui.setCategories(PluginsCategory.getInstance().getCategories());
-        // gui.init();
-        gui.onGuiOpened();
-        mc.setScreen(gui);
-        ChatUtil.sendMessage("setScreen() called!");
+
 
         /*
         if (blur.getValue() == BlurStyle.Gaussian && OpenGlHelper.shadersSupported)
                 mc.entityRenderer(new Identifier("minecraft", "shaders/post/blur.json"));
+
          */
 
     }
