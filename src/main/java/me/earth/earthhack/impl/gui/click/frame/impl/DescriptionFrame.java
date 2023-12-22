@@ -7,12 +7,13 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
 import java.awt.*;
 import java.util.List;
+
+import static me.earth.earthhack.api.util.interfaces.Globals.mc;
 
 public class DescriptionFrame extends Frame
 {
@@ -53,7 +54,7 @@ public class DescriptionFrame extends Frame
         Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), CLICK_GUI.get().getTopBgColor().getRGB());
         if (CLICK_GUI.get().getBoxes())
             Render2DUtil.drawBorderedRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), 0.5f, 0, CLICK_GUI.get().getTopColor().getRGB());
-        context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, getLabel(), (int) (getPosX() + 3), (int) (getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1)), 0xFFFFFFFF);
+        context.drawTextWithShadow(mc.textRenderer, getLabel(), (int) (getPosX() + 3), (int) (getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1)), 0xFFFFFFFF);
 
 
         float y = this.getPosY() + 2 + (getHeight() / 2) + Managers.TEXT.getStringHeightI();
@@ -63,7 +64,7 @@ public class DescriptionFrame extends Frame
 
         for (String string : strings)
         {
-            context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, string, (int) (this.getPosX() + 3), (int) y, CLICK_GUI.get().getTextColorDesc().getRGB());
+            context.drawTextWithShadow(mc.textRenderer, string, (int) (this.getPosX() + 3), (int) y, CLICK_GUI.get().getTextColorDesc().getRGB());
             y += Managers.TEXT.getStringHeightI() + 1;
         }
     }

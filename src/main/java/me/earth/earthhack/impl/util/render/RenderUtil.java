@@ -36,7 +36,7 @@ public class RenderUtil implements Globals {
     public final static FloatBuffer modelView = BufferUtils.createFloatBuffer(16);
     public final static FloatBuffer projection = BufferUtils.createFloatBuffer(16);
 
-    private static final Frustum FRUSTUM = new Frustum(null);
+    // private static final Frustum FRUSTUM = new Frustum(null);
 
     static
     {

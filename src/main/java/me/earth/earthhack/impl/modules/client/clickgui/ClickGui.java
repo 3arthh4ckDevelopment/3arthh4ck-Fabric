@@ -150,7 +150,7 @@ public class ClickGui extends Module
 
         this.listeners.add(new LambdaListener<>(TickEvent.class, e -> {
             if (!(mc.currentScreen instanceof ChatScreen)) {
-                ChatUtil.sendMessage("faggtot");
+                disable();
                 disableOtherGuis();
                 Click.CLICK_GUI.set(this);
                 screen = mc.currentScreen instanceof Click ? ((Click) mc.currentScreen).screen : mc.currentScreen;
@@ -161,7 +161,6 @@ public class ClickGui extends Module
                 gui.init();
                 gui.onGuiOpened();
                 mc.setScreen(gui);
-                disable();
             }
         }));
 
