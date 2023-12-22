@@ -30,6 +30,7 @@ import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
+import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
@@ -150,7 +151,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new LongJump());
         // this.forceRegister(new NoFall());
         // this.forceRegister(new NoMove());
-        // this.forceRegister(new NoSlowDown());
+        this.forceRegister(new NoSlowDown());
         // this.forceRegister(new PacketFly());
         // this.forceRegister(new Phase());
         // this.forceRegister(new SafeWalk());

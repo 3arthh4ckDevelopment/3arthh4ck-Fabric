@@ -27,6 +27,7 @@
     "gui.MixinInGameHud",
     "gui.MixinTitleScreen",
     "network.MixinClientPlayNetworkHandler",
+    "util.IKeyBinding",
     "util.MixinGameOptions"
   ],
   "injectors": {
