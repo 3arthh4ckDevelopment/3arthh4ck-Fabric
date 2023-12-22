@@ -18,9 +18,10 @@ public class Keyboard {
     }
 
     public static String getKeyName(int key) {
-
-        return GLFW.glfwGetKeyName(key, 0);
-        // return InputUtil.fromKeyCode(key, 0).getTranslationKey().substring(13).replace('.', ' ').toUpperCase();
+        String s = GLFW.glfwGetKeyName(key, 0);
+        if (s == null || s.isEmpty())
+            s = InputUtil.fromKeyCode(key, 0).getTranslationKey().substring(13).replace('.', ' ').toUpperCase();
+        return s;
     }
 
     public static int getRControl() {
