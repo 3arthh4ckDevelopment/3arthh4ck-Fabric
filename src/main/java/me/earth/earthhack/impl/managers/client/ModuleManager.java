@@ -151,7 +151,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new LongJump());
         // this.forceRegister(new NoFall());
         // this.forceRegister(new NoMove());
-        this.forceRegister(new NoSlowDown());
+        // this.forceRegister(new NoSlowDown());
         // this.forceRegister(new PacketFly());
         // this.forceRegister(new Phase());
         // this.forceRegister(new SafeWalk());

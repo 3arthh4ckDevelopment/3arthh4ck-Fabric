@@ -1,6 +1,8 @@
 package me.earth.earthhack.impl.managers;
 
 import me.earth.earthhack.api.event.bus.instance.Bus;
+import me.earth.earthhack.api.module.Module;
+import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.plugin.Plugin;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.managers.chat.ChatManager;
@@ -80,6 +82,12 @@ public class Managers
                 FILES/*, new NoMotionUpdateService(), new PlayerMotionService(),
                 new PotionService()*/);
 
+        Earthhack.getLogger().info("Loading Plugins");
+        PluginManager.getInstance().instantiatePlugins();
+        for (Plugin plugin : PluginManager.getInstance().getPlugins().values())
+            plugin.load();
+        for (Module m : Managers.MODULES.getRegistered())
+            PluginsCategory.getInstance().addPluginModule(m);
 
         Earthhack.getLogger().info("Loading Commands");
         COMMANDS.init();
@@ -89,12 +97,6 @@ public class Managers
         /*
          * Initialize PingBypass here!!!
          */
-        Earthhack.getLogger().info("Loading Plugins");
-        PluginManager.getInstance().instantiatePlugins();
-        for (Plugin plugin : PluginManager.getInstance().getPlugins().values())
-        {
-            plugin.load();
-        }
         Earthhack.getLogger().info("Loading Configs");
         try
         {
