@@ -15,7 +15,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class CommandGui extends Screen implements Globals
+public class CommandScreen extends Screen implements Globals
 {
     private static final SettingCache<Boolean, BooleanSetting, Commands> BACK =
             Caches.getSetting(Commands.class, BooleanSetting.class, "BackgroundGui", false);
@@ -28,9 +28,9 @@ public class CommandGui extends Screen implements Globals
     private TextFieldWidget textField; // = new CommandChatGui("+"); // todo this, works for now so i cba
     private TexturedButtonWidget closeButton;
 
-    public CommandGui(Screen parent)
+    public CommandScreen(Screen parent)
     {
-        super(Text.literal("CommandGui"));
+        super(Text.literal("CommandScreen"));
         this.parent = parent;
     }
 
@@ -55,6 +55,7 @@ public class CommandGui extends Screen implements Globals
                 10,
                 Text.of("+"));
         textField.setEditable(true);
+        textField.setText(Commands.getPrefix());
     }
 
     @Override

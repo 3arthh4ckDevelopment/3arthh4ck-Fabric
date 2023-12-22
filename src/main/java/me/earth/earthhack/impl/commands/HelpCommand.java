@@ -2,7 +2,7 @@ package me.earth.earthhack.impl.commands;
 
 import me.earth.earthhack.api.command.Command;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.commands.gui.CommandGui;
+import me.earth.earthhack.impl.commands.gui.CommandScreen;
 import me.earth.earthhack.impl.commands.util.CommandDescriptions;
 import me.earth.earthhack.impl.gui.chat.clickevents.RunnableClickEvent;
 import me.earth.earthhack.impl.gui.chat.util.ChatComponentUtil;
@@ -75,9 +75,9 @@ public class HelpCommand extends Command implements Globals
     private void setText(String text)
     {
         Screen current = mc.currentScreen;
-        if (current instanceof CommandGui)
+        if (current instanceof CommandScreen)
         {
-            ((CommandGui) current).setText(text);
+            ((CommandScreen) current).setText(text);
         }
         else
         {

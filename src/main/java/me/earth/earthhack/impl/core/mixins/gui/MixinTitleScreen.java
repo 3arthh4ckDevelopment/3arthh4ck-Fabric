@@ -1,7 +1,7 @@
 package me.earth.earthhack.impl.core.mixins.gui;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.commands.gui.CommandGui;
+import me.earth.earthhack.impl.commands.gui.CommandScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -41,7 +41,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                 0, 40, 20,
                 EARTHHACK_TEXTURES,
                 256, 256,
-                button -> this.client.setScreen(new CommandGui(new TitleScreen()))));
+                button -> this.client.setScreen(new CommandScreen(new TitleScreen()))));
     }
 
 }
