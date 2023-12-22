@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "MixinMinecraftClient",
+    "block.MixinSlimeBlock",
+    "block.MixinSoulSandBlock",
     "entity.living.player.MixinPlayerEntity",
     "network.MixinClientConnection",
     "network.client.ILoginSuccessS2CPacket",
