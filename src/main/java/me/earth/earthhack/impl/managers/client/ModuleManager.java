@@ -28,6 +28,7 @@ import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
 import me.earth.earthhack.impl.modules.misc.chat.Chat;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
+import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
 import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
@@ -128,7 +129,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Spammer());
         // this.forceRegister(new ToolTips());
         // this.forceRegister(new TpsSync());
-        // this.forceRegister(new Tracker());
+        this.forceRegister(new Tracker());
         // this.forceRegister(new TrueDurability());
         // this.forceRegister(new PacketDelay());
 
