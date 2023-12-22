@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.commands.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.util.interfaces.Globals;
@@ -82,22 +81,20 @@ public class CommandGui extends Screen implements Globals
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
-        super.render(context, mouseX, mouseY, delta);
-        RenderSystem.enableBlend();
-        // TODO: overlaps all the drawable children
-        // if(BACK.getValue())
-        // {
-        //     context.setShaderColor(0.25f, 0.25f, 0.25f, 1.0f);
-        //     context.drawTexture(BLACK_PNG, 0, 0, 0, 0.0f, 0.0f, this.width, this.height, 16, 16);
-        //     context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        // }
-        // else
-        // {
-        //     renderBackground(context);
-        // }
-        RenderSystem.enableDepthTest();
+        if(BACK.getValue()){
+            context.drawRepeatingTexture(
+                    BLACK_PNG, 0, 0, context.getScaledWindowWidth(), context.getScaledWindowHeight(),
+                    0,0,
+                    16, 16
+            );
+        }
+        else
+            renderBackground(context);
+        // RenderSystem.enableBlend();
+        // RenderSystem.enableDepthTest();
         this.addSelectableChild(textField);
         this.addDrawableChild(textField);
         this.addDrawableChild(closeButton);
+        super.render(context, mouseX, mouseY, delta);
     }
 }
