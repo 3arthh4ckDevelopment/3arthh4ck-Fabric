@@ -14,4 +14,8 @@ public class Freecam extends DisablingModule
     public PlayerEntity getPlayer() {
         return mc.player;
     }
+
+    public void rotate(float rotations, float rotations2) {
+
+    }
 }

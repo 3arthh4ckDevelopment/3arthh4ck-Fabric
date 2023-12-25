@@ -23,6 +23,7 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
 import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
+import me.earth.earthhack.impl.modules.combat.surround.Surround;
 import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
 import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
 import me.earth.earthhack.impl.modules.misc.chat.Chat;
@@ -30,6 +31,7 @@ import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
 import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
+import me.earth.earthhack.impl.modules.movement.blocklag.BlockLag;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
 import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
@@ -94,7 +96,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Offhand());
         // this.forceRegister(new PistonAura());
         // this.forceRegister(new Arrows());
-        // this.forceRegister(new Surround());
+        this.forceRegister(new Surround());
         // this.forceRegister(new SelfTrap());
         // this.forceRegister(new WebAura());
 
@@ -137,7 +139,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Anchor());
         this.forceRegister(new AutoSprint());
         // this.forceRegister(new Avoid());
-        // this.forceRegister(new BlockLag());
+        this.forceRegister(new BlockLag());
         // this.forceRegister(new BoatFly());
         // this.forceRegister(new Clip());
         // this.forceRegister(new ElytraFlight());

@@ -13,6 +13,7 @@ import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 
 /**
  * Manages the last position that has been
@@ -155,6 +156,11 @@ public class PositionManager extends SubscriberImpl implements Globals
     public Vec3d getVec()
     {
         return new Vec3d(last_x, last_y, last_z);
+    }
+
+    public Vector3f getVecF()
+    {
+        return new Vector3f((float) last_x, (float) last_y, (float) last_z);
     }
 
     public void readCPacket(PlayerMoveC2SPacket packetIn)

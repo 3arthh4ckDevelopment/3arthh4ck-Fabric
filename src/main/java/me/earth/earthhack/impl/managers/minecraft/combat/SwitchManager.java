@@ -9,7 +9,7 @@ import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
 
 /**
  * Some servers block certain packets, especially
- * CPacketUseEntity for around 10 ticks (~ 500 ms) after you
+ * PlayerInteractEntityC2SPacket for around 10 ticks (~ 500 ms) after you
  * switched your mainhand slot. If you attack during this time you
  * might flag the anticheat. This class manages the time that
  * passed after the last switch.

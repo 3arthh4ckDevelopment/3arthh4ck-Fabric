@@ -18,8 +18,11 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class BlockUtil implements Globals
 {
@@ -470,7 +473,17 @@ public class BlockUtil implements Globals
      */
     public static Direction getFacing(BlockPos pos)
     {
-        return getFacing(pos, mc.world);
+        return getFacing(pos, mc.world, false);
+    }
+
+    /**
+     * @param pos the position.
+     * @param provider provides the BlockStates.
+     * @return a facing for the given position.
+     */
+    public static Direction getFacing(BlockPos pos, ClientWorld provider)
+    {
+        return getFacing(pos, provider, false);
     }
 
     /**
@@ -481,19 +494,24 @@ public class BlockUtil implements Globals
      *
      * @param pos the position to get a facing for.
      * @param provider provides the BlockStates.
+     * @param strict If the facing should be strict (for 2b2t).
      * @return a facing for the given position.
      */
-    public static Direction getFacing(BlockPos pos, ClientWorld provider)
+    public static Direction getFacing(BlockPos pos, ClientWorld provider, boolean strict)
     {
-        for (Direction facing : Direction.values())
-        {
-            if (!provider.getBlockState(pos.offset(facing))
-                    .isReplaceable())
+        if (strict) {
+            // implement
+        } else {
+            for (Direction facing : Direction.values())
             {
-                return facing;
+                if (!provider.getBlockState(pos.offset(facing))
+                        .isReplaceable())
+                {
+                    return facing;
+                }
             }
-        }
 
+        }
         return null;
     }
 

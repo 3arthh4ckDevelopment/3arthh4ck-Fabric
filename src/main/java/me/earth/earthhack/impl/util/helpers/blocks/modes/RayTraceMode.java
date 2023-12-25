@@ -5,5 +5,6 @@ public enum RayTraceMode
     Fast,
     Resign,
     Force,
-    Smart
+    Smart,
+    Direction
 }
