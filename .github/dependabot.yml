@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "12:00"
       timezone: "Europe/Berlin"
     assignees:
@@ -20,7 +20,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       time: "12:00"
       timezone: "Europe/Berlin"
     assignees:
