@@ -4,7 +4,6 @@ import me.earth.earthhack.api.command.Command;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.util.interfaces.Displayable;
 import me.earth.earthhack.impl.commands.util.CommandDescriptions;
-import me.earth.earthhack.impl.core.mixins.util.IStyle;
 import me.earth.earthhack.impl.gui.chat.AbstractTextComponent;
 import me.earth.earthhack.impl.gui.chat.clickevents.SmartClickEvent;
 import me.earth.earthhack.impl.gui.chat.components.SimpleComponent;
@@ -18,7 +17,6 @@ import net.minecraft.text.*;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ModuleListCommand extends Command
 {
@@ -49,7 +47,7 @@ public class ModuleListCommand extends Command
                 .stream()
                 .sorted(Comparator
                         .comparing(Displayable::getDisplayName))
-                .collect(Collectors.toList());
+                .toList();
 
         for (int i = 0; i < moduleList.size(); i++)
         {
@@ -83,11 +81,10 @@ public class ModuleListCommand extends Command
                             }
                         });
 
-                ((IStyle) style).setSuppliedInsertion(() ->
-                        Commands.getPrefix()
-                                + module.getName());
+                style.withInsertion(Commands.getPrefix()
+                                        + module.getName());
 
-                ((IStyle) style).setMiddleClickEvent(new SmartClickEvent
+                style.withClickEvent(new SmartClickEvent
                         (ClickEvent.Action.RUN_COMMAND)
                 {
                     @Override

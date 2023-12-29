@@ -15,6 +15,7 @@ import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.autosprint.mode.SprintMode;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
+import me.earth.earthhack.impl.modules.render.norender.NoRender;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityType;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -39,8 +40,8 @@ import java.util.function.Supplier;
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IEntity
 {
-    // private static final ModuleCache<NoRender>
-    //         NO_RENDER = Caches.getModule(NoRender.class);
+    private static final ModuleCache<NoRender>
+            NO_RENDER = Caches.getModule(NoRender.class);
     @Unique
     private static final ModuleCache<AutoSprint>
             SPRINT = Caches.getModule(AutoSprint.class);
