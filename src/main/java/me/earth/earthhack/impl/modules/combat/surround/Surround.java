@@ -73,8 +73,8 @@ public class Surround extends ObbyModule
         register(new BooleanSetting("MultiTrap", false));
     protected final Setting<Boolean> trapExtend =
         register(new BooleanSetting("TrapExtend", false));
-    protected final Setting<Boolean> newVer =
-        register(new BooleanSetting("1.13+", false));
+    protected final Setting<Boolean> oldVer =
+        register(new BooleanSetting("1.12", false));
     protected final Setting<Boolean> deltaY =
         register(new BooleanSetting("Delta-Y", true));
     protected final Setting<Boolean> centerY =
@@ -436,7 +436,7 @@ public class Surround extends ObbyModule
                                              .down()
                                              .offset(relative, 2),
                                          true,
-                                         newVer.getValue()))
+                                         oldVer.getValue()))
         {
             return false;
         }
@@ -465,7 +465,7 @@ public class Surround extends ObbyModule
                 if (BlockUtil.canPlaceCrystal(pos.offset(facing.getOpposite())
                                                  .down(),
                                               true,
-                                              newVer.getValue()))
+                                              oldVer.getValue()))
                 {
                     return true;
                 }

@@ -43,7 +43,7 @@ final class SurroundData extends ObbyData<Surround>
                 " rarely come into play.");
         register(module.peNoTrap, "NoTrap for blocks placed by PlayerExtend. " +
                 "Not required probably.");
-        register(module.newVer, "Takes 1.13+ Mechanics into account" +
+        register(module.oldVer, "Takes 1.12 Mechanics into account" +
                 " for some calculations.");
         register(module.deltaY,
                 "Takes the players vertical speed into Account.");

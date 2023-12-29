@@ -13,16 +13,14 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class BlockUtil implements Globals
 {
@@ -155,7 +153,7 @@ public class BlockUtil implements Globals
      * @param from the entity to get the distanceSq from
      * @param to the position
      * @return distanceSq as used by
-     *         {@link NetHandlerPlayServer#processPlayerDigging}.
+     *         {@link net.minecraft.server.network.ServerPlayNetworkHandler#onPlayerAction(PlayerActionC2SPacket)}.
      */
     public static double getDistanceSqDigging(Entity from, BlockPos to)
     {
@@ -224,7 +222,7 @@ public class BlockUtil implements Globals
             return false;
         }
 
-        if (!noBoost2)
+        if (noBoost2)
         {
             BlockPos boost2 = boost.up();
 
@@ -520,7 +518,7 @@ public class BlockUtil implements Globals
      * its Material is replaceable.
      *
      * @param pos the pos to check.
-     * @return {@link Material#isReplaceable()} for the position.
+     * @return {@link BlockState#isReplaceable()} for the position.
      */
     public static boolean isReplaceable(BlockPos pos)
     {
