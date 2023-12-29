@@ -146,4 +146,23 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     {
         Bus.EVENT_BUS.post(new TickEvent());
     }
+
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/world/ClientWorld;tick(Ljava/util/function/BooleanSupplier;)V",
+                    shift = At.Shift.AFTER))
+    private void postUpdateWorld(CallbackInfo info)
+    {
+        Bus.EVENT_BUS.post(new TickEvent.PostWorldTick());
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At("RETURN"))
+    public void tickReturnHook(CallbackInfo info)
+    {
+        Bus.EVENT_BUS.post(new TickEvent.Post());
+    }
 }
