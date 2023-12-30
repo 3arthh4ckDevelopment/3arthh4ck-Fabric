@@ -8,16 +8,15 @@
     "3arthqu4ke",
     "oHare",
     "Megyn",
-    "Gerald"
-  ],
-  "continued-authors": [
+    "Gerald",
     "nukkkiz",
     "Ai_2473",
     "dabigbulletz638",
     "08HvH",
     "CrystalEU",
     "GentlemanMC",
-    "Cubic"
+    "Cubic",
+    "Master7720"
   ],
   "contact": {
     "website": "https://github.com/3arthqu4ke/3arthh4ck",
@@ -37,8 +36,9 @@
     "mixins.earth.json"
   ],
   "depends": {
-    "fabricloader": ">=${loader_version}",
-    "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "fabricloader": ">=0.15.3",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
   }
 }
