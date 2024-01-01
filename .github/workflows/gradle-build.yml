@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -27,8 +26,11 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
+      - name: Delete the sources jar
+        run: rm *-sources.jar
+
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: 3arthh4ck-fabric
-          path: ./build/libs/*release.jar  
+          path: ./build/libs/*.jar
