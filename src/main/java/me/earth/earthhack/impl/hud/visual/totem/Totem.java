@@ -6,20 +6,21 @@ import me.earth.earthhack.impl.gui.hud.HudEditorGui;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class Totem extends HudElement {
 
-    private void render() {
+    private void render(DrawContext context) {
         int totems = InventoryUtil.getCount(Items.TOTEM_OF_UNDYING);
 
-        getContext().drawItem(new ItemStack(Items.TOTEM_OF_UNDYING), (int) getX(), (int) getY(), 100206, (int) getZ());
+        context.drawItem(new ItemStack(Items.TOTEM_OF_UNDYING), (int) getX(), (int) getY(), 100206, (int) getZ());
 
         if (totems <= 0 && mc.currentScreen instanceof HudEditorGui) {
-            HudRenderUtil.renderText("0", (int) getX() + 17 - RENDERER.getStringWidth("0"), (int) getY() + 9);
+            HudRenderUtil.renderText(context, "0", (int) getX() + 17 - RENDERER.getStringWidth("0"), (int) getY() + 9);
         } else {
-            HudRenderUtil.renderText(String.valueOf(totems), (int) getX() + 17 - RENDERER.getStringWidth(String.valueOf(totems)), (int) getY() + 9);
+            HudRenderUtil.renderText(context, String.valueOf(totems), (int) getX() + 17 - RENDERER.getStringWidth(String.valueOf(totems)), (int) getY() + 9);
         }
     }
 
@@ -29,26 +30,26 @@ public class Totem extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

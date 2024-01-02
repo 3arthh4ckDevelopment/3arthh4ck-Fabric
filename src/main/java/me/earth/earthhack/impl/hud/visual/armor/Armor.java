@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.render.ColorHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 
 // TODO: vertical mode
@@ -17,7 +18,7 @@ public class Armor extends HudElement {
     private final Setting<Boolean> durability =
             register(new BooleanSetting("Durability", true));
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null) {
             //TODO: scale this ?
             float x = getX();
@@ -25,11 +26,11 @@ public class Armor extends HudElement {
                 if (!stack.isEmpty()) {
                     if (durability.getValue()) {
                         final float percent = DamageUtil.getPercent(stack) / 100.0f;
-                        Managers.TEXT.drawStringWithShadow(getContext(),
+                        Managers.TEXT.drawStringWithShadow(context,
                                 ((int) (percent * 100.0f)) + "%", (getX() + x + 2) * 1.6f, (getY() + 1) * 1.6f, ColorHelper.toColor(percent * 120.0f, 100.0f, 50.0f, 1.0f).getRGB());
                     }
-                    getContext().drawItem(stack, (int) x, (int) getY());
-                    getContext().drawItemInSlot(mc.textRenderer, stack, (int) x, (int) getY());
+                    context.drawItem(stack, (int) x, (int) getY());
+                    context.drawItemInSlot(mc.textRenderer, stack, (int) x, (int) getY());
                     x += 18;
                 }
             }
@@ -42,26 +43,26 @@ public class Armor extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.editor.HudEditor;
 import me.earth.earthhack.impl.util.render.ColorUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.client.gui.DrawContext;
 
 public class HudRenderUtil implements Globals {
     private static final TextRenderer RENDERER = Managers.TEXT;
@@ -31,13 +32,13 @@ public class HudRenderUtil implements Globals {
             return TextColor.GRAY;
     }
 
-    public static void renderText(String text, float x, float y) {
-        renderText(text, x, y, 1.0f);
+    public static void renderText(DrawContext context, String text, float x, float y) {
+        renderText(context, text, x, y, 1.0f);
     }
 
-    public static void renderText(String text, float x, float y, float scale) {
+    public static void renderText(DrawContext context, String text, float x, float y, float scale) {
         String colorCode = HUD_EDITOR.get().colorMode.getValue().getColor();
-        RENDERER.drawStringScaled(colorCode + text, x, y, textColor(y), HUD_EDITOR.get().shadow.getValue(), scale);
+        RENDERER.drawStringScaled(context, colorCode + text, x, y, textColor(y), HUD_EDITOR.get().shadow.getValue(), scale);
     }
 
     private static int textColor(float y) {

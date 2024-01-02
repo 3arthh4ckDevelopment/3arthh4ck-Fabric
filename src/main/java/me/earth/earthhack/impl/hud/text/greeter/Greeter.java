@@ -10,8 +10,8 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.media.Media;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
-import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
+import net.minecraft.client.gui.DrawContext;
 
 import java.util.Calendar;
 
@@ -24,7 +24,7 @@ public class Greeter extends HudElement {
 
     public static String text = "Welcome to Future Beta >:D";
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null) {
             String name = mc.player.getDisplayName().getString().trim();
             String playerName = Caches.getModule(Media.class).returnIfPresent(m -> m.convert(name), name);
@@ -51,7 +51,7 @@ public class Greeter extends HudElement {
                     text = "Welcome " + playerName;
             }
         }
-        HudRenderUtil.renderText(text, getX(), getY());
+        HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
     public static String getTimeOfDay() {
@@ -70,31 +70,32 @@ public class Greeter extends HudElement {
     }
 
     public Greeter() {
-        super("Greeter", HudCategory.Text,  (Render2DUtil.getScreenWidth() / 2.0f) - (Managers.TEXT.getStringWidth(text) / 2.0f), 2);
+        //super("Greeter", HudCategory.Text,  (Render2DUtil.getScreenWidth() / 2.0f) - (Managers.TEXT.getStringWidth(text) / 2.0f), 2);
+        super("Greeter", HudCategory.Text,  10, 2);
         this.setData(new SimpleHudData(this, "Greets you."));
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

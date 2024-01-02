@@ -13,7 +13,7 @@ import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.pingbypass.modules.PbModule;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.gui.DrawContext;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,8 +34,7 @@ public class HudArrayList extends DynamicHudElement {
     protected final List<Map.Entry<String, Module>> modules = new java.util.ArrayList<>();
     protected Map<Module, HudArrayEntry> arrayEntriesSorted;
 
-    private void render() {
-        GL11.glPushMatrix();
+    private void render(DrawContext context) {
         float xPos = getX() + simpleCalcH(getWidth());
         float yPos = (directionV() == TextDirectionV.BottomToTop ? getY() - Managers.TEXT.getStringHeight() * 4 : getY());
         float moduleOffset = Managers.TEXT.getStringHeightI() + textOffset.getValue();
@@ -68,7 +67,7 @@ public class HudArrayList extends DynamicHudElement {
                         LinkedHashMap::new));
             }
             for (HudArrayEntry arrayEntry : arrayEntriesSorted.values()) {
-                arrayEntry.drawArrayEntry(xPos, yPos);
+                arrayEntry.drawArrayEntry(context, xPos, yPos);
                 yPos += moduleOffset;
             }
             getRemoveEntries().forEach((key, value) -> getArrayEntries().remove(key));
@@ -77,14 +76,13 @@ public class HudArrayList extends DynamicHudElement {
             if (directionV() == TextDirectionV.BottomToTop)
                 yPos += moduleOffset * (modules.size() + 1);
             for (Map.Entry<String, Module> module : modules) {
-                HudRenderUtil.renderText(module.getKey(), xPos - simpleCalcH(RENDERER.getStringWidth(module.getKey())), yPos);
+                HudRenderUtil.renderText(context, module.getKey(), xPos - simpleCalcH(RENDERER.getStringWidth(module.getKey())), yPos);
                 if (directionV() == TextDirectionV.BottomToTop)
                     yPos -= moduleOffset;
                 else
                     yPos += moduleOffset;
             }
         }
-        GL11.glPopMatrix();
     }
 
     public String getHudName(Module module)
@@ -128,26 +126,26 @@ public class HudArrayList extends DynamicHudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

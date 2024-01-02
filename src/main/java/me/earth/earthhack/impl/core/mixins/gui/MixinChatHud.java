@@ -8,24 +8,18 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.impl.core.ducks.gui.IChatHud;
-import me.earth.earthhack.impl.core.ducks.gui.IChatHudLine;
 import me.earth.earthhack.impl.event.events.render.ChatEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.debug.ConsoleColors;
 import me.earth.earthhack.impl.modules.client.debug.Debug;
 import me.earth.earthhack.impl.modules.client.media.Media;
 import me.earth.earthhack.impl.modules.misc.chat.Chat;
-import me.earth.earthhack.impl.util.animation.AnimationMode;
-import me.earth.earthhack.impl.util.animation.TimeAnimation;
-import me.earth.earthhack.impl.util.misc.collections.ConvenientStack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.network.message.MessageSignatureData;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,10 +30,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Stack;
 
 @Mixin(ChatHud.class)
 public abstract class MixinChatHud implements IChatHud

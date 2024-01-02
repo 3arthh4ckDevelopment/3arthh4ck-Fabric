@@ -11,6 +11,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.helpers.addable.ItemAddingModule;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -38,7 +39,7 @@ public class PvpResources extends HudElement {
     int y = 0;
     int finalOffset;
     
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null) {
             if (mode.getValue() == Mode.Simple) {
                 for (int I : defaultIds)
@@ -56,58 +57,58 @@ public class PvpResources extends HudElement {
             y = (int) getY();
 
             if (style.getValue() == Styles.Square)
-                drawSquare();
+                drawSquare(context);
             else if (style.getValue() == Styles.Vertical)
-                drawVertical();
+                drawVertical(context);
             else
-                drawHorizontal();
+                drawHorizontal(context);
         }
     }
 
-    private void drawVertical() {
+    private void drawVertical(DrawContext context) {
         finalOffset = blockIds.size() * 20;
         if (pretty.getValue())
-            Render2DUtil.roundedRect(getContext().getMatrices(), x, y - 1, x + 16, y + finalOffset - 3, 2.0f, color.getValue().getRGB());
+            Render2DUtil.roundedRect(context.getMatrices(), x, y - 1, x + 16, y + finalOffset - 3, 2.0f, color.getValue().getRGB());
         else
-            Render2DUtil.drawRect(getContext().getMatrices(), x - 3, y - 3, x + 20, y + finalOffset, color.getValue().getRGB());
+            Render2DUtil.drawRect(context.getMatrices(), x - 3, y - 3, x + 20, y + finalOffset, color.getValue().getRGB());
 
         int offset = 0;
         for (int I : blockIds) {
-            renderItem(I, x, y + offset);
+            renderItem(context, I, x, y + offset);
             offset += 20;
         }
     }
 
-    private void drawSquare() {
+    private void drawSquare(DrawContext context) {
         if (pretty.getValue())
-            Render2DUtil.roundedRect(getContext().getMatrices(), x + 1, y + 1, x + 36, y + 36, 4.0f, color.getValue().getRGB());
+            Render2DUtil.roundedRect(context.getMatrices(), x + 1, y + 1, x + 36, y + 36, 4.0f, color.getValue().getRGB());
         else
-            Render2DUtil.drawRect(getContext().getMatrices(), x - 3, y - 3, x + 40, y + 40, color.getValue().getRGB());
+            Render2DUtil.drawRect(context.getMatrices(), x - 3, y - 3, x + 40, y + 40, color.getValue().getRGB());
 
 
-        renderItem(426, x, y);
-        renderItem(384, x, y + 20);
-        renderItem(322, x + 20, y);
-        renderItem(449, x + 20, y + 20);
+        renderItem(context, 426, x, y);
+        renderItem(context, 384, x, y + 20);
+        renderItem(context, 322, x + 20, y);
+        renderItem(context, 449, x + 20, y + 20);
     }
 
-    private void drawHorizontal() {
+    private void drawHorizontal(DrawContext context) {
         finalOffset = blockIds.size() * 20;
         if (pretty.getValue())
-            Render2DUtil.roundedRect(getContext().getMatrices(), x - 1, y + 1, x + finalOffset - 3, y + 16, 2.0f, color.getValue().getRGB());
+            Render2DUtil.roundedRect(context.getMatrices(), x - 1, y + 1, x + finalOffset - 3, y + 16, 2.0f, color.getValue().getRGB());
         else
-            Render2DUtil.drawRect(getContext().getMatrices(), x - 2, y - 2, x + finalOffset - 1, y + 18, color.getValue().getRGB());
+            Render2DUtil.drawRect(context.getMatrices(), x - 2, y - 2, x + finalOffset - 1, y + 18, color.getValue().getRGB());
 
         int offset = 0;
         for (int I : blockIds) {
-            renderItem(I, x + offset, y);
+            renderItem(context, I, x + offset, y);
             offset += 20;
         }
     }
 
-    public void renderItem(int itemId, int xPosition, int yPosition) {
-        getContext().drawItem(new ItemStack(Item.byRawId(itemId), 1), xPosition, yPosition, 100205, (int) getZ());
-        Managers.TEXT.drawStringWithShadow(getContext(), getItemCount(Item.byRawId(itemId)), xPosition + 18 - Managers.TEXT.getStringWidth(getItemCount(Item.byRawId(itemId))), yPosition + 9, -1);
+    public void renderItem(DrawContext context, int itemId, int xPosition, int yPosition) {
+        context.drawItem(new ItemStack(Item.byRawId(itemId), 1), xPosition, yPosition, 100205, (int) getZ());
+        Managers.TEXT.drawStringWithShadow(context, getItemCount(Item.byRawId(itemId)), xPosition + 18 - Managers.TEXT.getStringWidth(getItemCount(Item.byRawId(itemId))), yPosition + 9, -1);
     }
 
     public static String getItemCount(Item item) {
@@ -141,26 +142,26 @@ public class PvpResources extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

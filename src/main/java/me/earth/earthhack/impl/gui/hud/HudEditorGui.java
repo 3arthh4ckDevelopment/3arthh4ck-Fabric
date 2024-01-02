@@ -151,8 +151,8 @@ public class HudEditorGui extends Screen
                 {
                     elements.add(element);
                 }
-                element.guiUpdate(mouseX, mouseY, delta);
-                element.guiDraw(mouseX, mouseY, delta);
+                element.guiUpdate(mouseX, mouseY);
+                element.guiDraw(context, mouseX, mouseY, delta);
             }
         }
 
@@ -164,7 +164,6 @@ public class HudEditorGui extends Screen
             Render2DUtil.drawRect(context.getMatrices(), (float) minX, (float) minY, (float) maxWidth, (float) maxHeight, new Color(255, 255, 255, 128).getRGB());
         }
 
-        HudElementComponent.context = context;
         getFrames().forEach(frame -> frame.drawScreen(context, mouseX, mouseY, delta));
     }
 

@@ -11,6 +11,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.client.gui.DrawContext;
 
 public class SafetyHud extends HudElement {
 
@@ -33,7 +34,7 @@ public class SafetyHud extends HudElement {
 
     String text = "UNSAFE";
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null && mc.world != null) {
             text = name.getValue()
                     + (showBrackets.getValue() ? actualBracket()[0] : "")
@@ -41,7 +42,7 @@ public class SafetyHud extends HudElement {
                     + (showBrackets.getValue() ? actualBracket()[1] : "");
         }
 
-        HudRenderUtil.renderText(text, getX(), getY(), scale.getValue());
+        HudRenderUtil.renderText(context, text, getX(), getY(), scale.getValue());
     }
 
     private String[] actualBracket() {
@@ -57,26 +58,26 @@ public class SafetyHud extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(Managers.TEXT.getStringHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

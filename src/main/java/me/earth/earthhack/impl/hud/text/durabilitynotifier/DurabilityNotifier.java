@@ -12,6 +12,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 
 import java.util.Objects;
@@ -32,10 +33,10 @@ public class DurabilityNotifier extends HudElement {
     private final StopWatch stopWatch = new StopWatch();
     private String text = "[EXAMPLE] Your chestplate is low durability! (20%) [EXAMPLE]";
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null && mc.world != null) {
             if (stopWatch.getTime() < messageDuration.getValue() * 1000) {
-                HudRenderUtil.renderText(text, getX(), getY());
+                HudRenderUtil.renderText(context, text, getX(), getY());
             }
         }
     }
@@ -68,27 +69,27 @@ public class DurabilityNotifier extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
         text = "[EXAMPLE] Your chestplate is low durability! (20%) [EXAMPLE]";
-        HudRenderUtil.renderText(text, getX(), getY());
+        HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

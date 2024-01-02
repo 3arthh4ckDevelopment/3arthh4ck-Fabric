@@ -7,9 +7,7 @@ import me.earth.earthhack.impl.modules.render.nametags.IEntityNoNametag;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.shape.VoxelShape;
 
-import java.util.List;
 import java.util.UUID;
 
 public class MotionTracker extends EntityPlayerNoInterp

@@ -8,6 +8,7 @@ import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -27,24 +28,24 @@ public class Inventory extends HudElement {
             register(new ColorSetting("OutlineColor", new Color(23,23,23,23)));
 
 
-    private void render() {
+    private void render(DrawContext context) {
         if (box.getValue()) {
             if (pretty.getValue())
-                Render2DUtil.roundedRect(getContext().getMatrices(), getX(), getY() - 1.0f, getX() + 9 * 18, getY() + 55.0f, 2, boxColor.getValue().getRGB());
+                Render2DUtil.roundedRect(context.getMatrices(), getX(), getY() - 1.0f, getX() + 9 * 18, getY() + 55.0f, 2, boxColor.getValue().getRGB());
             else
-                Render2DUtil.drawBorderedRect(getContext().getMatrices(), getX(), getY(), getX() + 9 * 18, getY() + 55.0f, 1.0f, boxColor.getValue().getRGB(), outlineColor.getValue().getRGB());
+                Render2DUtil.drawBorderedRect(context.getMatrices(), getX(), getY(), getX() + 9 * 18, getY() + 55.0f, 1.0f, boxColor.getValue().getRGB(), outlineColor.getValue().getRGB());
         }
 
-        ItemRender(mc.player.getInventory().main, (int) getX(),(int) getY(), xCarry.getValue());
+        ItemRender(context, mc.player.getInventory().main, (int) getX(),(int) getY(), xCarry.getValue());
     }
 
-    protected void ItemRender(final DefaultedList<ItemStack> items, final int x, final int y, boolean xCarry) {
+    protected void ItemRender(DrawContext context, final DefaultedList<ItemStack> items, final int x, final int y, boolean xCarry) {
         for (int i = 0; i < items.size() - 9; i++) {
             int iX = x + (i % 9) * (18);
             int iY = y + (i / 9) * (18);
             ItemStack itemStack = items.get(i + 9);
-            getContext().drawItem(itemStack, x, y, 100203, (int) getZ());
-            Managers.TEXT.drawString(getContext(), String.valueOf(itemStack.getCount()), x, y, 0xffffffff);
+            context.drawItem(itemStack, x, y, 100203, (int) getZ());
+            Managers.TEXT.drawString(context, String.valueOf(itemStack.getCount()), x, y, 0xffffffff);
         }
 
         if (xCarry) {
@@ -52,8 +53,8 @@ public class Inventory extends HudElement {
                 int iX = x + ((i + 4) % 9) * (18);
                 ItemStack itemStack = mc.player.getInventory().getStack(i);
                 if (itemStack != null && !itemStack.isEmpty()) {
-                    getContext().drawItem(itemStack, iX, y - 18, 100204, (int) getZ());
-                    Managers.TEXT.drawString(getContext(), String.valueOf(itemStack.getCount()), iX, y - 18, 0xffffffff);
+                    context.drawItem(itemStack, iX, y - 18, 100204, (int) getZ());
+                    Managers.TEXT.drawString(context, String.valueOf(itemStack.getCount()), iX, y - 18, 0xffffffff);
                 }
             }
         }
@@ -65,26 +66,26 @@ public class Inventory extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

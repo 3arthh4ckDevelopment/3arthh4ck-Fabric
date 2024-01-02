@@ -76,7 +76,7 @@ public class Managers
         subscribe(TIMER, CONNECT, CHAT, COMBAT, POSITION, ROTATION, SERVER,
                 ACTION, SPEED, SWITCH, TPS, HOLES, SAFETY, KEYBOARD, COLOR,
                 WRAP, MACRO, NCP, SET_DEAD, BLOCKS, ENTITIES, HEALTH, TICK,
-                FILES, ELEMENTS /*, new NoMotionUpdateService(), new PlayerMotionService(),
+                FILES /*, new NoMotionUpdateService(), new PlayerMotionService(),
                 new PotionService()*/);
 
         Earthhack.getLogger().info("Loading Plugins");
@@ -94,6 +94,8 @@ public class Managers
         /*
          * Initialize PingBypass here!!!
          */
+        ELEMENTS.init();
+
         Earthhack.getLogger().info("Loading Configs");
         try
         {
@@ -106,6 +108,7 @@ public class Managers
 
         Earthhack.getLogger().info("Initializing Modules");
         MODULES.load();
+        ELEMENTS.load();
     }
 
     public static void subscribe(Object...subscribers)

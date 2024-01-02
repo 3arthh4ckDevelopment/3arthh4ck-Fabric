@@ -10,6 +10,7 @@ import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.math.RoundingMode;
@@ -35,7 +36,7 @@ public class TextRadar extends DynamicHudElement {
 
     private int counter = 0;
 
-    private void render(boolean inHud) {
+    private void render(DrawContext context, boolean inHud) {
         if (mc.player != null && mc.world != null) {
             Map<String, Integer> players = getTextRadarPlayers();
             if (!players.isEmpty()) {
@@ -46,7 +47,7 @@ public class TextRadar extends DynamicHudElement {
                     y += textHeight * (players.size() + 1);
                 for (Map.Entry<String, Integer> player : players.entrySet()) {
                     String text = player.getKey() + " ";
-                    HudRenderUtil.renderText(text, getX() - simpleCalcH(RENDERER.getStringWidth(text)) + simpleCalcH(138.0f), y);
+                    HudRenderUtil.renderText(context, text, getX() - simpleCalcH(RENDERER.getStringWidth(text)) + simpleCalcH(138.0f), y);
                     if (directionV() == TextDirectionV.BottomToTop)
                         y -= textHeight;
                     else
@@ -56,7 +57,7 @@ public class TextRadar extends DynamicHudElement {
                         break;
                 }
             } else if (inHud) {
-                HudRenderUtil.renderText("Text Radar", getX(), getY());
+                HudRenderUtil.renderText(context, "Text Radar", getX(), getY());
             }
         }
     }
@@ -147,26 +148,26 @@ public class TextRadar extends DynamicHudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render(true);
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context, true);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render(false);
+    public void hudDraw(DrawContext context) {
+        render(context, false);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

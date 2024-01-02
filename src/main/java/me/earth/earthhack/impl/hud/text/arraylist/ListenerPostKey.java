@@ -6,7 +6,6 @@ import me.earth.earthhack.api.module.util.Hidden;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.event.events.keyboard.KeyboardEvent;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.pingbypass.modules.PbModule;
 
 import java.util.*;
 

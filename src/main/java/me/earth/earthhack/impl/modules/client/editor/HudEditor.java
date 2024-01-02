@@ -11,7 +11,6 @@ import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.LambdaListener;
-import me.earth.earthhack.impl.gui.click.component.impl.StringComponent;
 import me.earth.earthhack.impl.gui.hud.HudEditorGui;
 import me.earth.earthhack.impl.util.render.hud.HudRainbow;
 import me.earth.earthhack.impl.util.text.TextColor;
@@ -55,6 +54,7 @@ public class HudEditor extends Module {
             }
         }));
 
+        /*
         brackets.addObserver(e -> {
             StringBuilder b = new StringBuilder();
             for (char c : brackets.getValue().toCharArray()) {
@@ -73,6 +73,8 @@ public class HudEditor extends Module {
                 brackets.setValue(brackets.getInitial());
             }
         });
+
+         */
     }
 
     public final String[] getBrackets() {

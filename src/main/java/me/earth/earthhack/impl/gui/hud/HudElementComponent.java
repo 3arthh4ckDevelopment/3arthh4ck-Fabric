@@ -27,7 +27,6 @@ public class HudElementComponent extends Component {
 
     private final HudElement element;
     private final ArrayList<Component> components = new ArrayList<>();
-    public static DrawContext context;
 
     public HudElementComponent(HudElement element, float posX, float posY, float offsetX, float offsetY, float width, float height) {
         super(element.getName(), posX, posY, offsetX, offsetY, width, height);

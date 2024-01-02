@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.client.gui.DrawContext;
 
 //TODO: enemies tracker
 public class Pops extends HudElement {
@@ -17,12 +18,12 @@ public class Pops extends HudElement {
 
     private String popsNumber = name.getValue();
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null) {
             int pops = Managers.COMBAT.getPops(mc.player);
             popsNumber = name.getValue() + " " + TextColor.GRAY + (pops <= 0 ? "0" : "-" + pops + " ");
         }
-        HudRenderUtil.renderText(popsNumber, getX(), getY());
+        HudRenderUtil.renderText(context, popsNumber, getX(), getY());
     }
 
     public Pops() {
@@ -31,26 +32,26 @@ public class Pops extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

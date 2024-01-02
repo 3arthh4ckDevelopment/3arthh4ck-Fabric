@@ -1,10 +1,7 @@
 package me.earth.earthhack.impl.managers.render;
 
 import me.earth.earthhack.api.cache.ModuleCache;
-import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.event.events.render.Render2DEvent;
-import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.gui.font.CustomFontRenderer;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
@@ -64,7 +61,7 @@ public class TextRenderer implements Globals
         return context.drawText(mc.textRenderer, text, (int) x, (int) y, color, dropShadow);
     }
 
-    public void drawStringScaled(String text, float x, float y, int color, boolean dropShadow, float scale) {
+    public void drawStringScaled(DrawContext context, String text, float x, float y, int color, boolean dropShadow, float scale) {
         /*
         GlStateManager.pushMatrix();
         GlStateManager.scale(scale, scale, scale);

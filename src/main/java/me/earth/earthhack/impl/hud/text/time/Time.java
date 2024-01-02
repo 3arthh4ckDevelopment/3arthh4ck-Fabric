@@ -10,6 +10,7 @@ import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.ChatIDs;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.client.gui.DrawContext;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class Time extends HudElement {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
     private String text = TextColor.GRAY + TextColor.RED + "Invalid";
 
-    private void render() {
+    private void render(DrawContext context) {
         LocalDateTime actualTime = LocalDateTime.now();
         try {
             text = name.getValue() + " " + TextColor.GRAY + formatter.format(actualTime);
@@ -33,7 +34,7 @@ public class Time extends HudElement {
             text = name.getValue() + TextColor.GRAY + TextColor.RED + "Invalid";
         }
 
-        HudRenderUtil.renderText(text, getX(), getY());
+        HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
     public Time() {
@@ -53,26 +54,26 @@ public class Time extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

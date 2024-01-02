@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.client.gui.DrawContext;
 
 public class ServerBrand extends HudElement {
 
@@ -16,10 +17,10 @@ public class ServerBrand extends HudElement {
     private final Setting<String> name =
             register(new StringSetting("BrandText", "ServerBrand"));
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null)
             serverBrand = name.getValue() + " " + TextColor.GRAY + mc.player.getServerBrand();
-        HudRenderUtil.renderText(serverBrand, getX(), getY());
+        HudRenderUtil.renderText(context, serverBrand, getX(), getY());
     }
 
     public ServerBrand() {
@@ -28,26 +29,26 @@ public class ServerBrand extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.pingbypass.input.Keyboard;
+import net.minecraft.client.gui.DrawContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class Binds extends DynamicHudElement {
     int counter = 0;
     List<Module> modules = new ArrayList<>();
 
-    private void render() {
+    private void render(DrawContext context) {
         float moduleOffset = Managers.TEXT.getStringHeightI() + textOffset.getValue();
         if (mc.player != null && mc.world != null) {
             modules.clear();
@@ -72,7 +73,7 @@ public class Binds extends DynamicHudElement {
         if (directionV() == TextDirectionV.BottomToTop)
             yPos += moduleOffset * (modules.size() + 1);
         for (Module m : modules) {
-            HudRenderUtil.renderText( (showStatus.getValue() ? (m.isEnabled() ? enabledColor.getValue().getColor() : disabledColor.getValue().getColor()) : "") + m.getDisplayName() + TextColor.GRAY + " " + (showBind.getValue() ? actualBracket()[0] + bindColor.getValue().getColor() + Keyboard.getKeyName(m.getBind().getKey()) + actualBracket()[1] : ""),
+            HudRenderUtil.renderText(context, (showStatus.getValue() ? (m.isEnabled() ? enabledColor.getValue().getColor() : disabledColor.getValue().getColor()) : "") + m.getDisplayName() + TextColor.GRAY + " " + (showBind.getValue() ? actualBracket()[0] + bindColor.getValue().getColor() + Keyboard.getKeyName(m.getBind().getKey()) + actualBracket()[1] : ""),
                     getX() - simpleCalcH(Managers.TEXT.getStringWidth(m.getDisplayName() + actualBracket()[0] + Keyboard.getKeyName(m.getBind().getKey()) + actualBracket()[1])),
                     yPos);
             if (directionV() == TextDirectionV.BottomToTop)
@@ -95,26 +96,26 @@ public class Binds extends DynamicHudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

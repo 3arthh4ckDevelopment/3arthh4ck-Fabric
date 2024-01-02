@@ -9,6 +9,7 @@ import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import net.minecraft.client.gui.DrawContext;
 
 import java.awt.*;
 
@@ -23,11 +24,11 @@ public class SkeetLine extends HudElement {
     protected final Setting<Float> skeetLineWidth =
             register(new NumberSetting<>("SkeetLineWidth", 1.3f, 0.5f, 3.0f));
 
-    private void render() {
+    private void render(DrawContext context) {
         if (skeetLineGradient.getValue()) {
-            Render2DUtil.drawGradientRect(getContext().getMatrices(), 0, 0, Render2DUtil.getScreenWidth(), skeetLineWidth.getValue(), true, skeetLineColor.getValue().getRGB(), skeetLineColorGradient.getValue().getRGB());
+            Render2DUtil.drawGradientRect(context.getMatrices(), 0, 0, Render2DUtil.getScreenWidth(), skeetLineWidth.getValue(), true, skeetLineColor.getValue().getRGB(), skeetLineColorGradient.getValue().getRGB());
         } else {
-            Render2DUtil.drawRect(getContext().getMatrices(), 0, 0, Render2DUtil.getScreenWidth(), skeetLineWidth.getValue(), skeetLineColor.getValue().getRGB());
+            Render2DUtil.drawRect(context.getMatrices(), 0, 0, Render2DUtil.getScreenWidth(), skeetLineWidth.getValue(), skeetLineColor.getValue().getRGB());
         }
     }
 
@@ -37,26 +38,26 @@ public class SkeetLine extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(Managers.TEXT.getStringHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

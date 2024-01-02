@@ -9,6 +9,7 @@ import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
@@ -21,36 +22,36 @@ public class Compass extends HudElement {
     private final Setting<Boolean> spawnLine =
             register(new BooleanSetting("SpawnLine", false));
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null) {
             float x = getX();
             float y = getY();
             if (compass.getValue() == CompassMode.Line) {
                 float playerYaw = mc.player.getBodyYaw();
                 float rotationYaw = wrap(playerYaw);
-                Render2DUtil.drawRect(getContext().getMatrices(), x, y, x + 100, y + Managers.TEXT.getStringHeight(), 0x75101010);
+                Render2DUtil.drawRect(context.getMatrices(), x, y, x + 100, y + Managers.TEXT.getStringHeight(), 0x75101010);
                 glScissor(x, y, x + 100, y + Managers.TEXT.getStringHeight());
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
                 final float zeroZeroYaw = wrap((float) (Math.atan2(0 - mc.player.getZ(), 0 - mc.player.getX()) * 180.0d / Math.PI) - 90.0f);
                 if (spawnLine.getValue())
-                    Render2DUtil.drawLine(getContext().getMatrices(), x - rotationYaw + 50 + zeroZeroYaw, y + 2, x - rotationYaw + 50 + zeroZeroYaw, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFF1010);
-                Render2DUtil.drawLine(getContext().getMatrices(), (x - rotationYaw + 50) + 45, y + 2, (x - rotationYaw + 50) + 45, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
-                Render2DUtil.drawLine(getContext().getMatrices(), (x - rotationYaw + 50) - 45, y + 2, (x - rotationYaw + 50) - 45, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
-                Render2DUtil.drawLine(getContext().getMatrices(), (x - rotationYaw + 50) + 135, y + 2, (x - rotationYaw + 50) + 135, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
-                Render2DUtil.drawLine(getContext().getMatrices(), (x - rotationYaw + 50) - 135, y + 2, (x - rotationYaw + 50) - 135, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow(getContext(), "n", (x - rotationYaw + 50) + 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow(getContext(), "n", (x - rotationYaw + 50) - 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow(getContext(), "e", (x - rotationYaw + 50) - 90 - Managers.TEXT.getStringWidth("e") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow(getContext(), "s", (x - rotationYaw + 50) - Managers.TEXT.getStringWidth("s") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow(getContext(), "w", (x - rotationYaw + 50) + 90 - Managers.TEXT.getStringWidth("w") / 2.0f, y, 0xFFFFFFFF);
-                Render2DUtil.drawLine(getContext().getMatrices(), (x + 50), y + 1, (x + 50), y + Managers.TEXT.getStringHeight() - 1, 2, 0xFF909090);
+                    Render2DUtil.drawLine(context.getMatrices(), x - rotationYaw + 50 + zeroZeroYaw, y + 2, x - rotationYaw + 50 + zeroZeroYaw, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFF1010);
+                Render2DUtil.drawLine(context.getMatrices(), (x - rotationYaw + 50) + 45, y + 2, (x - rotationYaw + 50) + 45, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
+                Render2DUtil.drawLine(context.getMatrices(), (x - rotationYaw + 50) - 45, y + 2, (x - rotationYaw + 50) - 45, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
+                Render2DUtil.drawLine(context.getMatrices(), (x - rotationYaw + 50) + 135, y + 2, (x - rotationYaw + 50) + 135, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
+                Render2DUtil.drawLine(context.getMatrices(), (x - rotationYaw + 50) - 135, y + 2, (x - rotationYaw + 50) - 135, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(context, "n", (x - rotationYaw + 50) + 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(context, "n", (x - rotationYaw + 50) - 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(context, "e", (x - rotationYaw + 50) - 90 - Managers.TEXT.getStringWidth("e") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(context, "s", (x - rotationYaw + 50) - Managers.TEXT.getStringWidth("s") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(context, "w", (x - rotationYaw + 50) + 90 - Managers.TEXT.getStringWidth("w") / 2.0f, y, 0xFFFFFFFF);
+                Render2DUtil.drawLine(context.getMatrices(), (x + 50), y + 1, (x + 50), y + Managers.TEXT.getStringHeight() - 1, 2, 0xFF909090);
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
             } else {
                 x += getWidth() / 2;
                 y += getHeight() / 2;
                 for (Direction dir : Direction.values()) {
                     double rad = getPosOnCompass(dir);
-                    Managers.TEXT.drawStringWithShadow(getContext(), dir.name(), (float) (x + getCompassX(rad)), (float) (y + getCompassY(rad)), dir == Direction.N ? 0xFFFF0000 : 0xFFFFFFFF);
+                    Managers.TEXT.drawStringWithShadow(context, dir.name(), (float) (x + getCompassX(rad)), (float) (y + getCompassY(rad)), dir == Direction.N ? 0xFFFF0000 : 0xFFFFFFFF);
                 }
             }
         }
@@ -91,26 +92,26 @@ public class Compass extends HudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render();
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render();
+    public void hudDraw(DrawContext context) {
+        render(context);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }

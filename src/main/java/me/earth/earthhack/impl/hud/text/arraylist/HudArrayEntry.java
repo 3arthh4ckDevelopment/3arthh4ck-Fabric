@@ -7,6 +7,7 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.render.RenderUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -27,12 +28,12 @@ public class HudArrayEntry extends HudArrayList implements Globals {
         stopWatch.reset();
     }
 
-    public void drawArrayEntry(float desiredX, float desiredY) {
+    public void drawArrayEntry(DrawContext context, float desiredX, float desiredY) {
         final float textWidth = RENDERER.getStringWidth(getHudName(getModule()));
         final float xSpeed = textWidth / (MinecraftClient.getInstance().getCurrentFps() >> 2);
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(desiredX - textWidth, desiredY, desiredX, desiredY + RENDERER.getStringHeightI() + 3);
-        HudRenderUtil.renderText(getHudName(getModule()), getX(), desiredY);
+        HudRenderUtil.renderText(context, getHudName(getModule()), getX(), desiredY);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         if (module.isEnabled() && module.isHidden() != Hidden.Hidden) {
             if (stopWatch.passed(1000)) {

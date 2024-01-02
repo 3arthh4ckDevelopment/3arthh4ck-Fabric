@@ -13,9 +13,6 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.api.util.interfaces.Nameable;
-import me.earth.earthhack.impl.event.events.render.Render2DEvent;
-import me.earth.earthhack.impl.event.listeners.LambdaListener;
-import me.earth.earthhack.impl.gui.hud.HudElementComponent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.util.misc.GuiUtil;
@@ -66,7 +63,6 @@ public abstract class HudElement extends SettingContainer
 
     private final String name;
     private final HudCategory category;
-    private final DrawContext context = HudElementComponent.context;
     private float width  = 100;
     private float height = 100;
 
@@ -151,10 +147,6 @@ public abstract class HudElement extends SettingContainer
         onLoad();
     }
 
-    protected DrawContext getContext() {
-        return context;
-    }
-
     protected void onEnable()
     {
         /* Implemented by the module */
@@ -184,15 +176,15 @@ public abstract class HudElement extends SettingContainer
             this.data = data;
     }
 
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
+    public void guiUpdate(int mouseX, int mouseY) {
         if (dragging) {
             setX(mouseX - draggingX);
             setY(mouseY - draggingY);
         }
     }
 
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        Render2DUtil.drawBorderedRect(getContext().getMatrices(), x.getValue(), y.getValue(), x.getValue() + width, y.getValue() + height, 1.0f, 0x00000000, 0xaa000000);
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        Render2DUtil.drawBorderedRect(context.getMatrices(), x.getValue(), y.getValue(), x.getValue() + width, y.getValue() + height, 1.0f, 0x00000000, 0xaa000000);
     }
 
     public void guiKeyPressed(char eventChar, int key) {}
@@ -211,9 +203,9 @@ public abstract class HudElement extends SettingContainer
         // scaling = false;
     }
 
-    public void hudUpdate(float partialTicks) {}
+    public void hudUpdate() {}
 
-    public abstract void hudDraw(float partialTicks);
+    public abstract void hudDraw(DrawContext context);
 
     public boolean isOverlapping(HudElement other) {
         double[] rec1 = new double[]{this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight()};

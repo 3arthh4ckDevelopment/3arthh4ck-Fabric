@@ -1,7 +1,5 @@
 package me.earth.earthhack.impl.core.mixins.entity.living.player;
 
-import me.earth.earthhack.api.cache.ModuleCache;
-import me.earth.earthhack.impl.modules.Caches;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.PlayerListEntry;
 import org.jetbrains.annotations.Nullable;

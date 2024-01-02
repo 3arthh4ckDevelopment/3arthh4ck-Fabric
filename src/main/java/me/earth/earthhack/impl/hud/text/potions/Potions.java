@@ -13,6 +13,7 @@ import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.ColorUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRainbow;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -40,7 +41,7 @@ public class Potions extends DynamicHudElement {
     private final String label = "Potions [you don't have any effect!!]"; // render this?
     int effCounter = 0;
 
-    private void render(boolean isHud) {
+    private void render(DrawContext context, boolean isHud) {
         if (mc.player != null) {
             ArrayList<StatusEffectInstance> sorted = new ArrayList<>(mc.player.getStatusEffects());
             effCounter = mc.player.getStatusEffects().size();
@@ -56,14 +57,14 @@ public class Potions extends DynamicHudElement {
                         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
                         float xPos = getX() - simpleCalcH(RENDERER.getStringWidth(label));
                         if (directionV() == TextDirectionV.BottomToTop)
-                            renderPotionText(label, borderDistance + xPos, yPos - offset - animationY, effect.getEffectType());
+                            renderPotionText(context, label, borderDistance + xPos, yPos - offset - animationY, effect.getEffectType());
                         else
-                            renderPotionText(label, borderDistance + xPos, yPos + offset + animationY, effect.getEffectType());
+                            renderPotionText(context, label, borderDistance + xPos, yPos + offset + animationY, effect.getEffectType());
                         offset += RENDERER.getStringHeightI() + textOffset.getValue();
                     }
                 }
             } else if (isHud) {
-                HudRenderUtil.renderText(label, getX(), getY());
+                HudRenderUtil.renderText(context, label, getX(), getY());
             }
         }
     }
@@ -83,9 +84,9 @@ public class Potions extends DynamicHudElement {
         }
     }
 
-    public void renderPotionText(String text, float x, float y, StatusEffect effect) {
+    public void renderPotionText(DrawContext context, String text, float x, float y, StatusEffect effect) {
         String colorCode = (potionColor.getValue() == PotionColor.OldVersions || potionColor.getValue() == PotionColor.Phobos || potionColor.getValue() == PotionColor.Normal) ? "" : HUD_EDITOR.get().colorMode.getValue().getColor();
-        RENDERER.drawStringWithShadow(getContext(), colorCode + text, x, y, getPotionColor(effect, y));
+        RENDERER.drawStringWithShadow(context, colorCode + text, x, y, getPotionColor(effect, y));
     }
 
     private int getPotionColor(StatusEffect effect, float y) {
@@ -181,26 +182,26 @@ public class Potions extends DynamicHudElement {
     }
 
     @Override
-    public void guiDraw(int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(mouseX, mouseY, partialTicks);
-        render(true);
+    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        super.guiDraw(context, mouseX, mouseY, partialTicks);
+        render(context, true);
     }
 
     @Override
-    public void hudDraw(float partialTicks) {
-        render(false);
+    public void hudDraw(DrawContext context) {
+        render(context, false);
     }
 
     @Override
-    public void guiUpdate(int mouseX, int mouseY, float partialTicks) {
-        super.guiUpdate(mouseX, mouseY, partialTicks);
+    public void guiUpdate(int mouseX, int mouseY) {
+        super.guiUpdate(mouseX, mouseY);
         setWidth(getWidth());
         setHeight(getHeight());
     }
 
     @Override
-    public void hudUpdate(float partialTicks) {
-        super.hudUpdate(partialTicks);
+    public void hudUpdate() {
+        super.hudUpdate();
         setWidth(getWidth());
         setHeight(getHeight());
     }
