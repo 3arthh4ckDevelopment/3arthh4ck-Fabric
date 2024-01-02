@@ -44,7 +44,7 @@ public class Inventory extends HudElement {
             int iY = y + (i / 9) * (18);
             ItemStack itemStack = items.get(i + 9);
             getContext().drawItem(itemStack, x, y, 100203, (int) getZ());
-            Managers.TEXT.drawString(String.valueOf(itemStack.getCount()), x, y, 0xffffffff);
+            Managers.TEXT.drawString(getContext(), String.valueOf(itemStack.getCount()), x, y, 0xffffffff);
         }
 
         if (xCarry) {
@@ -53,7 +53,7 @@ public class Inventory extends HudElement {
                 ItemStack itemStack = mc.player.getInventory().getStack(i);
                 if (itemStack != null && !itemStack.isEmpty()) {
                     getContext().drawItem(itemStack, iX, y - 18, 100204, (int) getZ());
-                    Managers.TEXT.drawString(String.valueOf(itemStack.getCount()), iX, y - 18, 0xffffffff);
+                    Managers.TEXT.drawString(getContext(), String.valueOf(itemStack.getCount()), iX, y - 18, 0xffffffff);
                 }
             }
         }

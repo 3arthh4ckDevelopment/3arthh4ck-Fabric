@@ -33,9 +33,9 @@ public class Watermark extends HudElement {
         if (sync.getValue())
             HudRenderUtil.renderText(text, getX(), getY());
         else if (Caches.getModule(HudEditor.class).get().shadow.getValue())
-            Managers.TEXT.drawStringWithShadow(text, getX(), getY(), color.getValue().getRGB());
+            Managers.TEXT.drawStringWithShadow(getContext(), text, getX(), getY(), color.getValue().getRGB());
         else
-            Managers.TEXT.drawString(text, getX(), getY(), color.getValue().getRGB());
+            Managers.TEXT.drawString(getContext(), text, getX(), getY(), color.getValue().getRGB());
     }
 
     public Watermark() {

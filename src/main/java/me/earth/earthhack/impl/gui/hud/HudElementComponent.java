@@ -27,6 +27,7 @@ public class HudElementComponent extends Component {
 
     private final HudElement element;
     private final ArrayList<Component> components = new ArrayList<>();
+    public static DrawContext context;
 
     public HudElementComponent(HudElement element, float posX, float posY, float offsetX, float offsetY, float width, float height) {
         super(element.getName(), posX, posY, offsetX, offsetY, width, height);
@@ -109,9 +110,9 @@ public class HudElementComponent extends Component {
         if (getElement().isEnabled()) {
             Render2DUtil.drawRect(context.getMatrices(), getFinishedX() + 1, getFinishedY() + 0.5f, getFinishedX() + getWidth() - 1, getFinishedY() + getHeight() - 0.5f, hovered ? getClickGui().get().color.getValue().brighter().getRGB() : getClickGui().get().color.getValue().getRGB());
         }
-        Managers.TEXT.drawStringWithShadow(getLabel(), getFinishedX() + 4, getFinishedY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), getElement().isEnabled() ? 0xFFFFFFFF : 0xFFAAAAAA);
+        Managers.TEXT.drawStringWithShadow(context, getLabel(), getFinishedX() + 4, getFinishedY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), getElement().isEnabled() ? 0xFFFFFFFF : 0xFFAAAAAA);
         if (!getComponents().isEmpty())
-            Managers.TEXT.drawStringWithShadow(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue(), getFinishedX() + getWidth() - 4 - Managers.TEXT.getStringWidth(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue()), getFinishedY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), getElement().isEnabled() ? 0xFFFFFFFF : 0xFFAAAAAA);
+            Managers.TEXT.drawStringWithShadow(context, isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue(), getFinishedX() + getWidth() - 4 - Managers.TEXT.getStringWidth(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue()), getFinishedY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), getElement().isEnabled() ? 0xFFFFFFFF : 0xFFAAAAAA);
         if (isExtended()) {
             for (Component component : getComponents()) {
                 if (component instanceof SettingComponent

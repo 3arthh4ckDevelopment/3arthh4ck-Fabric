@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"UnusedReturnValue", "unused"})
-public class TextRenderer extends SubscriberImpl implements Globals
+public class TextRenderer implements Globals
 {
     private final ModuleCache<FontMod> fontMod =
             Caches.getModule(FontMod.class);
@@ -25,17 +25,7 @@ public class TextRenderer extends SubscriberImpl implements Globals
     private CustomFontRenderer renderer =
         new CustomFontRenderer(new Font("Arial", Font.PLAIN, 17), true, true);
 
-    private DrawContext context;
-    private float tickDelta;
-
-    public TextRenderer() {
-        this.listeners.add(new LambdaListener<>(Render2DEvent.class, event -> {
-            context = event.getContext();
-            tickDelta = event.getTickDelta();
-        }));
-    }
-
-    public float drawStringWithShadow(String text, float x, float y, int color)
+    public float drawStringWithShadow(DrawContext context, String text, float x, float y, int color)
     {
         if (fontMod.isEnabled())
         {
@@ -45,7 +35,7 @@ public class TextRenderer extends SubscriberImpl implements Globals
         return context.drawTextWithShadow(mc.textRenderer, text, (int) x, (int) y, color);
     }
 
-    public float drawString(String text, float x, float y, int color)
+    public float drawString(DrawContext context, String text, float x, float y, int color)
     {
         if (fontMod.isEnabled())
         {
@@ -54,7 +44,8 @@ public class TextRenderer extends SubscriberImpl implements Globals
         return context.drawText(mc.textRenderer, text, (int) x, (int) y, color, false);
     }
 
-    public float drawString(String text,
+    public float drawString(DrawContext context,
+                            String text,
                             float x,
                             float y,
                             int color,

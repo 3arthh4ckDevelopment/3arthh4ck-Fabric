@@ -40,10 +40,10 @@ public class HudFrame extends Frame {
         Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), CLICK_GUI.get().getTopBgColor().getRGB());
         if (CLICK_GUI.get().getBoxes())
             Render2DUtil.drawBorderedRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), 0.5f, 0, CLICK_GUI.get().getTopColor().getRGB());
-        Managers.TEXT.drawStringWithShadow(getLabel(), getPosX() + 3, getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), 0xFFFFFFFF);
+        Managers.TEXT.drawStringWithShadow(context, getLabel(), getPosX() + 3, getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), 0xFFFFFFFF);
         if (CLICK_GUI.get().size.getValue()) {
             String disString = "[" + getComponents().size() + "]";
-            Managers.TEXT.drawStringWithShadow(disString, (getPosX() + getWidth() - 3 - Managers.TEXT.getStringWidth(disString)), (getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1)), 0xFFFFFFFF);
+            Managers.TEXT.drawStringWithShadow(context, disString, (getPosX() + getWidth() - 3 - Managers.TEXT.getStringWidth(disString)), (getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1)), 0xFFFFFFFF);
         }
         if (isExtended()) {
             if (getScrollY() > 0) setScrollY(0);
@@ -52,12 +52,16 @@ public class HudFrame extends Frame {
                     setScrollY((int) -(getScrollCurrentHeight() - scrollMaxHeight));
             } else if (getScrollY() < 0) setScrollY(0);
             Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY() + getHeight(), getPosX() + getWidth(), getPosY() + getHeight() + 1 + (getCurrentHeight()), 0x92000000);
+            /*
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
+             */
             RenderUtil.scissor(getPosX(), getPosY() + getHeight() + 1, getPosX() + getWidth(), getPosY() + getHeight() + scrollMaxHeight + 1);
             getComponents().forEach(component -> component.drawScreen(context, mouseX, mouseY, partialTicks));
+            /*
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             GL11.glPopMatrix();
+             */
         }
         updatePositions();
     }

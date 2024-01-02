@@ -15,6 +15,7 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.api.util.interfaces.Nameable;
 import me.earth.earthhack.impl.event.events.render.Render2DEvent;
 import me.earth.earthhack.impl.event.listeners.LambdaListener;
+import me.earth.earthhack.impl.gui.hud.HudElementComponent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.util.misc.GuiUtil;
@@ -65,7 +66,7 @@ public abstract class HudElement extends SettingContainer
 
     private final String name;
     private final HudCategory category;
-    private DrawContext context;
+    private final DrawContext context = HudElementComponent.context;
     private float width  = 100;
     private float height = 100;
 
@@ -85,7 +86,6 @@ public abstract class HudElement extends SettingContainer
      * does not contain any whitespaces and that no hud elements with the
      * same name exist. A hud element's name is its unique identifier.
      *
-     *
      * @param name name of the hud element
      * @param x x of the element
      * @param y y of the element
@@ -98,8 +98,6 @@ public abstract class HudElement extends SettingContainer
         this.enabled.addObserver(this::onEnabledEvent);
         this.x.setValue(x);
         this.y.setValue(y);
-
-        this.listeners.add(new LambdaListener<>(Render2DEvent.class, e -> context = e.getContext()));
     }
 
     protected void onEnabledEvent(SettingEvent<Boolean> event) {

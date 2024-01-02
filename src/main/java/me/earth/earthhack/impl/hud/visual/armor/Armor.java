@@ -25,7 +25,7 @@ public class Armor extends HudElement {
                 if (!stack.isEmpty()) {
                     if (durability.getValue()) {
                         final float percent = DamageUtil.getPercent(stack) / 100.0f;
-                        Managers.TEXT.drawStringWithShadow(
+                        Managers.TEXT.drawStringWithShadow(getContext(),
                                 ((int) (percent * 100.0f)) + "%", (getX() + x + 2) * 1.6f, (getY() + 1) * 1.6f, ColorHelper.toColor(percent * 120.0f, 100.0f, 50.0f, 1.0f).getRGB());
                     }
                     getContext().drawItem(stack, (int) x, (int) getY());

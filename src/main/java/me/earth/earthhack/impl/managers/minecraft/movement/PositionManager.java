@@ -40,7 +40,7 @@ public class PositionManager extends SubscriberImpl implements Globals
                 new EventListener<PacketEvent.Receive<PlayerPositionLookS2CPacket>>
                         (PacketEvent.Receive.class,
                                 Integer.MIN_VALUE,
-                                EntityPositionS2CPacket.class)
+                                PlayerPositionLookS2CPacket.class)
                 {
                     @Override
                     public void invoke(PacketEvent.Receive<PlayerPositionLookS2CPacket> event)

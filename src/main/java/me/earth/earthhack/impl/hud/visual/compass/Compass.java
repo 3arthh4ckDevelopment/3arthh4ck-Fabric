@@ -38,11 +38,11 @@ public class Compass extends HudElement {
                 Render2DUtil.drawLine(getContext().getMatrices(), (x - rotationYaw + 50) - 45, y + 2, (x - rotationYaw + 50) - 45, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
                 Render2DUtil.drawLine(getContext().getMatrices(), (x - rotationYaw + 50) + 135, y + 2, (x - rotationYaw + 50) + 135, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
                 Render2DUtil.drawLine(getContext().getMatrices(), (x - rotationYaw + 50) - 135, y + 2, (x - rotationYaw + 50) - 135, y + Managers.TEXT.getStringHeight() - 2, 2, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow("n", (x - rotationYaw + 50) + 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow("n", (x - rotationYaw + 50) - 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow("e", (x - rotationYaw + 50) - 90 - Managers.TEXT.getStringWidth("e") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow("s", (x - rotationYaw + 50) - Managers.TEXT.getStringWidth("s") / 2.0f, y, 0xFFFFFFFF);
-                Managers.TEXT.drawStringWithShadow("w", (x - rotationYaw + 50) + 90 - Managers.TEXT.getStringWidth("w") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(getContext(), "n", (x - rotationYaw + 50) + 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(getContext(), "n", (x - rotationYaw + 50) - 180 - Managers.TEXT.getStringWidth("n") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(getContext(), "e", (x - rotationYaw + 50) - 90 - Managers.TEXT.getStringWidth("e") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(getContext(), "s", (x - rotationYaw + 50) - Managers.TEXT.getStringWidth("s") / 2.0f, y, 0xFFFFFFFF);
+                Managers.TEXT.drawStringWithShadow(getContext(), "w", (x - rotationYaw + 50) + 90 - Managers.TEXT.getStringWidth("w") / 2.0f, y, 0xFFFFFFFF);
                 Render2DUtil.drawLine(getContext().getMatrices(), (x + 50), y + 1, (x + 50), y + Managers.TEXT.getStringHeight() - 1, 2, 0xFF909090);
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
             } else {
@@ -50,7 +50,7 @@ public class Compass extends HudElement {
                 y += getHeight() / 2;
                 for (Direction dir : Direction.values()) {
                     double rad = getPosOnCompass(dir);
-                    Managers.TEXT.drawStringWithShadow(dir.name(), (float) (x + getCompassX(rad)), (float) (y + getCompassY(rad)), dir == Direction.N ? 0xFFFF0000 : 0xFFFFFFFF);
+                    Managers.TEXT.drawStringWithShadow(getContext(), dir.name(), (float) (x + getCompassX(rad)), (float) (y + getCompassY(rad)), dir == Direction.N ? 0xFFFF0000 : 0xFFFFFFFF);
                 }
             }
         }

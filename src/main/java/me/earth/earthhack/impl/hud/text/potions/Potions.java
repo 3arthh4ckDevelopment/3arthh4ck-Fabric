@@ -85,7 +85,7 @@ public class Potions extends DynamicHudElement {
 
     public void renderPotionText(String text, float x, float y, StatusEffect effect) {
         String colorCode = (potionColor.getValue() == PotionColor.OldVersions || potionColor.getValue() == PotionColor.Phobos || potionColor.getValue() == PotionColor.Normal) ? "" : HUD_EDITOR.get().colorMode.getValue().getColor();
-        RENDERER.drawStringWithShadow(colorCode + text, x, y, getPotionColor(effect, y));
+        RENDERER.drawStringWithShadow(getContext(), colorCode + text, x, y, getPotionColor(effect, y));
     }
 
     private int getPotionColor(StatusEffect effect, float y) {

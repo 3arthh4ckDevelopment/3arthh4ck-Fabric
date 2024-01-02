@@ -163,6 +163,8 @@ public class HudEditorGui extends Screen
             double maxHeight = Math.max(mouseClickedY, mouseY);
             Render2DUtil.drawRect(context.getMatrices(), (float) minX, (float) minY, (float) maxWidth, (float) maxHeight, new Color(255, 255, 255, 128).getRGB());
         }
+
+        HudElementComponent.context = context;
         getFrames().forEach(frame -> frame.drawScreen(context, mouseX, mouseY, delta));
     }
 

@@ -107,7 +107,7 @@ public class PvpResources extends HudElement {
 
     public void renderItem(int itemId, int xPosition, int yPosition) {
         getContext().drawItem(new ItemStack(Item.byRawId(itemId), 1), xPosition, yPosition, 100205, (int) getZ());
-        Managers.TEXT.drawStringWithShadow(getItemCount(Item.byRawId(itemId)), xPosition + 18 - Managers.TEXT.getStringWidth(getItemCount(Item.byRawId(itemId))), yPosition + 9, -1);
+        Managers.TEXT.drawStringWithShadow(getContext(), getItemCount(Item.byRawId(itemId)), xPosition + 18 - Managers.TEXT.getStringWidth(getItemCount(Item.byRawId(itemId))), yPosition + 9, -1);
     }
 
     public static String getItemCount(Item item) {

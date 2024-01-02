@@ -140,9 +140,9 @@ public class TargetHud extends HudElement {
 
                         float v = (endX - x + (endY - y)) / 2;
                         if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(name, x + (v - nameWidth / 2.0f), y + 7, 0xff670067);
+                            RENDERER.drawString(getContext(), name, x + (v - nameWidth / 2.0f), y + 7, 0xff670067);
                         } else {
-                            RENDERER.drawString(name, x + (v - nameWidth / 2.0f), y + 7, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), name, x + (v - nameWidth / 2.0f), y + 7, fColor.getValue().getRGB());
                         }
                         //Render2DUtil.drawPlayerFace(closestPlayer, (int) x, (int) y, (int) (endY - y), (int) (endY - y));
                         //Render2DUtil.progressBar(x + (10 + (endY - y)), x + (((endY - y) + hp / 36.0F * (endX - (endY - y) - x)) - 10), y + 19, 3, 0x77ff0000);
@@ -156,33 +156,33 @@ public class TargetHud extends HudElement {
                         }
 
                         if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(name, nameX, y + 7, 0xff670067);
+                            RENDERER.drawString(getContext(), name, nameX, y + 7, 0xff670067);
                         } else {
-                            RENDERER.drawString(name, nameX, y + 7, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), name, nameX, y + 7, fColor.getValue().getRGB());
                         }
-                        RENDERER.drawString("HP: " + hp, x + 7, y + 25, fColor.getValue().getRGB());
+                        RENDERER.drawString(getContext(), "HP: " + hp, x + 7, y + 25, fColor.getValue().getRGB());
 
                         if (!Double.isNaN(protCalc)) {
-                            RENDERER.drawString("Protection: " + (int) protCalc + "%", x + 7, y + 43, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), "Protection: " + (int) protCalc + "%", x + 7, y + 43, fColor.getValue().getRGB());
                         } else {
-                            RENDERER.drawString("Protection: " + 0 + "%", x + 7, y + 43, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), "Protection: " + 0 + "%", x + 7, y + 43, fColor.getValue().getRGB());
                         }
                         if (!Double.isNaN(blastCalc)) {
-                            RENDERER.drawString("Blast: " + (int) blastCalc + "%", x + 7, y + 53, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), "Blast: " + (int) blastCalc + "%", x + 7, y + 53, fColor.getValue().getRGB());
                         } else {
-                            RENDERER.drawString("Blast: " + 0 + "%", x + 7, y + 53, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), "Blast: " + 0 + "%", x + 7, y + 53, fColor.getValue().getRGB());
                         }
 
                         int xEnd = (int) (x + 160);
                         int yEnd = (int) (y);
                         // Render2DUtil.drawPlayerFace(closestPlayer, xEnd - 5, yEnd, 25, 25);
                         if (distance.getValue()) {
-                            RENDERER.drawString("Distance: " + df.format(closestPlayer.distanceTo(mc.player)), x + 7, y + 70, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), "Distance: " + df.format(closestPlayer.distanceTo(mc.player)), x + 7, y + 70, fColor.getValue().getRGB());
                         }
 
                         PlayerListEntry playerInfo = mc.getNetworkHandler().getPlayerListEntry(closestPlayer.getUuid() != FakePlayer.DEFAULT_UUID ? closestPlayer.getUuid() : mc.player.getUuid()); //TODO: our fakeplayer
                         if (ping.getValue()) {
-                            RENDERER.drawString("Ping: " + playerInfo.getLatency() + "ms", x + 7, y + 80, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), "Ping: " + playerInfo.getLatency() + "ms", x + 7, y + 80, fColor.getValue().getRGB());
                         }
                         // Render2DUtil.progressBar(x + 48, x + 48 + (hp / 36.0F * 80), y + 28, 5, 0x77ff0000);
                         renderArmor((int) (x + 80), (int) (y + 65), closestPlayer);
@@ -196,9 +196,9 @@ public class TargetHud extends HudElement {
                         }
 
                         if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(name, nameX, y, 0xff670067);
+                            RENDERER.drawString(getContext(), name, nameX, y, 0xff670067);
                         } else {
-                            RENDERER.drawString(name, nameX, y, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), name, nameX, y, fColor.getValue().getRGB());
                         }
 
                         //Render2DUtil.progressBar(x + 7, x - 7 + (hp / 36.0F * (Math.max(nameWidth, 58))), endY - 5.0f, 5, 0x77ff0000);
@@ -213,21 +213,21 @@ public class TargetHud extends HudElement {
                         }
 
                         if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(name, endX - nameWidth - 2, y + 1, 0xff670067);
+                            RENDERER.drawString(getContext(), name, endX - nameWidth - 2, y + 1, 0xff670067);
                         } else {
-                            RENDERER.drawString(name, endX - nameWidth - 2, y + 1, fColor.getValue().getRGB());
+                            RENDERER.drawString(getContext(), name, endX - nameWidth - 2, y + 1, fColor.getValue().getRGB());
                         }
 
                         if (protVal != 0 || blastVal != 0) {
-                            RENDERER.drawString("THREAT", x + 2, y + 2, 0xffff0000);
+                            RENDERER.drawString(getContext(), "THREAT", x + 2, y + 2, 0xffff0000);
                         } else {
-                            RENDERER.drawString("NAKED", x + 2, y + 2, 0xff00ff00);
+                            RENDERER.drawString(getContext(), "NAKED", x + 2, y + 2, 0xff00ff00);
                         }
 
                         if (PlayerUtil.isInHole(closestPlayer))
-                            RENDERER.drawString("SAFE", x + 2, y + 12, 0xff00ff00);
+                            RENDERER.drawString(getContext(), "SAFE", x + 2, y + 12, 0xff00ff00);
                         else
-                            RENDERER.drawString("UNSAFE", x + 2, y + 12, 0xffff0000);
+                            RENDERER.drawString(getContext(), "UNSAFE", x + 2, y + 12, 0xffff0000);
 
                         renderArmor((int) x - 17, (int) (y + 19), closestPlayer);
 
@@ -238,7 +238,7 @@ public class TargetHud extends HudElement {
                         break;
 
                     default:
-                        RENDERER.drawString("TargetHUD", getX(), getY(), 0xffffffff);
+                        RENDERER.drawString(getContext(), "TargetHUD", getX(), getY(), 0xffffffff);
                         break;
                 }
             }
@@ -267,7 +267,7 @@ public class TargetHud extends HudElement {
         if (IgnoreSelfClosest.GetClosestIgnore((double) maxSetting.getValue()) != null) {
             render();
         } else
-            RENDERER.drawString("Target Hud", getX(), getY(), 0xffffffff);
+            RENDERER.drawString(getContext(), "Target Hud", getX(), getY(), 0xffffffff);
     }
 
     @Override
