@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.gui.click.frame.impl;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.impl.gui.click.component.Component;
 import me.earth.earthhack.impl.gui.click.component.SettingComponent;
@@ -14,9 +13,8 @@ import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.RenderUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
+import static me.earth.earthhack.api.util.interfaces.Globals.mc;
 
 public class ModulesFrame extends Frame {
     private static final ModuleCache<ClickGui> CLICK_GUI = Caches.getModule(ClickGui.class);
@@ -34,13 +32,9 @@ public class ModulesFrame extends Frame {
     @Override
     public void drawScreen(DrawContext context, int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(context, mouseX, mouseY, partialTicks);
-        final float scrollMaxHeight = MinecraftClient.getInstance().getWindow().getScaledHeight();
-        final Color clr = CLICK_GUI.get().getCatEars();
+        final float scrollMaxHeight = mc.getWindow().getScaledHeight();
         if (CLICK_GUI.get().catEars.getValue()) {
-            GlStateManager._clearColor(clr.getRed() / 255.f, clr.getGreen() / 255.f, clr.getBlue() / 255.f, 1.0F);
-            context.drawTexture(DescriptionFrame.LEFT_EAR, (int) getPosX() - 7, (int) getPosY() - 8, 0, 0, 20, 20, 20, 20, 20, 20); //TODO: check
-            context.drawTexture(DescriptionFrame.RIGHT_EAR, (int) (getPosX() + getWidth()) - 14, (int) getPosY() - 8, 0, 0, 20, 20, 20, 20, 20, 20);
-            GlStateManager._clearColor(1.0F, 1.0F, 1.0F, 1.0F);
+            CategoryFrame.catEarsRender(context, getPosX(), getPosY(), getWidth());
         }
         Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), CLICK_GUI.get().getTopBgColor().getRGB());
         if (CLICK_GUI.get().getBoxes())
@@ -51,20 +45,6 @@ public class ModulesFrame extends Frame {
             drawStringWithShadow(context, disString, (getPosX() + getWidth() - 3 - Managers.TEXT.getStringWidth(disString)), (getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1)), 0xFFFFFFFF);
         }
         if (isExtended()) {
-            if (RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1) && getScrollCurrentHeight() > scrollMaxHeight) {
-                final float scrollSpeed =(CLICK_GUI.get().scrollSpeed.getValue() >> 2);
-                /* //TODO: fix
-                int wheel = Mouse.getDWheel();
-                int wheel = MinecraftClient.getInstance().mouse;
-                if (wheel < 0) {
-                    if (getScrollY() - scrollSpeed < -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)))
-                        setScrollY((int) -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)));
-                    else setScrollY((int) (getScrollY() - scrollSpeed));
-                } else if (wheel > 0) {
-                    setScrollY((int) (getScrollY() + scrollSpeed));
-                }
-                 */
-            }
             if (getScrollY() > 0) setScrollY(0);
             if (getScrollCurrentHeight() > scrollMaxHeight) {
                 if (getScrollY() - 6 < -(getScrollCurrentHeight() - scrollMaxHeight))
@@ -79,6 +59,24 @@ public class ModulesFrame extends Frame {
             //GL11.glPopMatrix();
         }
         updatePositions();
+    }
+
+    @Override
+    public void mouseScroll(double mouseX, double mouseY, double verticalAmount) {
+        final float scrollMaxHeight = mc.getWindow().getScaledHeight();
+        if (isExtended()) {
+            if (RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1) && getScrollCurrentHeight() > scrollMaxHeight) {
+                final float scrollSpeed =(CLICK_GUI.get().scrollSpeed.getValue() >> 2);
+                int wheel = (int) verticalAmount;
+                if (wheel < 0) {
+                    if (getScrollY() - scrollSpeed < -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)))
+                        setScrollY((int) -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)));
+                    else setScrollY((int) (getScrollY() - scrollSpeed));
+                } else if (wheel > 0) {
+                    setScrollY((int) (getScrollY() + scrollSpeed));
+                }
+            }
+        }
     }
 
     @Override

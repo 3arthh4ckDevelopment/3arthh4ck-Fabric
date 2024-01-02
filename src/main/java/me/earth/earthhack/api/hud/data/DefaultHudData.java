@@ -1,9 +1,11 @@
 package me.earth.earthhack.api.hud.data;
 
-/*
-public class DefaultHudData<M extends HudElement> extends AbstractData<M>
+import me.earth.earthhack.api.hud.HudElement;
+import me.earth.earthhack.api.util.AbstractData;
+
+public class DefaultHudData<E extends HudElement> extends AbstractData<E>
 {
-    public DefaultHudData(M module)
+    public DefaultHudData(E module)
     {
         super(module);
     }
@@ -26,4 +28,3 @@ public class DefaultHudData<M extends HudElement> extends AbstractData<M>
     }
 
 }
-*/

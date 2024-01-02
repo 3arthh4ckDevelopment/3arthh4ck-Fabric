@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.gui.click.frame.impl;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.util.interfaces.Globals;
@@ -52,12 +51,8 @@ public class SearchFrame extends Frame implements Globals {
             text += getIdleSign();
 
         if (CLICK_GUI.get().search.getValue() == ClickGui.SearchStyle.Box) {
-            final Color clr = CLICK_GUI.get().getCatEars();
             if (CLICK_GUI.get().catEars.getValue()) {
-                GlStateManager._clearColor(clr.getRed() / 255.f, clr.getGreen() / 255.f, clr.getBlue() / 255.f, 1.0F);
-                context.drawTexture(DescriptionFrame.LEFT_EAR, (int) getPosX() - 7, (int) getPosY() - 8, 0, 0, 20, 20, 20, 20, 20, 20); //TODO: check
-                context.drawTexture(DescriptionFrame.RIGHT_EAR, (int) (getPosX() + getWidth()) - 14, (int) getPosY() - 8, 0, 0, 20, 20, 20, 20, 20, 20);
-                GlStateManager._clearColor(1.0F, 1.0F, 1.0F, 1.0F);
+                CategoryFrame.catEarsRender(context, getPosX(), getPosY(), getWidth());
             }
             Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), CLICK_GUI.get().getTopBgColor().getRGB());
             if (CLICK_GUI.get().getBoxes())
@@ -67,8 +62,7 @@ public class SearchFrame extends Frame implements Globals {
             Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY() + getHeight(), getPosX() + getWidth(), getPosY() + getHeight() + (Managers.TEXT.getStringHeightI() + 3), 0x92000000);
             drawStringWithShadow(context, text, getPosX() + 2, getPosY() - getHeight() + 33.5f, getState() ? 0xFFFFFFFF : 0xFFAAAAAA);
         } else if (CLICK_GUI.get().search.getValue() == ClickGui.SearchStyle.TextBar) {
-            Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), 0xff232323);
-            // Render2DUtil.roundedRect(getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), 4.0f, 0xff232323); //TODO: implement rounded rects
+            Render2DUtil.roundedRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), 4.0f, 0xff232323);
             drawStringWithShadow(context, text, getPosX() + 10, getPosY() + getHeight() / 2 - Managers.TEXT.getStringHeightI() / 2.0f, getState() ? 0xFFFFFFFF : 0xFFAAAAAA);
         }
     }

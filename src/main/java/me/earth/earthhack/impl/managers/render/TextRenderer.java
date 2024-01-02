@@ -1,19 +1,23 @@
 package me.earth.earthhack.impl.managers.render;
 
 import me.earth.earthhack.api.cache.ModuleCache;
+import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.event.events.render.Render2DEvent;
+import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.gui.font.CustomFontRenderer;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({"UnusedReturnValue", "unused"})
-public class TextRenderer implements Globals
+public class TextRenderer extends SubscriberImpl implements Globals
 {
     private final ModuleCache<FontMod> fontMod =
             Caches.getModule(FontMod.class);
@@ -21,7 +25,16 @@ public class TextRenderer implements Globals
     private CustomFontRenderer renderer =
         new CustomFontRenderer(new Font("Arial", Font.PLAIN, 17), true, true);
 
-    /*
+    private DrawContext context;
+    private float tickDelta;
+
+    public TextRenderer() {
+        this.listeners.add(new LambdaListener<>(Render2DEvent.class, event -> {
+            context = event.getContext();
+            tickDelta = event.getTickDelta();
+        }));
+    }
+
     public float drawStringWithShadow(String text, float x, float y, int color)
     {
         if (fontMod.isEnabled())
@@ -29,7 +42,7 @@ public class TextRenderer implements Globals
             return renderer.drawStringWithShadow(text, x, y, color);
         }
 
-        return mc.fontRenderer.drawString(text, x, y, color, true);
+        return context.drawTextWithShadow(mc.textRenderer, text, (int) x, (int) y, color);
     }
 
     public float drawString(String text, float x, float y, int color)
@@ -38,8 +51,7 @@ public class TextRenderer implements Globals
         {
             return renderer.drawString(text, x, y, color);
         }
-
-        return mc.fontRenderer.drawString(text, x, y, color, false);
+        return context.drawText(mc.textRenderer, text, (int) x, (int) y, color, false);
     }
 
     public float drawString(String text,
@@ -58,17 +70,19 @@ public class TextRenderer implements Globals
             return renderer.drawString(text, x, y, color);
         }
 
-        return mc.fontRenderer.drawString(text, x, y, color, dropShadow);
+        return context.drawText(mc.textRenderer, text, (int) x, (int) y, color, dropShadow);
     }
 
     public void drawStringScaled(String text, float x, float y, int color, boolean dropShadow, float scale) {
+        /*
         GlStateManager.pushMatrix();
         GlStateManager.scale(scale, scale, scale);
         drawString(text, x / scale, y / scale, color, dropShadow);
         GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
         GlStateManager.popMatrix();
+
+         */
     }
-     */
 
     public int getStringWidth(String text)
     {
@@ -125,16 +139,13 @@ public class TextRenderer implements Globals
         renderer = new CustomFontRenderer(font, antiAlias, metrics);
     }
 
-    public List<String> listFormattedStringToWidth(String str, int wrapWidth)
+    public List<OrderedText> listFormattedStringToWidth(String str, int wrapWidth)
     {
         if (fontMod.isEnabled())
         {
-            return renderer.wrapWords(str, wrapWidth);
+            // return renderer.wrapWords(str, wrapWidth);
         }
-        return mc.textRenderer.wrapLines(StringVisitable.plain(str), wrapWidth)
-                .stream()
-                .map(OrderedText::toString)
-                .collect(Collectors.toList());
+        return new ArrayList<>(mc.textRenderer.wrapLines(StringVisitable.plain(str), wrapWidth));
     }
 
 }

@@ -26,6 +26,7 @@
     "gui.MixinChatHud",
     "gui.MixinChatHudLine",
     "gui.MixinInGameHud",
+    "gui.MixinMouse",
     "gui.MixinTitleScreen",
     "network.MixinClientPlayNetworkHandler",
     "util.IKeyBinding",

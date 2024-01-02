@@ -2,6 +2,7 @@ package me.earth.earthhack.api.module.data;
 
 import me.earth.earthhack.api.config.preset.DefaultPreset;
 import me.earth.earthhack.api.module.Module;
+import me.earth.earthhack.api.util.AbstractData;
 
 public class DefaultData<M extends Module> extends AbstractData<M>
 {

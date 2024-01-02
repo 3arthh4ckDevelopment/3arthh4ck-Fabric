@@ -21,7 +21,7 @@ final class ListenerTick extends ModuleListener<Fullbright, TickEvent>
                 case Gamma -> mc.options.getGamma().setValue(1000000.0D);
                 case Potion -> {
                     mc.options.getGamma().setValue(module.oldValue);
-                    mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 1215, 255, false, false));
+                    mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false));
                 }
             }
         }

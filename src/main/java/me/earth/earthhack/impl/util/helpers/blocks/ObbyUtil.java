@@ -1,17 +1,13 @@
 package me.earth.earthhack.impl.util.helpers.blocks;
 
-import io.netty.buffer.Unpooled;
 import me.earth.earthhack.impl.util.helpers.blocks.modes.Rotate;
 import me.earth.earthhack.impl.util.math.path.BlockingEntity;
 import me.earth.earthhack.impl.util.math.path.Pathable;
 import me.earth.earthhack.impl.util.math.raytrace.Ray;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockingType;
-import me.earth.earthhack.impl.util.network.PacketUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 
 public class ObbyUtil

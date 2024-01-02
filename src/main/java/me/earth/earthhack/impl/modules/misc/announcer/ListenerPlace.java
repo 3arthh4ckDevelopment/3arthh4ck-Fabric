@@ -31,7 +31,7 @@ final class ListenerPlace extends ModuleListener<Announcer,
                     || stack.getItem() instanceof EndCrystalItem)
             {
                 module.addWordAndIncrement(AnnouncementType.Place,
-                        Text.translatable(stack.getTranslationKey()).getString()); // simplify?
+                        Text.translatable(stack.getTranslationKey()).getString());
             }
         }
     }

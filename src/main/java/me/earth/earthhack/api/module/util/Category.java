@@ -1,12 +1,9 @@
 package me.earth.earthhack.api.module.util;
 
-import me.earth.earthhack.api.util.interfaces.Nameable;
+import me.earth.earthhack.api.util.AbstractCategory;
 
-/**
- * Decided to keep this as a weird pseudo-enum for the time being.
- * Old plugins (probably) won't work with 1.20, so I'll have to think of a something for this.
- */
-public class Category implements Nameable {
+public class Category extends AbstractCategory
+{
     public static final Category Combat = new Category("Combat", 0);
     public static final Category Misc = new Category("Misc", 1);
     public static final Category Render = new Category("Render", 2);
@@ -14,35 +11,13 @@ public class Category implements Nameable {
     public static final Category Player = new Category("Player", 4);
     public static final Category Client = new Category("Client", 5);
 
-    private static final Category[] VALUES = {
-            Combat, Misc, Render, Movement, Player, Client
-    };
-
-    private final String name;
-    private final int ordinal;
-
     public Category(String name, int ordinal) {
-        this.name = name;
-        this.ordinal = ordinal;
+        super(name, ordinal);
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    public String name() {
-        return name;
-    }
-
-    public int ordinal() {
-        return this.ordinal;
-    }
+    private static final Category[] VALUES = {
+        Combat, Misc, Render, Movement, Player, Client
+    };
 
     public static Category[] values() {
         return VALUES.clone();
@@ -66,4 +41,5 @@ public class Category implements Nameable {
             return value;
         }
     }
+
 }

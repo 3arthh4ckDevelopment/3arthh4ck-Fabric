@@ -155,7 +155,7 @@ public class Click extends Screen {
         }
 
         if (CLICK_GUI.get().blur.getValue() == ClickGui.BlurStyle.Directional) {
-            final Window scaledResolution = MinecraftClient.getInstance().getWindow();
+            Window scaledResolution = MinecraftClient.getInstance().getWindow();
             // Render2DUtil.drawBlurryRect(context.getMatrices() , 0, 0, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), CLICK_GUI.get().blurAmount.getValue(), CLICK_GUI.get().blurSize.getValue());
         }
 
@@ -165,9 +165,8 @@ public class Click extends Screen {
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
-        super.charTyped(chr, modifiers);
         getFrames().forEach(frame -> frame.keyTyped(chr, modifiers));
-        return true;
+        return super.charTyped(chr, modifiers);
     }
 
     @Override

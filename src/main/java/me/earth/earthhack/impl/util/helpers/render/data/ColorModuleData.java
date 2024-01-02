@@ -1,6 +1,6 @@
 package me.earth.earthhack.impl.util.helpers.render.data;
 
-import me.earth.earthhack.api.module.data.AbstractData;
+import me.earth.earthhack.api.util.AbstractData;
 import me.earth.earthhack.impl.util.helpers.render.ColorModule;
 
 public abstract class ColorModuleData<T extends ColorModule>

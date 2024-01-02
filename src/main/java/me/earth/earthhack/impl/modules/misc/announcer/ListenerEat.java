@@ -20,7 +20,7 @@ final class ListenerEat extends ModuleListener<Announcer, EatEvent>
         {
             ItemStack stack = event.getStack();
             module.addWordAndIncrement(AnnouncementType.Eat,
-                    Text.translatable(stack.getTranslationKey()).getString()); // simplify?
+                    Text.translatable(stack.getTranslationKey()).getString());
         }
     }
 

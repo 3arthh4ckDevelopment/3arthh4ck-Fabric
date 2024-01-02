@@ -4,11 +4,21 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
 public class Render2DUtil implements Globals {
+
+    public static double getScreenScale() {
+        return mc.getWindow().getScaleFactor();
+    }
+    public static int getScreenWidth() {
+        return mc.getWindow().getWidth();
+    }
+    public static int getScreenHeight() {
+        return mc.getWindow().getHeight();
+    }
+
     public static void drawBlurryRect(MatrixStack matrix, float x, float y, float x1, float y1, int intensity, float size) {
         drawRect(
                 matrix,
@@ -50,6 +60,10 @@ public class Render2DUtil implements Globals {
         drawRect(matrix, x, y, x2, y + lineSize, borderColor);
     }
 
+    public static void roundedRect(MatrixStack matrix, float startX, float startY, float endX, float endY, float radius, int color) {
+        drawRect(matrix, startX, startY, endX, endY, color);
+    }
+
     public static void drawCheckMark(float x, float y, int width, int color) {
         //TODO: rewrite
         /*
@@ -82,6 +96,24 @@ public class Render2DUtil implements Globals {
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
          */
+    }
+
+    public static void drawLine(MatrixStack matrix, float x, float y, float x1, float y1, float lineWidth, int color) {
+        float alpha = (float) (color >> 24 & 255) / 255.0F;
+        float red = (float) (color >> 16 & 255) / 255.0F;
+        float green = (float) (color >> 8 & 255) / 255.0F;
+        float blue = (float) (color & 255) / 255.0F;
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        RenderSystem.lineWidth(lineWidth);
+        bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
+        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x, y, 0.0F).color(red, green, blue, alpha).next();
+        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x1, y1, 0.0F).color(red, green, blue, alpha).next();
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        RenderSystem.disableBlend();
     }
 
     public static void drawCheckeredBackground(float x, float y, float x2, float y2) {

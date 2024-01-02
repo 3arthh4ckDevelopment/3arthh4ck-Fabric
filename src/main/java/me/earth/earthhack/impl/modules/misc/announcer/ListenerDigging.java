@@ -27,7 +27,7 @@ final class ListenerDigging extends
                                       .getBlock();
 
                 module.addWordAndIncrement(AnnouncementType.Mine,
-                        Text.translatable(block.getTranslationKey()).getString()); // simplify?
+                        Text.translatable(block.getTranslationKey()).getString());
             }
         }
     }

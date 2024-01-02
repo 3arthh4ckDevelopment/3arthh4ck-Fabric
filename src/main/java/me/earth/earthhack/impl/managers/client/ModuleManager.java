@@ -15,6 +15,7 @@ import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.modules.client.configs.ConfigModule;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.modules.client.debug.Debug;
+import me.earth.earthhack.impl.modules.client.editor.HudEditor;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.modules.client.media.Media;
 import me.earth.earthhack.impl.modules.client.rpc.RPC;
@@ -66,7 +67,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Debug());
         this.forceRegister(new FontMod());
         this.forceRegister(new RPC());
-        // this.forceRegister(new HudEditor());
+        this.forceRegister(new HudEditor());
         this.forceRegister(new Management());
         // this.forceRegister(new NoSpoof());
         // this.forceRegister(new Notifications());
