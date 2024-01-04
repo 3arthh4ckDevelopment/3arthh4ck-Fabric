@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.managers.render;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.gui.font.CustomFontRenderer;
@@ -8,6 +9,8 @@ import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
+import net.minecraft.text.Text;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -62,14 +65,9 @@ public class TextRenderer implements Globals
     }
 
     public void drawStringScaled(DrawContext context, String text, float x, float y, int color, boolean dropShadow, float scale) {
-        /*
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(scale, scale, scale);
-        drawString(text, x / scale, y / scale, color, dropShadow);
-        GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
-        GlStateManager.popMatrix();
-
-         */
+        context.getMatrices().scale(scale, scale, scale);
+        drawString(context, text, x / scale, y / scale, color, dropShadow);
+        context.getMatrices().scale(1 / scale, 1 / scale, 1 / scale);
     }
 
     public int getStringWidth(String text)

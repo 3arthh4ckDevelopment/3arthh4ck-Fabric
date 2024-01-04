@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.util.render.Render2DUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ public class PvpResources extends HudElement {
     private final Setting<String> blocks =
             register(new StringSetting("Add/Remove", "Add/Remove"));
 
-    ArrayList<Integer> blockIds = new ArrayList<>();
-    int[] defaultIds = {426, 384, 322, 449};
+    ArrayList<Item> items = new ArrayList<>();
+    Item[] defaultIds = {Items.END_CRYSTAL, Items.EXPERIENCE_BOTTLE, Items.ENCHANTED_GOLDEN_APPLE, Items.TOTEM_OF_UNDYING};
     int x = 0;
     int y = 0;
     int finalOffset;
@@ -42,15 +43,16 @@ public class PvpResources extends HudElement {
     private void render(DrawContext context) {
         if (mc.player != null) {
             if (mode.getValue() == Mode.Simple) {
-                for (int I : defaultIds)
-                    if (!blockIds.contains(I))
-                        blockIds.add(I);
+                for (Item i : defaultIds)
+                    if (!items.contains(i))
+                        items.add(i);
             }
             if (obby.getValue()) {
-                if (!blockIds.contains(49))
-                    blockIds.add(49);
-            } else if (blockIds.contains(49))
-                blockIds.remove((Object) 49);
+                if (!items.contains(Items.OBSIDIAN))
+                    items.add(Items.OBSIDIAN);
+            } else {
+                items.remove(Items.OBSIDIAN);
+            }
 
 
             x = (int) getX();
@@ -66,15 +68,15 @@ public class PvpResources extends HudElement {
     }
 
     private void drawVertical(DrawContext context) {
-        finalOffset = blockIds.size() * 20;
+        finalOffset = items.size() * 20;
         if (pretty.getValue())
             Render2DUtil.roundedRect(context.getMatrices(), x, y - 1, x + 16, y + finalOffset - 3, 2.0f, color.getValue().getRGB());
         else
             Render2DUtil.drawRect(context.getMatrices(), x - 3, y - 3, x + 20, y + finalOffset, color.getValue().getRGB());
 
         int offset = 0;
-        for (int I : blockIds) {
-            renderItem(context, I, x, y + offset);
+        for (Item i : items) {
+            renderItem(context, i, x, y + offset);
             offset += 20;
         }
     }
@@ -86,29 +88,29 @@ public class PvpResources extends HudElement {
             Render2DUtil.drawRect(context.getMatrices(), x - 3, y - 3, x + 40, y + 40, color.getValue().getRGB());
 
 
-        renderItem(context, 426, x, y);
-        renderItem(context, 384, x, y + 20);
-        renderItem(context, 322, x + 20, y);
-        renderItem(context, 449, x + 20, y + 20);
+        renderItem(context, Items.END_CRYSTAL, x, y);
+        renderItem(context, Items.EXPERIENCE_BOTTLE, x, y + 20);
+        renderItem(context, Items.ENCHANTED_GOLDEN_APPLE, x + 20, y);
+        renderItem(context, Items.TOTEM_OF_UNDYING, x + 20, y + 20);
     }
 
     private void drawHorizontal(DrawContext context) {
-        finalOffset = blockIds.size() * 20;
+        finalOffset = items.size() * 20;
         if (pretty.getValue())
             Render2DUtil.roundedRect(context.getMatrices(), x - 1, y + 1, x + finalOffset - 3, y + 16, 2.0f, color.getValue().getRGB());
         else
             Render2DUtil.drawRect(context.getMatrices(), x - 2, y - 2, x + finalOffset - 1, y + 18, color.getValue().getRGB());
 
         int offset = 0;
-        for (int I : blockIds) {
-            renderItem(context, I, x + offset, y);
+        for (Item i : items) {
+            renderItem(context, i, x + offset, y);
             offset += 20;
         }
     }
 
-    public void renderItem(DrawContext context, int itemId, int xPosition, int yPosition) {
-        context.drawItem(new ItemStack(Item.byRawId(itemId), 1), xPosition, yPosition, 100205, (int) getZ());
-        Managers.TEXT.drawStringWithShadow(context, getItemCount(Item.byRawId(itemId)), xPosition + 18 - Managers.TEXT.getStringWidth(getItemCount(Item.byRawId(itemId))), yPosition + 9, -1);
+    public void renderItem(DrawContext context, Item item, int xPosition, int yPosition) {
+        Managers.TEXT.drawStringWithShadow(context, getItemCount(item), xPosition + 18 - Managers.TEXT.getStringWidth(getItemCount(item)), yPosition + 9, -1);
+        context.drawItem(item.getDefaultStack(), xPosition, yPosition, 100205, (int) getZ());
     }
 
     public static String getItemCount(Item item) {
@@ -127,16 +129,15 @@ public class PvpResources extends HudElement {
             if (!event.isCancelled()) {
                 Item item = ItemAddingModule.getItemStartingWith(event.getValue(), i -> true);
                 if (item != null) {
-                    int itemId = Item.getRawId(item);
-                    if (!blockIds.contains(itemId))
-                        blockIds.add(itemId);
+                    if (!items.contains(item))
+                        items.add(item);
                     else
-                        blockIds.remove((Object)itemId);
+                        items.remove(item);
                 }
             }
         });
 
-        this.mode.addObserver(event -> blockIds.clear());
+        this.mode.addObserver(event -> items.clear());
 
         this.setData(new SimpleHudData(this, "Displays some items from your Inventory."));
     }
@@ -168,7 +169,7 @@ public class PvpResources extends HudElement {
 
     @Override
     public float getWidth() {
-        if (mode.getValue() == Mode.Extended && blockIds.isEmpty())
+        if (mode.getValue() == Mode.Extended && items.isEmpty())
             return 17;
         else
             return style.getValue() == Styles.Horizontal
@@ -180,7 +181,7 @@ public class PvpResources extends HudElement {
 
     @Override
     public float getHeight() {
-        if (mode.getValue() == Mode.Extended && blockIds.isEmpty())
+        if (mode.getValue() == Mode.Extended && items.isEmpty())
             return 17;
         else
             return style.getValue() == Styles.Vertical

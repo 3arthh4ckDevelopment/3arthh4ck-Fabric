@@ -16,27 +16,29 @@ import java.awt.*;
 
 public class Inventory extends HudElement {
 
-    private Setting<Boolean> xCarry =
+    private final Setting<Boolean> xCarry =
             register(new BooleanSetting("RenderXCarry", false));
-    private Setting<Boolean> box =
+    private final Setting<Boolean> box =
             register(new BooleanSetting("Box", true));
-    private Setting<Boolean> pretty =
+    private final Setting<Boolean> pretty =
             register(new BooleanSetting("Pretty", true));
-    private Setting<Color> boxColor =
+    private final Setting<Color> boxColor =
             register(new ColorSetting("BoxColor", new Color(23,23,23,23)));
-    private Setting<Color> outlineColor =
+    private final Setting<Color> outlineColor =
             register(new ColorSetting("OutlineColor", new Color(23,23,23,23)));
 
 
     private void render(DrawContext context) {
-        if (box.getValue()) {
-            if (pretty.getValue())
-                Render2DUtil.roundedRect(context.getMatrices(), getX(), getY() - 1.0f, getX() + 9 * 18, getY() + 55.0f, 2, boxColor.getValue().getRGB());
-            else
-                Render2DUtil.drawBorderedRect(context.getMatrices(), getX(), getY(), getX() + 9 * 18, getY() + 55.0f, 1.0f, boxColor.getValue().getRGB(), outlineColor.getValue().getRGB());
-        }
+        if (mc.player != null) {
+            if (box.getValue()) {
+                if (pretty.getValue())
+                    Render2DUtil.roundedRect(context.getMatrices(), getX(), getY() - 1.0f, getX() + 9 * 18, getY() + 55.0f, 2, boxColor.getValue().getRGB());
+                else
+                    Render2DUtil.drawBorderedRect(context.getMatrices(), getX(), getY(), getX() + 9 * 18, getY() + 55.0f, 1.0f, boxColor.getValue().getRGB(), outlineColor.getValue().getRGB());
+            }
 
-        ItemRender(context, mc.player.getInventory().main, (int) getX(),(int) getY(), xCarry.getValue());
+            ItemRender(context, mc.player.getInventory().main, (int) getX(), (int) getY(), xCarry.getValue());
+        }
     }
 
     protected void ItemRender(DrawContext context, final DefaultedList<ItemStack> items, final int x, final int y, boolean xCarry) {
@@ -44,8 +46,8 @@ public class Inventory extends HudElement {
             int iX = x + (i % 9) * (18);
             int iY = y + (i / 9) * (18);
             ItemStack itemStack = items.get(i + 9);
-            context.drawItem(itemStack, x, y, 100203, (int) getZ());
-            Managers.TEXT.drawString(context, String.valueOf(itemStack.getCount()), x, y, 0xffffffff);
+            context.drawItem(itemStack, iX, iY, 100203, (int) getZ());
+            // Managers.TEXT.drawString(context, String.valueOf(itemStack.getCount()), iX, iY, 0xffffffff);
         }
 
         if (xCarry) {

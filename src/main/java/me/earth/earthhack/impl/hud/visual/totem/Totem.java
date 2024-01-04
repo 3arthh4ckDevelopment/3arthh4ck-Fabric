@@ -13,14 +13,16 @@ import net.minecraft.item.Items;
 public class Totem extends HudElement {
 
     private void render(DrawContext context) {
-        int totems = InventoryUtil.getCount(Items.TOTEM_OF_UNDYING);
+        if (mc.player != null) {
+            context.drawItem(new ItemStack(Items.TOTEM_OF_UNDYING), (int) getX(), (int) getY(), 100206, (int) getZ());
 
-        context.drawItem(new ItemStack(Items.TOTEM_OF_UNDYING), (int) getX(), (int) getY(), 100206, (int) getZ());
+            int totems = InventoryUtil.getCount(Items.TOTEM_OF_UNDYING);
+            if (totems <= 0 && mc.currentScreen instanceof HudEditorGui) {
+                HudRenderUtil.renderText(context, "0", (int) getX() + 17 - RENDERER.getStringWidth("0"), (int) getY() + 9);
+            } else {
+                HudRenderUtil.renderText(context, String.valueOf(totems), (int) getX() + 17 - RENDERER.getStringWidth(String.valueOf(totems)), (int) getY() + 9);
+            }
 
-        if (totems <= 0 && mc.currentScreen instanceof HudEditorGui) {
-            HudRenderUtil.renderText(context, "0", (int) getX() + 17 - RENDERER.getStringWidth("0"), (int) getY() + 9);
-        } else {
-            HudRenderUtil.renderText(context, String.valueOf(totems), (int) getX() + 17 - RENDERER.getStringWidth(String.valueOf(totems)), (int) getY() + 9);
         }
     }
 
