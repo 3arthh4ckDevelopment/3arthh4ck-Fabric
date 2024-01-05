@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.managers.render;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.gui.font.CustomFontRenderer;
@@ -9,8 +8,6 @@ import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
-import net.minecraft.text.Text;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;

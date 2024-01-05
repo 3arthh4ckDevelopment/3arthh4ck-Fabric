@@ -14,8 +14,6 @@ import net.minecraft.entity.Entity;
  * point, so I just post the Stage.POST with
  * {@link
  * me.earth.earthhack.api.event.bus.api.EventBus#postReversed(Object, Class)}.
- *
- * // ^^^ TODO
  */
 @SuppressWarnings("unused")
 public class MotionUpdateEvent extends StageEvent implements Globals

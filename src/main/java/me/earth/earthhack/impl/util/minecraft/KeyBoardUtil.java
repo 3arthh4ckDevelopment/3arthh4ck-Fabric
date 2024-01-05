@@ -3,7 +3,6 @@ package me.earth.earthhack.impl.util.minecraft;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.util.bind.Bind;
 import me.earth.earthhack.pingbypass.input.Keyboard;
-import net.minecraft.client.Mouse;
 import net.minecraft.client.option.KeyBinding;
 
 public class KeyBoardUtil
