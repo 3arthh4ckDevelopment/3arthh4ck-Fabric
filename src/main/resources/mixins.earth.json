@@ -29,6 +29,7 @@
     "gui.MixinInGameHud",
     "gui.MixinTitleScreen",
     "network.MixinClientPlayNetworkHandler",
+    "render.MixinWorldRenderer",
     "util.MixinGameOptions",
     "util.MixinKeyBinding"
   ],
