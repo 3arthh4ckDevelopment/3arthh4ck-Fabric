@@ -16,7 +16,8 @@
     "network.server.IExplosionS2CPacket",
     "util.ITimer",
     "util.MixinClickEvent",
-    "util.MixinHoverEvent"
+    "util.MixinHoverEvent",
+    "util.MixinKeyboard"
   ],
   "client": [
     "MixinMinecraftClient",
@@ -26,11 +27,10 @@
     "gui.MixinChatHud",
     "gui.MixinChatHudLine",
     "gui.MixinInGameHud",
-    "gui.MixinMouse",
     "gui.MixinTitleScreen",
     "network.MixinClientPlayNetworkHandler",
-    "util.IKeyBinding",
-    "util.MixinGameOptions"
+    "util.MixinGameOptions",
+    "util.MixinKeyBinding"
   ],
   "injectors": {
     "defaultRequire": 1

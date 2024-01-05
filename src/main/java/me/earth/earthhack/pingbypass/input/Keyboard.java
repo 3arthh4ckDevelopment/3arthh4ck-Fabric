@@ -97,21 +97,6 @@ public class Keyboard {
         // org.lwjgl.input.Keyboard.enableRepeatEvents(enable);
     }
 
-    public static boolean getEventKeyState() {
-        // return org.lwjgl.input.Keyboard.getEventKeyState();
-        return false;
-    }
-
-    public static int getEventKey() {
-        // return org.lwjgl.input.Keyboard.getEventKey();
-        return -1;
-    }
-
-    public static char getEventCharacter() {
-        // return org.lwjgl.input.Keyboard.getEventCharacter();
-        return 'a';
-    }
-
     public static boolean isKeyDown(int code) {
         /*
         if (PingBypass.isConnected()) {

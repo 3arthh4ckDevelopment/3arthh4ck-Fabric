@@ -60,7 +60,6 @@ public class Bind
     public static Bind fromString(String stringIn)
     {
         String string = stringIn.toUpperCase();
-        ChatUtil.sendMessage("[DEBUG BINDS] Value: " + string);
         if (string.equals("NONE") || string.equals("NULL"))
         {
             return none();

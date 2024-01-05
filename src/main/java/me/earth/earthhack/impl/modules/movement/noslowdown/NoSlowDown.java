@@ -8,7 +8,6 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.core.mixins.block.MixinSlimeBlock;
 import me.earth.earthhack.impl.core.mixins.block.MixinSoulSandBlock;
-import me.earth.earthhack.impl.core.mixins.util.IKeyBinding;
 import me.earth.earthhack.impl.gui.click.Click;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.KeyBoardUtil;
@@ -119,7 +118,7 @@ public class NoSlowDown extends Module
             {
                 for (KeyBinding key : keys)
                 {
-                    KeyBinding.setKeyPressed(((IKeyBinding) key).getBoundKey(),
+                    KeyBinding.setKeyPressed(key.getDefaultKey(),
                                                KeyBoardUtil.isKeyDown(key));
                 }
             }
@@ -129,7 +128,7 @@ public class NoSlowDown extends Module
                 {
                     if (!KeyBoardUtil.isKeyDown(key))
                     {
-                        KeyBinding.setKeyPressed(((IKeyBinding) key).getBoundKey(), false);
+                        KeyBinding.setKeyPressed(key.getDefaultKey(), false);
                     }
                 }
             }

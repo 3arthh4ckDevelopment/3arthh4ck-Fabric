@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.core.mixins.util;
 
+import me.earth.earthhack.impl.core.ducks.util.IStyle;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import org.spongepowered.asm.mixin.Mixin;

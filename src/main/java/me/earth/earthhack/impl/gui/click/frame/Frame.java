@@ -1,9 +1,6 @@
 package me.earth.earthhack.impl.gui.click.frame;
 
 import me.earth.earthhack.api.cache.ModuleCache;
-import me.earth.earthhack.api.event.bus.SubscriberImpl;
-import me.earth.earthhack.impl.event.events.keyboard.MouseScrollEvent;
-import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.gui.click.component.Component;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
@@ -14,7 +11,7 @@ import net.minecraft.client.util.Window;
 
 import java.util.ArrayList;
 
-public class Frame extends SubscriberImpl {
+public class Frame {
 
     public static final ModuleCache<ClickGui> CLICK_GUI = Caches.getModule(ClickGui.class);
     private final String label;
@@ -34,8 +31,6 @@ public class Frame extends SubscriberImpl {
         this.posY = posY;
         this.width = width;
         this.height = height;
-
-        this.listeners.add(new LambdaListener<>(MouseScrollEvent.class, e -> mouseScroll(e.getMouseX(), e.getMouseY(), e.getVerticalAmount())));
     }
 
     public void init() {
@@ -98,8 +93,6 @@ public class Frame extends SubscriberImpl {
         if (mouseButton == 0 && isDragging()) setDragging(false);
         if (isExtended()) getComponents().forEach(component -> component.mouseReleased(mouseX, mouseY, mouseButton));
     }
-
-    public void mouseScroll(double mouseX, double mouseY, double verticalAmount) { }
 
     protected void drawStringWithShadow(DrawContext context, String text, double x, double y, int color) {
         context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, text, (int) x, (int) y, color);

@@ -1,7 +1,5 @@
 accessWidener	v1  named
 
-accessible class net/minecraft/text/Style
-# accessible field net/minecraft/client/gui/widget/SimpleButton x Ljava/lang/Integer;
 accessible field net/minecraft/util/math/Direction HORIZONTAL [Lnet/minecraft/util/math/Direction;
 accessible method net/minecraft/entity/Entity unsetRemoved ()V
 accessible method net/minecraft/client/gui/screen/ConnectScreen <init> (Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;)V
@@ -15,6 +13,7 @@ accessible field net/minecraft/util/math/BlockBox maxY I
 accessible field net/minecraft/util/math/BlockBox maxZ I
 
 # Text
+accessible class net/minecraft/text/Style
 accessible method net/minecraft/text/MutableText <init> (Lnet/minecraft/text/TextContent;Ljava/util/List;Lnet/minecraft/text/Style;)V
 accessible method net/minecraft/text/Style <init> (Lnet/minecraft/text/TextColor;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Lnet/minecraft/text/ClickEvent;Lnet/minecraft/text/HoverEvent;Ljava/lang/String;Lnet/minecraft/util/Identifier;)V
 accessible method net/minecraft/client/gui/screen/ChatScreen setText (Ljava/lang/String;)V

@@ -1,4 +1,4 @@
-package me.earth.earthhack.impl.core.mixins.util;
+package me.earth.earthhack.impl.core.ducks.util;
 
 import net.minecraft.text.ClickEvent;
 
