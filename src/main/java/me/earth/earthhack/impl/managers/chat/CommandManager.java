@@ -75,7 +75,7 @@ public class CommandManager extends SubscriberImpl
     {
         Earthhack.getLogger().info("Initializing Commands.");
 
-        // commands.add(new ConfigCommand());
+        commands.add(new ConfigCommand());
         // commands.add(new FontCommand());
         commands.add(new FriendCommand());
         commands.add(new EnemyCommand());

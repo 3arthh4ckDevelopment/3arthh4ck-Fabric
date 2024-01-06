@@ -162,7 +162,6 @@ public class ClickGui extends Module
                 mc.setScreen(gui);
             }
         }));
-
     }
 
     public ClickGui(String name) // for PB-Gui and Config-Gui

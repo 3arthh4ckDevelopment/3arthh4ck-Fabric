@@ -20,8 +20,8 @@ public class Keyboard {
     public static String getKeyName(int key) {
         String s = GLFW.glfwGetKeyName(key, 0);
         if (s == null || s.isEmpty())
-            s = InputUtil.fromKeyCode(key, 0).getTranslationKey().substring(13).replace('.', ' ').toUpperCase();
-        return s;
+            s = InputUtil.fromKeyCode(key, 0).getTranslationKey().substring(13).replace('.', ' ');
+        return s.toUpperCase();
     }
 
     public static int getRControl() {

@@ -15,10 +15,8 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
+
+import static me.earth.earthhack.api.util.interfaces.Globals.mc;
 
 public class ColorComponent extends SettingComponent<Color, ColorSetting> {
     private final ColorSetting colorSetting;
@@ -239,14 +237,14 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
                 drawStringWithShadow("Sync", colorPickerLeft, alphaSliderBottom + 17, getColorSetting().isSync() ? 0xFFFFFFFF : 0xFFAAAAAA);
                 Render2DUtil.drawBorderedRect(context.getMatrices(), hueSliderRight - 12, alphaSliderBottom + 16, hueSliderRight, alphaSliderBottom + 28, 0.5f, getColorSetting().isSync() ? (hoveredSync ? getClickGui().get().getModulesColor().brighter().getRGB() : getClickGui().get().getModulesColor().getRGB()) : (hoveredSync ? 0x66333333 : 0), 0xff000000);
                 if (getColorSetting().isSync())
-                    Render2DUtil.drawCheckMark(hueSliderRight - 6, alphaSliderBottom + 16, 10, 0xFFFFFFFF);
+                    Render2DUtil.drawCheckMark(context.getMatrices(), hueSliderRight - 6, alphaSliderBottom + 16, 10, 0xFFFFFFFF);
             }
 
             final boolean hoveredRainbow = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), 12, 12);
             drawStringWithShadow("Rainbow", colorPickerLeft, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 17 : 31), getColorSetting().isRainbow() ? 0xFFFFFFFF : 0xFFAAAAAA);
             Render2DUtil.drawBorderedRect(context.getMatrices(), hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), hueSliderRight, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 28 : 42), 0.5f, getColorSetting().isRainbow() ? (hoveredRainbow ? getClickGui().get().getModulesColor().brighter().getRGB() : getClickGui().get().getModulesColor().getRGB()) : (hoveredRainbow ? 0x66333333 : 0), 0xff000000);
             if (getColorSetting().isRainbow()) {
-                Render2DUtil.drawCheckMark(hueSliderRight - 6, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), 10, 0xFFFFFFFF);
+                Render2DUtil.drawCheckMark(context.getMatrices(), hueSliderRight - 6, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), 10, 0xFFFFFFFF);
                 final float smallWidth = hueSliderRight - colorPickerLeft;
                 final float lengthSpeed = MathHelper.floor((getColorSetting().getRainbowSpeed() / 200.f) * smallWidth);
                 final float lengthSaturation = MathHelper.floor((getColorSetting().getRainbowSaturation() / 100.f) * smallWidth);
@@ -257,7 +255,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
                 drawStringWithShadow("Static", colorPickerLeft, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 17 : 31) + 14, getColorSetting().isStaticRainbow() ? 0xFFFFFFFF : 0xFFAAAAAA);
                 Render2DUtil.drawBorderedRect(context.getMatrices(), hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, hueSliderRight, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 28 : 42) + 14, 0.5f, getColorSetting().isStaticRainbow() ? (hoveredStatic ? getClickGui().get().getModulesColor().brighter().getRGB() : getClickGui().get().getModulesColor().getRGB()) : (hoveredStatic ? 0x66333333 : 0), 0xff000000);
                 if (getColorSetting().isStaticRainbow())
-                    Render2DUtil.drawCheckMark(hueSliderRight - 6, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, 10, 0xFFFFFFFF);
+                    Render2DUtil.drawCheckMark(context.getMatrices(), hueSliderRight - 6, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, 10, 0xFFFFFFFF);
                 final boolean hoveredSpeed = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 28, smallWidth, 12.f);
                 final boolean hoveredSaturation = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 42, smallWidth, 12.f);
                 final boolean hoveredBrightness = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 56, smallWidth, 12.f);
@@ -333,13 +331,12 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
                 }
 
                 if (hoveredCopy) {
-                    final StringSelection selection = new StringSelection(TextUtil.get32BitString(getColorSetting().getRGB()));
-                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
+                    mc.keyboard.setClipboard(TextUtil.get32BitString(getColorSetting().getRGB()));
                     ChatUtil.sendMessage(TextColor.GREEN + "Color Copied: " + TextUtil.get32BitString(getColorSetting().getRGB()) + "!");
                 }
 
                 if (hoveredPaste) {
-                    if (getClipBoard() != null) {
+                    if (getClipBoard() != "") {
                         if (getColorSetting().fromString(getClipBoard()) == SettingResult.SUCCESSFUL) {
                             float[] hsb = Color.RGBtoHSB(getColorSetting().getRed(), getColorSetting().getGreen(), getColorSetting().getBlue(), null);
                             hue = hsb[0];
@@ -405,12 +402,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
     }
 
     private String getClipBoard() {
-        try {
-            return (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-        } catch (HeadlessException | IOException | UnsupportedFlavorException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return mc.keyboard.getClipboard();
     }
 
     private void updateColor(int hex) {

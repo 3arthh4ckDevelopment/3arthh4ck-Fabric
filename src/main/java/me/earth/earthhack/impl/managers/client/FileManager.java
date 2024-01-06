@@ -27,6 +27,7 @@ public class FileManager
     private static final File IMAGES = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/images");
     private static final File MODELS = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/models");
     private static final File SHADERS = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/shaders");
+    private static final File MODULES = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/modules");
 
 
     private final Map<String, GifImage> gifs = new ConcurrentHashMap<>();
@@ -64,8 +65,12 @@ public class FileManager
             SHADERS.mkdir();
         }
 
-        handleImageDir(IMAGES);
+        if (!MODULES.exists())
+        {
+            MODULES.mkdir();
+        }
 
+        handleImageDir(IMAGES);
         if (IMAGES.listFiles() != null && IMAGES.listFiles().length > 0) {
             for (File file : IMAGES.listFiles())
             {

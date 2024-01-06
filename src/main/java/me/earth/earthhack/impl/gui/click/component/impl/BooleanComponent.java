@@ -32,7 +32,7 @@ public class BooleanComponent extends SettingComponent<Boolean, Setting<Boolean>
             Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + getWidth() - 17,getFinishedY() + 1.5f,getFinishedX() + getWidth() - 5.5f,getFinishedY() + getHeight() - 1,0.5f, getBooleanSetting().getValue() ? ( hovered ? getClickGui().get().getModulesColor().brighter().getRGB():getClickGui().get().getModulesColor().getRGB()):(hovered ? 0x66333333:0),0xff000000);
 
         if (getBooleanSetting().getValue())
-            Render2DUtil.drawCheckMark(getFinishedX() + getWidth() - 11,getFinishedY() + 1,10,0xFFFFFFFF);
+            Render2DUtil.drawCheckMark(context.getMatrices(), getFinishedX() + getWidth() - 11,getFinishedY() + 1,10,0xFFFFFFFF);
     }
 
     @Override

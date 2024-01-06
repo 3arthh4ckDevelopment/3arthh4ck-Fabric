@@ -89,6 +89,7 @@ public class Managers
         Earthhack.getLogger().info("Loading Commands");
         COMMANDS.init();
         subscribe(COMMANDS);
+
         Earthhack.getLogger().info("Loading Modules");
         MODULES.init();
         /*

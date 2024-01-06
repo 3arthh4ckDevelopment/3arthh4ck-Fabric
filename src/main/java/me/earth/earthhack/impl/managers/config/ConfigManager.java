@@ -4,10 +4,7 @@ import me.earth.earthhack.api.config.ConfigHelper;
 import me.earth.earthhack.api.register.AbstractRegister;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.managers.config.helpers.CurrentConfig;
-import me.earth.earthhack.impl.managers.config.helpers.EnemyConfigHelper;
-import me.earth.earthhack.impl.managers.config.helpers.FriendConfigHelper;
-import me.earth.earthhack.impl.managers.config.helpers.ModuleConfigHelper;
+import me.earth.earthhack.impl.managers.config.helpers.*;
 import me.earth.earthhack.impl.util.misc.io.BiIOConsumer;
 import me.earth.earthhack.impl.util.misc.io.IOConsumer;
 
@@ -21,9 +18,14 @@ public class ConfigManager extends AbstractRegister<ConfigHelper<?>>
     {
         super(new LinkedHashMap<>());
         // this.registered.put("macro",  new MacroConfigHelper(Managers.MACRO)); // TODO: IMPLEMENT WITH MACROS
-        // this.registered.put("hud",    new HudConfigHelper(Managers.ELEMENTS)); // TODO: IMPLEMENT WITH HUDEDITOR
+        this.registered.put("hud",    new HudConfigHelper(Managers.ELEMENTS));
         this.registered.put("friend", new FriendConfigHelper());
         this.registered.put("enemy",  new EnemyConfigHelper());
+
+        if (true /*!PingBypass.isServer()*/) {
+            this.registered.put("bind",   new BindConfigHelper());
+        }
+
         // load modules last!
         this.registered.put("module", new ModuleConfigHelper(Managers.MODULES));
     }

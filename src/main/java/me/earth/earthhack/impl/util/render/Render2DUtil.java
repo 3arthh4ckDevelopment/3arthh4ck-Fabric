@@ -64,7 +64,7 @@ public class Render2DUtil implements Globals {
         drawRect(matrix, startX, startY, endX, endY, color);
     }
 
-    public static void drawCheckMark(float x, float y, int width, int color) {
+    public static void drawCheckMark(MatrixStack matrix, float x, float y, int width, int color) {
         //TODO: rewrite
         /*
         float f = (color >> 24 & 255) / 255.0f;
