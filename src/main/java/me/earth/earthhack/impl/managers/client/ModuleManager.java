@@ -22,6 +22,7 @@ import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
+import me.earth.earthhack.impl.modules.combat.bowspam.BowSpam;
 import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
 import me.earth.earthhack.impl.modules.combat.surround.Surround;
@@ -86,7 +87,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new AutoTrap());
         // this.forceRegister(new BedBomb());
         // this.forceRegister(new BedBombRewrite());
-        // this.forceRegister(new BowSpam());
+        this.forceRegister(new BowSpam());
         // this.forceRegister(new Blocker());
         // this.forceRegister(new BowKiller());
         // this.forceRegister(new Criticals());
