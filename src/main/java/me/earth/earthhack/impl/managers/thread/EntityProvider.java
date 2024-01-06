@@ -130,12 +130,4 @@ public class EntityProvider extends SubscriberImpl implements Globals
         return null;
     }
 
-    public static List<Entity> filterEntityByClass(Class<? extends Entity> classEntity, List<Entity> entityList) { //TODO: move this to a util (?)
-        List<Entity> filteredEntities = new ArrayList<>();
-        for (Entity entity : entityList)
-            if (entity.getClass() == classEntity)
-                filteredEntities.add(entity);
-        return filteredEntities;
-    }
-
 }

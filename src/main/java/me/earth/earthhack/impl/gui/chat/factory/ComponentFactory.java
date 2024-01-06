@@ -3,10 +3,7 @@ package me.earth.earthhack.impl.gui.chat.factory;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.data.ModuleData;
 import me.earth.earthhack.api.setting.Setting;
-import me.earth.earthhack.api.setting.settings.BindSetting;
-import me.earth.earthhack.api.setting.settings.BooleanSetting;
-import me.earth.earthhack.api.setting.settings.ColorSetting;
-import me.earth.earthhack.api.setting.settings.StringSetting;
+import me.earth.earthhack.api.setting.settings.*;
 import me.earth.earthhack.impl.gui.chat.components.SettingComponent;
 import me.earth.earthhack.impl.gui.chat.components.setting.*;
 import me.earth.earthhack.impl.gui.chat.util.ChatComponentUtil;
@@ -29,18 +26,18 @@ public class ComponentFactory
         register(BooleanSetting.class, BooleanComponent::new);
         register(StringSetting.class, StringComponent::new);
 
-        // FACTORIES.put((Class<? extends Setting<?>>) EnumSetting.class, EnumComponent.FACTORY);
+        // FACTORIES.put((Class<? extends Setting<?>>) EnumSetting.class, EnumComponent.FACTORY); //TODO: fix this asap
         // FACTORIES.put((Class<? extends Setting<?>>) NumberSetting.class, NumberComponent.FACTORY);
     }
 
     public static <E, T extends Setting<E>> IComponentFactory<?, ?>
-    register(Class<T> clazz, IComponentFactory<E, T> factory)
+                register(Class<T> clazz, IComponentFactory<E, T> factory)
     {
         return FACTORIES.put(clazz, factory);
     }
 
     public static <T, S extends Setting<T>> SettingComponent<T, S>
-    create(S setting)
+                    create(S setting)
     {
         IComponentFactory<T, S> factory =
                 (IComponentFactory<T, S>) FACTORIES.get(setting.getClass());

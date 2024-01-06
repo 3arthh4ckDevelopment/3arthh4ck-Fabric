@@ -650,7 +650,7 @@ public class AutoTrap extends ObbyListenerModule<ListenerAutoTrap>
     {
         byte blocking = 0;
         for (Entity entity : mc.world
-                .getOtherEntities(null, new Box(pos))) // only entities
+                .getEntitiesByClass(Entity.class, new Box(pos), e -> true))
         {
             if (entity == null
                     || EntityUtil.isDead(entity)

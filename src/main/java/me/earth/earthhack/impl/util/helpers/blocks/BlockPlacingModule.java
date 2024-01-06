@@ -343,7 +343,7 @@ public abstract class BlockPlacingModule extends DisablingModule
     protected boolean entityCheckSimple(BlockPos pos)
     {
         for (Entity entity : mc.world
-                .getOtherEntities(null, new Box(pos))) // only entities
+                .getEntitiesByClass(Entity.class, new Box(pos), e -> true))
         {
             if (entity == null
                     || EntityUtil.isDead(entity)

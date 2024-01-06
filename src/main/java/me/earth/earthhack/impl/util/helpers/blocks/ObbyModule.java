@@ -243,9 +243,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                         c.getBlockHitResult().getBlockPos().offset(c.getBlockHitResult().getSide());
 
                 for (Entity entity :
-                        mc.world.getOtherEntities( // only entities
-                                null,
-                                new Box(pos)))
+                        mc.world.getEntitiesByClass(Entity.class, new Box(pos), e -> true))
                 {
                     if (!EntityUtil.isDead(entity)
                             /*&& entity.preventEntitySpawning*/
@@ -295,7 +293,7 @@ public abstract class ObbyModule extends BlockPlacingModule
         boolean crystals = false;
         float currentDmg = Float.MAX_VALUE;
         for (Entity entity : mc.world
-                .getOtherEntities(null, new Box(pos))) // only entities
+                .getEntitiesByClass(Entity.class, new Box(pos), e -> true))
         {
             if (entity == null
                     || EntityUtil.isDead(entity)
@@ -651,7 +649,7 @@ public abstract class ObbyModule extends BlockPlacingModule
     protected boolean quickEntityCheck(BlockPos pos)
     {
         return mc.world
-                 .getOtherEntities(null, new Box(pos)) // only entities
+                 .getEntitiesByClass(Entity.class, new Box(pos), e -> true)
                  .stream()
                  .anyMatch(e ->
                      e != null

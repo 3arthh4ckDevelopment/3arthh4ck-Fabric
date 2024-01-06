@@ -108,7 +108,7 @@ public abstract class ObbyListener<T extends ObbyListenerModule<?>>
         Optional<BlockPos> crystalPos = targets
                 .stream()
                 .filter(pos ->
-                        !EntityProvider.filterEntityByClass(EndCrystalEntity.class, mc.world.getOtherEntities(null, new Box(pos))).isEmpty()
+                        !mc.world.getEntitiesByClass(EndCrystalEntity.class, new Box(pos), e -> true).isEmpty()
                                 && mc.world.getBlockState(pos).isReplaceable())
                 .findFirst();
 

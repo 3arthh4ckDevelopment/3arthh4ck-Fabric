@@ -94,8 +94,8 @@ final class ListenerMotion extends ModuleListener<BlockLag, MotionUpdateEvent> {
         PlayerInteractEntityC2SPacket attacking = null;
         boolean crystals = false;
         float currentDmg = Float.MAX_VALUE;
-        for (Entity entity : mc.world.getOtherEntities(
-                null, new Box(pos))) {
+        for (Entity entity : mc.world.getEntitiesByClass(
+                        Entity.class, new Box(pos), e -> true)) {
             if (entity != null
                     && !rEntity.equals(entity)
                     && !mc.player.equals(entity)

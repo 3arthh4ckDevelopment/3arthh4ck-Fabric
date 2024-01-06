@@ -341,9 +341,7 @@ public class BlockUtil implements Globals
         {
             BlockPos off = up.offset(face);
             //BlockState state = mc.world.getBlockState(off);
-            if (mc.world.getOtherEntities(null, // only players
-                            //TODO: maybe make a otherEntities list in the entity manager to make this faster? is that worth the calculation time??????
-                    new Box(off))
+            if (mc.world.getEntitiesByClass(PlayerEntity.class, new Box(off), e -> true)
                     .contains(player))
             {
                 return true;
@@ -351,9 +349,7 @@ public class BlockUtil implements Globals
 
             BlockPos off2 = off.offset(face);
             //BlockState offState = mc.world.getBlockState(off2);
-            if (mc.world.getOtherEntities(null, // only players
-                    new Box(off2))
-                    .contains(player))
+            if (mc.world.getEntitiesByClass(PlayerEntity.class, new Box(off2), e -> true).contains(player))
             {
                 return true;
             }
@@ -430,7 +426,7 @@ public class BlockUtil implements Globals
                                         long deathTime)
     {
         for (Entity entity : mc.world
-                .getOtherEntities(null, new Box(pos))) // only normal entities
+                .getEntitiesByClass(Entity.class, new Box(pos), e -> true))
         {
             if (checkEntity(entity, ignoreCrystals, deathTime))
             {
