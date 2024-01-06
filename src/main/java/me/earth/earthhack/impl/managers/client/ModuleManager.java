@@ -27,6 +27,7 @@ import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
 import me.earth.earthhack.impl.modules.combat.surround.Surround;
 import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
+import me.earth.earthhack.impl.modules.misc.antipotion.AntiPotion;
 import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
 import me.earth.earthhack.impl.modules.misc.chat.Chat;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
@@ -38,6 +39,9 @@ import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
+import me.earth.earthhack.impl.modules.player.autotool.AutoTool;
+import me.earth.earthhack.impl.modules.player.fasteat.FastEat;
+import me.earth.earthhack.impl.modules.player.fastplace.FastPlace;
 import me.earth.earthhack.impl.modules.player.freecam.Freecam;
 import me.earth.earthhack.impl.modules.player.noglitchblocks.NoGlitchBlocks;
 import me.earth.earthhack.impl.modules.player.scaffold.Scaffold;
@@ -108,7 +112,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Announcer());
         // this.forceRegister(new AntiAim());
         // this.forceRegister(new AntiPackets());
-        // this.forceRegister(new AntiPotion());
+        this.forceRegister(new AntiPotion());
         // this.forceRegister(new AntiVanish());
         // this.forceRegister(new AutoEat());
         this.forceRegister(new AutoLog());
@@ -170,14 +174,14 @@ public class ModuleManager extends IterationRegister<Module>
 
 
         // this.forceRegister(new AutoMine());
-        // this.forceRegister(new AutoTool());
+        this.forceRegister(new AutoTool());
         // this.forceRegister(new Blink());
         // this.forceRegister(new BlockTweaks());
         // this.forceRegister(new Cleaner());
         // this.forceRegister(new ExpTweaks());
         // this.forceRegister(new FakePlayer());
-        // this.forceRegister(new FastPlace());
-        // this.forceRegister(new FastEat());
+        this.forceRegister(new FastPlace());
+        this.forceRegister(new FastEat());
         this.forceRegister(new Freecam());
         // this.forceRegister(new LiquidInteract());
         // this.forceRegister(new MiddleClickPearl());
