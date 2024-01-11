@@ -4,22 +4,22 @@ import net.minecraft.client.util.math.MatrixStack;
 
 public class Render3DEvent
 {
-    private final MatrixStack matrices;
     private final float delta;
+    private final MatrixStack stack;
 
-    public Render3DEvent(MatrixStack matrices, float delta)
+    public Render3DEvent(MatrixStack stack, float deltaIn)
     {
-        this.matrices = matrices;
-        this.delta = delta;
+        this.stack = stack;
+        this.delta = deltaIn;
     }
 
-    public MatrixStack getMatrix() {
-        return matrices;
-    }
-
-    public float getPartialTicks()
+    public float getDelta()
     {
         return delta;
+    }
+
+    public MatrixStack getStack(){
+        return stack;
     }
 
 }

@@ -4,7 +4,7 @@ import me.earth.earthhack.api.event.bus.EventListener;
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.entity.IPlayerEntity;
+import me.earth.earthhack.impl.core.ducks.entity.IClientPlayerEntity;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.managers.Managers;
@@ -179,12 +179,12 @@ public class RotationManager extends SubscriberImpl implements Globals
     {
         // Prevents us from sending the same rotations again, if we spoofed
         // them with the packet instead of MotionUpdateEvent.
-        ((IPlayerEntity) mc.player)
+        ((IClientPlayerEntity) mc.player)
                 .setLastReportedYaw(packetIn.getYaw(
-                        ((IPlayerEntity) mc.player).getLastReportedYaw()));
-        ((IPlayerEntity) mc.player)
+                        ((IClientPlayerEntity) mc.player).getLastReportedYaw()));
+        ((IClientPlayerEntity) mc.player)
                 .setLastReportedPitch(packetIn.getPitch(
-                        ((IPlayerEntity) mc.player).getLastReportedPitch()));
+                        ((IClientPlayerEntity) mc.player).getLastReportedPitch()));
 
         setServerRotations(packetIn.getYaw(last_yaw), packetIn.getPitch(last_pitch));
         // set(packetIn.getYaw(renderYaw), packetIn.getPitch(renderPitch));

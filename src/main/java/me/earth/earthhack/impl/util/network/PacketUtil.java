@@ -110,12 +110,12 @@ public class PacketUtil implements Globals
     /**
      * Produces a {@link PlayerActionC2SPacket} for the given id.
      *
-     * @param entity the entity the packet should attack.
+     * @param entityIn the entity id of the entity the packet should attack.
      * @return a packet that will attack the entity when sent.
      */
-    public static PlayerInteractEntityC2SPacket attackPacket(Entity entity)
+    public static PlayerInteractEntityC2SPacket attackPacket(int entityIn)
     {
-
+        Entity entity = mc.world.getEntityById(entityIn);
         PlayerInteractEntityC2SPacket packet = PlayerInteractEntityC2SPacket.attack(entity, mc.player.isSneaking());
         //noinspection ConstantConditions
         ((IPlayerInteractEntityC2S) packet).setEntityId(entity.getId());
@@ -180,6 +180,14 @@ public class PacketUtil implements Globals
                 new PlayerActionC2SPacket(action, mc.player.getBlockPos(), Direction.DOWN)
         );
     }
+
+    public static void sendAction(ClientCommandC2SPacket.Mode action)
+    {
+        mc.getNetworkHandler().getConnection().send(
+                new ClientCommandC2SPacket(mc.player, action, (int) mc.player.getMountJumpStrength())
+        );
+    }
+
 
     public static void click(int windowIdIn,
                              int actionNumberIn,

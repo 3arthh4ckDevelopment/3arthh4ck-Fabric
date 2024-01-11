@@ -5,7 +5,7 @@ import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.events.network.WorldClientEvent;
-import me.earth.earthhack.impl.event.listeners.PlayerMoveC2SPacketPostListener;
+import me.earth.earthhack.impl.event.listeners.CPacketPlayerPostListener;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
@@ -27,7 +27,7 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
     public PositionHistoryHelper()
     {
         this.packets = new ConcurrentLinkedDeque<>();
-        this.listeners.addAll(new PlayerMoveC2SPacketPostListener()
+        this.listeners.addAll(new CPacketPlayerPostListener()
         {
             @Override
             protected void onPacket
@@ -119,19 +119,19 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
     private boolean isLegit(RotationHistory history, Entity entity)
     {
         RayTraceResult result =
-                RayTracer.rayTraceEntities(mc.world,
-                        RotationUtil.getRotationPlayer(),
-                        7.0,
-                        history.x,
-                        history.y,
-                        history.z,
-                        history.yaw,
-                        history.pitch,
-                        history.bb,
-                        e ->
-                                e != null && e.equals(entity),
-                        entity,
-                        entity);
+            RayTracer.rayTraceEntities(mc.world,
+                                       RotationUtil.getRotationPlayer(),
+                                       7.0,
+                                       history.x,
+                                       history.y,
+                                       history.z,
+                                       history.yaw,
+                                       history.pitch,
+                                       history.bb,
+                                       e ->
+                                            e != null && e.equals(entity),
+                                       entity,
+                                       entity);
         return result != null
                 && entity.equals(result.entityHit);
     }
@@ -152,12 +152,12 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
         public RotationHistory(PlayerMoveC2SPacket packet)
         {
             this(packet.getX(Managers.POSITION.getX()),
-                    packet.getY(Managers.POSITION.getY()),
-                    packet.getZ(Managers.POSITION.getZ()),
-                    packet.getYaw(Managers.ROTATION.getServerYaw()),
-                    packet.getPitch(Managers.ROTATION.getServerPitch()),
-                    packet instanceof PlayerMoveC2SPacket.LookAndOnGround || packet instanceof PlayerMoveC2SPacket.Full,
-                    packet instanceof PlayerMoveC2SPacket.PositionAndOnGround || packet instanceof PlayerMoveC2SPacket.Full);
+                 packet.getY(Managers.POSITION.getY()),
+                 packet.getZ(Managers.POSITION.getZ()),
+                 packet.getYaw(Managers.ROTATION.getServerYaw()),
+                 packet.getPitch(Managers.ROTATION.getServerPitch()),
+                 packet instanceof PlayerMoveC2SPacket.LookAndOnGround || packet instanceof PlayerMoveC2SPacket.Full,
+                 packet instanceof PlayerMoveC2SPacket.PositionAndOnGround || packet instanceof PlayerMoveC2SPacket.Full);
         }
 
         public RotationHistory(double x,

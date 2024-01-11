@@ -82,7 +82,6 @@ public class HudElementManager extends IterationRegister<HudElement> {
     {
         for (HudElement element : getRegistered())
         {
-            Earthhack.getLogger().info(element.getName());
             element.load();
         }
         registered.sort(Comparator.comparing(HudElement::getZ));
@@ -109,7 +108,6 @@ public class HudElementManager extends IterationRegister<HudElement> {
     public ArrayList<HudElement> getModulesFromCategory(HudCategory hudCategory) {
         final ArrayList<HudElement> iHudElements = new ArrayList<>();
         for (HudElement iHudElement : getRegistered()) {
-            System.out.println(iHudElement.getName());
             if (iHudElement.getCategory() == hudCategory) iHudElements.add(iHudElement);
         }
         return iHudElements;

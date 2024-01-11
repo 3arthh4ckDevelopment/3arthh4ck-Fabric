@@ -1,36 +1,25 @@
 package me.earth.earthhack.impl.core.ducks.entity;
 
+import me.earth.earthhack.impl.util.minecraft.MotionTracker;
+
 /**
  * Duck interface for {@link net.minecraft.entity.player.PlayerEntity}
  */
 public interface IPlayerEntity {
+    void setMotionTracker(MotionTracker motionTracker);
 
-    double getLastReportedX();
+    MotionTracker getMotionTracker();
 
-    double getLastReportedY();
+    void setBreakMotionTracker(MotionTracker motionTracker);
 
-    double getLastReportedZ();
+    MotionTracker getBreakMotionTracker();
 
-    float getLastReportedYaw();
+    void setBlockMotionTracker(MotionTracker motionTracker);
 
-    float getLastReportedPitch();
+    MotionTracker getBlockMotionTracker();
 
-    boolean getLastOnGround();
+    int getTicksWithoutMotionUpdate();
 
-    void setLastReportedX(double x);
+    void setTicksWithoutMotionUpdate(int ticksWithoutMotionUpdate);
 
-    void setLastReportedY(double y);
-
-    void setLastReportedZ(double z);
-
-    void setLastReportedYaw(float yaw);
-
-    void setLastReportedPitch(float pitch);
-
-    int getPositionUpdateTicks();
-
-    void superUpdate();
-
-    void invokeUpdateWalkingPlayer();
-
-    void setHorseJumpPower(float jumpPower);}
+}

@@ -9,6 +9,7 @@ import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.math.raytrace.Ray;
 import me.earth.earthhack.impl.util.math.raytrace.RayTraceFactory;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
+import me.earth.earthhack.impl.util.minecraft.blocks.states.IBlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -106,7 +107,7 @@ public class PathFinder implements Globals
                                 double pr,
                                 List<Entity> entities,
                                 RayTraceMode mode,
-                                BlockStateHelper world,
+                                IBlockStateHelper world,
                                 BlockState setState,
                                 TriPredicate<BlockPos, Pathable, Entity> check,
                                 BlockPos...ignore)
@@ -128,7 +129,7 @@ public class PathFinder implements Globals
                          pr,
                          entities,
                          mode,
-                         world,
+                        (BlockStateHelper) world, // fix this shit....
                          setState,
                          check))
             {

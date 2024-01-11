@@ -5,6 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+// TODO: remove this, use RayCastContext instead (THIS IS SHIT)
 public class RayTraceResult
 {
     /** Used to determine what sub-segment is hit */

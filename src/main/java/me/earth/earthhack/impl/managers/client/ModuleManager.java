@@ -20,11 +20,13 @@ import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.modules.client.media.Media;
 import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
+import me.earth.earthhack.impl.modules.combat.antisurround.AntiSurround;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
 import me.earth.earthhack.impl.modules.combat.bowspam.BowSpam;
 import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
+import me.earth.earthhack.impl.modules.combat.offhand.Offhand;
 import me.earth.earthhack.impl.modules.combat.surround.Surround;
 import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
 import me.earth.earthhack.impl.modules.misc.antipotion.AntiPotion;
@@ -36,6 +38,7 @@ import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.blocklag.BlockLag;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
+import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
@@ -46,12 +49,15 @@ import me.earth.earthhack.impl.modules.player.freecam.Freecam;
 import me.earth.earthhack.impl.modules.player.noglitchblocks.NoGlitchBlocks;
 import me.earth.earthhack.impl.modules.player.scaffold.Scaffold;
 import me.earth.earthhack.impl.modules.player.spectate.Spectate;
+import me.earth.earthhack.impl.modules.player.speedmine.Speedmine;
 import me.earth.earthhack.impl.modules.player.suicide.Suicide;
 import me.earth.earthhack.impl.modules.player.timer.Timer;
+import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import me.earth.earthhack.impl.modules.render.ambience.Ambience;
 import me.earth.earthhack.impl.modules.render.breakesp.BreakESP;
 import me.earth.earthhack.impl.modules.render.holeesp.HoleESP;
 import me.earth.earthhack.impl.modules.render.logoutspots.LogoutSpots;
+import me.earth.earthhack.impl.modules.render.norender.NoRender;
 
 import java.util.ArrayList;
 
@@ -85,7 +91,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Media());
 
         /* ----- COMBAT ----- */
-        // this.forceRegister(new AntiSurround());
+        this.forceRegister(new AntiSurround());
         // this.forceRegister(new AntiTrap());
         // this.forceRegister(new AnvilAura());
         // this.forceRegister(new AutoArmor());
@@ -100,8 +106,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new CrystalBomber());
         this.forceRegister(new HoleFiller());
         this.forceRegister(new KillAura());
-        // this.forceRegister(new LegSwitch());
-        // this.forceRegister(new Offhand());
+        this.forceRegister(new Offhand());
         // this.forceRegister(new PistonAura());
         // this.forceRegister(new Arrows());
         this.forceRegister(new Surround());
@@ -162,7 +167,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new LongJump());
         // this.forceRegister(new NoFall());
         // this.forceRegister(new NoMove());
-        // this.forceRegister(new NoSlowDown());
+        this.forceRegister(new NoSlowDown());
         // this.forceRegister(new PacketFly());
         // this.forceRegister(new Phase());
         // this.forceRegister(new SafeWalk());
@@ -196,11 +201,11 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Scaffold());
         // this.forceRegister(new Sorter());
         this.forceRegister(new Spectate());
-        // this.forceRegister(new Speedmine());
+        this.forceRegister(new Speedmine());
         this.forceRegister(new Suicide());
         // this.forceRegister(new Swing());
         this.forceRegister(new Timer());
-        // this.forceRegister(new XCarry());
+        this.forceRegister(new XCarry());
 
 
         // this.forceRegister(new BlockHighlight());
@@ -214,7 +219,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new VoidESP());
         // this.forceRegister(new Nametags());
         // this.forceRegister(new NewChunks());
-        // this.forceRegister(new NoRender());
+        this.forceRegister(new NoRender());
         // this.forceRegister(new Search());
         // this.forceRegister(new Skeleton());
         this.forceRegister(new BreakESP());

@@ -22,8 +22,10 @@ public class Fullbright extends Module
 
         SimpleData data = new SimpleData(this,
                 "Makes the game constantly bright.");
-        data.register(mode, "- Gamma : Standard Fullbright.\n" +
-                "- Potion : applies a NightVision effect to you.");
+        data.register(mode, """
+                - Gamma : Normal FullBright.
+                - Potion : Applies a Night Vision effect to you.
+                """);
         this.setData(data);
     }
 

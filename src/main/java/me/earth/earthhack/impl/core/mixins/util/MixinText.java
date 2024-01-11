@@ -33,13 +33,13 @@ public abstract class MixinText
         this.hookUnFormat = hook;
     }
 
-    // @Override
-    // public Text copyNoSiblings()
-    // {
-    //     Text copy = this.copyNoSiblings();
-    //     copy.getSiblings().clear();
-    //     return copy;
-    // }
+    @Override
+    public Text copyNoSiblings()
+    {
+        Text copy = this.copyNoSiblings();
+        copy.getSiblings().clear();
+        return copy;
+    }
 
     @Inject(
         method = "getWithStyle(Lnet/minecraft/text/Style;)Ljava/util/List;",
