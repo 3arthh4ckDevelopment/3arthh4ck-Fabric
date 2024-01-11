@@ -55,6 +55,7 @@ import me.earth.earthhack.impl.modules.player.timer.Timer;
 import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import me.earth.earthhack.impl.modules.render.ambience.Ambience;
 import me.earth.earthhack.impl.modules.render.breakesp.BreakESP;
+import me.earth.earthhack.impl.modules.render.fullbright.Fullbright;
 import me.earth.earthhack.impl.modules.render.holeesp.HoleESP;
 import me.earth.earthhack.impl.modules.render.logoutspots.LogoutSpots;
 import me.earth.earthhack.impl.modules.render.norender.NoRender;
@@ -212,7 +213,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new BreadCrumbs());
         // this.forceRegister(new Chams());
         // this.forceRegister(new ESP());
-        // this.forceRegister(new Fullbright());
+        this.forceRegister(new Fullbright());
         this.forceRegister(new HoleESP());
         // this.forceRegister(new LagOMeter());
         this.forceRegister(new LogoutSpots());

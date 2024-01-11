@@ -63,7 +63,7 @@ public class NoSlowDown extends Module
     protected final List<Class<? extends Screen>> screens =
             new ArrayList<>();
 
-    protected final KeyBinding[] keys;
+    protected KeyBinding[] keys;
     protected boolean spoof = true;
     protected boolean usingTimer;
 
@@ -72,16 +72,6 @@ public class NoSlowDown extends Module
         super("NoSlowDown", Category.Movement);
         register(new BooleanSetting("SoulSand", true));
         register(new BooleanSetting("Slime", false));
-
-        keys = new KeyBinding[]
-        {
-            mc.options.forwardKey,
-            mc.options.backKey,
-            mc.options.leftKey,
-            mc.options.rightKey,
-            mc.options.jumpKey,
-            mc.options.sprintKey
-        };
 
         screens.add(OptionsScreen.class);
         screens.add(VideoOptionsScreen.class);
@@ -98,6 +88,20 @@ public class NoSlowDown extends Module
         this.listeners.add(new ListenerTryUseItem(this));
         this.listeners.add(new ListenerTryUseItemOnBlock(this));
         this.setData(new NoSlowDownData(this));
+    }
+
+    @Override
+    protected void onEnable()
+    {
+        keys = new KeyBinding[]
+                {
+                        mc.options.forwardKey,
+                        mc.options.backKey,
+                        mc.options.leftKey,
+                        mc.options.rightKey,
+                        mc.options.jumpKey,
+                        mc.options.sprintKey
+                };
     }
 
     @Override
