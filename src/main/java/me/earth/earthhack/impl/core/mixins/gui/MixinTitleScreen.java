@@ -29,8 +29,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/screen/TitleScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
                     ordinal = 2,
-                    shift = At.Shift.AFTER,
-                    remap = false))
+                    shift = At.Shift.AFTER))
     public void buttonHook(CallbackInfo info)
     {
         // noinspection ConstantConditions

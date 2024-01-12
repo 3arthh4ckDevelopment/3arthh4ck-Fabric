@@ -9,11 +9,10 @@
     "oHare",
     "Megyn",
     "Gerald",
-    "nukkkiz",
+    "nukiz",
     "Ai_2473",
     "dabigbulletz638",
     "08HvH",
-    "CrystalEU",
     "GentlemanMC",
     "Cubic",
     "Master7720"
@@ -24,6 +23,7 @@
   },
   "license": "MIT",
   "environment": "client",
+  "accessWidener": "earthhack.accesswidener",
   "entrypoints": {
     "client": [
       "me.earth.earthhack.impl.Earthhack"
@@ -38,7 +38,6 @@
   "depends": {
     "fabricloader": ">=0.15.3",
     "minecraft": "~1.20.1",
-    "java": ">=17",
-    "fabric-api": "*"
+    "java": ">=17"
   }
 }

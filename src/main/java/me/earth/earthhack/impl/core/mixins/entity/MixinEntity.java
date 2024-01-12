@@ -154,6 +154,13 @@ public abstract class MixinEntity implements IEntity
     }
 
     @Override
+    public boolean inWeb()
+    {
+        // todo
+        return false;
+    }
+
+    @Override
     public long getDeathTime()
     {
         // TODO!!!

@@ -67,10 +67,9 @@ public class Core {
             }
         }
 
-        Mixins.addConfiguration("mixins.earth.json");
-        String obfuscationContext = "yarn";
-
-        MixinEnvironment.getDefaultEnvironment()
-                .setObfuscationContext(obfuscationContext);
+        // Mixins.addConfiguration("mixins.earth.json");
+        // String obfuscationContext = "yarn";
+        // MixinEnvironment.getDefaultEnvironment()
+        //         .setObfuscationContext(obfuscationContext);
     }
 }
