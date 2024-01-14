@@ -109,7 +109,7 @@ public class TextRadar extends DynamicHudElement {
             output.put(
                     (health.getValue() ? healthSB + " " : "")
                             + (Managers.FRIENDS.contains(player) ? TextColor.AQUA : Managers.ENEMIES.contains(player) ? TextColor.RED : TextColor.RESET)
-                            + player.getName()
+                            + player.getName().getString()
                             + " "
                             + (renderDistance.getValue() ? distanceSB + " " : "")
                             + TextColor.WHITE
