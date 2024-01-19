@@ -2,8 +2,6 @@
 
 # 3arthh4ck (Fabric Edition
 
-![pig bro](https://cdn.discordapp.com/attachments/1188627136341344307/1193343033769480302/GDEXsWJXgAE5NTr.png?ex=65ac5e4e&is=6599e94e&hm=55045f4bbcb503c248041ecf8d941ac5e5c31f687877b656f1f2e39b878c506a&)
-<br>
 [![GitHub All Releases](https://img.shields.io/github/downloads/3arthh4ckDevelopment/3arthh4ck-fabric/total.svg?color=g)](https://github.com/3arthh4ckDevelopment/3arthh4ck-fabric/releases)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/3arthh4ckDevelopment/3arthh4ck-fabric/gradle-publish.yml)
 ![GitHub](https://img.shields.io/github/license/3arthh4ckDevelopment/3arthh4ck-fabric?color=g)
