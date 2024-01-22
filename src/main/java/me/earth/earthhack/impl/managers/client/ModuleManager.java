@@ -29,6 +29,7 @@ import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
 import me.earth.earthhack.impl.modules.combat.offhand.Offhand;
 import me.earth.earthhack.impl.modules.combat.surround.Surround;
 import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
+import me.earth.earthhack.impl.modules.misc.antipackets.AntiPackets;
 import me.earth.earthhack.impl.modules.misc.antipotion.AntiPotion;
 import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
 import me.earth.earthhack.impl.modules.misc.chat.Chat;
@@ -39,6 +40,7 @@ import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.blocklag.BlockLag;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
 import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
+import me.earth.earthhack.impl.modules.movement.packetfly.PacketFly;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
@@ -117,7 +119,7 @@ public class ModuleManager extends IterationRegister<Module>
         /* ------ MISC ------ */
         this.forceRegister(new Announcer());
         // this.forceRegister(new AntiAim());
-        // this.forceRegister(new AntiPackets());
+        this.forceRegister(new AntiPackets());
         this.forceRegister(new AntiPotion());
         // this.forceRegister(new AntiVanish());
         // this.forceRegister(new AutoEat());
@@ -169,7 +171,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new NoFall());
         // this.forceRegister(new NoMove());
         this.forceRegister(new NoSlowDown());
-        // this.forceRegister(new PacketFly());
+        this.forceRegister(new PacketFly());
         // this.forceRegister(new Phase());
         // this.forceRegister(new SafeWalk());
         this.forceRegister(new Speed());
