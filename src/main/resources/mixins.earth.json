@@ -18,6 +18,7 @@
     "network.server.IEntityStatusS2CPacket",
     "network.server.IEntityVelocityUpdateS2CPacket",
     "network.server.IExplosionS2CPacket",
+    "network.server.IPlayerPositionLookS2CPacket",
     "util.ITimer",
     "util.MixinClickEvent",
     "util.MixinHoverEvent",

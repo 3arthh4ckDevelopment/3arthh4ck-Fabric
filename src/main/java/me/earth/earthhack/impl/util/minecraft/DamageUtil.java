@@ -218,7 +218,7 @@ public class DamageUtil implements Globals
     /**
      * Convenience method, calls
      * {@link DamageUtil#calculate(double, double, double, LivingEntity)}
-     * for for the block p, x + 0.5, y + 1, z + 0.5;
+     * for the block p, x + 0.5, y + 1, z + 0.5;
      */
     public static float calculate(BlockPos p, LivingEntity base)
     {

@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.*;
-import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -22,21 +22,21 @@ import net.minecraft.util.math.Vec3d;
 @SuppressWarnings({"unused", "ConstantConditions"})
 public class PacketUtil implements Globals
 {
-  // public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO: do what
-  // {
-  //     return ((IEnumConnectionState) a.HANDSHAKING)
-  //             .getStatesByClass()
-  //             .keySet();
-  // }
+    // public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO: do what
+    // {
+    //     return ((IEnumConnectionState) a.HANDSHAKING)
+    //             .getStatesByClass()
+    //             .keySet();
+    // }
 
-    public static void handlePosLook(EntityPositionS2CPacket packetIn,
+    public static void handlePosLook(PlayerPositionLookS2CPacket packetIn,
                                      Entity entity,
                                      boolean noRotate)
     {
         handlePosLook(packetIn, entity, noRotate, false);
     }
 
-    public static void handlePosLook(EntityPositionS2CPacket packet,
+    public static void handlePosLook(PlayerPositionLookS2CPacket packet,
                                      Entity entity,
                                      boolean noRotate,
                                      boolean event)
@@ -51,7 +51,7 @@ public class PacketUtil implements Globals
         entity.setPitch(pitch);
         entity.setYaw(yaw);
 
-        Packet<?> confirm = new TeleportConfirmC2SPacket(packet.getId());
+        Packet<?> confirm = new TeleportConfirmC2SPacket(packet.getTeleportId());
         PlayerMoveC2SPacket posRot  = positionRotation(entity.getX(),
                 entity.getBoundingBox()
                         .minY,
