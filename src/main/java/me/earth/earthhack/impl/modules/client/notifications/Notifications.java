@@ -14,7 +14,6 @@ import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.gui.visibility.Visibilities;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.StopWatch;
-import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.text.ChatIDs;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.entity.Entity;
@@ -36,10 +35,10 @@ public class Notifications extends Module
             register(new EnumSetting<>("Type", NotificationType.Chat));
     protected final Setting<Double> duration =
             register(new NumberSetting<>("Duration", 1.0, 0.5, 3.0));
-    protected final Setting<Float> posX =
-            register(new NumberSetting<>("PosX", 680.0f, 0.0f, (float) Render2DUtil.getScreenWidth()));
-    protected final Setting<Float> posY =
-            register(new NumberSetting<>("posY", 380.0f, 0.0f, (float) Render2DUtil.getScreenHeight()));
+    // protected final Setting<Float> posX =
+    //         register(new NumberSetting<>("PosX", 680.0f, 0.0f, (float) Render2DUtil.getScreenWidth()));
+    // protected final Setting<Float> posY =
+    //         register(new NumberSetting<>("posY", 380.0f, 0.0f, (float) Render2DUtil.getScreenHeight()));
 
     protected final Setting<Boolean> modules     =
             register(new BooleanSetting("Modules", true));
