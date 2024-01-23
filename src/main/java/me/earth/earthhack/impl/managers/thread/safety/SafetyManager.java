@@ -30,9 +30,9 @@ public class SafetyManager extends SubscriberImpl implements Globals
     private static final ModuleCache<Suicide> SUICIDE =
      Caches.getModule(Suicide.class);
     protected final SettingCache<Boolean, BooleanSetting, Safety> newV =
-     Caches.getSetting(Safety.class, BooleanSetting.class, "1.13+", false);
+     Caches.getSetting(Safety.class, BooleanSetting.class, "1.12", false);
     protected final SettingCache<Boolean, BooleanSetting, Safety> newVEntities =
-     Caches.getSetting(Safety.class, BooleanSetting.class, "1.13-Entities", false);
+     Caches.getSetting(Safety.class, BooleanSetting.class, "UnderEntities", false);
     protected final SettingCache<Boolean, BooleanSetting, Safety> beds =
      Caches.getSetting(Safety.class, BooleanSetting.class, "BedCheck", false);
     protected final SettingCache<Float, NumberSetting<Float>, Safety> damage =

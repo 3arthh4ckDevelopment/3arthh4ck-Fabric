@@ -78,7 +78,7 @@ public class BlockStateHelper implements Globals, IBlockStateHelper
     /**
      * This Method is not ThreadSafe, unless you use the second
      * constructor with a Concurrent map. If you want to use
-     * this method on another Thread you are better of
+     * this method on another Thread you are better off
      * instantiating your own BlockStateManager.
      * <p></p>
      * Some modules used to set a BlockState in the world

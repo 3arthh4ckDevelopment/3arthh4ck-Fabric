@@ -20,7 +20,7 @@ public class ArmUtil implements Globals
         // PingBypass.sendPacket(new S2CSwingPacket(hand));
         if (!mc.player.handSwinging
                 || mc.player.handSwingTicks >=
-                ((ILivingEntity) mc.player).armSwingAnimationEnd() / 2
+                ((ILivingEntity) mc.player).earthhack$armSwingAnimationEnd() / 2
                 || mc.player.handSwingTicks < 0)
         {
             mc.player.handSwingTicks = -1;

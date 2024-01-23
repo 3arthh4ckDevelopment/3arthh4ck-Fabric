@@ -27,6 +27,7 @@ import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockingType;
 import me.earth.earthhack.impl.util.minecraft.blocks.SpecialBlocks;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
@@ -35,7 +36,9 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
@@ -159,12 +162,9 @@ public abstract class BlockPlacingModule extends DisablingModule
 
         float[] f = RayTraceUtil.hitVecToPlaceVec(on, hitVec);
         Hand hand = InventoryUtil.getHand(slot);
-        // packets.add(new PlayerInteractBlockC2SPacket(hand,
-        //                                                facing,
-        //                                                hand,
-        //                                                f[0],
-        //                                                f[1],
-        //                                                f[2]));
+        packets.add(new PlayerInteractBlockC2SPacket(hand,
+                new BlockHitResult(new Vec3d(f[0], f[1], f[2]), facing, on, false),
+                0));
         if (placeSwing.getValue() == PlaceSwing.Always)
         {
             packets.add(new HandSwingC2SPacket(InventoryUtil.getHand(slot)));
@@ -205,7 +205,7 @@ public abstract class BlockPlacingModule extends DisablingModule
                              float hitY,
                              float hitZ)
     {
-        if (stack.getItem() instanceof BlockItem itemBlock)
+        if (stack.getItem() instanceof BlockItem block)
         {
             BlockState BlockState = mc.world.getBlockState(pos);
 
@@ -214,9 +214,10 @@ public abstract class BlockPlacingModule extends DisablingModule
                 pos = pos.offset(facing);
             }
 
-            if (!stack.isEmpty() && mc.player.canPlaceOn(pos, facing, stack)) //TODO: test this
+            if (!stack.isEmpty() && mc.player.canPlaceOn(pos, facing, stack))
             {
-                ActionResult result = itemBlock.place(new ItemPlacementContext(mc.player, hand, stack, new BlockHitResult(Vec3d.ofBottomCenter(pos), facing, pos, false)));
+                ActionResult result = block.place(new ItemPlacementContext(mc.player, hand, stack,
+                        new BlockHitResult(new Vec3d(hitX, hitY, hitZ), facing, pos, false)));
                 if (result == ActionResult.SUCCESS)
                 {
                     BlockState placeState = mc.world.getBlockState(pos);
@@ -254,6 +255,8 @@ public abstract class BlockPlacingModule extends DisablingModule
 
             if (!sneaking)
             {
+                NetworkUtil.send(new ClientCommandC2SPacket(mc.player,
+                        ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
                 /*
                 PingBypass.sendToActualServer(
                     new CPacketEntityAction(
@@ -272,6 +275,8 @@ public abstract class BlockPlacingModule extends DisablingModule
 
             if (!sneaking)
             {
+                NetworkUtil.send(new ClientCommandC2SPacket(mc.player,
+                        ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
                 /*
                 PingBypass.sendToActualServer(
                     new CPacketEntityAction(

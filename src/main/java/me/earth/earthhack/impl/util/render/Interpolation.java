@@ -43,13 +43,13 @@ public class Interpolation implements Globals
         if (NOINTERP.isEnabled()
                 && NOINTERP.get().isSilent()
                 && entity instanceof IEntityNoInterp
-                && ((IEntityNoInterp) entity).isNoInterping())
+                && ((IEntityNoInterp) entity).earthhack$isNoInterping())
         {
-            x = interpolateLastTickPos(((IEntityNoInterp) entity).getNoInterpX(), entity.lastRenderX)
+            x = interpolateLastTickPos(((IEntityNoInterp) entity).earthhack$getNoInterpX(), entity.lastRenderX)
                     - getRenderPosX();
-            y = interpolateLastTickPos(((IEntityNoInterp) entity).getNoInterpY(), entity.lastRenderY)
+            y = interpolateLastTickPos(((IEntityNoInterp) entity).earthhack$getNoInterpY(), entity.lastRenderY)
                     - getRenderPosY();
-            z = interpolateLastTickPos(((IEntityNoInterp) entity).getNoInterpZ(), entity.lastRenderZ)
+            z = interpolateLastTickPos(((IEntityNoInterp) entity).earthhack$getNoInterpZ(), entity.lastRenderZ)
                     - getRenderPosZ();
         }
         else
@@ -74,11 +74,11 @@ public class Interpolation implements Globals
         if (NOINTERP.isEnabled()
                 && NOINTERP.get().isSilent()
                 && entity instanceof IEntityNoInterp
-                && ((IEntityNoInterp) entity).isNoInterping())
+                && ((IEntityNoInterp) entity).earthhack$isNoInterping())
         {
-            x = interpolateLastTickPos(((IEntityNoInterp) entity).getNoInterpX(), entity.lastRenderX);
-            y = interpolateLastTickPos(((IEntityNoInterp) entity).getNoInterpY(), entity.lastRenderY);
-            z = interpolateLastTickPos(((IEntityNoInterp) entity).getNoInterpZ(), entity.lastRenderZ);
+            x = interpolateLastTickPos(((IEntityNoInterp) entity).earthhack$getNoInterpX(), entity.lastRenderX);
+            y = interpolateLastTickPos(((IEntityNoInterp) entity).earthhack$getNoInterpY(), entity.lastRenderY);
+            z = interpolateLastTickPos(((IEntityNoInterp) entity).earthhack$getNoInterpZ(), entity.lastRenderZ);
         }
         else
         {

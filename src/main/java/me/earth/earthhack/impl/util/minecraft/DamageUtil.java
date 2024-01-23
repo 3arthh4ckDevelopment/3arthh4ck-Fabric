@@ -77,7 +77,7 @@ public class DamageUtil implements Globals
 
     /**
      * Attempts to cache the lowest Armor Percentage for
-     * this Entity via {@link ILivingEntity#setLowestDura(float)}.
+     * this Entity via {@link ILivingEntity#earthhack$setLowestDura(float)}.
      *
      * @param base the entity whose lowest Armor Percentage to cache.
      * @return <tt>true</tt> if the Entity wears no armor.
@@ -85,8 +85,8 @@ public class DamageUtil implements Globals
     public static boolean cacheLowestDura(LivingEntity base)
     {
         ILivingEntity access = (ILivingEntity) base;
-        float before = access.getLowestDurability();
-        access.setLowestDura(Float.MAX_VALUE);
+        float before = access.earthhack$getLowestDurability();
+        access.earthhack$setLowestDura(Float.MAX_VALUE);
 
         try
         {
@@ -97,9 +97,9 @@ public class DamageUtil implements Globals
                 {
                     isNaked = false;
                     float damage = getPercent(stack);
-                    if (damage < access.getLowestDurability())
+                    if (damage < access.earthhack$getLowestDurability())
                     {
-                        access.setLowestDura(damage);
+                        access.earthhack$setLowestDura(damage);
                     }
                 }
             }
@@ -109,7 +109,7 @@ public class DamageUtil implements Globals
         catch (Throwable t)
         {
             t.printStackTrace();
-            access.setLowestDura(before);
+            access.earthhack$setLowestDura(before);
             return false;
         }
     }
@@ -241,7 +241,7 @@ public class DamageUtil implements Globals
     /**
      * Convenience method, calls
      * {@link DamageUtil#calculate(double, double, double, LivingEntity)}
-     * for for the entities position.
+     * for the entities' position.
      */
     public static float calculate(Entity crystal, LivingEntity base)
     {
@@ -397,17 +397,13 @@ public class DamageUtil implements Globals
      */
     public static float getDifficultyMultiplier(float distance)
     {
-        switch (mc.world.getDifficulty())
-        {
-            case PEACEFUL:
-                return 0.0F;
-            case EASY:
-                return Math.min(distance / 2.0f + 1.0f, distance);
-            case HARD:
-                return distance * 3.0f / 2.0f;
-        }
+        return switch (mc.world.getDifficulty()) {
+            case PEACEFUL -> 0.0F;
+            case EASY -> Math.min(distance / 2.0f + 1.0f, distance);
+            case HARD -> distance * 3.0f / 2.0f;
+            default -> distance;
+        };
 
-        return distance;
     }
 
     /**

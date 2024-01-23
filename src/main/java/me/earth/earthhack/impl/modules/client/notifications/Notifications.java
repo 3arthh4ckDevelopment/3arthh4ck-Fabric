@@ -154,7 +154,7 @@ public class Notifications extends Module
         if (this.isEnabled()) {
             if (totems.getValue()) {
                 String message = totemPlayerColor.getValue().getColor()
-                        + player.getName()
+                        + player.getName().getString()
                         + totemColor.getValue().getColor()
                         + " popped "
                         + totemAmountColor.getValue().getColor()
@@ -173,7 +173,7 @@ public class Notifications extends Module
         if (this.isEnabled()) {
             if (totems.getValue()) {
                 String message = totemPlayerColor.getValue().getColor()
-                        + player.getName()
+                        + player.getName().getString()
                         + totemColor.getValue().getColor()
                         + " died after popping "
                         + totemAmountColor.getValue().getColor()

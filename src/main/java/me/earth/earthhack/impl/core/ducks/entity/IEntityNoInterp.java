@@ -1,38 +1,38 @@
 package me.earth.earthhack.impl.core.ducks.entity;
 
 public interface IEntityNoInterp {
-    double getNoInterpX();
+    double earthhack$getNoInterpX();
 
-    double getNoInterpY();
+    double earthhack$getNoInterpY();
 
-    double getNoInterpZ();
+    double earthhack$getNoInterpZ();
 
-    void setNoInterpX(double x);
+    void earthhack$setNoInterpX(double x);
 
-    void setNoInterpY(double y);
+    void earthhack$setNoInterpY(double y);
 
-    void setNoInterpZ(double z);
+    void earthhack$setNoInterpZ(double z);
 
-    int getPosIncrements();
+    int earthhack$getPosIncrements();
 
-    void setPosIncrements(int posIncrements);
+    void earthhack$setPosIncrements(int posIncrements);
 
-    float getNoInterpSwingAmount();
+    float earthhack$getNoInterpSwingAmount();
 
-    float getNoInterpSwing();
+    float earthhack$getNoInterpSwing();
 
-    float getNoInterpPrevSwing();
+    float earthhack$getNoInterpPrevSwing();
 
-    void setNoInterpSwingAmount(float noInterpSwingAmount);
+    void earthhack$setNoInterpSwingAmount(float noInterpSwingAmount);
 
-    void setNoInterpSwing(float noInterpSwing);
+    void earthhack$setNoInterpSwing(float noInterpSwing);
 
-    void setNoInterpPrevSwing(float noInterpPrevSwing);
+    void earthhack$setNoInterpPrevSwing(float noInterpPrevSwing);
 
     /**
      * @return <tt>true</tt> unless this Entity is a ClientPlayerEntity.
      */
-    boolean isNoInterping();
+    boolean earthhack$isNoInterping();
 
-    void setNoInterping(boolean noInterping);
+    void earthhack$setNoInterping(boolean noInterping);
 }

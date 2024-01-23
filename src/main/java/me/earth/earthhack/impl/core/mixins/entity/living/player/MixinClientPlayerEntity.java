@@ -10,7 +10,7 @@ import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.events.network.PreMotionUpdateEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.compatibility.Compatibility;
-import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
+import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
@@ -25,18 +25,17 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerEntity
         implements IClientPlayerEntity
 {
-    // private static final ModuleCache<Spectate> SPECTATE =
-    //         Caches.getModule(Spectate.class);
+    @Unique
+    private static final ModuleCache<Spectate> SPECTATE =
+            Caches.getModule(Spectate.class);
     // private static final ModuleCache<ElytraFlight> ELYTRA_FLIGHT =
     //         Caches.getModule(ElytraFlight.class);
-    @Unique
-    private static final ModuleCache<AutoSprint> SPRINT =
-            Caches.getModule(AutoSprint.class);
     @Unique
     private static final ModuleCache<XCarry> XCARRY =
             Caches.getModule(XCarry.class);
@@ -347,4 +346,15 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         // }
     }
 
+    @Inject(
+            method = "isCamera",
+            at = @At("HEAD"),
+            cancellable = true)
+    public void isCurrentViewEntityHook(CallbackInfoReturnable<Boolean> cir)
+    {
+        if (!isSpectator() && SPECTATE.isEnabled())
+        {
+            cir.setReturnValue(true);
+        }
+    }
 }

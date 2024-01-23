@@ -80,7 +80,7 @@ public class CrystalHelper implements Globals {
                 && BlockUtil.canPlaceCrystal(pos, ignoreCrystals, module.oldVer.getValue(), entities,
                                              module.newVerEntities.getValue(), 0L))
             {
-                float selfDamage = DamageUtil.calculate(pos, mc.player, (ClientWorld) helper);
+                float selfDamage = DamageUtil.calculate(pos, mc.player, mc.world);
                 if (selfDamage > module.maxSelfDmg.getValue())
                 {
                     continue;

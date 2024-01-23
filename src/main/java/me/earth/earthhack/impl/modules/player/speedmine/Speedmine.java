@@ -307,7 +307,7 @@ public class Speedmine extends Module {
 
     public Speedmine() 
     {
-        super("SpeedMine", Category.Player);
+        super("Speedmine", Category.Player);
         this.listeners.add(new ListenerDamage(this));
         this.listeners.add(new ListenerReset(this));
         this.listeners.add(new ListenerClick(this));

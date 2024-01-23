@@ -61,7 +61,7 @@ final class ListenerMotion extends ModuleListener<Surround, MotionUpdateEvent>
             boolean hasPlaced = false;
 
             // ensure that we attack the pos with the crystal first before
-            // the others, so we dont have to deal with switchcooldown.
+            // the others, so we don't have to deal with switchcooldown.
             Optional<BlockPos> crystalPos = module.targets
                     .stream()
                     .filter(pos ->

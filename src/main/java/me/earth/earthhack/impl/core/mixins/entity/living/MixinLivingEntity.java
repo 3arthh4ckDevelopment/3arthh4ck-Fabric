@@ -7,10 +7,13 @@ import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.core.mixins.entity.MixinEntity;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
+import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
+import me.earth.earthhack.impl.modules.movement.autosprint.mode.SprintMode;
 import me.earth.earthhack.impl.modules.player.fasteat.FastEat;
 import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import me.earth.earthhack.impl.modules.render.norender.NoRender;
 import me.earth.earthhack.impl.util.minecraft.ICachedDamage;
+import me.earth.earthhack.impl.util.minecraft.MovementUtil;
 import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
@@ -27,6 +30,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.Map;
 
@@ -52,6 +57,9 @@ public abstract class MixinLivingEntity extends MixinEntity
     @Unique
     private static final ModuleCache<NoRender> NO_RENDER =
             Caches.getModule(NoRender.class);
+    @Unique
+    private static final ModuleCache<AutoSprint> SPRINT =
+            Caches.getModule(AutoSprint.class);
 
     @Shadow
     @Final
@@ -108,112 +116,112 @@ public abstract class MixinLivingEntity extends MixinEntity
 
     @Override
     @Accessor(value = "handSwingTicks")
-    public abstract int getTicksSinceLastSwing();
+    public abstract int earthhack$getTicksSinceLastSwing();
 
     @Override
     // @Accessor(value = "activeItemStackUseCount") // TODO Forgot
-    public abstract int getActiveItemStackUseCount();
+    public abstract int earthhack$getActiveItemStackUseCount();
 
     @Override
     @Accessor(value = "handSwingTicks")
-    public abstract void setTicksSinceLastSwing(int ticks);
+    public abstract void earthhack$setTicksSinceLastSwing(int ticks);
 
     @Override
     // @Accessor(value = "activeItemStackUseCount") // TODO Forgot
-    public abstract void setActiveItemStackUseCount(int count);
+    public abstract void earthhack$setActiveItemStackUseCount(int count);
 
     @Override
-    public boolean getElytraFlag()
+    public boolean earthhack$getElytraFlag()
     {
         return this.getFlag(7);
     }
 
     @Override
-    public double getNoInterpX()
+    public double earthhack$getNoInterpX()
     {
-        return isNoInterping() ? noInterpX : pos.x;
+        return earthhack$isNoInterping() ? noInterpX : pos.x;
     }
 
     @Override
-    public double getNoInterpY()
+    public double earthhack$getNoInterpY()
     {
-        return isNoInterping() ? noInterpY: pos.y;
+        return earthhack$isNoInterping() ? noInterpY: pos.y;
     }
 
     @Override
-    public double getNoInterpZ()
+    public double earthhack$getNoInterpZ()
     {
-        return isNoInterping() ? noInterpZ : pos.z;
+        return earthhack$isNoInterping() ? noInterpZ : pos.z;
     }
 
     @Override
-    public void setNoInterpX(double x)
+    public void earthhack$setNoInterpX(double x)
     {
         this.noInterpX = x;
     }
 
     @Override
-    public void setNoInterpY(double y)
+    public void earthhack$setNoInterpY(double y)
     {
         this.noInterpY = y;
     }
 
     @Override
-    public void setNoInterpZ(double z)
+    public void earthhack$setNoInterpZ(double z)
     {
         this.noInterpZ = z;
     }
 
     @Override
-    public int getPosIncrements()
+    public int earthhack$getPosIncrements()
     {
         return noInterpPositionIncrements;
     }
 
     @Override
-    public void setPosIncrements(int posIncrements)
+    public void earthhack$setPosIncrements(int posIncrements)
     {
         this.noInterpPositionIncrements = posIncrements;
     }
 
     @Override
-    public float getNoInterpSwingAmount()
+    public float earthhack$getNoInterpSwingAmount()
     {
         return noInterpSwingAmount;
     }
 
     @Override
-    public float getNoInterpSwing()
+    public float earthhack$getNoInterpSwing()
     {
         return noInterpSwing;
     }
 
     @Override
-    public float getNoInterpPrevSwing()
+    public float earthhack$getNoInterpPrevSwing()
     {
         return noInterpPrevSwing;
     }
 
     @Override
-    public void setNoInterpSwingAmount(float noInterpSwingAmount)
+    public void earthhack$setNoInterpSwingAmount(float noInterpSwingAmount)
     {
         this.noInterpSwingAmount = noInterpSwingAmount;
     }
 
     @Override
-    public void setNoInterpSwing(float noInterpSwing)
+    public void earthhack$setNoInterpSwing(float noInterpSwing)
     {
         this.noInterpSwing = noInterpSwing;
     }
 
     @Override
-    public void setNoInterpPrevSwing(float noInterpPrevSwing)
+    public void earthhack$setNoInterpPrevSwing(float noInterpPrevSwing)
     {
         this.noInterpPrevSwing = noInterpPrevSwing;
     }
 
     @Override
-    public boolean isNoInterping()
+    public boolean earthhack$isNoInterping()
     {
         ClientPlayerEntity player = mc.player;
         return !this.hasVehicle()
@@ -222,19 +230,19 @@ public abstract class MixinLivingEntity extends MixinEntity
     }
 
     @Override
-    public void setNoInterping(boolean noInterping)
+    public void earthhack$setNoInterping(boolean noInterping)
     {
         this.noInterping = noInterping;
     }
 
     @Override
-    public void setLowestDura(float lowest)
+    public void earthhack$setLowestDura(float lowest)
     {
         this.lowestDura = lowest;
     }
 
     @Override
-    public float getLowestDurability()
+    public float earthhack$getLowestDurability()
     {
         return lowestDura;
     }
@@ -264,5 +272,20 @@ public abstract class MixinLivingEntity extends MixinEntity
                 ? explosionModifier
                 : EnchantmentUtil.getEnchantmentModifierDamage(
                 this.getArmorItems(), source);
+    }
+
+    @ModifyArg(
+            method = "setSprinting",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/Entity;setSprinting(Z)V"))
+    public boolean setSprintingHook(boolean sprinting)
+    {
+        if (SPRINT.isEnabled() && AutoSprint.canSprintBetter() && (SPRINT.get().getMode() == SprintMode.Rage && MovementUtil.isMoving()))
+        {
+            return true;
+        }
+
+        return sprinting;
     }
 }

@@ -48,15 +48,14 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
                     && module.airFastRender.getValue())
                 return;
 
-            GL11.glPushMatrix();
+            event.getStack().push();
             GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
             Box bb = cachedBB;
             module.esp.getValue().drawEsp(module, bb, Math.min(module.maxDamage, 1.0f));
-
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glPopAttrib();
-            GL11.glPopMatrix();
+            event.getStack().pop();
         }
     }
 

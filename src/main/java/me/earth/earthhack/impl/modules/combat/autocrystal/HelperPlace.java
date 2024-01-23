@@ -571,7 +571,7 @@ public class HelperPlace implements Globals
         if (damage > module.minFaceDmg.getValue())
         {
             if (health < module.facePlace.getValue()
-                    || ((ILivingEntity) player).getLowestDurability()
+                    || ((ILivingEntity) player).earthhack$getLowestDurability()
                         <= module.armorPlace.getValue())
             {
                 positionData.setFacePlacer(player);

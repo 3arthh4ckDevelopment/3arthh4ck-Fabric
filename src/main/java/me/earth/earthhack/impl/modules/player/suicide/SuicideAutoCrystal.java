@@ -1,9 +1,11 @@
 package me.earth.earthhack.impl.modules.player.suicide;
 
+import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
+import me.earth.earthhack.impl.modules.combat.autocrystal.modes.Target;
 
-public class SuicideAutoCrystal extends AutoCrystal {
-    /*
+public class SuicideAutoCrystal extends AutoCrystal
+{
     public SuicideAutoCrystal() {
         super("SuicideAutoCrystal", Category.Combat);
         this.suicide.setValue(true);
@@ -20,7 +22,4 @@ public class SuicideAutoCrystal extends AutoCrystal {
     public boolean isSuicideModule() {
         return true;
     }
-    //TODO: implement ac
-     */
-
 }

@@ -2,6 +2,10 @@ package me.earth.earthhack.impl.modules.player.suicide;
 
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
+import me.earth.earthhack.impl.util.thread.Locks;
+import net.minecraft.item.Items;
+import net.minecraft.screen.slot.SlotActionType;
 
 final class ListenerMotion extends ModuleListener<Suicide, MotionUpdateEvent>
 {
@@ -26,7 +30,7 @@ final class ListenerMotion extends ModuleListener<Suicide, MotionUpdateEvent>
 
         if (module.mode.getValue() == SuicideMode.Command)
         {
-            mc.getNetworkHandler().sendChatCommand("/kill");
+            mc.player.networkHandler.sendChatCommand("kill");
             module.disable();
             return;
         }
@@ -35,7 +39,7 @@ final class ListenerMotion extends ModuleListener<Suicide, MotionUpdateEvent>
         {
             module.autoCrystal.enable();
         }
-        /*
+
         module.autoCrystal.switching = true;
         if (module.throwAwayTotem.getValue()
             && InventoryUtil.validScreen()
@@ -44,12 +48,10 @@ final class ListenerMotion extends ModuleListener<Suicide, MotionUpdateEvent>
                 == Items.TOTEM_OF_UNDYING)
         {
             Locks.acquire(Locks.WINDOW_CLICK_LOCK, () ->
-                mc.playerController.windowClick(
-                    0, 45, 1, ClickType.THROW, mc.player));
+                mc.interactionManager.clickSlot(
+                    0, 45, 1, SlotActionType.THROW, mc.player));
             module.timer.reset();
         }
-        //TODO: implement autocrystal
-         */
     }
 
 }

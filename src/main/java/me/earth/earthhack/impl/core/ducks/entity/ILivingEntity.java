@@ -6,21 +6,21 @@ package me.earth.earthhack.impl.core.ducks.entity;
 public interface ILivingEntity //TODO: implement the mixins
 {
     /** @return the getArmSwingAnimationEnd field. */
-    int armSwingAnimationEnd();
+    int earthhack$armSwingAnimationEnd();
 
     /** @return the ticksSinceLastSwing field. */
-    int getTicksSinceLastSwing();
+    int earthhack$getTicksSinceLastSwing();
 
-    int getActiveItemStackUseCount();
+    int earthhack$getActiveItemStackUseCount();
 
-    void setTicksSinceLastSwing(int ticks);
+    void earthhack$setTicksSinceLastSwing(int ticks);
 
-    void setActiveItemStackUseCount(int count);
+    void earthhack$setActiveItemStackUseCount(int count);
 
-    boolean getElytraFlag();
+    boolean earthhack$getElytraFlag();
 
-    void setLowestDura(float lowest);
+    void earthhack$setLowestDura(float lowest);
 
-    float getLowestDurability();
+    float earthhack$getLowestDurability();
 
 }
