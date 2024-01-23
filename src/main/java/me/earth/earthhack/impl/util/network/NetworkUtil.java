@@ -52,8 +52,8 @@ public class NetworkUtil implements Globals
         ClientPlayNetworkHandler connection = mc.getNetworkHandler();
         if (connection != null)
         {
-            IClientPlayNetworkHandler manager =
-                    (IClientPlayNetworkHandler) connection.getConnection();
+            IClientConnection manager =
+                    (IClientConnection) connection.getConnection();
 
             return manager.sendPacketNoEvent(packet, post);
         }
