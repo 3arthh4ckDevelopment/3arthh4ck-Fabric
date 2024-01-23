@@ -5,33 +5,33 @@ package me.earth.earthhack.impl.core.ducks.entity;
  */
 public interface IClientPlayerEntity
 {
-    double getLastReportedX();
+    double earthhack$getLastReportedX();
 
-    double getLastReportedY();
+    double earthhack$getLastReportedY();
 
-    double getLastReportedZ();
+    double earthhack$getLastReportedZ();
 
-    float getLastReportedYaw();
+    float earthhack$getLastReportedYaw();
 
-    float getLastReportedPitch();
+    float earthhack$getLastReportedPitch();
 
-    boolean getLastOnGround();
+    boolean earthhack$getLastOnGround();
 
-    void setLastReportedX(double x);
+    void earthhack$setLastReportedX(double x);
 
-    void setLastReportedY(double y);
+    void earthhack$setLastReportedY(double y);
 
-    void setLastReportedZ(double z);
+    void earthhack$setLastReportedZ(double z);
 
-    void setLastReportedYaw(float yaw);
+    void earthhack$setLastReportedYaw(float yaw);
 
-    void setLastReportedPitch(float pitch);
+    void earthhack$setLastReportedPitch(float pitch);
 
-    int getPositionUpdateTicks();
+    int earthhack$getPositionUpdateTicks();
 
-    void superUpdate();
+    void earthhack$superUpdate();
 
-    void invokeSendMovementPackets();
+    void earthhack$invokeSendMovementPackets();
 
-    void setHorseJumpPower(float jumpPower);
+    void earthhack$setHorseJumpPower(float jumpPower);
 }

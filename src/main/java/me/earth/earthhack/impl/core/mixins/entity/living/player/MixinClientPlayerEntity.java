@@ -2,11 +2,14 @@ package me.earth.earthhack.impl.core.mixins.entity.living.player;
 
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.event.bus.instance.Bus;
+import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.impl.core.ducks.entity.IClientPlayerEntity;
 import me.earth.earthhack.impl.event.events.misc.UpdateEvent;
 import me.earth.earthhack.impl.event.events.movement.BlockPushEvent;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
+import me.earth.earthhack.impl.event.events.network.PreMotionUpdateEvent;
 import me.earth.earthhack.impl.modules.Caches;
+import me.earth.earthhack.impl.modules.client.compatibility.Compatibility;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import net.minecraft.client.MinecraftClient;
@@ -34,14 +37,16 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     @Unique
     private static final ModuleCache<AutoSprint> SPRINT =
             Caches.getModule(AutoSprint.class);
+    @Unique
     private static final ModuleCache<XCarry> XCARRY =
             Caches.getModule(XCarry.class);
     // private static final ModuleCache<Portals> PORTALS =
     //         Caches.getModule(Portals.class);
     // private static final SettingCache<Boolean, BooleanSetting, Portals> CHAT =
     //         Caches.getSetting(Portals.class, BooleanSetting.class, "Chat", true);
-    // private static final ModuleCache<Compatibility> ROTATION_BYPASS =
-    //         Caches.getModule(Compatibility.class);
+    @Unique
+    private static final ModuleCache<Compatibility> ROTATION_BYPASS =
+            Caches.getModule(Compatibility.class);
 
     @Shadow
     public Input input;
@@ -55,64 +60,64 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
 
     @Override
     @Accessor(value = "lastX")
-    public abstract double getLastReportedX();
+    public abstract double earthhack$getLastReportedX();
 
     @Override
     @Accessor(value = "lastBaseY")
-    public abstract double getLastReportedY();
+    public abstract double earthhack$getLastReportedY();
 
     @Override
     @Accessor(value = "lastZ")
-    public abstract double getLastReportedZ();
+    public abstract double earthhack$getLastReportedZ();
 
     @Override
     @Accessor(value = "lastYaw")
-    public abstract float getLastReportedYaw();
+    public abstract float earthhack$getLastReportedYaw();
 
     @Override
     @Accessor(value = "lastPitch")
-    public abstract float getLastReportedPitch();
+    public abstract float earthhack$getLastReportedPitch();
 
     @Override
     @Accessor(value = "lastOnGround")
-    public abstract boolean getLastOnGround();
+    public abstract boolean earthhack$getLastOnGround();
 
     @Override
     @Accessor(value = "lastX")
-    public abstract void setLastReportedX(double x);
+    public abstract void earthhack$setLastReportedX(double x);
 
     @Override
     @Accessor(value = "lastBaseY")
-    public abstract void setLastReportedY(double y);
+    public abstract void earthhack$setLastReportedY(double y);
 
     @Override
     @Accessor(value = "lastZ")
-    public abstract void setLastReportedZ(double z);
+    public abstract void earthhack$setLastReportedZ(double z);
 
     @Override
     @Accessor(value = "lastYaw")
-    public abstract void setLastReportedYaw(float yaw);
+    public abstract void earthhack$setLastReportedYaw(float yaw);
 
     @Override
     @Accessor(value = "lastPitch")
-    public abstract void setLastReportedPitch(float pitch);
+    public abstract void earthhack$setLastReportedPitch(float pitch);
 
     @Override
     @Accessor(value = "ticksSinceLastPositionPacketSent")
-    public abstract int getPositionUpdateTicks();
+    public abstract int earthhack$getPositionUpdateTicks();
 
     @Override
     @Accessor(value = "mountJumpStrength")
-    public abstract void setHorseJumpPower(float jumpPower);
+    public abstract void earthhack$setHorseJumpPower(float jumpPower);
 
     @Override
-    public void superUpdate()
+    public void earthhack$superUpdate()
     {
         super.tick();
     }
 
     @Override
-    public void invokeSendMovementPackets()
+    public void earthhack$invokeSendMovementPackets()
     {
         this.sendMovementPackets();
     }
@@ -164,6 +169,182 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     public void onUpdateHook(CallbackInfo info)
     {
         Bus.EVENT_BUS.post(new UpdateEvent());
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V",
+                    shift = At.Shift.BEFORE))
+    public void onTickMovementPlayerPre(CallbackInfo info)
+    {
+        Bus.EVENT_BUS.post(new PreMotionUpdateEvent());
+        if (ROTATION_BYPASS.isEnabled())
+        {
+            motionEvent = new MotionUpdateEvent(Stage.PRE,
+                    this.pos.x,
+                    this.getBoundingBox().minY,
+                    this.pos.z,
+                    this.yaw,
+                    this.pitch,
+                    this.onGround);
+            // if (!PingBypass.isConnected())
+            // {
+                Bus.EVENT_BUS.post(motionEvent);
+                pos.x = motionEvent.getX();
+                pos.y = motionEvent.getY();
+                pos.z = motionEvent.getZ();
+                yaw = motionEvent.getRotationYaw();
+                pitch = motionEvent.getRotationPitch();
+                onGround = motionEvent.isOnGround();
+            // }
+        }
+    }
+
+    @Inject(
+            method = "sendMovementPackets",
+            at = @At(value = "HEAD"),
+            cancellable = true)
+    public void onUpdateWalkingPlayer_Head(CallbackInfo callbackInfo)
+    {
+        if (!ROTATION_BYPASS.isEnabled())
+        {
+            motionEvent = new MotionUpdateEvent(Stage.PRE,
+                    this.pos.x,
+                    this.getBoundingBox().minY,
+                    this.pos.z,
+                    this.yaw,
+                    this.pitch,
+                    this.onGround);
+            // if (!PingBypass.isConnected())
+            // {
+                Bus.EVENT_BUS.post(motionEvent);
+            // }
+        }
+
+        if (motionEvent.isCancelled())
+        {
+            callbackInfo.cancel();
+        }
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V",
+                    shift = At.Shift.AFTER))
+    public void onUpdateWalkingPlayerPost(CallbackInfo ci)
+    {
+        if (ROTATION_BYPASS.isEnabled() && !ROTATION_BYPASS.returnIfPresent(
+                Compatibility::isShowingRotations, false)
+                /*&& !PingBypass.isConnected()*/)
+        {
+            // maybe someone else changed our position in the meantime
+            if (pos.x == motionEvent.getX())
+            {
+                pos.x = motionEvent.getInitialX();
+            }
+
+            if (pos.y == motionEvent.getY())
+            {
+                pos.y = motionEvent.getInitialY();
+            }
+
+            if (pos.z == motionEvent.getZ())
+            {
+                pos.z = motionEvent.getInitialZ();
+            }
+
+            if (yaw == motionEvent.getRotationYaw())
+            {
+                yaw = motionEvent.getInitialYaw();
+            }
+
+            if (pitch == motionEvent.getRotationPitch())
+            {
+                pitch = motionEvent.getInitialPitch();
+            }
+
+            if (onGround == motionEvent.isOnGround())
+            {
+                onGround = motionEvent.isInitialOnGround();
+            }
+        }
+    }
+    /*
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastX:D"))
+    public double posXHook(ClientPlayerEntity clientPlayerEntity)
+    {
+        return motionEvent.getX();
+    }
+
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "FIELD", // TODO: use the getY() shit instead
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastBaseY:D"))
+    public double minYHook(ClientPlayerEntity entity)
+    {
+        return motionEvent.getY();
+    }
+
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastZ:D"))
+    public double posZHook(ClientPlayerEntity entity)
+    {
+        return motionEvent.getZ();
+    }
+
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastYaw:F"))
+    public float rotationYawHook(ClientPlayerEntity clientPlayerEntity)
+    {
+        return motionEvent.getYaw();
+    }
+
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastPitch:F"))
+    public float rotationPitchHook(ClientPlayerEntity clientPlayerEntity)
+    {
+        return motionEvent.getPitch();
+    }
+
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z"))
+    public boolean onGroundHook(ClientPlayerEntity clientPlayerEntity)
+    {
+        return motionEvent.isOnGround();
+    }
+    */
+    @Inject(
+            method = "sendMovementPackets",
+            at = @At(value = "RETURN"))
+    public void onUpdateWalkingPlayer_Return(CallbackInfo callbackInfo)
+    {
+        // if (!PingBypass.isConnected())
+        // {
+            MotionUpdateEvent event = new MotionUpdateEvent(Stage.POST, motionEvent);
+            event.setCancelled(motionEvent.isCancelled());
+            Bus.EVENT_BUS.postReversed(event, null);
+        // }
     }
 
 }

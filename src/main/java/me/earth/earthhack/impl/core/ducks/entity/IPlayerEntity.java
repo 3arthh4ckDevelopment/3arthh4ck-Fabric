@@ -6,20 +6,20 @@ import me.earth.earthhack.impl.util.minecraft.MotionTracker;
  * Duck interface for {@link net.minecraft.entity.player.PlayerEntity}
  */
 public interface IPlayerEntity {
-    void setMotionTracker(MotionTracker motionTracker);
+    void earthhack$setMotionTracker(MotionTracker motionTracker);
 
-    MotionTracker getMotionTracker();
+    MotionTracker earthhack$getMotionTracker();
 
-    void setBreakMotionTracker(MotionTracker motionTracker);
+    void earthhack$setBreakMotionTracker(MotionTracker motionTracker);
 
-    MotionTracker getBreakMotionTracker();
+    MotionTracker earthhack$getBreakMotionTracker();
 
-    void setBlockMotionTracker(MotionTracker motionTracker);
+    void earthhack$setBlockMotionTracker(MotionTracker motionTracker);
 
-    MotionTracker getBlockMotionTracker();
+    MotionTracker earthhack$getBlockMotionTracker();
 
-    int getTicksWithoutMotionUpdate();
+    int earthhack$getTicksWithoutMotionUpdate();
 
-    void setTicksWithoutMotionUpdate(int ticksWithoutMotionUpdate);
+    void earthhack$setTicksWithoutMotionUpdate(int ticksWithoutMotionUpdate);
 
 }

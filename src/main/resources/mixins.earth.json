@@ -9,6 +9,7 @@
     "block.MixinSlimeBlock",
     "block.MixinSoulSandBlock",
     "entity.MixinEntity",
+    "entity.living.MixinLivingEntity",
     "entity.living.player.MixinPlayerEntity",
     "network.MixinClientConnection",
     "network.client.ILoginSuccessS2CPacket",

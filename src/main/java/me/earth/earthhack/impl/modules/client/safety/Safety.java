@@ -20,8 +20,8 @@ public class Safety extends Module
         super("Safety", Category.Client);
         register(new NumberSetting<>("MaxDamage", 4.0f, 0.0f, 36.0f));
         register(new BooleanSetting("BedCheck", false));
-        register(new BooleanSetting("1.13+", false));
-        register(new BooleanSetting("1.13-Entities", false));
+        register(new BooleanSetting("1.12", false));
+        register(new BooleanSetting("UnderEntities", false));
         register(new EnumSetting<>("Updates", Update.Tick));
         register(new NumberSetting<>("Delay", 25, 0, 100));
         register(new BooleanSetting("2x1s", true));

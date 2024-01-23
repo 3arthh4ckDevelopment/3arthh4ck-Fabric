@@ -3,7 +3,7 @@ package me.earth.earthhack.impl.modules.combat.autocrystal;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.entity.IEntityLivingBase;
+import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.safety.Safety;
@@ -571,7 +571,7 @@ public class HelperPlace implements Globals
         if (damage > module.minFaceDmg.getValue())
         {
             if (health < module.facePlace.getValue()
-                    || ((IEntityLivingBase) player).getLowestDurability()
+                    || ((ILivingEntity) player).getLowestDurability()
                         <= module.armorPlace.getValue())
             {
                 positionData.setFacePlacer(player);

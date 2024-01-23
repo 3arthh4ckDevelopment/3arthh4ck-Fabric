@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.core.mixins.entity.living.player;
 
 import me.earth.earthhack.impl.core.ducks.entity.IPlayerEntity;
+import me.earth.earthhack.impl.core.mixins.entity.living.MixinLivingEntity;
 import me.earth.earthhack.impl.util.minecraft.MotionTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -9,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity implements IPlayerEntity {
+public abstract class MixinPlayerEntity extends MixinLivingEntity implements IPlayerEntity {
 
     // private static final ModuleCache<TpsSync> TPS_SYNC =
     //         Caches.getModule(TpsSync.class);
@@ -34,42 +35,42 @@ public abstract class MixinPlayerEntity implements IPlayerEntity {
     private int ticksWithoutMotionUpdate;
 
     @Override
-    public void setMotionTracker(MotionTracker motionTracker) {
+    public void earthhack$setMotionTracker(MotionTracker motionTracker) {
         this.motionTracker = motionTracker;
     }
 
     @Override
-    public MotionTracker getMotionTracker() {
+    public MotionTracker earthhack$getMotionTracker() {
         return motionTracker;
     }
 
     @Override
-    public MotionTracker getBreakMotionTracker() {
+    public MotionTracker earthhack$getBreakMotionTracker() {
         return breakMotionTracker;
     }
 
     @Override
-    public void setBreakMotionTracker(MotionTracker breakMotionTracker) {
+    public void earthhack$setBreakMotionTracker(MotionTracker breakMotionTracker) {
         this.breakMotionTracker = breakMotionTracker;
     }
 
     @Override
-    public MotionTracker getBlockMotionTracker() {
+    public MotionTracker earthhack$getBlockMotionTracker() {
         return blockMotionTracker;
     }
 
     @Override
-    public void setBlockMotionTracker(MotionTracker blockMotionTracker) {
+    public void earthhack$setBlockMotionTracker(MotionTracker blockMotionTracker) {
         this.blockMotionTracker = blockMotionTracker;
     }
 
     @Override
-    public int getTicksWithoutMotionUpdate() {
+    public int earthhack$getTicksWithoutMotionUpdate() {
         return ticksWithoutMotionUpdate;
     }
 
     @Override
-    public void setTicksWithoutMotionUpdate(int ticksWithoutMotionUpdate) {
+    public void earthhack$setTicksWithoutMotionUpdate(int ticksWithoutMotionUpdate) {
         this.ticksWithoutMotionUpdate = ticksWithoutMotionUpdate;
     }
 

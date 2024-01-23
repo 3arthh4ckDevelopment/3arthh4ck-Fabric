@@ -16,7 +16,7 @@ public class HelperEntityBlocksPlace {
         if (entity instanceof IPlayerEntity
             && module.blockExtrapol.getValue() != 0) {
             MotionTracker tracker =
-                ((IPlayerEntity) entity).getBlockMotionTracker();
+                ((IPlayerEntity) entity).earthhack$getBlockMotionTracker();
             if (tracker != null && tracker.active) {
                 return switch (module.blockExtraMode.getValue()) {
                     case Extrapolated -> tracker.getBoundingBox().intersects(bb);

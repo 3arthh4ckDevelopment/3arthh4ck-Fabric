@@ -1,7 +1,7 @@
 package me.earth.earthhack.impl.util.minecraft;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.entity.IEntityLivingBase;
+import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
 import net.minecraft.util.Hand;
 
@@ -20,7 +20,7 @@ public class ArmUtil implements Globals
         // PingBypass.sendPacket(new S2CSwingPacket(hand));
         if (!mc.player.handSwinging
                 || mc.player.handSwingTicks >=
-                ((IEntityLivingBase) mc.player).armSwingAnimationEnd() / 2
+                ((ILivingEntity) mc.player).armSwingAnimationEnd() / 2
                 || mc.player.handSwingTicks < 0)
         {
             mc.player.handSwingTicks = -1;

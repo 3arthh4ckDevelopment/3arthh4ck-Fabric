@@ -180,11 +180,11 @@ public class RotationManager extends SubscriberImpl implements Globals
         // Prevents us from sending the same rotations again, if we spoofed
         // them with the packet instead of MotionUpdateEvent.
         ((IClientPlayerEntity) mc.player)
-                .setLastReportedYaw(packetIn.getYaw(
-                        ((IClientPlayerEntity) mc.player).getLastReportedYaw()));
+                .earthhack$setLastReportedYaw(packetIn.getYaw(
+                        ((IClientPlayerEntity) mc.player).earthhack$getLastReportedYaw()));
         ((IClientPlayerEntity) mc.player)
-                .setLastReportedPitch(packetIn.getPitch(
-                        ((IClientPlayerEntity) mc.player).getLastReportedPitch()));
+                .earthhack$setLastReportedPitch(packetIn.getPitch(
+                        ((IClientPlayerEntity) mc.player).earthhack$getLastReportedPitch()));
 
         setServerRotations(packetIn.getYaw(last_yaw), packetIn.getPitch(last_pitch));
         // set(packetIn.getYaw(renderYaw), packetIn.getPitch(renderPitch));

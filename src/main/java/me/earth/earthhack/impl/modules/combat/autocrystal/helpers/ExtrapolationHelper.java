@@ -19,9 +19,9 @@ public class ExtrapolationHelper extends SubscriberImpl implements Globals {
         this.module = module;
         this.listeners.add(new LambdaListener<>(UpdateEntitiesEvent.class, e -> {
             for (PlayerEntity player : mc.world.getPlayers()) {
-                MotionTracker tracker = ((IPlayerEntity) player).getMotionTracker();
-                MotionTracker breakTracker = ((IPlayerEntity) player).getBreakMotionTracker();
-                MotionTracker blockTracker = ((IPlayerEntity) player).getBlockMotionTracker();
+                MotionTracker tracker = ((IPlayerEntity) player).earthhack$getMotionTracker();
+                MotionTracker breakTracker = ((IPlayerEntity) player).earthhack$getBreakMotionTracker();
+                MotionTracker blockTracker = ((IPlayerEntity) player).earthhack$getBlockMotionTracker();
                 if (EntityUtil.isDead(player)
                     || RotationUtil.getRotationPlayer().squaredDistanceTo(player) > 400
                     || !module.selfExtrapolation.getValue()
@@ -43,17 +43,17 @@ public class ExtrapolationHelper extends SubscriberImpl implements Globals {
 
                 if (tracker == null && module.extrapol.getValue() != 0) {
                     tracker = new MotionTracker(mc.world, player);
-                    ((IPlayerEntity) player).setMotionTracker(tracker);
+                    ((IPlayerEntity) player).earthhack$setMotionTracker(tracker);
                 }
 
                 if (breakTracker == null && module.bExtrapol.getValue() != 0) {
                     breakTracker = new MotionTracker(mc.world, player);
-                    ((IPlayerEntity) player).setBreakMotionTracker(breakTracker);
+                    ((IPlayerEntity) player).earthhack$setBreakMotionTracker(breakTracker);
                 }
 
                 if (blockTracker == null && module.blockExtrapol.getValue() != 0) {
                     blockTracker = new MotionTracker(mc.world, player);
-                    ((IPlayerEntity) player).setBlockMotionTracker(blockTracker);
+                    ((IPlayerEntity) player).earthhack$setBlockMotionTracker(blockTracker);
                 }
 
                 updateTracker(tracker, module.extrapol.getValue());
@@ -82,15 +82,15 @@ public class ExtrapolationHelper extends SubscriberImpl implements Globals {
     }
 
     public MotionTracker getTrackerFromEntity(Entity player) {
-        return ((IPlayerEntity) player).getMotionTracker();
+        return ((IPlayerEntity) player).earthhack$getMotionTracker();
     }
 
     public MotionTracker getBreakTrackerFromEntity(Entity player) {
-        return ((IPlayerEntity) player).getBreakMotionTracker();
+        return ((IPlayerEntity) player).earthhack$getBreakMotionTracker();
     }
 
     public MotionTracker getBlockTracker(Entity player) {
-        return ((IPlayerEntity) player).getBlockMotionTracker();
+        return ((IPlayerEntity) player).earthhack$getBlockMotionTracker();
     }
 
 }

@@ -22,6 +22,15 @@ accessible method net/minecraft/client/gui/screen/ChatScreen setText (Ljava/lang
 accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler
 accessible field net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket ATTACK Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler; # this is ugly
 
+# Entity fields (this is ugly, remove if possible)
+accessible field net/minecraft/entity/Entity yaw F
+accessible field net/minecraft/entity/Entity pitch F
+accessible field net/minecraft/entity/Entity onGround Z
+accessible field net/minecraft/entity/Entity pos Lnet/minecraft/util/math/Vec3d;
+mutable field net/minecraft/util/math/Vec3d x D
+mutable field net/minecraft/util/math/Vec3d y D
+mutable field net/minecraft/util/math/Vec3d z D
+
 # FakePlayer
 accessible field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory; #remove this if possible, i don't like it
 mutable field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory; #remove as well

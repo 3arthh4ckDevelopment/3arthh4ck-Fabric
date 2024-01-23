@@ -1,7 +1,7 @@
 package me.earth.earthhack.impl.util.minecraft;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.entity.IEntityLivingBase;
+import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.util.math.DistanceUtil;
 import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
@@ -77,14 +77,14 @@ public class DamageUtil implements Globals
 
     /**
      * Attempts to cache the lowest Armor Percentage for
-     * this Entity via {@link IEntityLivingBase#setLowestDura(float)}.
+     * this Entity via {@link ILivingEntity#setLowestDura(float)}.
      *
      * @param base the entity whose lowest Armor Percentage to cache.
      * @return <tt>true</tt> if the Entity wears no armor.
      */
     public static boolean cacheLowestDura(LivingEntity base)
     {
-        IEntityLivingBase access = (IEntityLivingBase) base;
+        ILivingEntity access = (ILivingEntity) base;
         float before = access.getLowestDurability();
         access.setLowestDura(Float.MAX_VALUE);
 

@@ -6,6 +6,7 @@ import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
+import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.entity.IEntity;
 import me.earth.earthhack.impl.event.events.movement.MoveEvent;
 import me.earth.earthhack.impl.modules.Caches;
@@ -38,7 +39,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.Supplier;
 
 @Mixin(Entity.class)
-public abstract class MixinEntity implements IEntity
+public abstract class MixinEntity implements IEntity, Globals
 {
     private static final ModuleCache<NoRender>
             NO_RENDER = Caches.getModule(NoRender.class);
@@ -65,16 +66,17 @@ public abstract class MixinEntity implements IEntity
             <Integer, NumberSetting<Integer>, Management> DEATH_TIME =
             Caches.getSetting(Management.class, Setting.class, "DeathTime", 500);
 
+    // so they can be used in other mixins extending off this one
     @Shadow
-    private Vec3d pos;
+    protected Vec3d pos;
     @Shadow
-    private Vec3d velocity;
+    protected Vec3d velocity;
     @Shadow
-    private float yaw;
+    protected float yaw;
     @Shadow
-    private float pitch;
+    protected float pitch;
     @Shadow
-    private boolean onGround;
+    protected boolean onGround;
     @Shadow
     private World world;
     @Shadow
@@ -146,6 +148,8 @@ public abstract class MixinEntity implements IEntity
     public abstract Text getName();
 
     @Shadow public abstract int getId();
+
+    @Shadow public abstract float getPitch();
 
     @Override
     public EntityType getType()
