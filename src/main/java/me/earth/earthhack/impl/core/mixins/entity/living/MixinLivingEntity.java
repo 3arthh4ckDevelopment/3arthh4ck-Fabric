@@ -274,6 +274,9 @@ public abstract class MixinLivingEntity extends MixinEntity
                 this.getArmorItems(), source);
     }
 
+    /**
+     * Refactored from MixinClientPlayerEntity to here because this doesn't work from these correctly
+     */
     @ModifyArg(
             method = "setSprinting",
             at = @At(

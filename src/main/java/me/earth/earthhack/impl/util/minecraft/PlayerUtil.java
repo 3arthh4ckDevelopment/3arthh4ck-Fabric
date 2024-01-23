@@ -25,11 +25,11 @@ public class PlayerUtil implements Globals {
     public static final Map<Integer, PlayerEntity> FAKE_PLAYERS =
             new HashMap<>();
 
-    /*
-    public static PlayerEntity createFakePlayerAndAddToWorld(GameProfile profile) {
-        return createFakePlayerAndAddToWorld(profile, PlayerEntity::new);
-    }
-     */
+
+    // public static PlayerEntity createFakePlayerAndAddToWorld(GameProfile profile) {
+    //     return createFakePlayerAndAddToWorld(profile, PlayerEntity::new);
+    // }
+
 
     public static PlayerEntity createFakePlayerAndAddToWorld(GameProfile profile, BiFunction<World, GameProfile, PlayerEntity> create) {
         PlayerEntity fakePlayer = createFakePlayer(profile, create);

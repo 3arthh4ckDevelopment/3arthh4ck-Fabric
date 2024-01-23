@@ -357,8 +357,9 @@ public abstract class ObbyModule extends BlockPlacingModule
      */
     public boolean placeBlock(BlockPos pos)
     {
+
         if (smartRay.getValue() != RayTraceMode.Fast
-            && (!rayTraceBypass.getValue() || Visible.INSTANCE.check(pos)))
+                && (!rayTraceBypass.getValue() || Visible.INSTANCE.check(pos)))
         {
             Entity entity = getPlayerForRotations();
             Ray forceRay = null;
@@ -367,11 +368,11 @@ public abstract class ObbyModule extends BlockPlacingModule
             Ray dumbHelpingRay = null;
             Ray ray = RayTraceFactory.fullTrace(entity, HELPER, pos, -1.0);
             if (ray == null
-                || shouldHelp(ray.getFacing(), pos)
-                || !ray.getPos().offset(ray.getFacing()).equals(pos)
-                || !ray.isLegit()
+                    || shouldHelp(ray.getFacing(), pos)
+                    || !ray.getPos().offset(ray.getFacing()).equals(pos)
+                    || !ray.isLegit()
                     && (smartRay.getValue() == RayTraceMode.Smart
-                        || smartRay.getValue() == RayTraceMode.Force))
+                    || smartRay.getValue() == RayTraceMode.Force))
             {
                 if (ray != null
                         && ray.getPos().offset(ray.getFacing()).equals(pos))
@@ -391,33 +392,33 @@ public abstract class ObbyModule extends BlockPlacingModule
                     }
 
                     Ray helpingRay = RayTraceFactory.fullTrace(
-                                              entity, HELPER, helpingPos, -1.0);
+                            entity, HELPER, helpingPos, -1.0);
                     if (helpingRay == null
-                        || !helpingRay.getPos()
-                                      .offset(helpingRay.getFacing())
-                                      .equals(helpingPos)
-                        || !helpingRay.isLegit()
-                           && (smartRay.getValue() == RayTraceMode.Smart
-                                || smartRay.getValue() == RayTraceMode.Force))
+                            || !helpingRay.getPos()
+                            .offset(helpingRay.getFacing())
+                            .equals(helpingPos)
+                            || !helpingRay.isLegit()
+                            && (smartRay.getValue() == RayTraceMode.Smart
+                            || smartRay.getValue() == RayTraceMode.Force))
                     {
                         if (dumbRay == null
-                            && helpingRay != null
-                            && helpingRay.getPos()
-                                         .offset(helpingRay.getFacing())
-                                         .equals(helpingPos))
+                                && helpingRay != null
+                                && helpingRay.getPos()
+                                .offset(helpingRay.getFacing())
+                                .equals(helpingPos))
                         {
                             dumbHelpingRay = helpingRay;
                             setState(helpingPos);
                             dumbRay =
-                                RayTraceFactory.rayTrace(entity,
-                                                         helpingPos,
-                                                         facing.getOpposite(),
-                                                         HELPER,
-                                                         state,
-                                                         -1.0);
+                                    RayTraceFactory.rayTrace(entity,
+                                            helpingPos,
+                                            facing.getOpposite(),
+                                            HELPER,
+                                            state,
+                                            -1.0);
                             if (!dumbRay.getPos()
-                                        .offset(dumbRay.getFacing())
-                                        .equals(pos))
+                                    .offset(dumbRay.getFacing())
+                                    .equals(pos))
                             {
                                 dumbRay = null;
                                 dumbHelpingRay = null;
@@ -431,13 +432,13 @@ public abstract class ObbyModule extends BlockPlacingModule
 
                     setState(helpingPos);
                     ray = RayTraceFactory.rayTrace(entity,
-                                                   helpingPos,
-                                                   facing.getOpposite(),
-                                                   HELPER,
-                                                   state,
-                                                   -1.0);
+                            helpingPos,
+                            facing.getOpposite(),
+                            HELPER,
+                            state,
+                            -1.0);
                     if (ray == null
-                        || !ray.getPos().offset(ray.getFacing()).equals(pos))
+                            || !ray.getPos().offset(ray.getFacing()).equals(pos))
                     {
                         continue;
                     }
@@ -449,18 +450,18 @@ public abstract class ObbyModule extends BlockPlacingModule
                     }
 
                     if (ray.isLegit()
-                        || smartRay.getValue() != RayTraceMode.Smart
+                            || smartRay.getValue() != RayTraceMode.Smart
                             && smartRay.getValue() != RayTraceMode.Force)
                     {
                         if (entityCheck(helpingPos))
                         {
                             placeBlock(helpingRay.getPos(),
-                                       helpingRay.getFacing(),
-                                       helpingRay.getRotations(),
-                                       helpingRay.getResult().hitVec);
+                                    helpingRay.getFacing(),
+                                    helpingRay.getRotations(),
+                                    helpingRay.getResult().hitVec);
 
                             if (blocksPlaced >= blocks.getValue()
-                                 || noFastHelp(helpingPos, pos))
+                                    || noFastHelp(helpingPos, pos))
                             {
                                 return true;
                             }
@@ -468,9 +469,9 @@ public abstract class ObbyModule extends BlockPlacingModule
                             if (entityCheck(pos))
                             {
                                 placeBlock(ray.getPos(),
-                                           ray.getFacing(),
-                                           ray.getRotations(),
-                                           ray.getResult().hitVec);
+                                        ray.getFacing(),
+                                        ray.getRotations(),
+                                        ray.getResult().hitVec);
 
                                 setState(pos);
                                 return blocksPlaced >= blocks.getValue()
@@ -487,22 +488,22 @@ public abstract class ObbyModule extends BlockPlacingModule
                 }
             }
             else if ((ray.isLegit()
-                            || smartRay.getValue() != RayTraceMode.Smart
-                                && smartRay.getValue() != RayTraceMode.Force)
-                        && entityCheck(pos))
+                    || smartRay.getValue() != RayTraceMode.Smart
+                    && smartRay.getValue() != RayTraceMode.Force)
+                    && entityCheck(pos))
             {
                 setState(pos);
                 placeBlock(ray.getPos(),
-                           ray.getFacing(),
-                           ray.getRotations(),
-                           ray.getResult().hitVec);
+                        ray.getFacing(),
+                        ray.getRotations(),
+                        ray.getResult().hitVec);
 
                 return blocksPlaced >= blocks.getValue()
                         || rotate.getValue() == Rotate.Normal;
             }
 
             if (forceRay == null
-                || !forceRay.getPos().offset(forceRay.getFacing()).equals(pos))
+                    || !forceRay.getPos().offset(forceRay.getFacing()).equals(pos))
             {
                 forceRay = dumbRay;
                 forceHelpingRay = dumbHelpingRay;
@@ -511,8 +512,8 @@ public abstract class ObbyModule extends BlockPlacingModule
             if (smartRay.getValue() == RayTraceMode.Force
                     && forceRay != null
                     && forceRay.getPos()
-                               .offset(forceRay.getFacing())
-                               .equals(pos))
+                    .offset(forceRay.getFacing())
+                    .equals(pos))
             {
                 if (forceHelpingRay != null)
                 {
@@ -523,14 +524,14 @@ public abstract class ObbyModule extends BlockPlacingModule
                     if (entityCheck(helping))
                     {
                         placeBlock(forceHelpingRay.getPos(),
-                                   forceHelpingRay.getFacing(),
-                                   forceHelpingRay.getRotations(),
-                                   forceHelpingRay.getResult().hitVec);
+                                forceHelpingRay.getFacing(),
+                                forceHelpingRay.getRotations(),
+                                forceHelpingRay.getResult().hitVec);
 
                         setState(helping);
 
                         if (blocksPlaced >= blocks.getValue()
-                            || noFastHelp(helping, pos))
+                                || noFastHelp(helping, pos))
                         {
                             return true;
                         }
@@ -542,16 +543,16 @@ public abstract class ObbyModule extends BlockPlacingModule
                 }
 
                 BlockPos forcePos = forceRay.getPos()
-                                            .offset(forceRay.getFacing());
+                        .offset(forceRay.getFacing());
                 if (!entityCheck(forcePos))
                 {
                     return false;
                 }
 
                 placeBlock(forceRay.getPos(),
-                           forceRay.getFacing(),
-                           forceRay.getRotations(),
-                           forceRay.getResult().hitVec);
+                        forceRay.getFacing(),
+                        forceRay.getRotations(),
+                        forceRay.getResult().hitVec);
 
                 setState(forcePos);
                 return blocksPlaced >= blocks.getValue()
@@ -661,16 +662,12 @@ public abstract class ObbyModule extends BlockPlacingModule
 
     protected boolean noFastHelp(BlockPos helpingPos, BlockPos pos)
     {
-        switch (fastHelpingBlocks.getValue())
-        {
-            case Off:
-                return rotate.getValue() == Rotate.Normal;
-            case Down:
-                return rotate.getValue() == Rotate.Normal
-                        && !pos.down().equals(helpingPos);
-            default:
-                return false;
-        }
+        return switch (fastHelpingBlocks.getValue()) {
+            case Off -> rotate.getValue() == Rotate.Normal;
+            case Down -> rotate.getValue() == Rotate.Normal
+                    && !pos.down().equals(helpingPos);
+            default -> false;
+        };
     }
 
 }
