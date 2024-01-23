@@ -12,11 +12,9 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.gui.visibility.NumberPageBuilder;
 import me.earth.earthhack.impl.gui.visibility.Visibilities;
 import me.earth.earthhack.impl.modules.misc.antipackets.util.Page;
-import me.earth.earthhack.impl.util.network.PacketUtil;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.Packet;
-import org.spongepowered.tools.obfuscation.mapping.common.MappingProvider;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -46,6 +44,7 @@ public class AntiPackets extends Module
         AntiPacketData data = new AntiPacketData(this);
         this.setData(data);
 
+        /*
         for (Class<? extends Packet<?>> clazz : PacketUtil.getAllPackets())
         {
             // we skip inner classes, we get them anyway with outer name
@@ -74,7 +73,7 @@ public class AntiPackets extends Module
                 }
             }
         }
-
+*/
         EnumSetting<Page> pageEnumSetting =
                 register(new EnumSetting<>("Page", Page.CPackets));
 

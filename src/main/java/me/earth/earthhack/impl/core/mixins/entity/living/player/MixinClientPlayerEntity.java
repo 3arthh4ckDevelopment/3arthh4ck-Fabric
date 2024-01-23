@@ -11,6 +11,7 @@ import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
@@ -151,7 +152,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     }
 
     /**
-     * {@link ClientPlayerEntity#tick}
+     * {@link AbstractClientPlayerEntity#tick}
      */
     @Inject(
             method = "tick",
