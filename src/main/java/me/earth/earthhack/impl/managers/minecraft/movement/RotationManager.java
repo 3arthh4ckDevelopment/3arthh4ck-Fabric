@@ -82,7 +82,7 @@ public class RotationManager extends SubscriberImpl implements Globals
             @Override
             public void invoke(PacketEvent.Post<PlayerMoveC2SPacket> event)
             {
-                readCPacket(event.getPacket());
+                readC2SPacket(event.getPacket());
             }
         });
         this.listeners.add(new EventListener<
@@ -92,7 +92,7 @@ public class RotationManager extends SubscriberImpl implements Globals
             @Override
             public void invoke(PacketEvent.Post<PlayerMoveC2SPacket.PositionAndOnGround> event)
             {
-                readCPacket(event.getPacket());
+                readC2SPacket(event.getPacket());
             }
         });
         this.listeners.add(new EventListener<
@@ -102,7 +102,7 @@ public class RotationManager extends SubscriberImpl implements Globals
             @Override
             public void invoke(PacketEvent.Post<PlayerMoveC2SPacket.LookAndOnGround> event)
             {
-                readCPacket(event.getPacket());
+                readC2SPacket(event.getPacket());
             }
         });
         this.listeners.add(new EventListener<
@@ -113,7 +113,7 @@ public class RotationManager extends SubscriberImpl implements Globals
             public void invoke
                     (PacketEvent.Post<PlayerMoveC2SPacket.Full> event)
             {
-                readCPacket(event.getPacket());
+                readC2SPacket(event.getPacket());
             }
         });
     }
@@ -154,7 +154,7 @@ public class RotationManager extends SubscriberImpl implements Globals
 
     /**
      * Indicates that a module is currently
-     * spoofing rotations and they shouldn't
+     * spoofing rotations, and they shouldn't
      * be spoofed by others.
      *
      * @return <tt>true</tt> if blocking.
@@ -175,7 +175,7 @@ public class RotationManager extends SubscriberImpl implements Globals
      *
      * @param packetIn the packet to read.
      */
-    public void readCPacket(PlayerMoveC2SPacket packetIn)
+    public void readC2SPacket(PlayerMoveC2SPacket packetIn)
     {
         // Prevents us from sending the same rotations again, if we spoofed
         // them with the packet instead of MotionUpdateEvent.

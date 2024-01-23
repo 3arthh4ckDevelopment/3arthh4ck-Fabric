@@ -3,10 +3,12 @@ package me.earth.earthhack.impl.core.mixins.entity.living.player;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.impl.core.ducks.entity.IClientPlayerEntity;
+import me.earth.earthhack.impl.event.events.misc.UpdateEvent;
 import me.earth.earthhack.impl.event.events.movement.BlockPushEvent;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
+import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -31,8 +33,8 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     @Unique
     private static final ModuleCache<AutoSprint> SPRINT =
             Caches.getModule(AutoSprint.class);
-    // private static final ModuleCache<XCarry> XCARRY =
-    //         Caches.getModule(XCarry.class);
+    private static final ModuleCache<XCarry> XCARRY =
+            Caches.getModule(XCarry.class);
     // private static final ModuleCache<Portals> PORTALS =
     //         Caches.getModule(Portals.class);
     // private static final SettingCache<Boolean, BooleanSetting, Portals> CHAT =
@@ -146,6 +148,21 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         {
             ci.cancel();
         }
+    }
+
+    /**
+     * {@link ClientPlayerEntity#tick}
+     */
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;"
+                            + "tick()V",
+                    shift = At.Shift.BEFORE))
+    public void onUpdateHook(CallbackInfo info)
+    {
+        Bus.EVENT_BUS.post(new UpdateEvent());
     }
 
 }

@@ -19,18 +19,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Set;
-
 @SuppressWarnings({"unused", "ConstantConditions"})
 public class PacketUtil implements Globals
 {
-    public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO: do what
-    {
-        // TODO TODOTODOTODOTODOTODOTODO
-        return ((IEnumConnectionState) a.HANDSHAKING)
-                .getStatesByClass()
-                .keySet();
-    }
+    // public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO: do what
+    // {
+    //     // TODO TODOTODOTODOTODOTODOTODO
+    //     return ((IEnumConnectionState) a.HANDSHAKING)
+    //             .getStatesByClass()
+    //             .keySet();
+    // }
 
     public static void handlePosLook(PlayerPositionLookS2CPacket packetIn,
                                      Entity entity,
