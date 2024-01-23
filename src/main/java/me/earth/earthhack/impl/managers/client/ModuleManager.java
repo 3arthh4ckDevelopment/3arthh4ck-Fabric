@@ -48,6 +48,7 @@ import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
 import me.earth.earthhack.impl.modules.player.autotool.AutoTool;
+import me.earth.earthhack.impl.modules.player.blink.Blink;
 import me.earth.earthhack.impl.modules.player.fasteat.FastEat;
 import me.earth.earthhack.impl.modules.player.fastplace.FastPlace;
 import me.earth.earthhack.impl.modules.player.freecam.Freecam;
@@ -186,7 +187,7 @@ public class ModuleManager extends IterationRegister<Module>
 
         // this.forceRegister(new AutoMine());
         this.forceRegister(new AutoTool());
-        // this.forceRegister(new Blink());
+        this.forceRegister(new Blink());
         // this.forceRegister(new BlockTweaks());
         // this.forceRegister(new Cleaner());
         // this.forceRegister(new ExpTweaks());
