@@ -54,11 +54,13 @@ public class FileUtil {
             Path path = Paths.get(file);
             return Files.readAllLines(path, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            if (write) {
-                writeFile(file, data);
+            try {
+                if (write) {
+                    writeFile(file, data);
+                }
+            } catch (Exception e1) {
+                e.printStackTrace();
             }
-
-            e.printStackTrace();
         }
 
         return Collections.emptyList();

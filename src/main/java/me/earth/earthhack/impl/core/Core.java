@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.core;
 
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.plugin.PluginConfig;
+import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.managers.client.PluginManager;
 import me.earth.earthhack.impl.managers.thread.scheduler.Scheduler;
 import me.earth.earthhack.impl.util.misc.FileUtil;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -33,10 +35,13 @@ public class Core {
         LOGGER.info("Found Environment: " + FabricLoader.getInstance().getEnvironmentType());
         Bus.EVENT_BUS.subscribe(Scheduler.getInstance());
 
-        Path path = Paths.get("earthhack");
-        FileUtil.createDirectory(path);
-        FileUtil.getDirectory(path, "util");
-        FileUtil.getDirectory(path, "plugins");
+        File util = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/util");
+        if (!util.exists())
+            util.mkdir();
+
+        File plugins = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/plugins");
+        if (!plugins.exists())
+            plugins.mkdir();
 
         PluginManager.getInstance().createPluginConfigs(pluginClassLoader);
 
