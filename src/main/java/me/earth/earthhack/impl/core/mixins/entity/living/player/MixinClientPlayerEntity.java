@@ -17,6 +17,7 @@ import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,6 +25,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -190,13 +192,13 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
                     this.onGround);
             // if (!PingBypass.isConnected())
             // {
-                Bus.EVENT_BUS.post(motionEvent);
-                pos.x = motionEvent.getX();
-                pos.y = motionEvent.getY();
-                pos.z = motionEvent.getZ();
-                yaw = motionEvent.getRotationYaw();
-                pitch = motionEvent.getRotationPitch();
-                onGround = motionEvent.isOnGround();
+            Bus.EVENT_BUS.post(motionEvent);
+            pos.x = motionEvent.getX();
+            pos.y = motionEvent.getY();
+            pos.z = motionEvent.getZ();
+            yaw = motionEvent.getRotationYaw();
+            pitch = motionEvent.getRotationPitch();
+            onGround = motionEvent.isOnGround();
             // }
         }
     }
@@ -205,7 +207,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
             method = "sendMovementPackets",
             at = @At(value = "HEAD"),
             cancellable = true)
-    public void onUpdateWalkingPlayer_Head(CallbackInfo callbackInfo)
+    public void sendMovementPackets_Head(CallbackInfo callbackInfo)
     {
         if (!ROTATION_BYPASS.isEnabled())
         {
@@ -218,7 +220,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
                     this.onGround);
             // if (!PingBypass.isConnected())
             // {
-                Bus.EVENT_BUS.post(motionEvent);
+            Bus.EVENT_BUS.post(motionEvent);
             // }
         }
 
@@ -234,7 +236,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V",
                     shift = At.Shift.AFTER))
-    public void onUpdateWalkingPlayerPost(CallbackInfo ci)
+    public void sendMovementPacketsPost(CallbackInfo ci)
     {
         if (ROTATION_BYPASS.isEnabled() && !ROTATION_BYPASS.returnIfPresent(
                 Compatibility::isShowingRotations, false)
@@ -272,67 +274,66 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
             }
         }
     }
-    /*
     @Redirect(
             method = "sendMovementPackets",
             at = @At(
                     value = "FIELD",
-                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastX:D"))
-    public double posXHook(ClientPlayerEntity clientPlayerEntity)
+                    target = "Lnet/minecraft/util/math/Vec3d;x:D"))
+    public double posXHook(Vec3d vector)
     {
         return motionEvent.getX();
     }
 
-    @Redirect(
-            method = "sendMovementPackets",
-            at = @At(
-                    value = "FIELD", // TODO: use the getY() shit instead
-                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastBaseY:D"))
-    public double minYHook(ClientPlayerEntity entity)
-    {
-        return motionEvent.getY();
-    }
+   // @Redirect(
+   //         method = "sendMovementPackets",
+   //         at = @At(
+   //                 value = "FIELD",
+   //                 target = "Lnet/minecraft/util/math/Vec3d;y:D"))
+   // public double minYHook(Vec3d vector)
+   // {
+   //     return motionEvent.getY();
+   // }
 
     @Redirect(
             method = "sendMovementPackets",
             at = @At(
                     value = "FIELD",
-                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastZ:D"))
-    public double posZHook(ClientPlayerEntity entity)
+                    target = "Lnet/minecraft/util/math/Vec3d;z:D"))
+    public double posZHook(Vec3d vector)
     {
         return motionEvent.getZ();
     }
 
-    @Redirect(
-            method = "sendMovementPackets",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastYaw:F"))
-    public float rotationYawHook(ClientPlayerEntity clientPlayerEntity)
-    {
-        return motionEvent.getYaw();
-    }
+    // @Redirect(
+    //         method = "sendMovementPackets",
+    //         at = @At(
+    //                 value = "FIELD",
+    //                 target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastYaw:F"))
+    // public float rotationYawHook(ClientPlayerEntity entity)
+    // {
+    //     return motionEvent.getYaw();
+    // }
 
-    @Redirect(
-            method = "sendMovementPackets",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastPitch:F"))
-    public float rotationPitchHook(ClientPlayerEntity clientPlayerEntity)
-    {
-        return motionEvent.getPitch();
-    }
+    // @Redirect(
+    //         method = "sendMovementPackets",
+    //         at = @At(
+    //                 value = "FIELD",
+    //                 target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastPitch:F"))
+    // public float rotationPitchHook(ClientPlayerEntity clientPlayerEntity)
+    // {
+    //     return motionEvent.getPitch();
+    // }
+//
+    // @Redirect(
+    //         method = "sendMovementPackets",
+    //         at = @At(
+    //                 value = "FIELD",
+    //                 target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z"))
+    // public boolean onGroundHook(ClientPlayerEntity clientPlayerEntity)
+    // {
+    //     return motionEvent.isOnGround();
+    // }
 
-    @Redirect(
-            method = "sendMovementPackets",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastOnGround:Z"))
-    public boolean onGroundHook(ClientPlayerEntity clientPlayerEntity)
-    {
-        return motionEvent.isOnGround();
-    }
-    */
     @Inject(
             method = "sendMovementPackets",
             at = @At(value = "RETURN"))
@@ -340,9 +341,9 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     {
         // if (!PingBypass.isConnected())
         // {
-            MotionUpdateEvent event = new MotionUpdateEvent(Stage.POST, motionEvent);
-            event.setCancelled(motionEvent.isCancelled());
-            Bus.EVENT_BUS.postReversed(event, null);
+        MotionUpdateEvent event = new MotionUpdateEvent(Stage.POST, motionEvent);
+        event.setCancelled(motionEvent.isCancelled());
+        Bus.EVENT_BUS.postReversed(event, null);
         // }
     }
 

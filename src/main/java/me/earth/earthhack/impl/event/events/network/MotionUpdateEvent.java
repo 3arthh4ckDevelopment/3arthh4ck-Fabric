@@ -6,7 +6,7 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import net.minecraft.entity.Entity;
 
 /**
- * Fired at the start of PlayerEntitySP.onUpdateWalkingPlayer
+ * Fired at the start of ClientPlayerEntity.sendMovementPackets
  * and at its end. Allows you to spoof the position, rotation
  * and onGround info that will be sent to the server silently.
  * This would be better as 2 events tbh, but I
