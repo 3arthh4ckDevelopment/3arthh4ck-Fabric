@@ -418,7 +418,7 @@ public class InventoryUtil implements Globals
 
     public static int getServerItem()
     {
-        return ((IClientPlayerInteractionManager) mc.interactionManager).getItem();
+        return ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$getItem();
     }
 
     /**
@@ -428,7 +428,7 @@ public class InventoryUtil implements Globals
      */
     public static void syncItem()
     {
-        ((IClientPlayerInteractionManager) mc.interactionManager).syncItem();
+        ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$syncItem();
     }
 
     /**

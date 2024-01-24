@@ -311,7 +311,7 @@ public class Speedmine extends Module {
         this.listeners.add(new ListenerDamage(this));
         this.listeners.add(new ListenerReset(this));
         this.listeners.add(new ListenerClick(this));
-        this.listeners.add(new ListenerRender(this));
+        // this.listeners.add(new ListenerRender(this));
         this.listeners.add(new ListenerUpdate(this));
         this.listeners.add(new ListenerBlockChange(this));
         this.listeners.add(new ListenerMultiBlockChange(this));
@@ -364,8 +364,8 @@ public class Speedmine extends Module {
                 pos,
                 facing));
 
-        ((IClientPlayerInteractionManager) mc.interactionManager).setIsHittingBlock(false);
-        ((IClientPlayerInteractionManager) mc.interactionManager).setCurBlockDamageMP(0.0f);
+        ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setIsHittingBlock(false);
+        ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setCurBlockDamageMP(0.0f);
         mc.world.setBlockBreakingInfo(this.mc.player.getId(), pos, -1);
         mc.player.resetLastAttackedTicks(); // todo : mc.player.resetCooldown(); is probably different
         reset();
@@ -658,6 +658,7 @@ public class Speedmine extends Module {
 
     public void updateDamages()
     {
+        ModuleUtil.sendMessage(this, "Updating damages.");
         maxDamage = 0.0f;
         for (int i = 0; i < 9; i++)
         {
@@ -672,6 +673,7 @@ public class Speedmine extends Module {
             {
                 maxDamage = damages[i];
             }
+            ModuleUtil.sendMessage(this, "Updated; Maximum is " + MathUtil.round(maxDamage, 1));
         }
     }
 

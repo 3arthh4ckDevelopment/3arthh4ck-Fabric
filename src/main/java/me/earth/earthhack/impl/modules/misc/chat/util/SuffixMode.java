@@ -4,7 +4,7 @@ import me.earth.earthhack.impl.Earthhack;
 
 public enum SuffixMode {
     None(null),
-    Earth("\u00B3\u1D00\u0280\u1D1B\u029C\u029C\u2074\u1D04\u1D0B"),
+    Earth("³ᴀʀᴛʜʜ⁴ᴄᴋ"),
     CuteEarth("(\u3063\u25D4\u25E1\u25D4)\u3063 \u2665 3arthh4ck " + Earthhack.VERSION + " \u2665"),
     Phobos("\u1D18\u029C\u1D0F\u0299\u1D0F\uA731"),
     Rusher("\u02B3\u1D58\u02E2\u02B0\u1D49\u02B3\u02B0\u1D43\u1D9C\u1D4F"),

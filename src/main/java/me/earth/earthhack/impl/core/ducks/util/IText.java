@@ -17,13 +17,13 @@ public interface IText
     /**
      * @param hook overrides {@link Text#getWithStyle(Style)}.
      */
-    void setFormattingHook(Supplier<String> hook);
+    void earthhack$setFormattingHook(Supplier<String> hook);
 
     /**
      * @param hook overrides {@link Text#withoutStyle()}.
      */
-    void setUnFormattedHook(Supplier<String> hook);
+    void earthhack$setUnFormattedHook(Supplier<String> hook);
 
-    Text copyNoSiblings();
+    Text earthhack$copyNoSiblings();
 
 }

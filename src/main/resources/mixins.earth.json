@@ -23,7 +23,8 @@
     "util.ITimer",
     "util.MixinClickEvent",
     "util.MixinHoverEvent",
-    "util.MixinKeyboard"
+    "util.MixinKeyboard",
+    "util.MixinText"
   ],
   "client": [
     "MixinMinecraftClient",

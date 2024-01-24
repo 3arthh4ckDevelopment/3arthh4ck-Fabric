@@ -20,8 +20,8 @@ public class SuppliedComponent extends AbstractTextComponent
 
     /**
      * Sets TextFormatting to a {@link SimpleTextFormatHook} with
-     * {@link IText#setFormattingHook(Supplier)} and
-     * {@link IText#setUnFormattedHook(Supplier)}.
+     * {@link IText#earthhack$setFormattingHook(Supplier)} and
+     * {@link IText#earthhack$setUnFormattedHook(Supplier)}.
      * If you don't want that, use those methods to set them to null.
      *
      * @param supplier the supplier supplying what is returned by
@@ -33,9 +33,9 @@ public class SuppliedComponent extends AbstractTextComponent
         this.supplier = supplier;
 
         ((IText) this)
-                .setFormattingHook(new SimpleTextFormatHook(this));
+                .earthhack$setFormattingHook(new SimpleTextFormatHook(this));
         ((IText) this)
-                .setUnFormattedHook(new SimpleTextFormatHook(this));
+                .earthhack$setUnFormattedHook(new SimpleTextFormatHook(this));
     }
 
     @Override

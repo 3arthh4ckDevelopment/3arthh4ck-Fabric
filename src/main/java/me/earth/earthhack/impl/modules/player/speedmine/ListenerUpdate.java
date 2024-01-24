@@ -95,14 +95,14 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
         //         module.pbColor.getValue()));
         // }
 
-        ((IClientPlayerInteractionManager) mc.interactionManager).setBlockHitDelay(0);
+        ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setBlockHitDelay(0);
         if (!module.multiTask.getValue()
                 && (module.noReset.getValue()
                     || module.mode.getValue() == MineMode.Reset)
                 && mc.options.useKey.isPressed())
         {
             ((IClientPlayerInteractionManager) mc.interactionManager)
-                    .setIsHittingBlock(false);
+                    .earthhack$setIsHittingBlock(false);
         }
 
         if (module.pos != null)

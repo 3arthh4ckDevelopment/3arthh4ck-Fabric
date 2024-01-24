@@ -6,6 +6,7 @@ import me.earth.earthhack.impl.event.events.misc.DamageBlockEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.combat.antisurround.AntiSurround;
+import me.earth.earthhack.impl.util.client.ModuleUtil;
 import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.minecraft.blocks.mine.MineUtil;
@@ -34,6 +35,7 @@ final class ListenerDamage extends ModuleListener<Speedmine, DamageBlockEvent>
         {
             return;
         }
+        ModuleUtil.sendMessage(module, "received DamageBlockEvent; position: " + event.getPos());
 
         module.checkReset();
         if (MineUtil.canBreak(event.getPos())
@@ -84,10 +86,10 @@ final class ListenerDamage extends ModuleListener<Speedmine, DamageBlockEvent>
                 case Damage:
                     setPos(event);
                     if (((IClientPlayerInteractionManager) mc.interactionManager)
-                            .getCurBlockDamageMP() >= module.limit.getValue())
+                            .earthhack$getCurBlockDamageMP() >= module.limit.getValue())
                     {
                         ((IClientPlayerInteractionManager) mc.interactionManager)
-                                .setCurBlockDamageMP(1.0f);
+                                .earthhack$setCurBlockDamageMP(1.0f);
                     }
                     break;
                 case Fast:

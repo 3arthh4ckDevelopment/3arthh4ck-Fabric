@@ -9,56 +9,56 @@ public interface IClientPlayerInteractionManager {
     /**
      * Accessor for syncCurrentPlayItem.
      */
-    void syncItem();
+    void earthhack$syncItem();
 
     /**
      * Accessor for currentPlayerItem.
      *
      * @return currentPlayerItem.
      */
-    int getItem();
+    int earthhack$getItem();
 
     /**
      * Accessor for blockHitDelay.
      *
      * @param delay set the delay.
      */
-    void setBlockHitDelay(int delay);
+    void earthhack$setBlockHitDelay(int delay);
 
     /**
      * Accessor for blockHitDelay.
      *
      * @return blockHitDelay.
      */
-    int getBlockHitDelay();
+    int earthhack$getBlockHitDelay();
 
     /**
      * Accessor for curBlockDamageMP.
      *
      * @return curBlockDamageMP.
      */
-    float getCurBlockDamageMP();
+    float earthhack$getCurBlockDamageMP();
 
     /**
      * Accessor for curBlockDamageMP.
      *
      * @param damage set curBlockDamageMP.
      */
-    void setCurBlockDamageMP(float damage);
+    void earthhack$setCurBlockDamageMP(float damage);
 
     /**
      * Accessor for isHittingBlock.
      *
      * @param hitting set isHittingBlock.
      */
-    void setIsHittingBlock(boolean hitting);
+    void earthhack$setIsHittingBlock(boolean hitting);
 
     /**
      * Accessor for isHittingBlock.
      *
      * @return isHittingBlock.
      */
-    boolean getIsHittingBlock();
+    boolean earthhack$getIsHittingBlock();
 
     ClientPlayNetworkHandler getConnection();
 }

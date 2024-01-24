@@ -40,9 +40,9 @@ public abstract class SettingComponent<T, S extends Setting<T>>
                 .withHoverEvent(ComponentFactory.getHoverEvent(setting)));
 
         ((IText) this)
-                .setFormattingHook(new SimpleTextFormatHook(this));
+                .earthhack$setFormattingHook(new SimpleTextFormatHook(this));
         ((IText) this)
-                .setUnFormattedHook(new SimpleTextFormatHook(this));
+                .earthhack$setUnFormattedHook(new SimpleTextFormatHook(this));
 
         if (setting.getContainer() instanceof Module)
         {
