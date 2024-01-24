@@ -2,7 +2,7 @@ package me.earth.earthhack.impl.util.network;
 
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.network.IClientPlayNetworkHandler;
+import me.earth.earthhack.impl.core.ducks.network.IClientConnection;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -28,7 +28,7 @@ public class NetworkUtil implements Globals
 
     /**
      * Convenience Method, calls
-     * {@link IClientPlayNetworkHandler#sendPacketNoEvent(Packet)}.
+     * {@link IClientConnection#sendPacketNoEvent(Packet)}.
      *
      * @param packet the packet to send.
      * @return the packet or null if failed.
@@ -41,7 +41,7 @@ public class NetworkUtil implements Globals
 
     /**
      * Convenience Method, calls
-     * {@link IClientPlayNetworkHandler#sendPacketNoEvent(Packet, boolean)}.
+     * {@link IClientConnection#sendPacketNoEvent(Packet, boolean)}.
      *
      * @param packet the packet to send.
      * @param post if a post event should be sent.

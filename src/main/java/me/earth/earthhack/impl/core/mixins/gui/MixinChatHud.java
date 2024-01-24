@@ -200,6 +200,7 @@ public abstract class MixinChatHud implements IChatHud
         return false;
     }
     */
+
     @Override
     @Accessor(value = "scrolledLines")
     public abstract int getScrollPos();
