@@ -58,7 +58,7 @@ final class ListenerSpawnObject
                 boolean swap = module.swap.getValue();
                 Locks.acquire(Locks.WINDOW_CLICK_LOCK, () ->
                 {
-                    int lastSlot = player.inventory.selectedSlot;
+                    int lastSlot = player.getInventory().selectedSlot;
                     if (swap)
                     {
                         module.cooldownBypass.getValue().switchTo(fastSlot);

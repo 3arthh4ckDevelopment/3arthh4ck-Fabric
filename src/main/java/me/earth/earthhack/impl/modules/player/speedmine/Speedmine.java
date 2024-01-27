@@ -488,7 +488,7 @@ public class Speedmine extends Module {
                 && !RotationUtil.isLegit(pos, facing))
         {
             limitRotationPacket = stop;
-            limitRotationSlot = mc.player.inventory.selectedSlot;
+            limitRotationSlot = mc.player.getInventory().selectedSlot;
             return false;
         }
 
@@ -591,7 +591,7 @@ public class Speedmine extends Module {
             boolean toAir = this.toAir.getValue();
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 if (breakSlot != -1) {
                     cooldownBypass.getValue().switchTo(breakSlot);
                 }
@@ -630,7 +630,7 @@ public class Speedmine extends Module {
         for (int i = 0; i < damages.length; i++)
         {
             if (damages[i] >= limit.getValue()
-                    && (slot = i) >= mc.player.inventory.selectedSlot)
+                    && (slot = i) >= mc.player.getInventory().selectedSlot)
             {
                 return slot;
             }
@@ -662,7 +662,7 @@ public class Speedmine extends Module {
         maxDamage = 0.0f;
         for (int i = 0; i < 9; i++)
         {
-            ItemStack stack = mc.player.inventory.getStack(i);
+            ItemStack stack = mc.player.getInventory().getStack(i);
             float damage = MineUtil.getDamage(stack, pos, onGround.getValue());
             if (tpsSync.getValue()) {
                 damage *= Managers.TPS.getFactor();
@@ -685,7 +685,7 @@ public class Speedmine extends Module {
             if (damages[i] >= limit.getValue())
             {
                 fastSlot = i;
-                if (i == mc.player.inventory.selectedSlot)
+                if (i == mc.player.getInventory().selectedSlot)
                 {
                     break;
                 }

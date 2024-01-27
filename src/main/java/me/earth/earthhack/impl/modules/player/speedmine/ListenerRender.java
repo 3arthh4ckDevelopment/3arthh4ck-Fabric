@@ -8,7 +8,6 @@ import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.render.Interpolation;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.Box;
-import org.lwjgl.opengl.GL11;
 
 final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
 {
@@ -30,6 +29,7 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
     @Override
     public void invoke(Render3DEvent event)
     {
+        if (true) return;
         if (!PlayerUtil.isCreative(mc.player)
                 && module.esp.getValue() != ESPMode.None
                 && module.bb != null) {
@@ -49,12 +49,12 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
                 return;
 
             event.getStack().push();
-            GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+            //GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
             Box bb = cachedBB;
             module.esp.getValue().drawEsp(module, bb, Math.min(module.maxDamage, 1.0f));
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glPopAttrib();
+            // GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            // GL11.glPopAttrib();
             event.getStack().pop();
         }
     }

@@ -37,7 +37,7 @@ final class ListenerDamageBlock extends
             {
                 if (!module.set)
                 {
-                    module.lastSlot = mc.player.inventory.selectedSlot;
+                    module.lastSlot = mc.player.getInventory().selectedSlot;
                     module.set = true;
                 }
 

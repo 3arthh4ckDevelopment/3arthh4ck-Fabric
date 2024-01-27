@@ -26,10 +26,10 @@ final class ListenerTryUseItem
                         || item instanceof BowItem
                         || item instanceof PotionItem))
         {
-            // int slot = mc.player.inventory.currentItem;
-            // InventoryUtil.switchTo(mc.player.inventory.currentItem + 1);
+            // int slot = mc.player.getInventory().currentItem;
+            // InventoryUtil.switchTo(mc.player.getInventory().currentItem + 1);
             // InventoryUtil.switchTo(slot);
-            NetworkUtil.send(new UpdateSelectedSlotC2SPacket(mc.player.inventory.selectedSlot));
+            NetworkUtil.send(new UpdateSelectedSlotC2SPacket(mc.player.getInventory().selectedSlot));
             // NetworkUtil.send(new CPacketPlayerDigging(CPacketPlayerDigging.Action.DROP_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN)); // ????????
         }
     }

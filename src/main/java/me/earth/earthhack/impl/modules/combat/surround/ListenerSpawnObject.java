@@ -126,7 +126,7 @@ final class ListenerSpawnObject extends
 
         Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
         {
-            int lastSlot = mc.player.inventory.selectedSlot;
+            int lastSlot = mc.player.getInventory().selectedSlot;
             PacketUtil.attack(Managers.ENTITIES.getEntity(packet.getId()));
             InventoryUtil.switchTo(slot);
             boolean sneaking = mc.player.isSneaking();

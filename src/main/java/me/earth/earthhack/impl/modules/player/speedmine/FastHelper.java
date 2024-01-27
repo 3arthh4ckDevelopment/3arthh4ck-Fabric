@@ -104,7 +104,7 @@ public class FastHelper implements Globals {
 
         module.maxDamage = 0.0f;
         for (int i = 0; i < 9; i++) {
-            ItemStack stack = mc.player.inventory.getStack(i);
+            ItemStack stack = mc.player.getInventory().getStack(i);
             float damage = 0.0f;
             long ticks = timer.getTime() / module.tickTime.getValue();
             for (Boolean onGround : module.ongroundHistoryHelper) {
@@ -137,7 +137,7 @@ public class FastHelper implements Globals {
 
         int fastSlot = module.getFastSlot();
         boolean prePlace = false;
-        if ((module.damages[mc.player.inventory.selectedSlot] >= module.limit.getValue()
+        if ((module.damages[mc.player.getInventory().selectedSlot] >= module.limit.getValue()
             || module.swap.getValue() && fastSlot != -1
             || (prePlace = module.prePlaceCheck()))
             && (!module.checkPacket.getValue() || !module.sentPacket))
@@ -148,7 +148,7 @@ public class FastHelper implements Globals {
                 int crystalSlot;
                 BlockPos crystalPos;
                 boolean swap = module.swap.getValue();
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 if (module.placeCrystal.getValue()
                     && ((crystalSlot = InventoryUtil.findHotbarItem(Items.END_CRYSTAL)) != -1
                         || module.offhandPlace.getValue())

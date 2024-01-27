@@ -52,7 +52,7 @@ public class HelperInstantAttack implements Globals
             w = WeaknessSwitch.NONE;
         }
 
-        int lastSlot = mc.player.inventory.selectedSlot;
+        int lastSlot = mc.player.getInventory().selectedSlot;
         Runnable runnable = () ->
         {
             if (w.getSlot() != -1)

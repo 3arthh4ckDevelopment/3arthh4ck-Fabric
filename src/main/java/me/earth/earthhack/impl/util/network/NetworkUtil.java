@@ -7,6 +7,7 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 
 public class NetworkUtil implements Globals
@@ -61,7 +62,7 @@ public class NetworkUtil implements Globals
         return null;
     }
 
-    public static boolean receive(Packet<ClientPlayNetworkHandler> packet)
+    public static boolean receive(Packet<ClientPlayPacketListener> packet)
     {
         if (mc.player != null) {
             return receive(packet, mc.player.networkHandler.getConnection());
@@ -70,7 +71,7 @@ public class NetworkUtil implements Globals
         return false;
     }
 
-    public static boolean receive(Packet<ClientPlayNetworkHandler> packet, ClientConnection manager)
+    public static boolean receive(Packet<ClientPlayPacketListener> packet, ClientConnection manager)
     {
         PacketEvent.Receive<?> e = new PacketEvent.Receive<>(packet, manager);
         Bus.EVENT_BUS.post(e, packet.getClass());

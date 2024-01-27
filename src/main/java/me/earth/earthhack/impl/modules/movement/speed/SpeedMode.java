@@ -163,7 +163,7 @@ public enum SpeedMode implements Globals
 
                         module.boost = !module.boost;
                     } else {
-                        HashSet<VoxelShape> collisions = (HashSet<VoxelShape>) mc.world.getCollisions(null, mc.player.getBoundingBox().offset(0.0, mc.player.getVelocity().getY(), 0.0));
+                        HashSet<VoxelShape> collisions = (HashSet<VoxelShape>) mc.world.getCollisions(mc.player, mc.player.getBoundingBox().offset(0.0, mc.player.getVelocity().getY(), 0.0));
                         if ((collisions.size() > 0
                                 || mc.player.verticalCollision)
                                 && module.stage > 0) {

@@ -32,10 +32,13 @@ mutable field net/minecraft/util/math/Vec3d y D
 mutable field net/minecraft/util/math/Vec3d z D
 
 # FakePlayer
-accessible field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory; #remove this if possible, i don't like it
-mutable field net/minecraft/entity/player/PlayerEntity inventory Lnet/minecraft/entity/player/PlayerInventory; #remove as well
 accessible field net/minecraft/entity/LivingEntity limbAnimator Lnet/minecraft/entity/LimbAnimator;
 mutable field net/minecraft/entity/LivingEntity limbAnimator Lnet/minecraft/entity/LimbAnimator;
+
+# Mouse (kind of ugly, maybe make an accessor for these instead?)
+accessible field net/minecraft/client/Mouse rightButtonClicked Z
+accessible field net/minecraft/client/Mouse middleButtonClicked Z
+accessible field net/minecraft/client/Mouse leftButtonClicked Z
 
 # GameOptions
 accessible field net/minecraft/client/option/SimpleOption callbacks Lnet/minecraft/client/option/SimpleOption$Callbacks;

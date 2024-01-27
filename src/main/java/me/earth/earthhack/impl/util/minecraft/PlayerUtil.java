@@ -7,32 +7,24 @@ import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.BiFunction;
 
 // TODO: THIS IS CHINESE (REWRITE)
 public class PlayerUtil implements Globals {
     public static final Map<Integer, PlayerEntity> FAKE_PLAYERS =
             new HashMap<>();
 
-
-    // public static PlayerEntity createFakePlayerAndAddToWorld(GameProfile profile) {
-    //     return createFakePlayerAndAddToWorld(profile, PlayerEntity::new);
-    // }
-
-
-    public static PlayerEntity createFakePlayerAndAddToWorld(GameProfile profile, BiFunction<World, GameProfile, PlayerEntity> create) {
-        PlayerEntity fakePlayer = createFakePlayer(profile, create);
+    public static OtherClientPlayerEntity createFakePlayerAndAddToWorld(GameProfile profile) {
+        OtherClientPlayerEntity fakePlayer = createFakePlayer(profile);
         int randomID = -1000;
         while (FAKE_PLAYERS.containsKey(randomID)
                 || mc.world.getEntityById(randomID) != null) {
@@ -44,12 +36,12 @@ public class PlayerUtil implements Globals {
         return fakePlayer;
     }
 
-    public static PlayerEntity createFakePlayer(GameProfile profile, BiFunction<World, GameProfile, PlayerEntity> create)
+    public static OtherClientPlayerEntity createFakePlayer(GameProfile profile)
     {
-        PlayerEntity fakePlayer = create.apply(mc.world, profile);
+        OtherClientPlayerEntity fakePlayer = new OtherClientPlayerEntity(mc.world, profile);
 
         fakePlayer.preferredHand = mc.player.preferredHand;
-        fakePlayer.inventory = mc.player.inventory;
+        fakePlayer.getInventory().clone(mc.player.getInventory()); // fakePlayer.inventory = mc.player.inventory;
         fakePlayer.setPosition(mc.player.getX(), mc.player.getBoundingBox().minY, mc.player.getZ());
         fakePlayer.setBodyYaw(mc.player.getYaw());
         fakePlayer.setPitch(mc.player.getPitch());
@@ -68,34 +60,27 @@ public class PlayerUtil implements Globals {
         return fakePlayer;
     }
 
-    public static PlayerEntity copyPlayer(PlayerEntity playerIn) {
+    public static OtherClientPlayerEntity copyPlayer(PlayerEntity playerIn) {
         return copyPlayer(playerIn, true);
     }
 
-    public static PlayerEntity copyPlayer(PlayerEntity playerIn, boolean animations) {
+    public static OtherClientPlayerEntity copyPlayer(PlayerEntity playerIn, boolean animations) {
         int count = playerIn.getInventory().getStack(playerIn.getInventory().selectedSlot).getCount();
 
-        //TODO: check if it is head yaw or body
-        PlayerEntity copy = new PlayerEntity(mc.world, playerIn.getBlockPos(), playerIn.headYaw, new GameProfile(UUID.randomUUID(), playerIn.getName().getString())) {
-            @Override public boolean isSpectator() {
-                return false;
-            }
-
-            @Override public boolean isCreative() {
-                return false;
-            }
-        };
+        OtherClientPlayerEntity copy = new OtherClientPlayerEntity(mc.world, playerIn.getGameProfile());
 
         if (animations) {
             copy.setSneaking(playerIn.isSneaking());
             copy.handSwingProgress = playerIn.handSwingProgress;
             copy.handSwingTicks = playerIn.handSwingTicks;
             copy.limbAnimator = playerIn.limbAnimator;
-            copy.inventory = playerIn.inventory;
+            copy.getInventory().clone(playerIn.getInventory());
         }
         copy.preferredHand = playerIn.preferredHand;
         copy.age = playerIn.age;
+        copy.setOnGround(playerIn.isOnGround());
         copy.setId(playerIn.getId());
+        copy.getInventory().clone(playerIn.getInventory());
         copy.copyFrom(playerIn); //TODO: check
         return copy;
     }

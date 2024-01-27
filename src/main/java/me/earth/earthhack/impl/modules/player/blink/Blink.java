@@ -56,10 +56,8 @@ public class Blink extends DisablingModule
             return;
         }
 
-        // TODO: fakeplayer
-
-        // fakePlayer = PlayerUtil
-        //         .createFakePlayerAndAddToWorld(mc.player.getGameProfile());
+        fakePlayer = PlayerUtil
+                .createFakePlayerAndAddToWorld(mc.player.getGameProfile());
     }
 
     @Override

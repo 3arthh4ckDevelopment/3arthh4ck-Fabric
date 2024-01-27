@@ -54,7 +54,7 @@ final class ListenerMotion extends ModuleListener<Speedmine, MotionUpdateEvent>
             boolean toAir = module.toAir.getValue();
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
-                int last = mc.player.inventory.selectedSlot;
+                int last = mc.player.getInventory().selectedSlot;
                 int slot = module.limitRotationSlot;
                 module.cooldownBypass.getValue().switchTo(slot);
 

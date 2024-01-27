@@ -138,7 +138,7 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
             {
                 int fastSlot = module.getFastSlot();
                 boolean prePlace = false;
-                if ((module.damages[mc.player.inventory.selectedSlot] >= module.limit.getValue()
+                if ((module.damages[mc.player.getInventory().selectedSlot] >= module.limit.getValue()
                         || module.swap.getValue() && fastSlot != -1
                         || (prePlace = module.prePlaceCheck()))
                         && (!module.checkPacket.getValue() || !module.sentPacket))
@@ -149,7 +149,7 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                         int crystalSlot;
                         BlockPos crystalPos;
                         boolean swap = module.swap.getValue();
-                        int lastSlot = mc.player.inventory.selectedSlot;
+                        int lastSlot = mc.player.getInventory().selectedSlot;
 
                         if (module.placeCrystal.getValue()
                                 && (crystalSlot = InventoryUtil.findHotbarItem(Items.END_CRYSTAL)) != -1
@@ -168,13 +168,13 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
             }
 
             int pickSlot = InventoryUtil.findHotbarItem(Items.DIAMOND_PICKAXE);
-            if ((module.damages[mc.player.inventory.selectedSlot] >=
+            if ((module.damages[mc.player.getInventory().selectedSlot] >=
                             module.limit.getValue())
                     || (pickSlot >= 0 && module.damages[pickSlot] >= module.limit.getValue())
                     && !module.pausing
                     && module.breakBind.getValue().getKey() == -1)
             {
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 final PlayerEntity placeTarg = getPlacePlayer(module.pos);
                 if (placeTarg != null) {
                     final BlockPos p = PlayerUtil.getBestPlace(module.pos, placeTarg);

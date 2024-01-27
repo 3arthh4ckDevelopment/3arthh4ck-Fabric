@@ -165,13 +165,13 @@ public class Spectate extends DisablingModule implements CustomCommandModule {
 
         render = new PlayerEntityNoInterp(mc.world);
         render.copyPositionAndRotation(mc.player);
-        render.inventory = mc.player.inventory;
+        render.getInventory().clone(mc.player.getInventory());
         render.setBoundingBox(mc.player.getBoundingBox());
         render.resetPosition();
 
         fakePlayer = new PlayerEntityNoInterp(mc.world);
         fakePlayer.copyPositionAndRotation(mc.player);
-        fakePlayer.inventory = mc.player.inventory;
+        fakePlayer.getInventory().clone(mc.player.getInventory());
         mc.world.addEntity(-10000, fakePlayer);
         PlayerUtil.FAKE_PLAYERS.put(-10000, fakePlayer);
         // mc.getEntityRenderDispatcher().reload(null); // hmm? check this

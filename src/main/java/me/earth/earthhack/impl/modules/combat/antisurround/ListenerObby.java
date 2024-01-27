@@ -194,7 +194,7 @@ final class ListenerObby extends ObbyListener<AntiSurround>
 
                     int slot = MineUtil.findBestTool(playerPos, state);
                     double damage = MineUtil.getDamage(state,
-                        mc.player.inventory.getStack(slot), playerPos,
+                        mc.player.getInventory().getStack(slot), playerPos,
                         RotationUtil.getRotationPlayer().isOnGround());
 
                     if (damage < module.minMine.getValue())

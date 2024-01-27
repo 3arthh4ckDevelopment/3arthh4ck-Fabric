@@ -138,7 +138,7 @@ final class ListenerMotion extends ModuleListener<Scaffold, MotionUpdateEvent>
             {
                 for (int i = 0; i < 9; i++)
                 {
-                    ItemStack stack = mc.player.inventory.getStack(i);
+                    ItemStack stack = mc.player.getInventory().getStack(i);
                     if (module.isStackValid(stack)
                             && stack.getItem() instanceof BlockItem)
                     {
@@ -155,7 +155,7 @@ final class ListenerMotion extends ModuleListener<Scaffold, MotionUpdateEvent>
                             {
                                 slot = i;
 
-                                if (i == mc.player.inventory.selectedSlot)
+                                if (i == mc.player.getInventory().selectedSlot)
                                 {
                                     break;
                                 }
@@ -233,7 +233,7 @@ final class ListenerMotion extends ModuleListener<Scaffold, MotionUpdateEvent>
                 int finalSlot = slot;
                 Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
                 {
-                    int lastSlot = mc.player.inventory.selectedSlot;
+                    int lastSlot = mc.player.getInventory().selectedSlot;
                     boolean sprinting = mc.player.isSprinting()
                             && module.stopSprint.getValue();
                     InventoryUtil.switchTo(finalSlot);

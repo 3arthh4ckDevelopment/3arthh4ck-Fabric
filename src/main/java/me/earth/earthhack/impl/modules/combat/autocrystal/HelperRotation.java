@@ -333,7 +333,7 @@ public class HelperRotation implements Globals
             boolean finalNoGodded = noGodded;
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 if (finalSlot != -1 && finalSlot != -2)
                 {
                     module.cooldownBypass.getValue().switchTo(finalSlot);
@@ -401,7 +401,7 @@ public class HelperRotation implements Globals
             SwingTime swingTime = module.breakSwing.getValue();
             Runnable runnable = () ->
             {
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 if (w.getSlot() != -1)
                 {
                     module.antiWeaknessBypass.getValue().switchTo(w.getSlot());
@@ -479,7 +479,7 @@ public class HelperRotation implements Globals
 
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 if (switchBack != null)
                 {
                     switchBack.set(lastSlot);

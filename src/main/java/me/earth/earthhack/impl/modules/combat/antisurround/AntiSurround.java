@@ -232,7 +232,7 @@ public class AntiSurround extends ObbyListenerModule<ListenerObby>
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
                 // TODO: fix this, I dont like this, too many switches!
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 cooldownBypass.getValue().switchTo(toolSlot);
                 if (!isAnvil)
                 {
@@ -261,7 +261,7 @@ public class AntiSurround extends ObbyListenerModule<ListenerObby>
         {
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 post.forEach(Runnable::run);
                 cooldownBypass.getValue().switchBack(lastSlot, crystalSwitchBackSlot != -1 ? crystalSwitchBackSlot : lastSlot);
                 crystalSwitchBackSlot = -1;
@@ -510,7 +510,7 @@ public class AntiSurround extends ObbyListenerModule<ListenerObby>
             return false;
         }
 
-        ItemStack stack = mc.player.inventory.getStack(slot);
+        ItemStack stack = mc.player.getInventory().getStack(slot);
 
         // can probs be better but for now... :)
         if (stack.getItem() instanceof BlockItem block)

@@ -104,7 +104,7 @@ final class PreCrystalFunction implements AntiSurroundFunction, Globals
             Hand h = InventoryUtil.getHand(crystalSlot);
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
-                int lastSlot = mc.player.inventory.selectedSlot;
+                int lastSlot = mc.player.getInventory().selectedSlot;
                 module.cooldownBypass.getValue().switchTo(crystalSlot);
 
                 mc.player.networkHandler.sendPacket(

@@ -104,7 +104,7 @@ public class HelperLiquids implements Globals
         float maxSpeed = 0.0f;
         for (int i = 8; i > -1; i--)
         {
-            ItemStack stack = mc.player.inventory.getStack(i);
+            ItemStack stack = mc.player.getInventory().getStack(i);
             if (stack.getItem() instanceof BlockItem)
             {
                 Block block = ((BlockItem) stack.getItem()).getBlock();
@@ -112,7 +112,7 @@ public class HelperLiquids implements Globals
                                                  block.getDefaultState());
                 float damage = MineUtil.getDamage(
                         block.getDefaultState(),
-                        mc.player.inventory.getStack(tool),
+                        mc.player.getInventory().getStack(tool),
                         BlockPos.ORIGIN,
                         !onGroundCheck
                             || RotationUtil.getRotationPlayer().isOnGround());

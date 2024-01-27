@@ -316,7 +316,7 @@ public class Offhand extends Module
 
     private void switchToItem(Item item)
     {
-        ItemStack drag = mc.player.inventory.getStack(-1);
+        ItemStack drag = mc.player.getInventory().getStack(-1);
         Item dragItem  = drag.getItem();
         Item offhandItem = mc.player.getOffHandStack().getItem();
         if (offhandItem != item)
@@ -459,7 +459,7 @@ public class Offhand extends Module
 
         if (cancelActive.getValue())
         {
-            NetworkUtil.send(new UpdateSelectedSlotC2SPacket(mc.player.inventory.selectedSlot));
+            NetworkUtil.send(new UpdateSelectedSlotC2SPacket(mc.player.getInventory().selectedSlot));
         }
     }
 

@@ -251,7 +251,7 @@ final class ListenerMotion extends ModuleListener<BlockLag, MotionUpdateEvent> {
 
         Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
         {
-            int lastSlot = mc.player.inventory.selectedSlot;
+            int lastSlot = mc.player.getInventory().selectedSlot;
             if (module.attackBefore.getValue() && finalAttacking != null) {
                 module.attack(finalAttacking, finalWeaknessSlot);
             }

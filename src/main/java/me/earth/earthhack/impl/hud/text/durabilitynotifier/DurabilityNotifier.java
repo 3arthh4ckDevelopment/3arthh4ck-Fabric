@@ -50,7 +50,7 @@ public class DurabilityNotifier extends HudElement {
         this.listeners.add(new LambdaListener<>(TickEvent.class, e -> {
             if (mc.player == null || mc.world == null) {return;}
             for (int i = 3; i >= 0; i--) {
-                ItemStack stack = mc.player.inventory.armor.get(i);
+                ItemStack stack = mc.player.getInventory().armor.get(i);
                 if (!stack.isEmpty()
                         && (stack.getMaxDamage() - stack.getDamage()) * 100 / stack.getMaxDamage() <= percentage.getValue()
                         && !Objects.equals(armorPieces[i][1], "1")) {
