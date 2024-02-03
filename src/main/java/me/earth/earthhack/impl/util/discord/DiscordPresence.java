@@ -8,7 +8,9 @@ import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.modules.client.rpc.LargeImage;
 import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.util.math.StopWatch;
+import net.minecraft.client.gui.screen.DirectConnectScreen;
 import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -125,11 +127,8 @@ public class DiscordPresence implements Globals
         } else {
             if (mc.currentScreen instanceof TitleScreen)
                 return "In the main menu";
-            /*
-            else if (mc.currentScreen instanceof GuiScreenServerList || mc.currentScreen instanceof GuiScreenAddServer)
+            else if (mc.currentScreen instanceof MultiplayerScreen)
                 return "In the server selector";
-                //TODO: screens
-             */
         }
 
         return "Not in-game";

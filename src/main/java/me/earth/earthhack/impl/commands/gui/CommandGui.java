@@ -12,8 +12,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.render.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.joml.Matrix4f;
 
 @Environment(EnvType.CLIENT)
 public class CommandGui extends Screen implements Globals
@@ -56,6 +58,8 @@ public class CommandGui extends Screen implements Globals
                 10,
                 Text.of("+"));
         textField.setEditable(true);
+        textField.setFocused(true);
+        textField.setText(Commands.getPrefix());
     }
 
     @Override
@@ -83,7 +87,24 @@ public class CommandGui extends Screen implements Globals
     public void render(DrawContext context, int mouseX, int mouseY, float delta)
     {
         super.render(context, mouseX, mouseY, delta);
-        RenderSystem.enableBlend();
+
+        Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+        bufferBuilder.vertex(matrix4f, 0.0f, this.height, -111).color(64, 64, 64, 255).texture(0, (float)this.height / 32.0F + (float) 0).next();
+        bufferBuilder.vertex(matrix4f, this.width, this.height, -111).color(64, 64, 64, 255).texture((float)this.width / 32.0F, (float) this.height / 32.0F + (float)0).next();
+        bufferBuilder.vertex(matrix4f, this.width, 0.0f, -111).color(64, 64, 64, 255).texture((float)this.width / 32.0F, 0).next();
+        bufferBuilder.vertex(matrix4f, 0.0f, 0.0f, -111).color(64, 64, 64, 255).texture(0, 0).next();
+
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShaderTexture(0, BLACK_PNG);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+
+        tessellator.draw();
+
+        // RenderSystem.enableBlend();
         // TODO: overlaps all the drawable children
         // if(BACK.getValue())
         // {
@@ -95,7 +116,7 @@ public class CommandGui extends Screen implements Globals
         // {
         //     renderBackground(context);
         // }
-        RenderSystem.enableDepthTest();
+        //RenderSystem.enableDepthTest();
         this.addSelectableChild(textField);
         this.addDrawableChild(textField);
         this.addDrawableChild(closeButton);

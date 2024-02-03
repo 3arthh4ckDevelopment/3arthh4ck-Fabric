@@ -8,8 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static me.earth.earthhack.api.util.interfaces.Globals.mc;
 
-//TODO: only use InputUtil
-
 public class Keyboard {
     private static final Map<Integer, Boolean> STATES = new ConcurrentHashMap<>();
 
@@ -85,6 +83,10 @@ public class Keyboard {
                 return 345;
             case "ctrl":
                 return 341;
+            case "alt":
+                return 342;
+            case "ralt":
+                return 346;
         }
         try {
             return InputUtil.fromTranslationKey("key.keyboard." + string).getCode();
