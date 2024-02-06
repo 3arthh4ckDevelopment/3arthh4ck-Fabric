@@ -8,6 +8,8 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.core.mixins.block.MixinSlimeBlock;
 import me.earth.earthhack.impl.core.mixins.block.MixinSoulSandBlock;
+import me.earth.earthhack.impl.event.events.client.ClientInitEvent;
+import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.gui.click.Click;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.KeyBoardUtil;
@@ -87,13 +89,7 @@ public class NoSlowDown extends Module
         this.listeners.add(new ListenerRightClickItem(this));
         this.listeners.add(new ListenerTryUseItem(this));
         this.listeners.add(new ListenerTryUseItemOnBlock(this));
-        this.setData(new NoSlowDownData(this));
-    }
-
-    @Override
-    protected void onEnable()
-    {
-        keys = new KeyBinding[]
+        this.listeners.add(new LambdaListener<>(ClientInitEvent.class, e -> keys = new KeyBinding[]
                 {
                         mc.options.forwardKey,
                         mc.options.backKey,
@@ -101,7 +97,8 @@ public class NoSlowDown extends Module
                         mc.options.rightKey,
                         mc.options.jumpKey,
                         mc.options.sprintKey
-                };
+                }));
+        this.setData(new NoSlowDownData(this));
     }
 
     @Override
@@ -126,16 +123,16 @@ public class NoSlowDown extends Module
                                                KeyBoardUtil.isKeyDown(key));
                 }
             }
-            else if (mc.currentScreen == null)
-            {
-                for (KeyBinding key : keys)
-                {
-                    if (!KeyBoardUtil.isKeyDown(key))
-                    {
-                        KeyBinding.setKeyPressed(key.getDefaultKey(), false);
-                    }
-                }
-            }
+           // else if (mc.currentScreen == null)
+           // {
+           //     for (KeyBinding key : keys)
+           //     {
+           //         if (!InputUtil.isKeyPressed(mc.getWindow().getHandle(), key.getDefaultKey().getCode()))
+           //         {
+           //             KeyBinding.setKeyPressed(key.getDefaultKey(), false);
+           //         }
+           //     }
+           // }
         }
     }
 

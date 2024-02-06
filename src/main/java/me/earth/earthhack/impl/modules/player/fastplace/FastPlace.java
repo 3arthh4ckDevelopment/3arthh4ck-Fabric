@@ -44,12 +44,12 @@ public class FastPlace extends RemovingItemAddingModule
     {
         if (mc.options.useKey.isPressed())
         {
-            if (delay.getValue() < ((IMinecraftClient) mc).getRightClickDelay()
+            if (delay.getValue() < ((IMinecraftClient) mc).earthhack$getRightClickDelay()
                     && (all.getValue()
                         || this.isStackValid(mc.player.getMainHandStack())
                         || this.isStackValid(mc.player.getOffHandStack())))
             {
-                ((IMinecraftClient) mc).setRightClickDelay(delay.getValue());
+                ((IMinecraftClient) mc).earthhack$setRightClickDelay(delay.getValue());
             }
         }
     }

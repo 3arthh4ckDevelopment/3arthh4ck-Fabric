@@ -3,13 +3,12 @@ package me.earth.earthhack.impl.modules.combat.autocrystal.helpers;
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.mixins.network.client.IPlayerInteractEntityC2S;
+import me.earth.earthhack.impl.core.ducks.network.IPlayerInteractEntityC2S;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.SwingTime;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
@@ -87,15 +86,15 @@ public class ServerTimeHelper extends SubscriberImpl implements Globals
             if (InventoryUtil.isHolding(Items.END_CRYSTAL))
             {
                 Hand hand = InventoryUtil.getHand(Items.END_CRYSTAL);
-                RayTraceResult ray = RotationUtil.rayTraceTo(pos, mc.world);
-                float[] f = RayTraceUtil.hitVecToPlaceVec(pos, ray.hitVec);
+                BlockHitResult ray = RotationUtil.rayTraceTo(pos, mc.world);
+                float[] f = RayTraceUtil.hitVecToPlaceVec(pos, ray.getPos());
                 if (time == SwingTime.Pre)
                 {
                     Swing.Packet.swing(hand);
                     Swing.Client.swing(hand);
                 }
                 mc.player.networkHandler.sendPacket(
-                        new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.sideHit, pos, false), 0));
+                        new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false), 0));
                 module.sequentialHelper.setExpecting(pos);
 
                 if (time == SwingTime.Post)

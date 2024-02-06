@@ -3,7 +3,6 @@ package me.earth.earthhack.impl.util.minecraft;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.util.math.DistanceUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.block.AnvilBlock;
@@ -20,6 +19,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -445,7 +445,7 @@ public class DamageUtil implements Globals
                         double yOff = bb.minY + (bb.maxY - bb.minY) * b;
                         double zOff = bb.minZ + (bb.maxZ - bb.minZ) * c;
 
-                        RayTraceResult result = rayTraceBlocks(
+                        BlockHitResult result = rayTraceBlocks(
                                 new Vec3d(xOff + xFloor, yOff, zOff + zFloor),
                                 vec,
                                 world,
@@ -486,10 +486,10 @@ public class DamageUtil implements Globals
      * @param lastUncollidableBlock same as the original param.
      * @param ignoreWebs handles webs like air.
      * @param ignoreBeds handles beds like air.
-     * @return a RayTraceResult...
+     * @return a BlockHitResult...
      */
     @SuppressWarnings("deprecation")
-    public static RayTraceResult rayTraceBlocks(Vec3d start,
+    public static BlockHitResult rayTraceBlocks(Vec3d start,
                                      Vec3d end,
                                      ClientWorld world,
                                      boolean stopOnLiquid,

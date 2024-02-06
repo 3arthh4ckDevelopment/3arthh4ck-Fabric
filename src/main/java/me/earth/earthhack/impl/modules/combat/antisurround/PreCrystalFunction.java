@@ -4,7 +4,6 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.combat.antisurround.util.AntiSurroundFunction;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.MineSlots;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
@@ -68,7 +67,7 @@ final class PreCrystalFunction implements AntiSurroundFunction, Globals
                 module.semiPos = down;
             }
 
-            RayTraceResult ray = null;
+            BlockHitResult ray = null;
             if (module.rotations != null)
             {
                 ray = RotationUtil.rayTraceWithYP(down, mc.world,
@@ -93,14 +92,15 @@ final class PreCrystalFunction implements AntiSurroundFunction, Globals
 
                 if (ray == null)
                 {
-                    ray = new RayTraceResult(new Vec3d(0.5, 1.0, 0.5),
+                    ray = new BlockHitResult(new Vec3d(0.5, 1.0, 0.5),
                             Direction.UP,
-                            down);
+                            down,
+                            false);
                 }
             }
 
-            RayTraceResult finalResult = ray;
-            float[] f = RayTraceUtil.hitVecToPlaceVec(down, ray.hitVec);
+            BlockHitResult finalResult = ray;
+            float[] f = RayTraceUtil.hitVecToPlaceVec(down, ray.getPos());
             Hand h = InventoryUtil.getHand(crystalSlot);
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
@@ -109,7 +109,7 @@ final class PreCrystalFunction implements AntiSurroundFunction, Globals
 
                 mc.player.networkHandler.sendPacket(
                         new PlayerInteractBlockC2SPacket(h,
-                                new BlockHitResult(down.toCenterPos(), finalResult.sideHit, down, false),
+                                new BlockHitResult(down.toCenterPos(), finalResult.getSide(), down, false),
                                 0));
                 // mc.player.networkHandler.sendPacket(
                 //     new CPacketPlayerTryUseItemOnBlock(

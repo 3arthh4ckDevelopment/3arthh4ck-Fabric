@@ -458,7 +458,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                             placeBlock(helpingRay.getPos(),
                                     helpingRay.getFacing(),
                                     helpingRay.getRotations(),
-                                    helpingRay.getResult().hitVec);
+                                    helpingRay.getResult().getPos());
 
                             if (blocksPlaced >= blocks.getValue()
                                     || noFastHelp(helpingPos, pos))
@@ -471,7 +471,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                                 placeBlock(ray.getPos(),
                                         ray.getFacing(),
                                         ray.getRotations(),
-                                        ray.getResult().hitVec);
+                                        ray.getResult().getPos());
 
                                 setState(pos);
                                 return blocksPlaced >= blocks.getValue()
@@ -496,7 +496,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                 placeBlock(ray.getPos(),
                         ray.getFacing(),
                         ray.getRotations(),
-                        ray.getResult().hitVec);
+                        ray.getResult().getPos());
 
                 return blocksPlaced >= blocks.getValue()
                         || rotate.getValue() == Rotate.Normal;
@@ -526,7 +526,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                         placeBlock(forceHelpingRay.getPos(),
                                 forceHelpingRay.getFacing(),
                                 forceHelpingRay.getRotations(),
-                                forceHelpingRay.getResult().hitVec);
+                                forceHelpingRay.getResult().getPos());
 
                         setState(helping);
 
@@ -552,7 +552,7 @@ public abstract class ObbyModule extends BlockPlacingModule
                 placeBlock(forceRay.getPos(),
                         forceRay.getFacing(),
                         forceRay.getRotations(),
-                        forceRay.getResult().hitVec);
+                        forceRay.getResult().getPos());
 
                 setState(forcePos);
                 return blocksPlaced >= blocks.getValue()

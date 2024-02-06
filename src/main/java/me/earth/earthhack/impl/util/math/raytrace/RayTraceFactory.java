@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.*;
 
 import java.util.HashSet;
@@ -116,7 +117,7 @@ public class RayTraceFactory implements Globals
             Vec3d look = RotationUtil.getVec3d(r[0], r[1]);
             double d = mc.interactionManager.getReachDistance();
             Vec3d rotations = start.add(look.x * d, look.y * d, look.z * d);
-            RayTraceResult result = RayTracer.trace(mc.world,
+            BlockHitResult result = RayTracer.trace(mc.world,
                                                     access,
                                                     start,
                                                     rotations,
@@ -124,7 +125,7 @@ public class RayTraceFactory implements Globals
                                                     false,
                                                     true);
             if (result == null
-                || result.sideHit != facing
+                || result.getSide() != facing
                 || !on.equals(result.getBlockPos()))
             {
                 return dumbRay(on, facing, r);
@@ -215,12 +216,12 @@ public class RayTraceFactory implements Globals
 
                 for (Vec3d vec : vectors)
                 {
-                    RayTraceResult ray = RayTracer.trace(
+                    BlockHitResult ray = RayTracer.trace(
                             mc.world, access, start, vec, false, false, true);
 
                     if (ray != null
                             && on.equals(ray.getBlockPos())
-                            && facing == ray.sideHit)
+                            && facing == ray.getSide())
                     {
                         return new Ray(ray, rots(from, vec), on, facing, vec)
                                 .setLegit(true);
@@ -239,10 +240,10 @@ public class RayTraceFactory implements Globals
                     for (double z = Math.min(minZ, maxZ); z <= endZ; z += res)
                     {
                         Vec3d vector = new Vec3d(x, y, z);
-                        RayTraceResult ray = RayTracer.trace(
+                        BlockHitResult ray = RayTracer.trace(
                            mc.world, access, start, vector, false, false, true);
                         if (ray != null
-                                && facing == ray.sideHit
+                                && facing == ray.getSide()
                                 && on.equals(ray.getBlockPos()))
                         {
                             return new Ray(ray, rots(from, vector), on, facing, vector)
@@ -258,16 +259,16 @@ public class RayTraceFactory implements Globals
 
     public static Ray dumbRay(BlockPos on, Direction offset, float[] rotations)
     {
-        return newRay(new RayTraceResult(RayTraceResult.Type.MISS,
-                                          new Vec3d(0.5, 1.0, 0.5),
+        return newRay(new BlockHitResult(new Vec3d(0.5, 1.0, 0.5),
                                           UP,
-                                          BlockPos.ORIGIN),
+                                          BlockPos.ORIGIN,
+                                false),
                       on,
                       offset,
                       rotations);
     }
 
-    public static Ray newRay(RayTraceResult result,
+    public static Ray newRay(BlockHitResult result,
                              BlockPos on,
                              Direction offset,
                              float[] rotations)

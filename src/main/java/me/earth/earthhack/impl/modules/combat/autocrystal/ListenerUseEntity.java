@@ -1,6 +1,6 @@
 package me.earth.earthhack.impl.modules.combat.autocrystal;
 
-import me.earth.earthhack.impl.core.mixins.network.client.IPlayerInteractEntityC2S;
+import me.earth.earthhack.impl.core.ducks.network.IPlayerInteractEntityC2S;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import net.minecraft.entity.Entity;

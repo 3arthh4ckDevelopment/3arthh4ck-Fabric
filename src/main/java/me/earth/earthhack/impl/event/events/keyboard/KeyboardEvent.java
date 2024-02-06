@@ -30,7 +30,7 @@ public class KeyboardEvent
 
     public static class Post
     {
-        //Will be send after all KeyBoardEvents have been fired.
+        // Will be sent after all KeyBoardEvents have been fired.
     }
 
 }

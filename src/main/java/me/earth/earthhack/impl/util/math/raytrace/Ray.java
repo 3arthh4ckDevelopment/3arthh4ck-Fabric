@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.util.math.raytrace;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -13,14 +14,14 @@ import net.minecraft.util.math.Vec3d;
  */
 public class Ray
 {
-    private final RayTraceResult result;
+    private final BlockHitResult result;
     private final Direction facing;
     private final BlockPos pos;
     private final Vec3d vector;
     private float[] rotations;
     private boolean legit;
 
-    public Ray(RayTraceResult result,
+    public Ray(BlockHitResult result,
                float[] rotations,
                BlockPos pos,
                Direction facing,
@@ -33,7 +34,7 @@ public class Ray
         this.vector = vector;
     }
 
-    public RayTraceResult getResult()
+    public BlockHitResult getResult()
     {
         return result;
     }

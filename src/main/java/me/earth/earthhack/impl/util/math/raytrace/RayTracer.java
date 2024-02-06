@@ -15,6 +15,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -36,7 +37,7 @@ public class RayTracer implements Globals
         Predicates.and(e -> !e.isSpectator(),
                        e -> e != null && e.isCollidable());
 
-    public static RayTraceResult rayTraceEntities(World world,
+    public static EntityHitResult rayTraceEntities(World world,
                                                   Entity from,
                                                   double range,
                                                   PositionManager position,
@@ -57,7 +58,7 @@ public class RayTracer implements Globals
                                 additional);
     }
 
-    public static RayTraceResult rayTraceEntities(World world,
+    public static EntityHitResult rayTraceEntities(World world,
                                                   Entity from,
                                                   double range,
                                                   double posX,
@@ -162,7 +163,7 @@ public class RayTracer implements Globals
 
         if (pointedEntity != null && hitVec != null)
         {
-            return new RayTraceResult(pointedEntity, hitVec);
+            return new EntityHitResult(pointedEntity, hitVec);
         }
 
         return null;
@@ -172,7 +173,7 @@ public class RayTracer implements Globals
      * Calls {@link RayTracer#trace(World, ClientWorld, Vec3d,
      * Vec3d, boolean, boolean, boolean, BiPredicate)} for no Predicate.
      */
-    public static RayTraceResult trace(World world,
+    public static BlockHitResult trace(World world,
                                        ClientWorld access,
                                        Vec3d start,
                                        Vec3d end,
@@ -194,7 +195,7 @@ public class RayTracer implements Globals
      * Calls {@link RayTracer#trace(World, ClientWorld, Vec3d, Vec3d,
      * boolean, boolean, boolean, BiPredicate)} for the world as access.
      */
-    public static RayTraceResult trace(World world,
+    public static BlockHitResult trace(World world,
                                        Vec3d start,
                                        Vec3d end,
                                        boolean stopOnLiquid,
@@ -227,7 +228,7 @@ public class RayTracer implements Globals
      * @return
      * {@link World#raycastBlock(Vec3d, Vec3d, BlockPos, VoxelShape, BlockState)}.
      */
-    public static RayTraceResult trace(World world,
+    public static BlockHitResult trace(World world,
                                        ClientWorld access,
                                        Vec3d start,
                                        Vec3d end,
@@ -248,7 +249,7 @@ public class RayTracer implements Globals
                                 : (b,p,ef) -> blockChecker.test(b,p));
     }
 
-    public static RayTraceResult traceTri(World world,
+    public static BlockHitResult traceTri(World world,
                                           ClientWorld access,
                                           Vec3d start,
                                           Vec3d end,
@@ -268,7 +269,7 @@ public class RayTracer implements Globals
                         null);
     }
 
-    public static RayTraceResult traceTri(World world,
+    public static BlockHitResult traceTri(World world,
                                           ClientWorld access,
                                           Vec3d start,
                                           Vec3d end,
@@ -290,7 +291,7 @@ public class RayTracer implements Globals
                         CollisionFunction.DEFAULT);
     }
 
-    public static RayTraceResult traceTri(World world,
+    public static BlockHitResult traceTri(World world,
                                           ClientWorld access,
                                           Vec3d start,
                                           Vec3d end,
@@ -328,16 +329,16 @@ public class RayTracer implements Globals
                     && (blockChecker == null
                             || blockChecker.test(block, pos, null)))
                 {
-                    RayTraceResult RayTraceResult =
+                    BlockHitResult BlockHitResult =
                         crt.collisionRayTrace(state, world, pos, start, end);
 
-                    if (RayTraceResult != null)
+                    if (BlockHitResult != null)
                     {
-                        return RayTraceResult;
+                        return BlockHitResult;
                     }
                 }
 
-                RayTraceResult result = null;
+                BlockHitResult result = null;
                 int steps = 200;
 
                 while (steps-- >= 0)
@@ -494,7 +495,7 @@ public class RayTracer implements Globals
                             && (blockChecker == null
                                 || blockChecker.test(block1, pos, enumfacing)))
                         {
-                            RayTraceResult Ray1 =
+                            BlockHitResult Ray1 =
                                 crt.collisionRayTrace(
                                         state1, world, pos, start, end);
 
@@ -505,11 +506,10 @@ public class RayTracer implements Globals
                         }
                         else
                         {
-                            result = new RayTraceResult(
-                                        RayTraceResult.Type.MISS,
-                                        start,
-                                        enumfacing,
-                                        pos);
+                            result = new BlockHitResult(start,
+                                                        enumfacing,
+                                                        pos,
+                                              false);
                         }
                     }
                 }

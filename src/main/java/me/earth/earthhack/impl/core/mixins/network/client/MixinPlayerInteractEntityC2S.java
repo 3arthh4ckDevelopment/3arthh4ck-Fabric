@@ -1,50 +1,36 @@
 package me.earth.earthhack.impl.core.mixins.network.client;
 
+import me.earth.earthhack.impl.core.ducks.network.IPlayerInteractEntityC2S;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(PlayerInteractEntityC2SPacket.class)
 public abstract class MixinPlayerInteractEntityC2S implements IPlayerInteractEntityC2S {
+
+    @Unique
+    private Entity entity;
+
     @Override
     @Accessor(value = "entityId")
     public abstract void setEntityId(int entityId);
 
     @Override
-    public void setAction(PlayerActionC2SPacket.Action action) {
-
-    }
-
-    @Override
-    public void setVec(Vec3d vec3d) {
-
-    }
-
-    @Override
-    public void setHand(Hand hand) {
-
-    }
+    @Accessor(value = "type")
+    public abstract void setAction(PlayerInteractEntityC2SPacket.InteractTypeHandler action);
 
     @Override
     @Accessor(value = "entityId")
     public abstract int getEntityID();
 
     @Override
-    public PlayerInteractEntityC2SPacket.InteractTypeHandler getAction() {
-        return null;
-    }
-
-    @Override
-    public Vec3d getHitVec() {
-        return null;
-    }
+    @Accessor(value = "type")
+    public abstract PlayerInteractEntityC2SPacket.InteractTypeHandler getAction();
 
     @Override
     public Entity getAttackedEntity() {
-        return null;
+        return entity;
     }
 }

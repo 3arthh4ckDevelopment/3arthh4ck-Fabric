@@ -61,7 +61,7 @@ public class ObbyUtil
             module.placeBlock(ray.getPos(),
                               ray.getFacing(),
                               ray.getRotations(),
-                              ray.getResult().hitVec);
+                              ray.getResult().getPos());
 
             if (module.blocksPlaced >= module.blocks.getValue()
                     || module.rotate.getValue() == Rotate.Normal)

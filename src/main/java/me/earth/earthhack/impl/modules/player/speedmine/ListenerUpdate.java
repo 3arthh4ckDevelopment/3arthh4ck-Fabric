@@ -11,7 +11,6 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.util.CrystalTimeStamp;
 import me.earth.earthhack.impl.modules.player.speedmine.mode.MineMode;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.minecraft.ArmUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
@@ -179,11 +178,11 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                 if (placeTarg != null) {
                     final BlockPos p = PlayerUtil.getBestPlace(module.pos, placeTarg);
                     if (module.placeCrystal.getValue() && AUTOCRYSTAL.isEnabled() && p != null && BlockUtil.canPlaceCrystal(p,false,false)) {
-                        final RayTraceResult result = new RayTraceResult(new Vec3d(0.5, 1.0, 0.5), Direction.UP, p);
+                        final BlockHitResult result = new BlockHitResult(new Vec3d(0.5, 1.0, 0.5), Direction.UP, p, false);
 
                         if (mc.player.getOffHandStack() != ItemStack.EMPTY && mc.player.getOffHandStack().getItem() == Items.END_CRYSTAL) {
                             final PlayerInteractBlockC2SPacket place =
-                                    new PlayerInteractBlockC2SPacket(Hand.OFF_HAND, new BlockHitResult(result.hitVec, result.sideHit, p, false), 0);
+                                    new PlayerInteractBlockC2SPacket(Hand.OFF_HAND, new BlockHitResult(result.getPos(), result.getSide(), p, false), 0);
                             final HandSwingC2SPacket animation =
                                     new HandSwingC2SPacket(Hand.OFF_HAND);
                             InventoryUtil.syncItem();
@@ -199,7 +198,7 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                                 Locks.acquire(Locks.WINDOW_CLICK_LOCK, () -> {
                                     module.cooldownBypass.getValue().switchTo(crystalSlot);
                                     final PlayerInteractBlockC2SPacket place =
-                                        new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(result.hitVec, result.sideHit, p, false), 0);
+                                        new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(result.getPos(), result.getSide(), p, false), 0);
                                     final HandSwingC2SPacket animation =
                                         new HandSwingC2SPacket(Hand.MAIN_HAND);
                                     mc.player.networkHandler.sendPacket(place);

@@ -18,7 +18,6 @@ import me.earth.earthhack.impl.util.helpers.blocks.modes.Rotate;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.raytrace.Ray;
 import me.earth.earthhack.impl.util.math.raytrace.RayTraceFactory;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -36,6 +35,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -1111,7 +1111,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
         if (!module.rotate.getValue().noRotate(ACRotate.Place)
             && !module.isNotCheckingRotations())
         {
-            RayTraceResult result = RotationUtil.rayTraceTo(pos, mc.world);
+            BlockHitResult result = RotationUtil.rayTraceTo(pos, mc.world);
             if (result == null || !result.getBlockPos().equals(pos))
             {
                 return false;
@@ -1127,7 +1127,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                 return true;
             }
 
-            RayTraceResult result;
+            BlockHitResult result;
             if (module.isNotCheckingRotations())
             {
                 float[] rotations = RotationUtil.getRotationsToTopMiddle(pos);

@@ -7,7 +7,6 @@ import me.earth.earthhack.impl.util.helpers.blocks.modes.PlaceSwing;
 import me.earth.earthhack.impl.util.helpers.blocks.modes.RayTraceMode;
 import me.earth.earthhack.impl.util.helpers.blocks.modes.Rotate;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -18,10 +17,13 @@ import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,12 +143,13 @@ final class ListenerSpawnObject extends
                 float[] helpingRotations = RotationUtil.getRotations(
                         entry.getKey(), entry.getValue(), player);
 
-                RayTraceResult result =
-                    RayTraceUtil.getRayTraceResultWithEntity(
+                BlockHitResult result =
+                    RayTraceUtil.getBlockHitResultWithEntity(
                         helpingRotations[0], helpingRotations[1], player);
 
                 if (module.rotate.getValue() == Rotate.Packet)
                 {
+                    PacketUtil.doRotation(helpingRotations[0], helpingRotations[1], mc.player.isOnGround());
                     /*
                     PingBypass.sendToActualServer(
                             new CPacketPlayer.Rotation(helpingRotations[0],
@@ -156,18 +159,18 @@ final class ListenerSpawnObject extends
                 }
 
                 float[] f = RayTraceUtil.hitVecToPlaceVec(
-                        entry.getKey(), result.hitVec);
-                /* //TODO: make
-                mc.player.networkHandler.sendPacket(
-                    new PlayerInteractItemC2SPacket(
-                        entry.getKey(),
-                        entry.getValue(),
-                        InventoryUtil.getHand(slot),
-                        f[0],
-                        f[1],
-                        f[2]));
+                        entry.getKey(), result.getPos());
 
-                 */
+                mc.player.networkHandler.sendPacket(
+                    new PlayerInteractBlockC2SPacket(
+                            InventoryUtil.getHand(slot),
+                            new BlockHitResult(
+                                    new Vec3d(f[0], f[1], f[2]),
+                                    entry.getValue(),
+                                    entry.getKey(),
+                                    false
+                            ),
+                        0));
 
                 if (module.placeSwing.getValue() == PlaceSwing.Always)
                 {

@@ -170,8 +170,7 @@ public class HelperObby implements Globals
                     if (module.inside.getValue()
                             && state.isLiquid())
                     {
-                        ray.getResult().sideHit = ray.getResult().sideHit
-                                                                 .getOpposite();
+                        ray.getResult().getSide().equals(ray.getResult().getSide().getOpposite());
                         ray = new Ray(ray.getResult(),
                                       ray.getRotations(),
                                       ray.getPos().offset(ray.getFacing()),

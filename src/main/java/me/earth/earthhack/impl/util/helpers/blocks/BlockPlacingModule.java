@@ -18,7 +18,6 @@ import me.earth.earthhack.impl.util.helpers.disabling.DisablingModule;
 import me.earth.earthhack.impl.util.math.DiscreteTimer;
 import me.earth.earthhack.impl.util.math.GuardTimer;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.CooldownBypass;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -136,10 +135,10 @@ public abstract class BlockPlacingModule extends DisablingModule
         Entity from = getPlayerForRotations();
         float[] r =
             RotationUtil.getRotations(on, facing, from);
-        RayTraceResult result =
-            RayTraceUtil.getRayTraceResultWithEntity(r[0], r[1], from);
+        BlockHitResult result =
+            RayTraceUtil.getBlockHitResultWithEntity(r[0], r[1], from);
 
-        placeBlock(on, facing, r, result.hitVec);
+        placeBlock(on, facing, r, result.getPos());
     }
 
     public void placeBlock(BlockPos on,

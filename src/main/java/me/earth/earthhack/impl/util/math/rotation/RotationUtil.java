@@ -6,7 +6,6 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.player.freecam.Freecam;
 import me.earth.earthhack.impl.util.math.MathUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
 import me.earth.earthhack.impl.util.render.Interpolation;
 import net.minecraft.block.Block;
@@ -14,6 +13,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.*;
 
 import java.util.Arrays;
@@ -288,7 +289,7 @@ public class RotationUtil implements Globals
      */
     public static boolean isLegit(Entity entity, Entity...additional)
     {
-        RayTraceResult result =
+        EntityHitResult result =
             RayTracer.rayTraceEntities(mc.world,
                                        getRotationPlayer(),
                                        getRotationPlayer().distanceTo(entity)
@@ -298,12 +299,12 @@ public class RotationUtil implements Globals
                                        e -> e != null && e.equals(entity),
                                        additional);
         return result != null
-                && result.entityHit != null
-                && (entity.equals(result.entityHit)
+                && result.getEntity() != null
+                && (entity.equals(result.getEntity())
                     || additional != null
                     && additional.length != 0
                     && Arrays.stream(additional)
-                             .anyMatch(e -> result.entityHit.equals(e)));
+                             .anyMatch(e -> result.getEntity().equals(e)));
     }
 
     public static boolean isLegit(BlockPos pos)
@@ -320,21 +321,21 @@ public class RotationUtil implements Globals
                                   Direction facing,
                                   ClientWorld world)
     {
-        RayTraceResult ray = rayTraceTo(pos, world);
+        BlockHitResult ray = rayTraceTo(pos, world);
         //noinspection ConstantConditions
         return ray != null
                 && ray.getBlockPos() != null
                 && ray.getBlockPos().equals(pos)
                 && (facing == null
-                    || ray.sideHit == facing);
+                    || ray.getSide() == facing);
     }
 
-    public static RayTraceResult rayTraceTo(BlockPos pos, ClientWorld world)
+    public static BlockHitResult rayTraceTo(BlockPos pos, ClientWorld world)
     {
         return rayTraceTo(pos, world, (b, p) -> p.equals(pos));
     }
 
-    public static RayTraceResult rayTraceTo(BlockPos pos,
+    public static BlockHitResult rayTraceTo(BlockPos pos,
                                             ClientWorld world,
                                             BiPredicate<Block, BlockPos> check)
     {
@@ -343,7 +344,7 @@ public class RotationUtil implements Globals
                           Managers.ROTATION.getServerPitch(), check);
     }
 
-    public static RayTraceResult rayTraceWithYP(BlockPos pos,
+    public static BlockHitResult rayTraceWithYP(BlockPos pos,
                                             ClientWorld world,
                                             float yaw, float pitch,
                                             BiPredicate<Block, BlockPos> check)

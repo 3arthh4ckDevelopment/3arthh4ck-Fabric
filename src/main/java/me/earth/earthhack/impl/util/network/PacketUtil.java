@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.network.IClientPlayNetworkHandler;
-import me.earth.earthhack.impl.core.mixins.network.client.IPlayerInteractEntityC2S;
+import me.earth.earthhack.impl.core.ducks.network.IPlayerInteractEntityC2S;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import net.minecraft.entity.Entity;

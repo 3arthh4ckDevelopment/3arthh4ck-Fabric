@@ -21,7 +21,6 @@ import me.earth.earthhack.impl.util.math.RayTraceUtil;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.math.raytrace.Ray;
 import me.earth.earthhack.impl.util.math.raytrace.RayTraceFactory;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationSmoother;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
@@ -294,7 +293,7 @@ public class HelperRotation implements Globals
                 }
             }
 
-            RayTraceResult ray = RotationUtil.rayTraceTo(pos, mc.world);
+            BlockHitResult ray = RotationUtil.rayTraceTo(pos, mc.world);
             if (ray == null || !pos.equals(ray.getBlockPos()))
             {
                 if (!module.rotate.getValue().noRotate(ACRotate.Place)
@@ -303,20 +302,20 @@ public class HelperRotation implements Globals
                     return;
                 }
 
-                ray = new RayTraceResult(
-                        new Vec3d(0.5, 1.0, 0.5), Direction.UP);
+                ray = new BlockHitResult(
+                        new Vec3d(0.5, 1.0, 0.5), Direction.UP, pos, false);
             }
             else if (module.fallbackTrace.getValue()
-                && mc.world.getBlockState(ray.getBlockPos().offset(ray.sideHit))
+                && mc.world.getBlockState(ray.getBlockPos().offset(ray.getSide()))
                            .isSolid())
             {
-                ray = new RayTraceResult(
-                        new Vec3d(0.5, 1.0, 0.5), Direction.UP);
+                ray = new BlockHitResult(
+                        new Vec3d(0.5, 1.0, 0.5), Direction.UP, pos, false);
             }
 
             module.switching = false;
             SwingTime swingTime = module.placeSwing.getValue();
-            float[] f = RayTraceUtil.hitVecToPlaceVec(pos, ray.hitVec);
+            float[] f = RayTraceUtil.hitVecToPlaceVec(pos, ray.getPos());
             boolean noGodded = false;
             // we need to check this here since we switch
             if (module.idHelper.isDangerous(mc.player,
@@ -329,7 +328,7 @@ public class HelperRotation implements Globals
 
             int finalSlot = slot;
             Hand finalHand = hand;
-            RayTraceResult finalRay = ray;
+            BlockHitResult finalRay = ray;
             boolean finalNoGodded = noGodded;
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
             {
@@ -346,7 +345,7 @@ public class HelperRotation implements Globals
                 }
 
                 mc.player.networkHandler.sendPacket(
-                    new PlayerInteractBlockC2SPacket(finalHand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), finalRay.sideHit, pos, false), 0));
+                    new PlayerInteractBlockC2SPacket(finalHand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), finalRay.getSide(), pos, false), 0));
                 module.sequentialHelper.setExpecting(pos);
 
                 if (finalNoGodded)
@@ -501,7 +500,7 @@ public class HelperRotation implements Globals
                     }
 
                     float[] f = RayTraceUtil.hitVecToPlaceVec(
-                            ray.getPos(), ray.getResult().hitVec);
+                            ray.getPos(), ray.getResult().getPos());
 
                     mc.player.networkHandler.sendPacket(
                             new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(ray.getVector(),

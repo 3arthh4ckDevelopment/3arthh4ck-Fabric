@@ -13,21 +13,21 @@ public interface IMinecraftClient
      *
      * @return mc.rightClickDelayTimer.
      */
-    int getRightClickDelay();
+    int earthhack$getRightClickDelay();
 
     /**
      * Accessor for mc.rightClickDelayTimer.
      *
      * @param delay the value to set the timer to.
      */
-    void setRightClickDelay(int delay);
+    void earthhack$setRightClickDelay(int delay);
 
     /**
      * Accesses Minecraft's timer.
      *
      * @return minecraft's timer.
      */
-    RenderTickCounter getTimer();
+    RenderTickCounter earthhack$getTimer();
 
     /** @return the current gameloop, will be incremented every gameloop. */
     int getGameLoop();

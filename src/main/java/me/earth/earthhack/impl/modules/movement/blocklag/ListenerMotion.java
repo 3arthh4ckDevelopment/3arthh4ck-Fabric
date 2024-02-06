@@ -9,7 +9,6 @@ import me.earth.earthhack.impl.modules.movement.blocklag.mode.OffsetMode;
 import me.earth.earthhack.impl.util.client.ModuleUtil;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -26,6 +25,7 @@ import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -233,10 +233,10 @@ final class ListenerMotion extends ModuleListener<BlockLag, MotionUpdateEvent> {
         BlockPos on = pos.offset(f);
         float[] r =
                 RotationUtil.getRotations(on, f.getOpposite(), rEntity);
-        RayTraceResult result =
-                RayTraceUtil.getRayTraceResultWithEntity(r[0], r[1], rEntity);
+        BlockHitResult result =
+                RayTraceUtil.getBlockHitResultWithEntity(r[0], r[1], rEntity);
 
-        float[] vec = RayTraceUtil.hitVecToPlaceVec(on, result.hitVec);
+        float[] vec = RayTraceUtil.hitVecToPlaceVec(on, result.getPos());
         boolean sneaking = !SpecialBlocks.shouldSneak(on, true);
 
         PlayerEntity finalREntity = rEntity;

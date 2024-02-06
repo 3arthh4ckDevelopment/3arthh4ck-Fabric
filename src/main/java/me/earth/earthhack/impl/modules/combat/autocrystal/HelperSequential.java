@@ -2,7 +2,7 @@ package me.earth.earthhack.impl.modules.combat.autocrystal;
 
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.mixins.network.client.IPlayerInteractEntityC2S;
+import me.earth.earthhack.impl.core.ducks.network.IPlayerInteractEntityC2S;
 import me.earth.earthhack.impl.event.listeners.PostSendListener;
 import me.earth.earthhack.impl.event.listeners.ReceiveListener;
 import me.earth.earthhack.impl.util.client.ModuleUtil;

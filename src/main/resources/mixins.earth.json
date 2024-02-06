@@ -12,10 +12,13 @@
     "entity.living.MixinLivingEntity",
     "entity.living.player.MixinClientPlayerEntity",
     "entity.living.player.MixinPlayerEntity",
+    "input.MixinKeyboard",
     "network.MixinClientConnection",
     "network.client.ILoginHelloC2SPacket",
     "network.client.IPlayerMoveC2S",
+    "network.client.MixinInteractAtHandler",
     "network.client.MixinPlayerActionC2S",
+    "network.client.MixinPlayerInteractEntityC2S",
     "network.server.IEntityS2CPacket",
     "network.server.IEntityStatusS2CPacket",
     "network.server.IEntityVelocityUpdateS2CPacket",
@@ -24,7 +27,6 @@
     "util.ITimer",
     "util.MixinClickEvent",
     "util.MixinHoverEvent",
-    "util.MixinKeyboard",
     "util.MixinText"
   ],
   "client": [

@@ -10,7 +10,6 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.util.CrystalTimeStamp;
 import me.earth.earthhack.impl.modules.combat.offhand.Offhand;
 import me.earth.earthhack.impl.modules.combat.offhand.modes.OffhandMode;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -122,13 +121,13 @@ public class CrystalHelper implements Globals {
         }
     }
 
-    public void placeCrystal(BlockPos pos, int slot, RayTraceResult ray, boolean prePlace)
+    public void placeCrystal(BlockPos pos, int slot, BlockHitResult ray, boolean prePlace)
     {
         Hand hand = module.offhandPlace.getValue()
             ? Hand.OFF_HAND
             : InventoryUtil.getHand(slot);
 
-        float[] f = RayTraceUtil.hitVecToPlaceVec(pos, ray.hitVec);
+        float[] f = RayTraceUtil.hitVecToPlaceVec(pos, ray.getPos());
         Locks.acquire(Locks.PLACE_SWITCH_LOCK, () ->
         {
             OffhandMode mode = null;
@@ -155,7 +154,7 @@ public class CrystalHelper implements Globals {
             }
 
             mc.player.networkHandler.sendPacket(
-                new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.sideHit, pos, false), 0));
+                new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false), 0));
 
             if (AUTOCRYSTAL.get().placeSwing.getValue() == SwingTime.Post)
             {
@@ -188,8 +187,8 @@ public class CrystalHelper implements Globals {
             return true;
         }
 
-        RayTraceResult ray = RotationUtil.rayTraceTo(crystalPos, mc.world);
-        if (ray != null && ray.sideHit != null && ray.hitVec != null)
+        BlockHitResult ray = RotationUtil.rayTraceTo(crystalPos, mc.world);
+        if (ray != null && ray.getSide() != null && ray.getPos() != null)
         {
             module.crystalHelper.placeCrystal(crystalPos, crystalSlot, ray, prePlace);
             boolean swappedBack = false;

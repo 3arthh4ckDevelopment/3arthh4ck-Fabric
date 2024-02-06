@@ -12,7 +12,6 @@ import me.earth.earthhack.impl.util.helpers.blocks.util.TargetResult;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -417,7 +416,7 @@ final class ListenerObby extends ObbyListener<AntiSurround>
         {
             IBlockStateHelper helper = new BlockStateHelper();
             helper.addBlockState(crystalPos, Blocks.OBSIDIAN.getDefaultState());
-            RayTraceResult ray = null;
+            BlockHitResult ray = null;
             if (module.rotations != null)
             {
                 // TODO: helper
@@ -444,15 +443,16 @@ final class ListenerObby extends ObbyListener<AntiSurround>
 
                 if (ray == null)
                 {
-                    ray = new RayTraceResult(new Vec3d(0.5, 1.0, 0.5),
+                    ray = new BlockHitResult(new Vec3d(0.5, 1.0, 0.5),
                                                 Direction.UP,
-                                                crystalPos);
+                                                crystalPos,
+                                      false);
                 }
             }
 
             int crystalSlot = module.crystalSlot;
-            RayTraceResult finalResult = ray;
-            float[] f = RayTraceUtil.hitVecToPlaceVec(crystalPos, ray.hitVec);
+            BlockHitResult finalResult = ray;
+            float[] f = RayTraceUtil.hitVecToPlaceVec(crystalPos, ray.getPos());
             Hand h = InventoryUtil.getHand(crystalSlot);
             BlockPos finalPos = crystalPos;
             module.post.add(() ->
@@ -461,7 +461,7 @@ final class ListenerObby extends ObbyListener<AntiSurround>
                 module.cooldownBypass.getValue().switchTo(crystalSlot);
                 mc.player.networkHandler.sendPacket(
                         new PlayerInteractBlockC2SPacket(
-                                h, new BlockHitResult(finalPos.toCenterPos(), finalResult.sideHit, finalPos, false),
+                                h, new BlockHitResult(finalPos.toCenterPos(), finalResult.getSide(), finalPos, false),
                                 0
                         ));
                 // mc.player.networkHandler.sendPacket(

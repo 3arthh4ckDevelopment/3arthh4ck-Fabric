@@ -21,6 +21,8 @@ accessible method net/minecraft/client/gui/screen/ChatScreen setText (Ljava/lang
 # Network
 accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler
 accessible field net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket ATTACK Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler; # this is ugly
+accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractAtHandler
+
 
 # Entity fields (this is ugly, remove if possible)
 accessible field net/minecraft/entity/Entity yaw F

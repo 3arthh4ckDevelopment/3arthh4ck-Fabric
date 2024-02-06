@@ -6,7 +6,6 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -17,6 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
+
+import java.util.Optional;
 
 // TODO: better rayTrace for 2b2t. Find the part of the block we can see
 public class RayTraceUtil implements Globals
@@ -49,35 +50,31 @@ public class RayTraceUtil implements Globals
         return new float[]{(float) x, (float) y, (float) z};
     }
 
-    public static RayTraceResult getRayTraceResult(float yaw, float pitch)
+    public static BlockHitResult getBlockHitResult(float yaw, float pitch)
     {
-        return getRayTraceResult(yaw, pitch, mc.interactionManager.getReachDistance());
+        return getBlockHitResult(yaw, pitch, mc.interactionManager.getReachDistance());
     }
 
-    public static RayTraceResult getRayTraceResultWithEntity(float yaw, float pitch, Entity from)
+    public static BlockHitResult getBlockHitResultWithEntity(float yaw, float pitch, Entity from)
     {
-        return getRayTraceResult(yaw, pitch, mc.interactionManager.getReachDistance(), from);
+        return getBlockHitResult(yaw, pitch, mc.interactionManager.getReachDistance(), from);
     }
     
-    public static RayTraceResult getRayTraceResult(float yaw, float pitch, float distance)
+    public static BlockHitResult getBlockHitResult(float yaw, float pitch, float distance)
     {
-        return getRayTraceResult(yaw, pitch, distance, mc.player);
+        return getBlockHitResult(yaw, pitch, distance, mc.player);
     }
 
-    public static RayTraceResult getRayTraceResult(float yaw, float pitch, float d, Entity from)
+    public static BlockHitResult getBlockHitResult(float yaw, float pitch, float d, Entity from)
     {
         Vec3d vec3d     = PositionUtil.getEyePos(from);
         Vec3d lookVec   = RotationUtil.getVec3d(yaw, pitch);
         Vec3d rotations = vec3d.add(lookVec.x * d, lookVec.y * d, lookVec.z * d);
-        /*
+
         return Optional.ofNullable(
             mc.world.raycast(new RaycastContext(vec3d, rotations, RaycastContext.ShapeType.VISUAL, RaycastContext.FluidHandling.NONE, from)))
                       .orElseGet(() ->
-          // new BlockHitResult(RayTraceResult.Type.MISS, new Vec3d(0.5, 1.0, 0.5), Direction.UP, BlockPos.ORIGIN));
           new BlockHitResult(new Vec3d(0.5, 1.0, 0.5), Direction.UP, BlockPos.ORIGIN, false));
-
-         *///TODO: REMAKE
-        return null;
     }
 
     public static boolean canBeSeen(double x, double y, double z, Entity by)
@@ -124,7 +121,7 @@ public class RayTraceUtil implements Globals
                     entity
             ));
 
-            //RayTraceResult result = mc.world.raycast(
+            //BlockHitResult result = mc.world.raycast(
             // PositionUtil.getEyePos(entity),
             // new Vec3d(
             //    pos.getX() + 0.5 + facing.getVector().getX() * 1.0 / 2.0,

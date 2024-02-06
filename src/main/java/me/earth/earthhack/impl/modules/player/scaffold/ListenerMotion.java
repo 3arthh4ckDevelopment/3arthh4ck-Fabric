@@ -12,7 +12,6 @@ import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
 import me.earth.earthhack.impl.util.math.raytrace.Ray;
 import me.earth.earthhack.impl.util.math.raytrace.RayTraceFactory;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
@@ -29,6 +28,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -176,7 +176,7 @@ final class ListenerMotion extends ModuleListener<Scaffold, MotionUpdateEvent>
 
                 if (jump && !sneak && !MovementUtil.isMoving())
                 {
-                    ((IMinecraftClient) mc).setRightClickDelay(3);
+                    ((IMinecraftClient) mc).earthhack$setRightClickDelay(3);
                     mc.player.jump();
                     if (module.towerTimer.passed(1500))
                     {
@@ -254,8 +254,8 @@ final class ListenerMotion extends ModuleListener<Scaffold, MotionUpdateEvent>
                          */
                     }
 
-                    RayTraceResult result =
-                            RayTraceUtil.getRayTraceResult(module.rotations[0],
+                    BlockHitResult result =
+                            RayTraceUtil.getBlockHitResult(module.rotations[0],
                                                            module.rotations[1]);
 
                     /*

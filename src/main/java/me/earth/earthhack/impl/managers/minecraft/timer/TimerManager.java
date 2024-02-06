@@ -39,12 +39,12 @@ public class TimerManager extends SubscriberImpl implements Globals {
     {
         if (MODULE.isEnabled())
         {
-            ((ITimer) ((IMinecraftClient) mc).getTimer())
+            ((ITimer) ((IMinecraftClient) mc).earthhack$getTimer())
                     .setTickLength(50.0f / MODULE.get().getSpeed());
         }
         else
         {
-            ((ITimer) ((IMinecraftClient) mc).getTimer())
+            ((ITimer) ((IMinecraftClient) mc).earthhack$getTimer())
                     .setTickLength(50.0f / speed);
         }
     }

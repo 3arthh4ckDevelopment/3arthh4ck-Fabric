@@ -5,6 +5,7 @@ import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
+import me.earth.earthhack.impl.event.events.client.ClientInitEvent;
 import me.earth.earthhack.impl.event.events.client.ShutDownEvent;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.events.render.GuiScreenEvent;
@@ -70,15 +71,15 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     // can be done with AW, but I'll just do it like this (for now maybe).
     @Override
     @Accessor(value = "itemUseCooldown")
-    public abstract int getRightClickDelay();
+    public abstract int earthhack$getRightClickDelay();
 
     @Override
     @Accessor(value = "itemUseCooldown")
-    public abstract void setRightClickDelay(int delay);
+    public abstract void earthhack$setRightClickDelay(int delay);
 
     @Override
     @Accessor(value = "renderTickCounter")
-    public abstract RenderTickCounter getTimer();
+    public abstract RenderTickCounter earthhack$getTimer();
 
 
     @Override
@@ -164,6 +165,14 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     public void tickReturnHook(CallbackInfo info)
     {
         Bus.EVENT_BUS.post(new TickEvent.Post());
+    }
+
+    @Inject(
+            method = "onInitFinished",
+            at = @At("HEAD")
+    )
+    public  void onInitFinishedHook(CallbackInfo info) {
+        Bus.EVENT_BUS.post(new ClientInitEvent());
     }
 
 }

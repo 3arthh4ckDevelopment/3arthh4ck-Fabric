@@ -7,11 +7,11 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.events.network.WorldClientEvent;
 import me.earth.earthhack.impl.event.listeners.CPacketPlayerPostListener;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.math.raytrace.RayTraceResult;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
 
 import java.util.Deque;
@@ -118,7 +118,7 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
 
     private boolean isLegit(RotationHistory history, Entity entity)
     {
-        RayTraceResult result =
+        EntityHitResult result =
             RayTracer.rayTraceEntities(mc.world,
                                        RotationUtil.getRotationPlayer(),
                                        7.0,
@@ -133,7 +133,7 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
                                        entity,
                                        entity);
         return result != null
-                && entity.equals(result.entityHit);
+                && entity.equals(result.getEntity());
     }
 
     public static final class RotationHistory
