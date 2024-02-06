@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.modules.render.fullbright;
 
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import me.earth.earthhack.impl.modules.render.fullbright.mode.BrightMode;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 
@@ -17,12 +18,9 @@ final class ListenerTick extends ModuleListener<Fullbright, TickEvent>
     {
         if (event.isSafe())
         {
-            switch (module.mode.getValue()) {
-                case Gamma -> mc.options.getGamma().setValue(1000000.0D);
-                case Potion -> {
-                    mc.options.getGamma().setValue(module.oldValue);
-                    mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false));
-                }
+            if (module.mode.getValue() == BrightMode.Potion)
+            {
+                mc.player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false));
             }
         }
     }

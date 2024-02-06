@@ -10,8 +10,8 @@
     "block.MixinSoulSandBlock",
     "entity.MixinEntity",
     "entity.living.MixinLivingEntity",
-    "entity.living.player.MixinPlayerEntity",
     "entity.living.player.MixinClientPlayerEntity",
+    "entity.living.player.MixinPlayerEntity",
     "network.MixinClientConnection",
     "network.client.ILoginSuccessS2CPacket",
     "network.client.IPlayerMoveC2S",
@@ -37,6 +37,7 @@
     "gui.MixinInGameHud",
     "gui.MixinTitleScreen",
     "network.MixinClientPlayNetworkHandler",
+    "render.MixinLightmapTextureManager",
     "render.MixinWorldRenderer",
     "util.MixinGameOptions",
     "util.MixinKeyBinding"

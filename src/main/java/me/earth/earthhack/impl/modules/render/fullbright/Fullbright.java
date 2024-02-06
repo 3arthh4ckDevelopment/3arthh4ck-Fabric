@@ -16,8 +16,6 @@ public class Fullbright extends Module
     protected final Setting<BrightMode> mode =
             register(new EnumSetting<>("Mode", BrightMode.Gamma));
 
-    protected double oldValue;
-
     public Fullbright()
     {
         super("Fullbright", Category.Render);
@@ -33,18 +31,16 @@ public class Fullbright extends Module
     }
 
     @Override
-    protected void onEnable() {
-        oldValue = mc.options.getGamma().getValue();
-    }
-
-    @Override
     protected void onDisable()
     {
         if (mc.player != null && mode.getValue() == BrightMode.Potion)
         {
-            mc.options.getGamma().setValue(oldValue);
             mc.player.removeStatusEffect(StatusEffects.NIGHT_VISION);
         }
+    }
+
+    public BrightMode getBrightMode() {
+        return mode.getValue();
     }
 
 }
