@@ -475,38 +475,47 @@ public class Speedmine extends Module {
                                 .STOP_DESTROY_BLOCK,
                         pos,
                         facing);
-
-        if (toAir)
+        ModuleUtil.sendMessage(this, "Attempting to send STOP_DESTROY_BLOCK packet!");
+        ModuleUtil.sendMessage(this, "Parameters: " + pos + ", " + facing);
+        try
         {
-            //noinspection ConstantConditions
-            ((IPlayerActionC2SPacket) stop).earthhack$setClientSideBreaking(true);
-        }
+            if (toAir)
+            {
+                //noinspection ConstantConditions
+                ((IPlayerActionC2SPacket) stop).earthhack$setClientSideBreaking(true);
+            }
 
-        if (withRotations
-                && rotate.getValue()
-                && limitRotations.getValue()
-                && !RotationUtil.isLegit(pos, facing))
-        {
-            limitRotationPacket = stop;
-            limitRotationSlot = mc.player.getInventory().selectedSlot;
-            return false;
-        }
+            if (withRotations
+                    && rotate.getValue()
+                    && limitRotations.getValue()
+                    && !RotationUtil.isLegit(pos, facing))
+            {
+                limitRotationPacket = stop;
+                limitRotationSlot = mc.player.getInventory().selectedSlot;
+                return false;
+            }
 
-        if (event.getValue())
-        {
-            mc.player.networkHandler.sendPacket(stop);
-        }
-        else
-        {
-            NetworkUtil.sendPacketNoEvent(stop, false);
-        }
+            if (event.getValue())
+            {
+                mc.player.networkHandler.sendPacket(stop);
+            }
+            else
+            {
+                NetworkUtil.sendPacketNoEvent(stop, false);
+            }
 
-        if (mode.getValue() == MineMode.Fast)
-        {
-            fastHelper.sendAbortStart(pos, facing);
-        }
+            if (mode.getValue() == MineMode.Fast)
+            {
+                fastHelper.sendAbortStart(pos, facing);
+            }
 
-        onSendPacket();
+            onSendPacket();
+        }
+        catch (Exception ex)
+        {
+            ModuleUtil.sendMessage(this, "LOL epic fail happened!!!!!");
+            ModuleUtil.sendMessage(this, ex.getMessage());
+        }
         return true;
     }
 
@@ -652,6 +661,7 @@ public class Speedmine extends Module {
 
     public void onSendPacket()
     {
+        ModuleUtil.sendMessage(this, "Yooooo sending the packet didnt fail");
         sentPacket = true;
         resetTimer.reset();
     }

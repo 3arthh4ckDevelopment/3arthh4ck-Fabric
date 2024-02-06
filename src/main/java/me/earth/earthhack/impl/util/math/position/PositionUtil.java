@@ -11,7 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShape;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -93,13 +92,9 @@ public class PositionUtil implements Globals
 
     public static boolean isBoxColliding()
     {
-        Set<VoxelShape> collisions;
-
-        collisions = (HashSet<VoxelShape>) mc.world.getCollisions(mc.player,
+        return mc.world.getEntityCollisions(mc.player,
                 mc.player.getBoundingBox()
-                        .offset(0.0, 0.21, 0.0));
-
-        return collisions.size() > 0;
+                        .offset(0.0, 0.21, 0.0)).size() > 0;
     }
 
     public static Entity getPositionEntity()

@@ -34,6 +34,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Supplier;
@@ -41,6 +42,7 @@ import java.util.function.Supplier;
 @Mixin(Entity.class)
 public abstract class MixinEntity implements IEntity, Globals
 {
+    @Unique
     private static final ModuleCache<NoRender>
             NO_RENDER = Caches.getModule(NoRender.class);
     @Unique
@@ -68,15 +70,15 @@ public abstract class MixinEntity implements IEntity, Globals
 
     // so they can be used in other mixins extending off this one
     @Shadow
-    protected Vec3d pos;
+    public Vec3d pos;
     @Shadow
-    protected Vec3d velocity;
+    private Vec3d velocity;
     @Shadow
-    protected float yaw;
+    public float yaw;
     @Shadow
-    protected float pitch;
+    public float pitch;
     @Shadow
-    protected boolean onGround;
+    public boolean onGround;
     @Shadow
     private World world;
     @Shadow
@@ -275,95 +277,105 @@ public abstract class MixinEntity implements IEntity, Globals
         //noinspection ConstantConditions
         if (ClientPlayerEntity.class.isInstance(this))
         {
-            this.moveEvent = new MoveEvent(movementType, movement.getX(), movement.getY(), movement.getZ(), this.isSneaking());
+            this.moveEvent = new MoveEvent(movementType, movement, this.isSneaking());
             Bus.EVENT_BUS.post(this.moveEvent);
             if (moveEvent.isCancelled()) {
                 ci.cancel();
             }
         }
     }
-    /*
-    @ModifyVariable(
-             method = "move",
-             at = @At(
-                     value = "HEAD"),
-             ordinal = 0)
-    private double setX(double x)
-    {
-        return this.moveEvent != null ? this.moveEvent.getX() : x;
-    }
+
+    // @ModifyVariable(
+    //          method = "move",
+    //          at = @At(
+    //                  value = "HEAD"),
+    //          ordinal = 0)
+    // private double setX(double x)
+    // {
+    //     return this.moveEvent != null ? this.moveEvent.getX() : x;
+    // }
+//
+    // @ModifyVariable(
+    //         method = "move",
+    //         at = @At("HEAD"),
+    //         ordinal = 1)
+    // private double setY(double y)
+    // {
+    //     return this.moveEvent != null ? this.moveEvent.getY() : y;
+    // }
+//
+    // @ModifyVariable(
+    //          method = "move",
+    //          at = @At("HEAD"),
+    //          ordinal = 2)
+    // private double setZ(double z)
+    // {
+    //      return this.moveEvent != null ? this.moveEvent.getZ() : z;
+    // }
 
     @ModifyVariable(
             method = "move",
             at = @At("HEAD"),
-            ordinal = 1)
-    private double setY(double y)
+            ordinal = 0,
+            argsOnly = true)
+    private Vec3d setVec(Vec3d vec)
     {
-        return this.moveEvent != null ? this.moveEvent.getY() : y;
+        return this.moveEvent != null ? this.moveEvent.getVec() : vec;
     }
 
-    @ModifyVariable(
-             method = "move",
-             at = @At("HEAD"),
-             ordinal = 2)
-    private double setZ(double z)
-    {
-         return this.moveEvent != null ? this.moveEvent.getZ() : z;
-    }
+    // @Redirect(
+    //         method = "move",
+    //         at = @At(
+    //                 value = "INVOKE",
+    //                 target = "net/minecraft/entity/Entity.isSneaking()Z",
+    //                 ordinal = 0))
+    // public boolean isSneakingHook(Entity entity)
+    // {
+    //     return this.moveEvent != null
+    //             ? this.moveEvent.isSneaking()
+    //             : entity.isSneaking();
+    // }
 
-    @Redirect(
-            method = "move",
-            at = @At(
-                    value = "INVOKE",
-                    target = "net/minecraft/entity/Entity.isSneaking()Z",
-                    ordinal = 0))
-    public boolean isSneakingHook(Entity entity)
-    {
-        return this.moveEvent != null
-                ? this.moveEvent.isSneaking()
-                : entity.isSneaking();
-    }
+    // @Inject(
+    //         method = "move",
+    //         at = @At(
+    //                 value = "INVOKE",
+    //                 target = "Lnet/minecraft/block/Block;onSteppedOn(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/Entity;)V",
+    //                 ordinal = 2))
+    // public void onGroundHook(MovementType type,
+    //                          Vec3d movement,
+    //                          CallbackInfo info)
+    // {
+    //     //noinspection ConstantConditions
+    //     if (ClientPlayerEntity.class.isInstance(this) && !STEP_COMP.getValue()) {
+    //         StepEvent event = new StepEvent(Stage.PRE,
+    //                 this.getBoundingBox(),
+    //                 this.stepHeight);
+    //         Bus.EVENT_BUS.post(event);
+    //         this.prevHeight = this.stepHeight;
+    //         this.stepHeight = event.getHeight();
+    //     }
+    // }
 
-    @Inject(
-            method = "move",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/Entity;stepOnBlock(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;ZZLnet/minecraft/util/math/Vec3d;)Z",
-                    ordinal = 1))
-    public void onGroundHook(MovementType type,
-                             Vec3d movement,
-                             CallbackInfo info)
-    {
-        //noinspection ConstantConditions
-        if (ClientPlayerEntity.class.isInstance(this) && !STEP_COMP.getValue()) {
-            StepEvent event = new StepEvent(Stage.PRE,
-                    this.getBoundingBox(),
-                    this.stepHeight);
-            Bus.EVENT_BUS.post(event);
-            this.prevHeight = this.stepHeight;
-            this.stepHeight = event.getHeight();
-        }
-    }
+    // @Inject(
+    //         method = "move",
+    //         at = @At(
+    //                 value = "FIELD",
+    //                 target = "Lnet/minecraft/entity/Entity;stepHeight:F",
+    //                 ordinal = 3,
+    //                 shift = At.Shift.BEFORE))
+    // public void onGroundHookComp(MovementType type,
+    //                              Vec3d movement,
+    //                              CallbackInfo info) {
+    //     //noinspection ConstantConditions
+    //     if (ClientPlayerEntity.class.isInstance(this) && STEP_COMP.getValue()) {
+    //         StepEvent event = new StepEvent(Stage.PRE,
+    //                 this.getBoundingBox(),
+    //                 this.stepHeight);
+    //         Bus.EVENT_BUS.post(event);
+    //         this.prevHeight = this.stepHeight;
+    //         this.stepHeight = event.getHeight();
+    //     }
+    // }
 
-    @Inject(
-            method = "move",
-            at = @At(
-                    value = "FIELD",
-                    target = "net/minecraft/entity/Entity.stepHeight:F",
-                    ordinal = 3,
-                    shift = At.Shift.BEFORE))
-    public void onGroundHookComp(MovementType type,
-                                 Vec3d movement,
-                                 CallbackInfo info) {
-        //noinspection ConstantConditions
-        if (ClientPlayerEntity.class.isInstance(this) && STEP_COMP.getValue()) {
-            StepEvent event = new StepEvent(Stage.PRE,
-                    this.getBoundingBox(),
-                    this.stepHeight);
-            Bus.EVENT_BUS.post(event);
-            this.prevHeight = this.stepHeight;
-            this.stepHeight = event.getHeight();
-        }
-    }
-    */
 }

@@ -167,7 +167,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
                     target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;"
                             + "tick()V",
                     shift = At.Shift.BEFORE))
-    public void onUpdateHook(CallbackInfo info)
+    public void onTickHook(CallbackInfo info)
     {
         Bus.EVENT_BUS.post(new UpdateEvent());
     }
@@ -178,7 +178,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V",
                     shift = At.Shift.BEFORE))
-    public void onTickMovementPlayerPre(CallbackInfo info)
+    public void sendMovementPackets_Pre(CallbackInfo info)
     {
         Bus.EVENT_BUS.post(new PreMotionUpdateEvent());
         if (ROTATION_BYPASS.isEnabled())
@@ -236,7 +236,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendMovementPackets()V",
                     shift = At.Shift.AFTER))
-    public void sendMovementPacketsPost(CallbackInfo ci)
+    public void sendMovementPackets_Post(CallbackInfo ci)
     {
         if (ROTATION_BYPASS.isEnabled() && !ROTATION_BYPASS.returnIfPresent(
                 Compatibility::isShowingRotations, false)
@@ -284,15 +284,15 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         return motionEvent.getX();
     }
 
-   // @Redirect(
-   //         method = "sendMovementPackets",
-   //         at = @At(
-   //                 value = "FIELD",
-   //                 target = "Lnet/minecraft/util/math/Vec3d;y:D"))
-   // public double minYHook(Vec3d vector)
-   // {
-   //     return motionEvent.getY();
-   // }
+    // @Redirect(
+    //         method = "sendMovementPackets",
+    //         at = @At(
+    //                 value = "FIELD",
+    //                 target = "Lnet/minecraft/util/math/Vec3d;y:D"))
+    // public double minYHook(Vec3d vector)
+    // {
+    //     return motionEvent.getY();
+    // }
 
     @Redirect(
             method = "sendMovementPackets",
@@ -323,7 +323,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     // {
     //     return motionEvent.getPitch();
     // }
-//
+
     // @Redirect(
     //         method = "sendMovementPackets",
     //         at = @At(

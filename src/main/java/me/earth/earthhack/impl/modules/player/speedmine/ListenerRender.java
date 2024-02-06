@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.modules.player.speedmine;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.impl.event.events.render.Render3DEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.player.speedmine.mode.ESPMode;
@@ -29,7 +30,7 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
     @Override
     public void invoke(Render3DEvent event)
     {
-        if (true) return;
+        if(true) return;
         if (!PlayerUtil.isCreative(mc.player)
                 && module.esp.getValue() != ESPMode.None
                 && module.bb != null) {
@@ -53,7 +54,7 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
 
             Box bb = cachedBB;
             module.esp.getValue().drawEsp(module, bb, Math.min(module.maxDamage, 1.0f));
-            // GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             // GL11.glPopAttrib();
             event.getStack().pop();
         }

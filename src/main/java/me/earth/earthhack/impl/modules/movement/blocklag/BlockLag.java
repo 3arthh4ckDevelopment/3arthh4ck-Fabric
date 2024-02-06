@@ -23,10 +23,13 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
+import me.earth.earthhack.impl.util.minecraft.WorldUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.text.ChatIDs;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.EnderChestBlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.Packet;
@@ -375,16 +378,20 @@ public class BlockLag extends DisablingModule
         return mc.world.getBlockState(new BlockPos((int) x, (int) y, (int) z)).blocksMovement() || !mc.player.verticalCollision;
     }
 
+    /**
+     * TODO: Implement this correctly!
+     * Spoofs your position next to an ender chest
+     * and lag back in order to burrow on CrystalPvP.CC
+     */
     public BlockPos getNearestLagBack() {
         List<BlockPos> positions = new ArrayList<>();
-        /*
-        for (BlockEntity ent : mc.world.loadedTileEntityList){
-            if (ent instanceof EnderChestBlockEntity){
+        for (BlockEntity ent : WorldUtil.getBlockEntities()){
+            if (ent instanceof EnderChestBlockEntity)
+            {
                 positions.add(ent.getPos());
-            } //TODO: BlockEntity list??
+            }
         }
 
-         */
         return positions.size() > 0 ? positions.get(1) : new BlockPos(mc.player.getBlockX(), mc.player.getBlockY() + 1, mc.player.getBlockZ());
     }
 

@@ -11,6 +11,7 @@
     "entity.MixinEntity",
     "entity.living.MixinLivingEntity",
     "entity.living.player.MixinPlayerEntity",
+    "entity.living.player.MixinClientPlayerEntity",
     "network.MixinClientConnection",
     "network.client.ILoginSuccessS2CPacket",
     "network.client.IPlayerMoveC2S",

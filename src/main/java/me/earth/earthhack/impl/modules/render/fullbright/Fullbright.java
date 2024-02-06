@@ -8,6 +8,9 @@ import me.earth.earthhack.impl.modules.render.fullbright.mode.BrightMode;
 import me.earth.earthhack.impl.util.client.SimpleData;
 import net.minecraft.entity.effect.StatusEffects;
 
+/**
+ * {@link net.minecraft.client.render.LightmapTextureManager}
+ */
 public class Fullbright extends Module
 {
     protected final Setting<BrightMode> mode =

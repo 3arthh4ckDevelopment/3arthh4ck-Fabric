@@ -10,6 +10,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 
 import java.util.HashSet;
+import java.util.List;
+
 // constant conditions... needs @SuppressWarnings, but you can't annotate Enums........
 public enum SpeedMode implements Globals
 {
@@ -163,7 +165,7 @@ public enum SpeedMode implements Globals
 
                         module.boost = !module.boost;
                     } else {
-                        HashSet<VoxelShape> collisions = (HashSet<VoxelShape>) mc.world.getCollisions(mc.player, mc.player.getBoundingBox().offset(0.0, mc.player.getVelocity().getY(), 0.0));
+                        List<VoxelShape> collisions = mc.world.getEntityCollisions(mc.player, mc.player.getBoundingBox().offset(0.0, mc.player.getVelocity().getY(), 0.0));
                         if ((collisions.size() > 0
                                 || mc.player.verticalCollision)
                                 && module.stage > 0) {
