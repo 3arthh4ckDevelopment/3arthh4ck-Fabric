@@ -13,7 +13,7 @@
     "entity.living.player.MixinClientPlayerEntity",
     "entity.living.player.MixinPlayerEntity",
     "network.MixinClientConnection",
-    "network.client.ILoginSuccessS2CPacket",
+    "network.client.ILoginHelloC2SPacket",
     "network.client.IPlayerMoveC2S",
     "network.client.MixinPlayerActionC2S",
     "network.server.IEntityS2CPacket",

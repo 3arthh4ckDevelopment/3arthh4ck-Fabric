@@ -1,25 +1,26 @@
 package me.earth.earthhack.impl.modules.client.accountspoof;
 
-import com.mojang.authlib.GameProfile;
-import me.earth.earthhack.impl.core.mixins.network.client.ILoginSuccessS2CPacket;
+import me.earth.earthhack.impl.core.mixins.network.client.ILoginHelloC2SPacket;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
-import net.minecraft.network.packet.s2c.login.LoginSuccessS2CPacket;
+import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
 
+import java.util.Optional;
 import java.util.UUID;
 
-final class ListenerLoginStart extends ModuleListener<AccountSpoof, PacketEvent.Receive<LoginSuccessS2CPacket>> {
+final class ListenerLoginStart extends ModuleListener<AccountSpoof, PacketEvent.Send<LoginHelloC2SPacket>> {
     public ListenerLoginStart(AccountSpoof module) {
-        super(module, PacketEvent.Receive.class, LoginSuccessS2CPacket.class);
+        super(module, PacketEvent.Send.class, LoginHelloC2SPacket.class);
     }
 
     @Override
-    public void invoke(PacketEvent.Receive<LoginSuccessS2CPacket> event) {
-        if (mc.isInSingleplayer() && !module.spoofSP.getValue()) {
+    public void invoke(PacketEvent.Send<LoginHelloC2SPacket> event) {
+        if (mc.isInSingleplayer() && !module.spoofSP.getValue())
             return;
-        }
+
+        ILoginHelloC2SPacket loginAccessor = ILoginHelloC2SPacket.class.cast(event.getPacket());
 
         UUID uuid;
         try {
@@ -28,8 +29,8 @@ final class ListenerLoginStart extends ModuleListener<AccountSpoof, PacketEvent.
             ChatUtil.sendMessageScheduled(TextColor.RED + "Bad UUID for AccountSpoof: " + e.getMessage());
             uuid = UUID.randomUUID();
         }
-
-        ((ILoginSuccessS2CPacket) event.getPacket()).setProfile(new GameProfile(uuid, module.accountName.getValue()));
+        loginAccessor.setName(module.accountName.getValue());
+        loginAccessor.setUuid(Optional.of(uuid));
     }
 
 }

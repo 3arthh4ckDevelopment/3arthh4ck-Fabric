@@ -64,7 +64,7 @@ public class Chat extends Module
     protected final Setting<String> kitName =
             register(new StringSetting("KitName", "1"));
     protected final EnumSetting<SuffixMode> suffixMode =
-            register(new EnumSetting<>("SuffixMode", SuffixMode.None));
+            register(new EnumSetting<>("SuffixMode", SuffixMode.Earth));
     public final Setting<Boolean> suffixWhispers =
             register(new BooleanSetting("SuffixWhispers", false));
     protected final StringSetting customSuffix =
