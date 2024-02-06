@@ -8,7 +8,6 @@ import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.mine.MineUtil;
-import me.earth.earthhack.impl.util.minecraft.blocks.states.IBlockAccess;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -18,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.WorldAccess;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class HelperLiquids implements Globals
 
     public Direction getAbsorbFacing(BlockPos pos,
                                       List<Entity> entities,
-                                      IBlockAccess access,
+                                      WorldAccess access,
                                       double placeRange)
     {
         for (Direction facing : Direction.values())

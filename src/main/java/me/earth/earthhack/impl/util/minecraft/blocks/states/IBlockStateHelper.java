@@ -3,8 +3,9 @@ package me.earth.earthhack.impl.util.minecraft.blocks.states;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldAccess;
 
-public interface IBlockStateHelper extends IBlockAccess
+public interface IBlockStateHelper extends WorldAccess
 {
     default void addAir(BlockPos pos)
     {
