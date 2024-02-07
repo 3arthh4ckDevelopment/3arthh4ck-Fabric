@@ -3,7 +3,7 @@ package me.earth.earthhack.impl.core.ducks.entity;
 /**
  * Duck interface for {@link net.minecraft.entity.LivingEntity}.
  */
-public interface ILivingEntity //TODO: implement the mixins
+public interface ILivingEntity
 {
     /** @return the getArmSwingAnimationEnd field. */
     int earthhack$armSwingAnimationEnd();
