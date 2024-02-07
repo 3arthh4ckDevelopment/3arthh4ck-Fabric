@@ -17,6 +17,7 @@ import me.earth.earthhack.impl.gui.visibility.Visibilities;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
+import me.earth.earthhack.impl.modules.player.automine.AutoMine;
 import me.earth.earthhack.impl.modules.player.speedmine.mode.ESPMode;
 import me.earth.earthhack.impl.modules.player.speedmine.mode.MineMode;
 import me.earth.earthhack.impl.modules.player.speedmine.mode.SpeedminePages;
@@ -56,8 +57,8 @@ import net.minecraft.util.math.Direction;
 // TODO: ^^ redo this, maybe inspiration from Phobot since this is not very good
 public class Speedmine extends Module {
 
-    // private static final ModuleCache<AutoMine> AUTO_MINE =
-    //         Caches.getModule(AutoMine.class);
+    private static final ModuleCache<AutoMine> AUTO_MINE =
+            Caches.getModule(AutoMine.class);
     private static final ModuleCache<AutoTrap> AUTO_TRAP =
             Caches.getModule(AutoTrap.class);
 
@@ -358,7 +359,7 @@ public class Speedmine extends Module {
      */
     public void abortCurrentPos()
     {
-        // AUTO_MINE.computeIfPresent(a -> a.addToBlackList(pos));
+        AUTO_MINE.computeIfPresent(a -> a.addToBlackList(pos));
         mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(
                 PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK,
                 pos,
