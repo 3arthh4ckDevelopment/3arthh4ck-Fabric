@@ -133,7 +133,7 @@ public class Tracker extends DisablingModule implements CustomCommandModule
                         builder.append(TextColor.LIGHT_PURPLE)
                                .append(") bottles of experience.");
 
-                        ChatUtil.sendMessage(builder.toString());
+                        ChatUtil.sendMessage(builder.toString(), getName());
                     }));
             }
         }

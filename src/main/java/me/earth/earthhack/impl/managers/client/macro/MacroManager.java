@@ -54,7 +54,7 @@ public class MacroManager extends IterationRegister<Macro>
                                     ? t.getClass().getName()
                                     : t.getMessage())
                                 + ". I strongly recommend deleting it"
-                                + " for now and checking your logic!");
+                                + " for now and checking your logic!", "macro");
                             t.printStackTrace();
                         }
                         finally

@@ -77,7 +77,7 @@ public abstract class AbstractPlayerManagerCommand extends Command
                     + (isAdded ? TextColor.GREEN : TextColor.RED)
                     + " is "
                     + (isAdded ? "" : "not ")
-                    + verb + ".");
+                    + verb + ".", getName());
         }
         else
         {
@@ -95,8 +95,7 @@ public abstract class AbstractPlayerManagerCommand extends Command
                                     + name
                                     + TextColor.GREEN
                                     + " was added as " + added + ".",
-                                name,
-                                ChatIDs.PLAYER_COMMAND);
+                                name);
                     }
 
                     @Override
@@ -105,7 +104,7 @@ public abstract class AbstractPlayerManagerCommand extends Command
                         ChatUtil.sendMessageScheduled(
                                 TextColor.RED
                                         + "Failed to find "
-                                        + name);
+                                        + name, getName());
                     }
                 });
             }
@@ -123,7 +122,7 @@ public abstract class AbstractPlayerManagerCommand extends Command
             {
                 ChatUtil.sendMessage(
                         TextColor.RED
-                                + "Please specify <add/del>.");
+                                + "Please specify <add/del>.", getName());
             }
         }
     }
@@ -283,7 +282,7 @@ public abstract class AbstractPlayerManagerCommand extends Command
                                                                 + name
                                                                 + " un"
                                                                 + verb
-                                                                + ".");
+                                                                + ".", getName());
                                     },
                                     RealmsLongConfirmationScreen.Type.WARNING,
                                         Text.empty().append(""),

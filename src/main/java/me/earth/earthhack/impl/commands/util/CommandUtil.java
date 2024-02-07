@@ -224,7 +224,7 @@ public class CommandUtil implements Globals
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException e) {
-                ChatUtil.sendMessage(TextColor.RED + e.getMessage());
+                ChatUtil.sendMessage(TextColor.RED + e.getMessage(), "epic fail");
             }
         }
 

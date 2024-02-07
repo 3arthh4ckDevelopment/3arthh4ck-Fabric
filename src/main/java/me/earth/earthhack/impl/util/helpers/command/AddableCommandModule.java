@@ -49,7 +49,7 @@ public abstract class AddableCommandModule extends Module
             if (args.length == 2)
             {
                 ChatUtil.sendMessage(TextColor.RED
-                        + "Please specify what to add/delete!");
+                        + "Please specify what to add/delete!", getName());
                 return true;
             }
 

@@ -26,11 +26,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.ListIterator;
 
 @Mixin(ChatHud.class)
 public abstract class MixinChatHud implements IChatHud
@@ -57,14 +59,10 @@ public abstract class MixinChatHud implements IChatHud
     private static final SettingCache<ConsoleColors, Setting<ConsoleColors>, Debug> CONSOLE_COLORS
             = Caches.getSetting(Debug.class, EnumSetting.class, "ConsoleColors", ConsoleColors.Unformatted);
 
-    @Shadow
-    public abstract int getWidth();
-
-    @Shadow
-    protected abstract boolean isChatFocused();
-
-    @Shadow
-    public abstract double getChatScale();
+    @Shadow public abstract int getWidth();
+    @Shadow protected abstract boolean isChatFocused();
+    @Shadow public abstract double getChatScale();
+    @Shadow protected abstract void refresh();
 
     @Final @Shadow private MinecraftClient client; //TODO: is this variable needed?
     @Final @Shadow private List<ChatHudLine> messages = Lists.newArrayList();
@@ -78,6 +76,10 @@ public abstract class MixinChatHud implements IChatHud
                                        @Nullable MessageIndicator indicator,
                                        boolean refresh);
 
+    @Override
+    @Invoker("addMessage")
+    public abstract void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, int addedTime,
+                                                    @Nullable MessageIndicator indicator, boolean refresh);
 
     @Inject(
         method = "clear",
@@ -120,86 +122,30 @@ public abstract class MixinChatHud implements IChatHud
             info.cancel();
         }
     }
-    /*
+
     @Override
-    public boolean replace(MutableText component, int id, boolean wrap, boolean returnFirst) {
-        boolean set;
-        set = setLine(component, id, messages, wrap, returnFirst);
-        set = setLine(component, id, visibleMessages, wrap, returnFirst) || set;
-        return set;
-    }
-
-
-    boolean setLine(Text component,
-                    int id,
-                    List<ChatHudLine> list,
-                    boolean wrap,
-                    boolean returnFirst)
-    {
-        Stack<Text> wrapped = null;
-        if (wrap)
-        {
-            int max = MathHelper.floor(getWidth() / getChatScale());
-            wrapped = new ConvenientStack<>(GuiUtilRenderComponents
-                    .splitText(component, max, client.textRenderer, false, false));
+    public void earthhack$remove(@Nullable MessageSignatureData signature, boolean all) {
+        if (signature == null) {
+            return;
         }
 
-        int last = 0;
-        List<Integer> toRemove = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++)
-        {
-            ChatHudLine line = list.get(i);
-            if (line.creationTick() == id)
-            {
-                if (wrap)
-                {
-                    Text itc = wrapped.pop();
-                    if (itc != null)
-                    {
-                        ((IChatHudLine) line).setComponent(itc);
-                        last = i + 1;
-                    }
-                    else
-                    {
-                        toRemove.add(i);
-                    }
-                }
-                else
-                {
-                    ((IChatHudLine) line).setComponent(component);
-                    if (returnFirst)
-                    {
-                        return true;
-                    }
+        ListIterator<ChatHudLine> listIterator = this.messages.listIterator();
+        boolean changed = false;
+        while (listIterator.hasNext()) {
+            ChatHudLine message = listIterator.next();
+            if (signature.equals(message.signature())) {
+                listIterator.remove();
+                changed = true;
+                if (!all) {
+                    break;
                 }
             }
         }
 
-        if (toRemove.isEmpty())
-        {
-            boolean infinite = INFINITE.getValue();
-            while (infinite && wrap && !wrapped.empty())
-            {
-                Text itc = wrapped.pop();
-                if (itc != null)
-                {
-                    ChatHudLine newLine = new ChatHudLine(this.client.inGameHud.getTicks(), itc, null, new MessageIndicator(1, null, null, null));
-                    CHAT.get().animationMap.put(newLine, new TimeAnimation(CHAT.get().time.getValue(), -(MinecraftClient.getInstance().textRenderer.getWidth(newLine.content().getString())), 0, false, AnimationMode.LINEAR));
-                    list.add(last,
-                            newLine);
-                    last++;
-                }
-            }
+        if (changed) {
+            this.refresh();
         }
-        else
-        {
-            toRemove.forEach(i -> list.set(i, null));
-            list.removeIf(Objects::isNull);
-        }
-
-        return false;
     }
-    */
 
     @Override
     @Accessor(value = "scrolledLines")
@@ -216,14 +162,6 @@ public abstract class MixinChatHud implements IChatHud
     @Accessor(value = "hasUnreadNewMessages")
     public abstract void setScrolled(boolean scrolled);
 
-    @Override
-    public void invokeSetChatLine(Text chatComponent,
-                                  int chatLineId,
-                                  int updateCounter,
-                                  boolean displayOnly)
-    {
-        this.addMessage(chatComponent, null, updateCounter, null, displayOnly);
-    }
 
     @Override
     public void invokeClearChat(boolean sent)

@@ -21,14 +21,14 @@ public class LastCommand extends Command implements Globals
         String last = Managers.COMMANDS.getLastCommand();
         if (last == null)
         {
-            ChatUtil.sendMessage(TextColor.RED + "There's no last command!");
+            ChatUtil.sendMessage(TextColor.RED + "There's no last command!", getName());
             return;
         }
 
         if (args.length > 1 && "execute".equalsIgnoreCase(args[1]))
         {
             ChatUtil.sendMessage(TextColor.GREEN + "Executing last Command: "
-                    + TextColor.AQUA + last + TextColor.GREEN + "!");
+                    + TextColor.AQUA + last + TextColor.GREEN + "!", getName());
             Managers.COMMANDS.applyCommand(last);
             return;
         }

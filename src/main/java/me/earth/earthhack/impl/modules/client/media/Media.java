@@ -64,7 +64,7 @@ public class Media extends RegisteringModule<String, RemovingString> {
         if (args.length < 4)
         {
             ChatUtil.sendMessage(TextColor.RED
-                    + "Please specify a Replacement!");
+                    + "Please specify a Replacement!", getName());
             return;
         }
 
@@ -76,7 +76,7 @@ public class Media extends RegisteringModule<String, RemovingString> {
                     + TextColor.WHITE
                     + args[2]
                     + TextColor.RED
-                    + " already exists!");
+                    + " already exists!", getName());
             return;
         }
 

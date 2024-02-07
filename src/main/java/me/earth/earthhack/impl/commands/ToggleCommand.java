@@ -45,7 +45,7 @@ public class ToggleCommand extends AbstractModuleCommand
                         ChatUtil.sendMessage("<ToggleCommand> "
                                                 + TextColor.RED
                                                 + args[2]
-                                                + " is not a valid number.");
+                                                + " is not a valid number.", getName());
                         return;
                     }
                 }
@@ -81,7 +81,7 @@ public class ToggleCommand extends AbstractModuleCommand
                                         + TextColor.RED
                                         + "Couldn't find "
                                         + args[1]
-                                        + ".");
+                                        + ".", getName());
             }
 
             return;
@@ -90,7 +90,7 @@ public class ToggleCommand extends AbstractModuleCommand
         ChatUtil.sendMessage("<ToggleCommand> "
                                 + TextColor.RED
                                 + "Usage is: "
-                                + this.getFullUsage());
+                                + this.getFullUsage(), getName());
     }
 
     @Override

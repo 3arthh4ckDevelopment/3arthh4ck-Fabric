@@ -70,7 +70,7 @@ public class HelpCommand extends Command implements Globals
             }
         }
 
-        ChatUtil.sendMessage(component);
+        ChatUtil.sendMessage(component.getString(), getName());
     }
     private void setText(String text)
     {

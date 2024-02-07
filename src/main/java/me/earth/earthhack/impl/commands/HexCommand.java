@@ -33,7 +33,7 @@ public class HexCommand extends Command
                 ChatUtil.sendMessage("This command converts a Number (1 arg)"
                         + " or a Color (3-4 args) to a 32-Bit-Hex-String."
                         + " If you choose 2 args you can convert a Number"
-                        + " with the given radix. (hex-num, 16 for example).");
+                        + " with the given radix. (hex-num, 16 for example).", getName());
                 break;
             case 2:
                 try
@@ -47,14 +47,14 @@ public class HexCommand extends Command
                                             + " is "
                                             + TextColor.RED
                                             + r
-                                            + ".");
+                                            + ".", getName());
                 }
                 catch (Exception e)
                 {
                     ChatUtil.sendMessage("<Hex> "
                                         + TextColor.RED
                                         + args[1]
-                                        + " was not parsable.");
+                                        + " was not parsable.", getName());
                 }
                 break;
             case 3:
@@ -69,7 +69,7 @@ public class HexCommand extends Command
                     ChatUtil.sendMessage("<Hex> "
                             + TextColor.RED
                             + args[2]
-                            + " was not parsable, continuing with radix 16.");
+                            + " was not parsable, continuing with radix 16.", getName());
                 }
 
                 try
@@ -86,14 +86,14 @@ public class HexCommand extends Command
                             + " is "
                             + TextColor.RED
                             + r
-                            + ".");
+                            + ".", getName());
                 }
                 catch (Exception e)
                 {
                     ChatUtil.sendMessage("<Hex> "
                             + TextColor.RED
                             + args[1]
-                            + " was not parsable.");
+                            + " was not parsable.", getName());
                 }
                 break;
             default:
@@ -111,7 +111,7 @@ public class HexCommand extends Command
                 {
                     ChatUtil.sendMessage("<Hex> "
                             + TextColor.RED
-                            + "An Argument was not parsable.");
+                            + "An Argument was not parsable.", getName());
                     break;
                 }
 
@@ -128,7 +128,7 @@ public class HexCommand extends Command
                         ChatUtil.sendMessage("<Hex> "
                                 + TextColor.RED
                                 + "Alpha was not parsable,"
-                                + " continuing with 255.");
+                                + " continuing with 255.", getName());
                     }
                 }
 
@@ -145,7 +145,7 @@ public class HexCommand extends Command
                                     + TextColor.WHITE
                                     + "is "
                                     + TextColor.AQUA
-                                    + TextUtil.get32BitString(color.getRGB()));
+                                    + TextUtil.get32BitString(color.getRGB()), getName());
         }
     }
 

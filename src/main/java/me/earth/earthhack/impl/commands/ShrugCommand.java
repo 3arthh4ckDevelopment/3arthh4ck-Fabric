@@ -31,7 +31,7 @@ public class ShrugCommand extends Command implements Globals
         {
             ChatUtil.sendMessage(TextColor.RED
                     + "Use :shrug: to specify parts of the message"
-                    + " that should be replaced with the shrug emoji!");
+                    + " that should be replaced with the shrug emoji!", getName());
             return;
         }
 
@@ -53,7 +53,7 @@ public class ShrugCommand extends Command implements Globals
     {
         if (mc.player == null)
         {
-            ChatUtil.sendMessage(message);
+            ChatUtil.sendMessage(message, getName());
         }
         else
         {

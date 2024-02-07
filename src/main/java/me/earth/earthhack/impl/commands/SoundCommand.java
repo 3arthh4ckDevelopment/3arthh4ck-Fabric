@@ -20,13 +20,13 @@ public class SoundCommand extends Command implements Globals
         try
         {
             mc.getSoundManager().reloadSounds();
-            ChatUtil.sendMessage(TextColor.GREEN + "Reloaded SoundSystem.");
+            ChatUtil.sendMessage(TextColor.GREEN + "Reloaded SoundSystem.", getName());
         }
         catch (Exception e)
         {
             ChatUtil.sendMessage(TextColor.RED
                                     + "Couldn't reload sound: "
-                                    + e.getMessage());
+                                    + e.getMessage(), getName());
             e.printStackTrace();
         }
     }

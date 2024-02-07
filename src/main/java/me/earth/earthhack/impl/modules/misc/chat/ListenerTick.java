@@ -36,7 +36,7 @@ final class ListenerTick extends ModuleListener<Chat, TickEvent>
             {
                 ChatUtil.sendMessage("<" + module.getDisplayName()
                     + "> Sending " + TextColor.RAINBOW
-                    + module.message.getValue() + TextColor.RESET + "...");
+                    + module.message.getValue() + TextColor.RESET + "...", module.getName());
 
                 mc.player.networkHandler.sendChatMessage(module.message.getValue());
                 module.timer.reset();

@@ -19,11 +19,11 @@ public class PrintCommand extends AbstractTextCommand
     {
         if (args.length == 1)
         {
-            ChatUtil.sendMessage("");
+            ChatUtil.sendMessage("", getName());
             return;
         }
 
-        ChatUtil.sendMessage(CommandUtil.concatenate(args, 1));
+        ChatUtil.sendMessage(CommandUtil.concatenate(args, 1), getName());
     }
 
 }

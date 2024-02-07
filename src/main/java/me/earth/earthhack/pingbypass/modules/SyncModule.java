@@ -29,7 +29,7 @@ public class SyncModule extends Module {
     @Override
     protected void onEnable() {
         timer.reset();
-        ChatUtil.sendMessage("Syncing client modules with PingBypass..."); //TODO: pb
+        ChatUtil.sendMessage("Syncing client modules with PingBypass...", getName()); //TODO: pb
         /*
         for (Module module : Managers.MODULES.getRegistered()) {
             Module pbModule = PingBypass.MODULES.getObject(module.getName());

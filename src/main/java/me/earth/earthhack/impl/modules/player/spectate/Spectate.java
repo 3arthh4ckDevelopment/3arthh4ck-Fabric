@@ -93,7 +93,7 @@ public class Spectate extends DisablingModule implements CustomCommandModule {
                             + TextColor.WHITE
                             + args[1]
                             + TextColor.RED
-                            + " in the Spectate module.");
+                            + " in the Spectate module.", getName());
                     return true;
                 }
             }

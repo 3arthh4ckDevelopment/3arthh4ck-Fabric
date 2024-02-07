@@ -124,7 +124,7 @@ public class Chat extends Module
         this.load.addObserver(e -> {
             e.setCancelled(true);
             load.setValue(false, false);
-            ChatUtil.sendMessage(LAG_MESSAGE);
+            ChatUtil.sendMessage(LAG_MESSAGE, getName());
         });
 
         this.setData(new ChatData(this));

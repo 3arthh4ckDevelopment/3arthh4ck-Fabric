@@ -45,7 +45,7 @@ public abstract class AbstractStackCommand extends Command implements Globals
         if (mc.player == null)
         {
             ChatUtil.sendMessage(TextColor.RED
-                    + "You need to be ingame for this command.");
+                    + "You need to be ingame for this command.", getName());
             return;
         }
 
@@ -97,7 +97,7 @@ public abstract class AbstractStackCommand extends Command implements Globals
                                 + this.getName()
                                 + ">"
                                 + TextColor.RED
-                                + " An error occurred.");
+                                + " An error occurred.", getName());
             return;
         }
 
@@ -134,7 +134,7 @@ public abstract class AbstractStackCommand extends Command implements Globals
                     + ((slot == 45
                         ?  "Offhand"
                         : (hotbar ? "Hotbar" : "Inventory")))
-                + TextColor.GREEN + ".");
+                + TextColor.GREEN + ".", getName());
     }
 
     public static int findBlockNoDrag(Block block)

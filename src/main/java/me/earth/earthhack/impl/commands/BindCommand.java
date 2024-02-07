@@ -27,13 +27,13 @@ public class BindCommand extends AbstractModuleCommand
     {
         if (args.length == 1)
         {
-            ChatUtil.sendMessage(TextColor.RED + " Please specify a module!");
+            ChatUtil.sendMessage(TextColor.RED + " Please specify a module!", getName());
             return;
         }
 
         if (args.length == 2)
         {
-            ChatUtil.sendMessage(TextColor.RED + " Please specify a bind!");
+            ChatUtil.sendMessage(TextColor.RED + " Please specify a bind!", getName());
             return;
         }
 
@@ -41,7 +41,7 @@ public class BindCommand extends AbstractModuleCommand
         if (module == null)
         {
             ChatUtil.sendMessage(TextColor.RED + "Module " + TextColor.WHITE
-                    + args[1] + TextColor.RED + " not found!");
+                    + args[1] + TextColor.RED + " not found!", getName());
             return;
         }
 
@@ -50,7 +50,7 @@ public class BindCommand extends AbstractModuleCommand
         {
             ChatUtil.sendMessage(TextColor.RED
                                     + module.getName()
-                                    + " can't be bound.");
+                                    + " can't be bound.", getName());
             return;
         }
 
@@ -58,7 +58,7 @@ public class BindCommand extends AbstractModuleCommand
         ChatUtil.sendMessage(module.getName()
                             + TextColor.GREEN
                             + " bound to "
-                            + module.getBind().toString());
+                            + module.getBind().toString(), getName());
     }
 
     @Override

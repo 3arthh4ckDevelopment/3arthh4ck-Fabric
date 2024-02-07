@@ -104,7 +104,7 @@ public class Management extends Module {
         this.clear.addObserver(event ->
         {
             event.setValue(false);
-            ChatUtil.sendMessage("Clearing TotemPops...");
+            ChatUtil.sendMessage("Clearing TotemPops...", getName());
             Managers.COMBAT.reset();
         });
         this.pauseOnLeftFocus.addObserver(e ->

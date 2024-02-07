@@ -110,7 +110,7 @@ public class MacroCommand extends Command
         else if (args.length == 2)
         {
             ChatUtil.sendMessage(TextColor.RED
-                    + "Please Specify a Macro");
+                    + "Please Specify a Macro", getName());
             return;
         }
 
@@ -131,7 +131,7 @@ public class MacroCommand extends Command
                             + TextColor.WHITE
                             + args[2]
                             + TextColor.RED
-                            + " doesn't exist.");
+                            + " doesn't exist.", getName());
                 }
                 else
                 {
@@ -145,7 +145,7 @@ public class MacroCommand extends Command
                                                 + TextColor.GREEN
                                                 + (r ? " toggles"
                                                      : " doesn't toggle")
-                                                + " on release.");
+                                                + " on release.", getName());
                     }
                     else
                     {
@@ -158,7 +158,7 @@ public class MacroCommand extends Command
                                 + TextColor.GREEN
                                 + " now"
                                 + (r ? " toggles " : " doesn't toggle ")
-                                + "on releasing the key.");
+                                + "on releasing the key.", getName());
                     }
                 }
 
@@ -176,7 +176,7 @@ public class MacroCommand extends Command
             {
                 ChatUtil.sendMessage(TextColor.RED
                                      + "Please specify a bind "
-                                     + "and command.");
+                                     + "and command.", getName());
             }
             else
             {
@@ -192,7 +192,7 @@ public class MacroCommand extends Command
             else if (args[1].equalsIgnoreCase("add"))
             {
                 ChatUtil.sendMessage(TextColor.RED
-                                     + "Please specify a command.");
+                                     + "Please specify a command.", getName());
             }
             else
             {
@@ -229,14 +229,14 @@ public class MacroCommand extends Command
                             + "Added new Macro: " + TextColor.WHITE
                             + macro.getName() + " : " + TextColor.AQUA
                             + parsed + TextColor.WHITE + " : "
-                            + TextColor.RED + Commands.getPrefix() + comm);
+                            + TextColor.RED + Commands.getPrefix() + comm, getName());
                 }
                 catch (AlreadyRegisteredException e)
                 {
                     ChatUtil.sendMessage(TextColor.RED
                             + "Couldn't add Macro " + TextColor.WHITE
                             + macro.getName() + TextColor.RED
-                            + ", a Macro with that name already exists.");
+                            + ", a Macro with that name already exists.", getName());
                 }
             }
             else
@@ -350,7 +350,7 @@ public class MacroCommand extends Command
         if (macro == null)
         {
             Earthhack.getLogger().warn(Arrays.toString(args));
-            ChatUtil.sendMessage(TextColor.RED + "Usage is <add/del>.");
+            ChatUtil.sendMessage(TextColor.RED + "Usage is <add/del>.", getName());
         }
         else
         {
@@ -361,7 +361,7 @@ public class MacroCommand extends Command
                     + macro.getBind().toString() + TextColor.WHITE
                     + "> <" + TextColor.AQUA + "commands: "
                     + Arrays.toString(macro.getCommands())
-                    + TextColor.WHITE + ">");
+                    + TextColor.WHITE + ">", getName());
         }
     }
 
@@ -373,7 +373,7 @@ public class MacroCommand extends Command
             ChatUtil.sendMessage(TextColor.RED
                     + "Couldn't find macro "
                     + args[2]
-                    + ".");
+                    + ".", getName());
             return;
         }
 
@@ -386,7 +386,7 @@ public class MacroCommand extends Command
                         + TextColor.RED
                         + args[2]
                         + TextColor.WHITE
-                        + ".");
+                        + ".", getName());
             }
             catch (CantUnregisterException e)
             {
@@ -394,7 +394,7 @@ public class MacroCommand extends Command
                         + TextColor.RED
                         + args[2]
                         + TextColor.WHITE
-                        + ".");
+                        + ".", getName());
             }
         }
         else
@@ -406,7 +406,7 @@ public class MacroCommand extends Command
                     + TextColor.AQUA
                     + macro.getName()
                     + TextColor.RED
-                    + "?");
+                    + "?", getName());
         }
     }
 
@@ -420,7 +420,7 @@ public class MacroCommand extends Command
                                     + TextColor.WHITE
                                     + name
                                     + TextColor.RED
-                                    + " couldn't be found!");
+                                    + " couldn't be found!", getName());
             return;
         }
 
@@ -444,7 +444,7 @@ public class MacroCommand extends Command
                         + ": "
                         + (t.getMessage() == null
                             ? t.getClass().getName()
-                            : t.getMessage()));
+                            : t.getMessage()), getName());
             }
         }
     }

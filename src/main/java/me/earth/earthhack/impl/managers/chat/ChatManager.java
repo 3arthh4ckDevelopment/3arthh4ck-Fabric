@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatManager extends SubscriberImpl implements Globals
 {
     private final Map<Integer, Map<String, Integer>> message_ids;
+    // ^^ TODO replace ids with messagesigs
     private final SkippingCounter counter = new SkippingCounter(1337, i -> i != -1);
     /* TODO
             PingBypass.isServer()
@@ -61,10 +62,9 @@ public class ChatManager extends SubscriberImpl implements Globals
     }
 
     public void sendDeleteMessageScheduled(String message,
-                                           String uniqueWord,
-                                           int senderID)
+                                           String uniqueWord)
     {
-        mc.execute(() -> ChatUtil.sendMessage(message));
+        mc.execute(() -> ChatUtil.sendMessage(message, uniqueWord));
     }
 
     public void sendDeleteMessage(String message,
@@ -75,20 +75,21 @@ public class ChatManager extends SubscriberImpl implements Globals
                 .computeIfAbsent(senderID, v -> new ConcurrentHashMap<>())
                 .computeIfAbsent(uniqueWord, v -> counter.next());
 
-        ChatUtil.sendMessage(message);
+        ChatUtil.sendMessage(message, uniqueWord);
     }
 
     public void deleteMessage(String uniqueWord, int senderID)
     {
-        Map<String, Integer> map = message_ids.get(senderID);
-        if (map != null)
-        {
-            Integer id = map.remove(uniqueWord);
-            if (id != null)
-            {
-                ChatUtil.deleteMessage(id);
-            }
-        }
+        // TODO: too lazy rn
+        // Map<String, Integer> map = message_ids.get(senderID);
+        // if (map != null)
+        // {
+        //     Integer id = map.remove(uniqueWord);
+        //     if (id != null)
+        //     {
+        //         ChatUtil.deleteMessage(id);
+        //     }
+        // }
     }
 
     public void sendDeleteComponent(MutableText component,
@@ -99,7 +100,7 @@ public class ChatManager extends SubscriberImpl implements Globals
                 .computeIfAbsent(senderID, v -> new ConcurrentHashMap<>())
                 .computeIfAbsent(uniqueWord, v -> counter.next());
 
-        ChatUtil.sendMessage(component);
+        ChatUtil.sendMessage(component.getString(), uniqueWord);
     }
 
     /**

@@ -36,12 +36,12 @@ public class PrefixCommand extends Command implements Globals
                         "Prefix",
                         ChatIDs.COMMAND);
             } else {
-                ChatUtil.sendMessage(TextColor.RED + "You can't use the \"/\" prefix!");
+                ChatUtil.sendMessage(TextColor.RED + "You can't use the \"/\" prefix!", getName());
             }
         }
         else
         {
-            ChatUtil.sendMessage(TextColor.RED + "Please specify a prefix.");
+            ChatUtil.sendMessage(TextColor.RED + "Please specify a prefix.", getName());
         }
     }
 

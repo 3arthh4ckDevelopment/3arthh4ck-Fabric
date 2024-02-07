@@ -32,7 +32,7 @@ final class ListenerMotion extends ModuleListener<Announcer, MotionUpdateEvent>
                                         + TextColor.WHITE
                                         + module.getDisplayName()
                                         + TextColor.GREEN
-                                        + "> Files loaded.");
+                                        + "> Files loaded.", module.getName());
 
                 module.refresh.setValue(false);
             }

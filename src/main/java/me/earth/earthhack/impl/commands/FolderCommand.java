@@ -27,7 +27,7 @@ public class FolderCommand extends Command
         }
         catch (IOException e)
         {
-            ChatUtil.sendMessage(TextColor.RED + "An error occurred.");
+            ChatUtil.sendMessage(TextColor.RED + "An error occurred.", getName());
             e.printStackTrace();
         }
     }

@@ -47,7 +47,7 @@ public abstract class AbstractMultiMacroCommand<T extends Macro>
         // actual args are +macro <add> <name> <bind> <combine/flow...> <macros>
         if (args.length <= 5)
         {
-            ChatUtil.sendMessage(TextColor.RED + ifSmallArgs);
+            ChatUtil.sendMessage(TextColor.RED + ifSmallArgs, getName());
             return;
         }
 
@@ -61,7 +61,7 @@ public abstract class AbstractMultiMacroCommand<T extends Macro>
                 ChatUtil.sendMessage(TextColor.RED + "Couldn't find macro: "
                         + TextColor.WHITE
                         + args[i]
-                        + TextColor.RED + ".");
+                        + TextColor.RED + ".", getName());
                 return;
             }
 
@@ -98,7 +98,7 @@ public abstract class AbstractMultiMacroCommand<T extends Macro>
                 {
                     ChatUtil.sendMessage(TextColor.RED
                             + "An error occurred while delegating your macro: "
-                            + e.getMessage());
+                            + e.getMessage(), getName());
                     e.printStackTrace();
                     return;
                 }
@@ -111,7 +111,7 @@ public abstract class AbstractMultiMacroCommand<T extends Macro>
                 {
                     ChatUtil.sendMessage(TextColor.RED
                             + "An error occurred while delegating your macro: "
-                            + e.getMessage());
+                            + e.getMessage(), getName());
                     e.printStackTrace();
                     return;
                 }
@@ -167,7 +167,7 @@ public abstract class AbstractMultiMacroCommand<T extends Macro>
                                     + realMacros[i].getName()
                                     + TextColor.RED
                                     + " can't be deleted ("
-                                    + e.getMessage() + ").");
+                                    + e.getMessage() + ").", getName());
                             e.printStackTrace();
                         }
                     }
@@ -214,14 +214,14 @@ public abstract class AbstractMultiMacroCommand<T extends Macro>
                     + macro.getName() + " : " + TextColor.AQUA
                     + parsed.toString() + TextColor.WHITE + " : "
                     + TextColor.RED + Commands.getPrefix()
-                    + concatenated + ".");
+                    + concatenated + ".", getName());
         }
         catch (AlreadyRegisteredException e)
         {
             ChatUtil.sendMessage(TextColor.RED
                     + "Couldn't add Macro " + TextColor.WHITE
                     + macro.getName() + TextColor.RED
-                    + ", a Macro with that name already exists.");
+                    + ", a Macro with that name already exists.", getName());
         }
     }
 

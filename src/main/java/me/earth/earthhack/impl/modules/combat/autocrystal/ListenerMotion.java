@@ -85,7 +85,7 @@ final class ListenerMotion extends
                     // final float pitch = (pitchMouseFilter.smooth(rotations[1] + MathUtil.getRandomInRange(-1.20f, 3.50f), module.smoothSpeed.getValue()));
                     // event.setYaw(yaw);
                     // event.setPitch(pitch);
-                    ChatUtil.sendMessage("smooth rotations are not implemented");
+                    ChatUtil.sendMessage("smooth rotations are not implemented", null);
                 } else {
                     event.setYaw(rotations[0]);
                     event.setPitch(rotations[1]);

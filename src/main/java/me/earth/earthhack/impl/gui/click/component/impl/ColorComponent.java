@@ -332,7 +332,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
 
                 if (hoveredCopy) {
                     mc.keyboard.setClipboard(TextUtil.get32BitString(getColorSetting().getRGB()));
-                    ChatUtil.sendMessage(TextColor.GREEN + "Color Copied: " + TextUtil.get32BitString(getColorSetting().getRGB()) + "!");
+                    ChatUtil.sendMessage(TextColor.GREEN + "Color Copied: " + TextUtil.get32BitString(getColorSetting().getRGB()) + "!", null);
                 }
 
                 if (hoveredPaste) {
@@ -343,9 +343,9 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
                             saturation = hsb[1];
                             brightness = hsb[2];
                             alpha = getColorSetting().getAlpha() / 255.f;
-                            ChatUtil.sendMessage(TextColor.GREEN + "Color Pasted: " + getClipBoard() + "!");
+                            ChatUtil.sendMessage(TextColor.GREEN + "Color Pasted: " + getClipBoard() + "!", null);
                         } else {
-                            ChatUtil.sendMessage(TextColor.RED + "Invalid Color!");
+                            ChatUtil.sendMessage(TextColor.RED + "Invalid Color!", null);
                         }
                     }
                 }

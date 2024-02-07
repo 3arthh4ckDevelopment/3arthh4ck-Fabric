@@ -46,7 +46,7 @@ public class Time extends HudElement {
                 try {
                     formatter = DateTimeFormatter.ofPattern(e.getValue());
                 } catch (IllegalArgumentException iae) {
-                    ChatUtil.sendMessageScheduled(TextColor.RED + "Invalid DateTimeFormat: " + TextColor.WHITE + e.getValue());
+                    ChatUtil.sendMessageScheduled(TextColor.RED + "Invalid DateTimeFormat: " + TextColor.WHITE + e.getValue(), getName());
                     formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
                 }
             }

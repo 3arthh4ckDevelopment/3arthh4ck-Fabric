@@ -14,7 +14,6 @@ import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.gui.click.Click;
 import me.earth.earthhack.impl.gui.visibility.PageBuilder;
 import me.earth.earthhack.impl.gui.visibility.Visibilities;
-import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -150,7 +149,6 @@ public class ClickGui extends Module
         this.listeners.add(new LambdaListener<>(TickEvent.class, e -> {
             if (!(mc.currentScreen instanceof ChatScreen)) {
                 disable();
-                disableOtherGuis();
                 Click.CLICK_GUI.set(this);
                 screen = mc.currentScreen instanceof Click ? ((Click) mc.currentScreen).screen : mc.currentScreen;
                 // don't save it since some modules add/del settings
@@ -186,18 +184,11 @@ public class ClickGui extends Module
     @Override
     protected void onEnable()
     {
+        super.onEnable();
         /*
         if (blur.getValue() == BlurStyle.Gaussian && OpenGlHelper.shadersSupported)
                 mc.entityRenderer(new Identifier("minecraft", "shaders/post/blur.json"));
          */
-    }
-
-    protected void disableOtherGuis() {
-        for (Module module : Managers.MODULES.getRegistered()) {
-            if (module instanceof ClickGui && module != this) {
-                module.disable();
-            }
-        }
     }
 
     protected Click newClick() {

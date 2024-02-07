@@ -22,14 +22,14 @@ public class HClipCommand extends Command implements Globals
         if (args.length == 1)
         {
             ChatUtil.sendMessage(TextColor.RED
-                    + "Please specify an amount to be teleported by.");
+                    + "Please specify an amount to be teleported by.", getName());
             return;
         }
 
         if (mc.player == null)
         {
             ChatUtil.sendMessage(TextColor.RED
-                    + "You need to be ingame to use this command.");
+                    + "You need to be ingame to use this command.", getName());
             return;
         }
 
@@ -53,7 +53,7 @@ public class HClipCommand extends Command implements Globals
                                     + TextColor.WHITE
                                     + args[1]
                                     + TextColor.GREEN
-                                    + " blocks.");
+                                    + " blocks.", getName());
         }
         catch (Exception e)
         {
@@ -62,7 +62,7 @@ public class HClipCommand extends Command implements Globals
                     + TextColor.WHITE
                     + args[1]
                     + TextColor.RED
-                    + ", a number (can be a floating point one) is required.");
+                    + ", a number (can be a floating point one) is required.", getName());
         }
     }
 

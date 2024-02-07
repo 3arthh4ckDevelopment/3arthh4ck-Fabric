@@ -23,7 +23,7 @@ public class SayCommand extends AbstractTextCommand implements Globals
         {
             ChatUtil.sendMessage(TextColor.RED
                     + "Use this command to send a chat message."
-                    + TextColor.WHITE + " (Useful for Macros)");
+                    + TextColor.WHITE + " (Useful for Macros)", getName());
         }
         else
         {
@@ -34,7 +34,7 @@ public class SayCommand extends AbstractTextCommand implements Globals
             }
             else
             {
-                ChatUtil.sendMessage(message);
+                ChatUtil.sendMessage(message, getName());
             }
         }
     }

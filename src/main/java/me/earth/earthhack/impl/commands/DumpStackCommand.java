@@ -20,16 +20,16 @@ public class DumpStackCommand extends Command implements Globals
         if (mc.player == null)
         {
             ChatUtil.sendMessage(TextColor.DARK_RED +
-                                 "You must be ingame to use this command.");
+                                 "You must be ingame to use this command.", getName());
             return;
         }
 
         ItemStack stack = mc.player.getInventory().getStack(
             mc.player.getInventory().selectedSlot);
-        ChatUtil.sendMessage(stack.getName());
+        ChatUtil.sendMessage(stack.getName().getString(), getName());
         NbtCompound nbtTagCompound = new NbtCompound();
         stack.writeNbt(nbtTagCompound);
-        ChatUtil.sendMessage(nbtTagCompound.toString());
+        ChatUtil.sendMessage(nbtTagCompound.toString(), getName());
     }
 
 }

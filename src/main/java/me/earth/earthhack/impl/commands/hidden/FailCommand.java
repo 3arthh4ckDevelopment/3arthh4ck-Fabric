@@ -53,7 +53,7 @@ public class FailCommand extends Command implements Registrable, Globals
                         + "Command not found, did you mean "
                         + closest.getName() + "?. Type "
                         + Commands.getPrefix()
-                        + "help to get a list of commands.");
+                        + "help to get a list of commands.", getName());
 
                 Earthhack.getLogger().info("FailCommand for args: "
                         + Arrays.toString(args));
@@ -64,7 +64,7 @@ public class FailCommand extends Command implements Registrable, Globals
         ChatUtil.sendMessage(TextColor.RED
                 + "Command not found. Type "
                 + Commands.getPrefix()
-                + "help to get a list of commands.");
+                + "help to get a list of commands.", getName());
 
         Earthhack.getLogger().info("FailCommand for args: "
                 + Arrays.toString(args));

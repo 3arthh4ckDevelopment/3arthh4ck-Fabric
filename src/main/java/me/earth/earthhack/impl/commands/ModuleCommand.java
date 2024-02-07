@@ -75,7 +75,7 @@ public class ModuleCommand extends Command implements Registrable
                         + TextColor.RED
                         + ". Try "
                         + Commands.getPrefix()
-                        + "modules.");
+                        + "modules.", getName());
             }
             else
             {
@@ -84,7 +84,7 @@ public class ModuleCommand extends Command implements Registrable
                         + TextColor.WHITE
                         + module.getName()
                         + TextColor.RED
-                        + "?");
+                        + "?", getName());
             }
 
             return;
@@ -117,7 +117,7 @@ public class ModuleCommand extends Command implements Registrable
                     + TextColor.WHITE
                     + module.getName()
                     + TextColor.RED
-                    + ".");
+                    + ".", getName());
             return;
         }
 
@@ -132,7 +132,7 @@ public class ModuleCommand extends Command implements Registrable
                     + TextColor.WHITE
                     + module.getName()
                     + TextColor.RED
-                    + ".");
+                    + ".", getName());
         }
         else
         {
@@ -151,7 +151,7 @@ public class ModuleCommand extends Command implements Registrable
                 else
                 {
                     ChatUtil.sendMessage(TextColor.RED
-                            + "Possible values: true or false!");
+                            + "Possible values: true or false!", getName());
                     return;
                 }
 
@@ -168,7 +168,7 @@ public class ModuleCommand extends Command implements Registrable
             SettingResult result = setting.fromString(args[2]);
             if (!result.wasSuccessful())
             {
-                ChatUtil.sendMessage(TextColor.RED + result.getMessage());
+                ChatUtil.sendMessage(TextColor.RED + result.getMessage(), getName());
             }
             else
             {

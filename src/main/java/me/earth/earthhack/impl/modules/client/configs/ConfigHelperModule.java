@@ -81,7 +81,7 @@ public class ConfigHelperModule extends Module {
     }
 
     private void logMessage(String message) {
-        ChatUtil.sendMessage("<" + getName() + "> " + TextColor.RED + message);
+        ChatUtil.sendMessage("<" + getName() + "> " + TextColor.RED + message, getName());
     }
 
     public boolean isDeleted() {

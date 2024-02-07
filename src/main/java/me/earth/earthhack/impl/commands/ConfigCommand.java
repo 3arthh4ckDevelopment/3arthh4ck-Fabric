@@ -210,7 +210,7 @@ public class ConfigCommand extends Command implements Globals
                                         + TextColor.WHITE
                                         + Arrays.toString(configs)
                                         + TextColor.GREEN
-                                        + " " + cString + ".");
+                                        + " " + cString + ".", getName());
                             });
                         break;
                     case "delete":
@@ -224,7 +224,7 @@ public class ConfigCommand extends Command implements Globals
                                     + TextColor.GREEN
                                     + " from the "
                                     + helper.getName()
-                                    + "s config.");
+                                    + "s config.", getName());
                         }
                         catch (Exception e)
                         {
@@ -234,7 +234,7 @@ public class ConfigCommand extends Command implements Globals
                                     + args[3]
                                     + TextColor.RED
                                     + ": "
-                                    + e.getMessage());
+                                    + e.getMessage(), getName());
                             e.printStackTrace();
                         }
 
@@ -251,7 +251,7 @@ public class ConfigCommand extends Command implements Globals
                                     + TextColor.WHITE
                                     + args[3]
                                     + TextColor.GREEN
-                                    + " config.");
+                                    + " config.", getName());
                         }
                         catch (IOException e)
                         {
@@ -264,7 +264,7 @@ public class ConfigCommand extends Command implements Globals
                                     + TextColor.WHITE
                                     + args[3]
                                     + TextColor.RED
-                                    + " config.");
+                                    + " config.", getName());
                             e.printStackTrace();
                         }
                         break;
@@ -287,14 +287,14 @@ public class ConfigCommand extends Command implements Globals
                                         + TextColor.WHITE
                                         + Arrays.toString(configs)
                                         + TextColor.GREEN
-                                        + " " + cString + ".");
+                                        + " " + cString + ".", getName());
                             });
                         break;
                     default:
                         ChatUtil.sendMessage(TextColor.RED
                                 + "Can't recognize option "
                                 + TextColor.WHITE + args[2]
-                                + TextColor.RED + ".");
+                                + TextColor.RED + ".", getName());
                 }
         }
     }

@@ -204,6 +204,7 @@ public class Click extends Screen {
                 }
             }
         });
+        CLICK_GUI.disable();
     }
 
     public void onGuiOpened() {

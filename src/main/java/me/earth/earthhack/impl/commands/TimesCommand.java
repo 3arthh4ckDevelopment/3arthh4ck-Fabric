@@ -33,7 +33,7 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
         if (args.length == 1)
         {
             ChatUtil.sendMessage("Use this command to execute a " +
-                    "command x times with a given delay.");
+                    "command x times with a given delay.", getName());
             return;
         }
 
@@ -42,12 +42,12 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
             if (args[1].equalsIgnoreCase("cancel"))
             {
                 ChatUtil.sendMessage(TextColor.RED
-                    + "No id specified, available: " + ids.keySet() + ".");
+                    + "No id specified, available: " + ids.keySet() + ".", getName());
             }
             else
             {
                 ChatUtil.sendMessage(TextColor.RED
-                        + "Please specify a command.");
+                        + "Please specify a command.", getName());
             }
 
             return;
@@ -61,12 +61,12 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
                 ChatUtil.sendMessage(TextColor.RED
                         + "No process found for id "
                         + TextColor.WHITE + args[2]
-                        + TextColor.RED + "!");
+                        + TextColor.RED + "!", getName());
                 return;
             }
 
             ChatUtil.sendMessage(TextColor.AQUA + "Cancelling process "
-                    + TextColor.WHITE + args[2] + TextColor.AQUA + "...");
+                    + TextColor.WHITE + args[2] + TextColor.AQUA + "...", getName());
 
             process.setValid(false);
             process.clear();
@@ -75,7 +75,7 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
 
         if (args.length < 4)
         {
-            ChatUtil.sendMessage(TextColor.RED + "Please specify a command.");
+            ChatUtil.sendMessage(TextColor.RED + "Please specify a command.", getName());
             return;
         }
 
@@ -87,14 +87,14 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
             {
                 ChatUtil.sendMessage(TextColor.RED + "Amount "
                         + TextColor.WHITE + args[1]
-                        + TextColor.RED + " was smaller than or equal to 0!");
+                        + TextColor.RED + " was smaller than or equal to 0!", getName());
                 return;
             }
         }
         catch (NumberFormatException e)
         {
             ChatUtil.sendMessage(TextColor.RED + "Couldn't parse "
-                + TextColor.WHITE + args[1] + TextColor.RED + " to amount.");
+                + TextColor.WHITE + args[1] + TextColor.RED + " to amount.", getName());
             return;
         }
 
@@ -106,14 +106,14 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
             {
                 ChatUtil.sendMessage(TextColor.RED + "Delay "
                         + TextColor.WHITE + args[2]
-                        + TextColor.RED + " was smaller than 0!");
+                        + TextColor.RED + " was smaller than 0!", getName());
                 return;
             }
         }
         catch (NumberFormatException e)
         {
             ChatUtil.sendMessage(TextColor.RED + "Couldn't parse "
-                + TextColor.WHITE + args[2] + TextColor.RED + " to delay.");
+                + TextColor.WHITE + args[2] + TextColor.RED + " to delay.", getName());
             return;
         }
 
@@ -136,7 +136,7 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
                     ChatUtil.sendMessage(TextColor.RED
                             + "An error occurred while executing command "
                             + TextColor.WHITE + arguments[0]
-                            + TextColor.RED + ": " + t.getMessage());
+                            + TextColor.RED + ": " + t.getMessage(), getName());
                     t.printStackTrace();
                 }
             });
@@ -160,7 +160,7 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
                 if (time < 0)
                 {
                     ChatUtil.sendMessage(
-                        TextColor.RED + "Your delay * amount overflowed!");
+                        TextColor.RED + "Your delay * amount overflowed!", getName());
 
                     process.setValid(false);
                     process.clear();
@@ -183,7 +183,7 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
                         ChatUtil.sendMessage(TextColor.RED
                                 + "An error occurred while executing command "
                                 + TextColor.WHITE + arguments[0]
-                                + TextColor.RED + ": " + t.getMessage());
+                                + TextColor.RED + ": " + t.getMessage(), getName());
                         t.printStackTrace();
                     }
                 });
@@ -199,7 +199,7 @@ public class TimesCommand extends Command implements CommandScheduler, Globals
 
             ChatUtil.sendMessage(TextColor.GREEN
                     + "Started process with id "
-                    + TextColor.AQUA + processId + TextColor.GREEN + ".");
+                    + TextColor.AQUA + processId + TextColor.GREEN + ".", getName());
         }
     }
 

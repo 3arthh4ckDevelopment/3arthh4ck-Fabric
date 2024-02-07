@@ -26,7 +26,7 @@ final class ListenerLoginStart extends ModuleListener<AccountSpoof, PacketEvent.
         try {
             uuid = UUID.fromString(module.uuid.getValue());
         } catch (IllegalArgumentException e) {
-            ChatUtil.sendMessageScheduled(TextColor.RED + "Bad UUID for AccountSpoof: " + e.getMessage());
+            ChatUtil.sendMessageScheduled(TextColor.RED + "Bad UUID for AccountSpoof: " + e.getMessage(), module.getName());
             uuid = UUID.randomUUID();
         }
         loginAccessor.setName(module.accountName.getValue());

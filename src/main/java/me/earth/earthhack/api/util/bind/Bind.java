@@ -66,7 +66,7 @@ public class Bind
         }
         int key = Keyboard.getKeyIndex(string);
         if (key == -1)
-            ChatUtil.sendMessage("You can't use this key!");
+            ChatUtil.sendMessage("You can't use this key!", "bind"); // goofy
         return new Bind(key);
     }
 
