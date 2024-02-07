@@ -5,6 +5,8 @@ import net.minecraft.util.math.Vec3i;
 
 public class BBUtil
 {
+    public static final Box EMPTY_BOX = new Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+
     public static boolean intersects(Box bb, Vec3i vec3i)
     {
         return bb.minX < vec3i.getX() + 1

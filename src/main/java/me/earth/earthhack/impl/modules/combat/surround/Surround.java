@@ -170,7 +170,7 @@ public class Surround extends ObbyModule
         if (center.getValue()
             && !setPosition
             && startPos != null
-            && mc.world.getBlockState(startPos).getBlock() != Blocks.COBWEB
+            && mc.world.getBlockState(startPos).getBlock() != Blocks.COBWEB // maybe check for berry bush too
             && (holeC.getValue() || !HoleUtil.isHole(startPos, false)[0]))
         {
             double x = startPos.getX() + 0.5;
@@ -340,7 +340,7 @@ public class Surround extends ObbyModule
         Set<BlockPos> blocked = new HashSet<>();
         BlockPos playerPos = getPlayerPos();
         if (HoleUtil.isHole(playerPos, false)[0]
-            || center.getValue() // && !setPosition
+            || center.getValue() && !setPosition
             || extend.getValue() == 1
             || !extendingWatch.passed(eDelay.getValue()))
         {

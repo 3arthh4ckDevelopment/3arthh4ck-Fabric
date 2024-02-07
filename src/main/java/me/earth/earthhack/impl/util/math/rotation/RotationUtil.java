@@ -5,6 +5,7 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.player.freecam.Freecam;
+import me.earth.earthhack.impl.util.math.BBUtil;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
 import me.earth.earthhack.impl.util.render.Interpolation;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.*;
+import net.minecraft.util.shape.VoxelShape;
 
 import java.util.Arrays;
 import java.util.function.BiPredicate;
@@ -52,7 +54,8 @@ public class RotationUtil implements Globals
                                        ClientWorld world,
                                        BlockState state)
     {
-        Box bb = state.getCollisionShape(world, pos).getBoundingBox();
+        VoxelShape shape = state.getCollisionShape(world, pos);
+        Box bb = !shape.isEmpty() ? shape.getBoundingBox() : BBUtil.EMPTY_BOX;
 
         double x = pos.getX() + (bb.minX + bb.maxX) / 2.0;
         double y = pos.getY() + (bb.minY + bb.maxY) / 2.0;

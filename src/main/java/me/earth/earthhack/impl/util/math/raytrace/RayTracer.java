@@ -330,7 +330,7 @@ public class RayTracer implements Globals
                             || blockChecker.test(block, pos, null)))
                 {
                     BlockHitResult BlockHitResult =
-                        crt.collisionRayTrace(state, world, pos, start, end);
+                        crt.collisionRayTrace(start, end, pos, state.getCollisionShape(mc.world, pos), state);
 
                     if (BlockHitResult != null)
                     {
@@ -496,8 +496,8 @@ public class RayTracer implements Globals
                                 || blockChecker.test(block1, pos, enumfacing)))
                         {
                             BlockHitResult Ray1 =
-                                crt.collisionRayTrace(
-                                        state1, world, pos, start, end);
+                                    crt.collisionRayTrace(
+                                            start, end, pos, state.getCollisionShape(mc.world, pos), state);
 
                             if (Ray1 != null)
                             {

@@ -22,9 +22,9 @@ final class ListenerExplosion extends
         if (module.explosions.getValue())
         {
             IExplosionS2CPacket explosion = (IExplosionS2CPacket) event.getPacket();
-            explosion.setX(explosion.getX() * module.horizontal.getValue());
-            explosion.setY(explosion.getY() * module.vertical.getValue());
-            explosion.setZ(explosion.getZ() * module.horizontal.getValue());
+            explosion.setX((explosion.getX() / 100) * module.horizontal.getValue());
+            explosion.setY((explosion.getY() / 100) * module.vertical.getValue());
+            explosion.setZ((explosion.getZ() / 100) * module.horizontal.getValue());
         }
     }
 

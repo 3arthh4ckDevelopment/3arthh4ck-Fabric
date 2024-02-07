@@ -51,9 +51,8 @@ public abstract class DisablingModule extends Module implements IDisablingModule
 
     public static Listener<?> newDisconnectDisabler(Module module)
     {
-        if (module instanceof IDisablingModule)
+        if (module instanceof IDisablingModule disabling)
         {
-            IDisablingModule disabling = (IDisablingModule) module;
             return new EventListener<>(DisconnectEvent.class)
             {
                 @Override
@@ -110,9 +109,8 @@ public abstract class DisablingModule extends Module implements IDisablingModule
 
     public static Listener<?> newShutDownDisabler(Module module)
     {
-        if (module instanceof IDisablingModule)
+        if (module instanceof IDisablingModule disabling)
         {
-            IDisablingModule disabling = (IDisablingModule) module;
             return new EventListener<>(ShutDownEvent.class)
             {
                 @Override

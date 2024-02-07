@@ -1148,8 +1148,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                 return module.ignoreNonFull.getValue()
                     && !mc.world.getBlockState(result.getBlockPos())
                                 .getBlock()
-                                .hasDynamicBounds(/*mc.world.getBlockState(
-                                    result.getBlockPos())*/);
+                                .hasDynamicBounds();
             }
 
             return result != null && result.getBlockPos().equals(pos);

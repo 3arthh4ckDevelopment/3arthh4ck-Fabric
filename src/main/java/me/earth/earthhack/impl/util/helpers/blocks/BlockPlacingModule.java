@@ -162,7 +162,7 @@ public abstract class BlockPlacingModule extends DisablingModule
         float[] f = RayTraceUtil.hitVecToPlaceVec(on, hitVec);
         Hand hand = InventoryUtil.getHand(slot);
         packets.add(new PlayerInteractBlockC2SPacket(hand,
-                new BlockHitResult(new Vec3d(f[0], f[1], f[2]), facing, on, false),
+                new BlockHitResult(new Vec3d(f[0], f[1], f[2]).add(on.toCenterPos()), facing, on, false),
                 0));
         if (placeSwing.getValue() == PlaceSwing.Always)
         {
@@ -178,7 +178,7 @@ public abstract class BlockPlacingModule extends DisablingModule
                     ? mc.player.getOffHandStack()
                     : mc.player.getInventory().getStack(slot);
             mc.execute(() ->
-                placeClient(stack, on, hand, facing, f[0], f[1], f[2]));
+                placeClient(stack, on, hand, facing, 0.0f, 0.0f, 0.0f /*f[0], f[1], f[2]*/));
         }
 
         blocksPlaced++;
@@ -216,7 +216,7 @@ public abstract class BlockPlacingModule extends DisablingModule
             if (!stack.isEmpty() && mc.player.canPlaceOn(pos, facing, stack))
             {
                 ActionResult result = block.place(new ItemPlacementContext(mc.player, hand, stack,
-                        new BlockHitResult(new Vec3d(hitX, hitY, hitZ), facing, pos, false)));
+                        new BlockHitResult(new Vec3d(hitX, hitY, hitZ).add(pos.toCenterPos()), facing, pos, false)));
                 if (result == ActionResult.SUCCESS)
                 {
                     BlockState placeState = mc.world.getBlockState(pos);
