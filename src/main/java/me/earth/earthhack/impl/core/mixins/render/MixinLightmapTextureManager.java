@@ -29,8 +29,7 @@ public class MixinLightmapTextureManager
     @ModifyArgs(method = "update",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/texture/NativeImage;setColor(III)V"
-            ))
+                    target = "Lnet/minecraft/client/texture/NativeImage;setColor(III)V"))
     public void updateHook(Args args)
     {
         if (FULL_BRIGHT.isEnabled() && FULL_BRIGHT.get().getBrightMode() == BrightMode.Gamma) {

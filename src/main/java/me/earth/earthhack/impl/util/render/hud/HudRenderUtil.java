@@ -9,6 +9,7 @@ import me.earth.earthhack.impl.modules.client.editor.HudEditor;
 import me.earth.earthhack.impl.util.render.ColorUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.item.ItemStack;
 
 public class HudRenderUtil implements Globals {
     private static final TextRenderer RENDERER = Managers.TEXT;
@@ -39,6 +40,12 @@ public class HudRenderUtil implements Globals {
     public static void renderText(DrawContext context, String text, float x, float y, float scale) {
         String colorCode = HUD_EDITOR.get().colorMode.getValue().getColor();
         RENDERER.drawStringScaled(context, colorCode + text, x, y, textColor(y), HUD_EDITOR.get().shadow.getValue(), scale);
+    }
+
+    public static void drawItemStack(DrawContext context, ItemStack stack, int x, int y)
+    {
+        context.drawItem(stack, x, y,1);
+        context.drawItemInSlot(mc.textRenderer, stack, x, y);
     }
 
     private static int textColor(float y) {

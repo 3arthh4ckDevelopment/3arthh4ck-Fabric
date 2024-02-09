@@ -385,7 +385,7 @@ public class Speedmine extends Module {
         limitRotationSlot = -1;
         limitRotationPacket = null;
         fastHelper.reset();
-        // AUTO_MINE.computeIfPresent(AutoMine::reset);
+        AUTO_MINE.computeIfPresent(AutoMine::reset);
 
         for (int i = 0; i < 9; i++)
         {

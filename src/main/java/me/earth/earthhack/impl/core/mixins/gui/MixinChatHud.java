@@ -65,9 +65,9 @@ public abstract class MixinChatHud implements IChatHud
     @Shadow protected abstract void refresh();
 
     @Final @Shadow private MinecraftClient client; //TODO: is this variable needed?
-    @Final @Shadow private List<ChatHudLine> messages = Lists.newArrayList();
-    @Final @Shadow private List<String> messageHistory = Lists.newArrayList();
-    @Final @Shadow private List<ChatHudLine.Visible> visibleMessages = Lists.newArrayList();
+    @Final @Shadow private final List<ChatHudLine> messages = Lists.newArrayList();
+    @Final @Shadow private final List<String> messageHistory = Lists.newArrayList();
+    @Final @Shadow private final List<ChatHudLine.Visible> visibleMessages = Lists.newArrayList();
 
     @Shadow
     protected abstract void addMessage(Text message,

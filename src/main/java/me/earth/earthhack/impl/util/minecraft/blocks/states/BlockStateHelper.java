@@ -152,6 +152,10 @@ public class BlockStateHelper implements Globals, IBlockStateHelper
         states.clear();
     }
 
+    public Map<BlockPos, BlockState> getStates(){
+        return states;
+    }
+
     @Override
     public BlockEntity getBlockEntity(BlockPos pos)
     {
