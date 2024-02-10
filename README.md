@@ -1,6 +1,6 @@
 > :warning: This is a ported continuation of 3arthqu4ke's now discontinued 3arthh4ck (1.12.2). Any new official PingBypass 3arthqu4ke releases will be found [here](https://github.com/3arthqu4ke/PingBypass).
 
-# 3arthh4ck (Fabric Edition
+# 3arthh4ck (Fabric Edition)
 
 [![GitHub All Releases](https://img.shields.io/github/downloads/3arthh4ckDevelopment/3arthh4ck-fabric/total.svg?color=g)](https://github.com/3arthh4ckDevelopment/3arthh4ck-fabric/releases)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/3arthh4ckDevelopment/3arthh4ck-fabric/gradle-publish.yml)
