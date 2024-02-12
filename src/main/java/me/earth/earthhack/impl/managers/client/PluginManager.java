@@ -25,7 +25,7 @@ import java.util.jar.Manifest;
 public class PluginManager
 {
     private static final PluginManager INSTANCE = new PluginManager();
-    private static final String EARTH_PATH = "earthhack/plugins";
+    private static final String PATH = "earthhack/plugins";
 
     private final Map<PluginConfig, Plugin> plugins = new HashMap<>();
     private final Map<String, PluginConfig> configs = new HashMap<>();
@@ -64,7 +64,7 @@ public class PluginManager
         this.classLoader = pluginClassLoader;
         Core.LOGGER.info("PluginManager: Scanning for PluginConfigs.");
 
-        File d = new File(EARTH_PATH);
+        File d = new File(PATH);
         Map<String, File> remap = scanPlugins(d.listFiles(), pluginClassLoader);
         remap.keySet().removeAll(configs.keySet());
 

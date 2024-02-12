@@ -5,6 +5,7 @@ import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.plugin.Plugin;
 import me.earth.earthhack.impl.Earthhack;
+import me.earth.earthhack.impl.core.Core;
 import me.earth.earthhack.impl.managers.chat.ChatManager;
 import me.earth.earthhack.impl.managers.chat.CommandManager;
 import me.earth.earthhack.impl.managers.chat.WrapManager;
@@ -23,8 +24,14 @@ import me.earth.earthhack.impl.managers.thread.connection.ConnectionManager;
 import me.earth.earthhack.impl.managers.thread.holes.HoleManager;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUpManager;
 import me.earth.earthhack.impl.managers.thread.safety.SafetyManager;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URLClassLoader;
 
 /**
  * The internals of the Client.
@@ -71,6 +78,8 @@ public class Managers
      * Loads all Managers, starts the Event System and loads Plugins.
      */
     public static void load() {
+        coreLoader();
+
         Earthhack.getLogger().info("Subscribing Managers.");
         Earthhack.getLogger().info("Starting Event System.");
         subscribe(TIMER, CONNECT, CHAT, COMBAT, POSITION, ROTATION, SERVER,
@@ -110,6 +119,34 @@ public class Managers
         Earthhack.getLogger().info("Initializing Modules");
         MODULES.load();
         ELEMENTS.load();
+    }
+
+    // this acts as the tweaker for now
+    private static void coreLoader() {
+        String className = Core.class.getName();
+        Class<?> coreClass = null;
+        try {
+            coreClass = Class.forName(className, true, MinecraftClient.getInstance().getClass().getClassLoader());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Core core = null;
+        try {
+            core = (Core) coreClass.getDeclaredConstructor().newInstance();
+        } catch (NullPointerException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        Logger logger = LogManager.getLogger("3arthh4ck-Core");
+        logger.info("\n\n ------------------ Initializing 3arthh4ck Core. ------------------ \n");
+
+        // loadDevArguments(); //TODO: make the dev arguments
+        ClassLoader pluginClassLoader = FabricLoader.getInstance().getClass().getClassLoader();
+
+        if (pluginClassLoader != null) {
+            if (pluginClassLoader instanceof URLClassLoader urlClassLoader) { // we need to find the URLClassLoader (this doesn't work atm)
+                core.init(urlClassLoader);
+            }
+        }
     }
 
     public static void subscribe(Object...subscribers)

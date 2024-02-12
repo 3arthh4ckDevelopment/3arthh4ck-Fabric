@@ -66,37 +66,8 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawCheckMark(MatrixStack matrix, float x, float y, int width, int color) {
-        //TODO: rewrite
-        /*
-        float f = (color >> 24 & 255) / 255.0f;
-        float f1 = (color >> 16 & 255) / 255.0f;
-        float f2 = (color >> 8 & 255) / 255.0f;
-        float f3 = (color & 255) / 255.0f;
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDisable(3553);
-        GL11.glEnable(2848);
-        GL11.glBlendFunc(770, 771);
-        GL11.glLineWidth(3f);
-        GL11.glBegin(3);
-        GL11.glColor4f(0, 0, 0, 1.f);
-        GL11.glVertex2d(x + width - 6.25, y + 2.75f);
-        GL11.glVertex2d(x + width - 11.5, y + 10.25f);
-        GL11.glVertex2d(x + width - 13.75f, y + 7.75f);
-        GL11.glEnd();
-        GL11.glLineWidth(1.5f);
-        GL11.glBegin(3);
-        GL11.glColor4f(f1, f2, f3, f);
-        GL11.glVertex2d(x + width - 6.5, y + 3);
-        GL11.glVertex2d(x + width - 11.5, y + 10);
-        GL11.glVertex2d(x + width - 13.5, y + 8);
-        GL11.glEnd();
-        GL11.glEnable(3553);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-         */
+        drawLine(matrix, x + width - 6.5f, y + 3f, x + width - 11.5f, y + 10f, 1, color);
+        drawLine(matrix, x + width - 11.5f, y + 10f, x + width - 13.5f, y + 8, 1, color);
     }
 
     public static void drawLine(MatrixStack matrix, float x, float y, float x1, float y1, float lineWidth, int color) {
@@ -106,13 +77,23 @@ public class Render2DUtil implements Globals {
         float blue = (float) (color & 255) / 255.0F;
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
 
+        float directionX = x1 - x;
+        float directionY = y1 - y;
+
+        float lineLength = (float) Math.sqrt(directionX * directionX + directionY * directionY);
+        float normalizedX = directionX / lineLength;
+        float normalizedY = -(directionY / lineLength);
+
+        float width = lineWidth / 2.0f;
+
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-        RenderSystem.lineWidth(lineWidth);
-        bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
-        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x, y, 0.0F).color(red, green, blue, alpha).next();
-        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x1, y1, 0.0F).color(red, green, blue, alpha).next();
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x + normalizedY * width, y + normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
+        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x1 + normalizedY * width, y1 + normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
+        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x1 - normalizedY * width, y1 - normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
+        bufferBuilder.vertex(matrix.peek().getPositionMatrix(), x - normalizedY * width, y - normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
         RenderSystem.disableBlend();
     }
@@ -153,34 +134,6 @@ public class Render2DUtil implements Globals {
         }
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
         RenderSystem.disableBlend();
-
-
-        /*
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.shadeModel(7425);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        if (sideways) {
-            bufferbuilder.vertex(left, top, zLevel).color(f1, f2, f3, f).next();
-            bufferbuilder.pos(left, bottom, zLevel).color(f1, f2, f3, f).next();
-            bufferbuilder.pos(right, bottom, zLevel).color(f5, f6, f7, f4).next();
-            bufferbuilder.pos(right, top, zLevel).color(f5, f6, f7, f4).next();
-        } else {
-            bufferbuilder.pos(right, top, zLevel).color(f1, f2, f3, f).next();
-            bufferbuilder.pos(left, top, zLevel).color(f1, f2, f3, f).next();
-            bufferbuilder.pos(left, bottom, zLevel).color(f5, f6, f7, f4).next();
-            bufferbuilder.pos(right, bottom, zLevel).color(f5, f6, f7, f4).next();
-        }
-        tessellator.draw();
-        GlStateManager.shadeModel(7424);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-         */
     }
 
 }
