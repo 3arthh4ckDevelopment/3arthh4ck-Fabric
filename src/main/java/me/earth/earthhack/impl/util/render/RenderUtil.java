@@ -1,15 +1,20 @@
 package me.earth.earthhack.impl.util.render;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.Earthhack;
 import net.minecraft.client.gl.VertexBuffer;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.Window;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import java.awt.*;
@@ -17,6 +22,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import static com.mojang.blaze3d.systems.RenderSystem.disableBlend;
 import static org.lwjgl.opengl.GL11.*;
 
 
@@ -155,59 +161,45 @@ public class RenderUtil implements Globals {
         endRender();
     }
 
-    public static void drawBox(Box bb, Color color)
+    public static void drawBox(MatrixStack matrix, Box bb, Color color)
     {
-        glPushMatrix();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_TEXTURE_2D);
-        glEnable(GL_LINE_SMOOTH);
-        glDisable(GL_DEPTH_TEST);
-        glDepthMask(false);
+        RenderSystem.enableBlend();
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
         color(color);
-        fillBox(bb);
-        glDisable(GL_LINE_SMOOTH);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_DEPTH_TEST);
-        glDepthMask(true);
-        glDisable(GL_BLEND);
-        glPopMatrix();
+        fillBox(matrix, bb, color.getRGB());
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        disableBlend();
     }
 
-    public static void renderBox(Box bb,
+    public static void renderBox(MatrixStack matrix,
+                                 Box bb,
                                  Color color,
                                  Color outLineColor,
                                  float lineWidth)
     {
-        glPushMatrix();
-        glPushAttrib(GL_ALL_ATTRIB_BITS);
-
         startRender();
-        drawOutline(bb, lineWidth, outLineColor);
+        drawOutline(matrix, bb, lineWidth, outLineColor);
         endRender();
-        startRender();
-        drawBox(bb, color);
-        endRender();
-
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        glPopAttrib();
-        glPopMatrix();
+//        startRender();
+//        drawBox(matrix, bb, color);
+//        endRender();
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    public static void renderBox(BlockPos vertex, Color color, float height)
+    public static void renderBox(MatrixStack matrix, BlockPos vertex, Color color, float height)
     {
         glPushMatrix();
         glPushAttrib(GL_ALL_ATTRIB_BITS);
 
         Box bb = Interpolation.interpolatePos(vertex, height);
         startRender();
-        drawOutline(bb, 1.5f, color);
+        drawOutline(matrix, bb, 1.5f, color);
         endRender();
         Color boxColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 76);
         startRender();
-        drawBox(bb, boxColor);
+        drawBox(matrix, bb, boxColor);
         endRender();
 
         glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -215,7 +207,7 @@ public class RenderUtil implements Globals {
         glPopMatrix();
     }
 
-    public static void drawOutline(Box bb, float lineWidth)
+    public static void drawOutline(MatrixStack matrix, Box bb, float lineWidth)
     {
         glPushMatrix();
         glEnable(GL_BLEND);
@@ -226,7 +218,7 @@ public class RenderUtil implements Globals {
         glDisable(GL_DEPTH_TEST);
         glDepthMask(false);
         glLineWidth(lineWidth);
-        fillOutline(bb);
+        fillOutline(matrix, bb, 0);
         glLineWidth(1.0f);
         glDisable(GL_LINE_SMOOTH);
         glEnable(GL_TEXTURE_2D);
@@ -236,168 +228,136 @@ public class RenderUtil implements Globals {
         glDisable(GL_BLEND);
         glPopMatrix();
     }
-    public static void drawOutline(Box bb, float lineWidth, Color color)
+    public static void drawOutline(MatrixStack matrix, Box bb, float lineWidth, Color color)
     {
-        glPushMatrix();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_TEXTURE_2D);
-        glEnable(GL_LINE_SMOOTH);
-        glDisable(GL_DEPTH_TEST);
-        glDepthMask(false);
-        glLineWidth(lineWidth);
-        color(color);
-        fillOutline(bb);
-        glLineWidth(1.0f);
-        glDisable(GL_LINE_SMOOTH);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_DEPTH_TEST);
-        glDepthMask(true);
-        glDisable(GL_BLEND);
-        glPopMatrix();
+
+
+        RenderSystem.lineWidth(lineWidth);
+        fillOutline(matrix, bb, color.getRGB());
+
+
     }
 
-    public static void fillBox(Box boundingBox)
+    public static void fillBox(MatrixStack matrix, Box boundingBox, int color)
     {
         if (boundingBox != null)
         {
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
+            Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
 
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glEnd();
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
+
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
+
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
+            bufferBuilder.end();
+
+            tessellator.draw();
         }
     }
 
-    public static void fillOutline(Box bb)
+    public static void fillOutline(MatrixStack matrix, Box bb, int color)
     {
         if (bb != null)
         {
-            glBegin(GL_LINES);
-            {
-                glVertex3d(bb.minX, bb.minY, bb.minZ);
-                glVertex3d(bb.maxX, bb.minY, bb.minZ);
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
 
-                glVertex3d(bb.maxX, bb.minY, bb.minZ);
-                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
 
-                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
-                glVertex3d(bb.minX, bb.minY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.minY, bb.maxZ);
-                glVertex3d(bb.minX, bb.minY, bb.minZ);
-
-                glVertex3d(bb.minX, bb.minY, bb.minZ);
-                glVertex3d(bb.minX, bb.maxY, bb.minZ);
-
-                glVertex3d(bb.maxX, bb.minY, bb.minZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
-
-                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.minY, bb.maxZ);
-                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.maxY, bb.minZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
-
-                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
-                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
-                glVertex3d(bb.minX, bb.maxY, bb.minZ);
-            }
-            glEnd();
         }
+    }
+
+    public static Vector3f getNormal(float x1, float y1, float z1, float x2, float y2, float z2) {
+        float xNormal = x2 - x1;
+        float yNormal = y2 - y1;
+        float zNormal = z2 - z1;
+        float normalSqrt = MathHelper.sqrt(xNormal * xNormal + yNormal * yNormal + zNormal * zNormal);
+
+        return new Vector3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt);
     }
 
     public static void color(Color color)
     {
-        glColor4f(color.getRed() / 255.0f,
+        RenderSystem.setShaderColor(color.getRed() / 255.0f,
                 color.getGreen() / 255.0f,
                 color.getBlue() / 255.0f,
                 color.getAlpha() / 255.0f);
@@ -426,32 +386,18 @@ public class RenderUtil implements Globals {
 
     public static void startRender()
     {
-        glPushAttrib(GL_ALL_ATTRIB_BITS);
-        glPushMatrix();
-        glDisable(GL_ALPHA_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_DEPTH_TEST);
-        glDepthMask(false);
-        glEnable(GL_CULL_FACE);
-        glEnable(GL_LINE_SMOOTH);
-        glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
-        glDisable(GL_LIGHTING);
+        RenderSystem.enableBlend();
+        //RenderSystem.disableCull();
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
     }
 
     public static void endRender()
     {
-        glEnable(GL_LIGHTING);
-        glDisable(GL_LINE_SMOOTH);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND);
-        glEnable(GL_ALPHA_TEST);
-        glDepthMask(true);
-        glCullFace(GL_BACK);
-        glPopMatrix();
-        glPopAttrib();
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        //RenderSystem.enableCull();
+        disableBlend();
     }
 
     public static boolean mouseWithinBounds(double mouseX, double mouseY, double x, double y, double width, double height)

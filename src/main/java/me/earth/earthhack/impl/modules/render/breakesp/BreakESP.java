@@ -39,7 +39,7 @@ public class BreakESP extends BlockESPModule {
                                 || Math.sqrt(DistanceUtil.distanceSq(blocks.get(i).blockPos.getX(), blocks.get(i).blockPos.getY(), blocks.get(i).blockPos.getZ(), enemyPlayer.getX(), enemyPlayer.getY(), enemyPlayer.getZ())) > 6.5)
                             blocks.remove(blocks.get(i));
                         else
-                            renderPos(blocks.get(i).blockPos);
+                            renderPos(event.getStack(), blocks.get(i).blockPos);
                     } catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }

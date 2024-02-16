@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.util.helpers.render;
 
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.impl.util.render.RenderUtil;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Box;
 
 import java.awt.*;
@@ -59,7 +60,7 @@ public class BlockESPBuilder
 
     public IAxisESP build()
     {
-        return bb -> RenderUtil.renderBox(interpolation.apply(bb),
+        return (matrix, bb) -> RenderUtil.renderBox(matrix, interpolation.apply(bb),
                 color.get(),
                 outline.get(),
                 width.get());

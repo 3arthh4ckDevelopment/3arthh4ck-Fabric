@@ -20,7 +20,7 @@ final class ListenerRender extends ModuleListener<AntiSurround, Render3DEvent>
             BlockPos pos = module.pos;
             if (pos != null)
             {
-                module.esp.render(Interpolation.interpolatePos(pos, 1.0f));
+                module.esp.render(event.getStack(), Interpolation.interpolatePos(pos, 1.0f));
             }
         }
     }

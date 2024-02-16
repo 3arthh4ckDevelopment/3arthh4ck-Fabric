@@ -30,7 +30,6 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
     @Override
     public void invoke(Render3DEvent event)
     {
-        if(true) return;
         if (!PlayerUtil.isCreative(mc.player)
                 && module.esp.getValue() != ESPMode.None
                 && module.bb != null) {
@@ -53,7 +52,7 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
             //GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
             Box bb = cachedBB;
-            module.esp.getValue().drawEsp(module, bb, Math.min(module.maxDamage, 1.0f));
+            module.esp.getValue().drawEsp(event.getStack(), module, bb, Math.min(module.maxDamage, 1.0f));
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             // GL11.glPopAttrib();
             event.getStack().pop();

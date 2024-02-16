@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.util.helpers.render;
 
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Box;
 
 /** {@link BlockESPBuilder} */
@@ -7,6 +8,6 @@ import net.minecraft.util.math.Box;
 public interface IAxisESP
 {
     /** Draws a BlockESP at the given Box. */
-    void render(Box bb);
+    void render(MatrixStack matrix, Box bb);
 
 }

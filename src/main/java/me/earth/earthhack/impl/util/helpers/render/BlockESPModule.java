@@ -5,6 +5,7 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.util.render.Interpolation;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
@@ -32,22 +33,22 @@ public class BlockESPModule extends ColorModule
         super.color.setValue(new Color(255, 255, 255, 76));
     }
 
-    public void renderPos(BlockPos pos)
+    public void renderPos(MatrixStack matrix, BlockPos pos)
     {
-        esp.render(Interpolation.interpolatePos(pos, height.getValue()));
+        esp.render(matrix, Interpolation.interpolatePos(pos, height.getValue()));
     }
 
-    public void renderAxis(Box bb)
+    public void renderAxis(MatrixStack matrix, Box bb)
     {
-        esp.render(Interpolation.interpolateAxis(bb));
+        esp.render(matrix, Interpolation.interpolateAxis(bb));
     }
 
     /**
      * @param bb the axis to render, needs to interpolated already.
      */
-    public void renderInterpAxis(Box bb)
+    public void renderInterpAxis(MatrixStack matrix, Box bb)
     {
-        esp.render(bb);
+        esp.render(matrix, bb);
     }
 
 }
