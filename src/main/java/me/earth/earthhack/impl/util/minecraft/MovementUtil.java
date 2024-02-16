@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Objects;
 
-@SuppressWarnings("all") // for now...
+@SuppressWarnings("ConstantConditions")
 public class MovementUtil implements Globals
 {
     public static boolean isMoving()

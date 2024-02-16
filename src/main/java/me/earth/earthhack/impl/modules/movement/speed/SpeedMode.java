@@ -10,7 +10,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 
 import java.util.HashSet;
-import java.util.List;
 
 // constant conditions... needs @SuppressWarnings, but you can't annotate Enums........
 public enum SpeedMode implements Globals
@@ -165,8 +164,10 @@ public enum SpeedMode implements Globals
 
                         module.boost = !module.boost;
                     } else {
-                        List<VoxelShape> collisions = mc.world.getEntityCollisions(mc.player, mc.player.getBoundingBox().offset(0.0, mc.player.getVelocity().getY(), 0.0));
-                        if ((collisions.size() > 0
+                        if ((mc.world.getBlockCollisions(null,
+                                mc.player
+                                        .getBoundingBox()
+                                        .offset(0.0, mc.player.getVelocity().getY(), 0.0)).iterator().hasNext() // this is shit, crashes the game for some reason
                                 || mc.player.verticalCollision)
                                 && module.stage > 0) {
                             module.stage = MovementUtil.isMoving() ? 1 : 0;
@@ -249,8 +250,6 @@ public enum SpeedMode implements Globals
 
                     if (MathUtil.round(mc.player.getPos().y - ((int) mc.player.getPos().y), 3)
                             == MathUtil.round(0.138, 3)) {
-                        // mc.player.getVelocity().getY() -= 0.08 + MovementUtil.getJumpSpeed();
-                        //mc.player.getVelocity().withAxis(Direction.Axis.Y, mc.player.getVelocity().getY() -= 0.08 + MovementUtil.getJumpSpeed());
                         mc.player.setVelocity(mc.player.getVelocity().withAxis(Direction.Axis.Y, mc.player.getVelocity().getY() - 0.08 + MovementUtil.getJumpSpeed()));
                         event.setY(event.getY()
                                 - (0.0931 + MovementUtil.getJumpSpeed()));

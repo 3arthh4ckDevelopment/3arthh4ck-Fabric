@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SlimeBlock.class)
-public class MixinSlimeBlock
+public abstract class MixinSlimeBlock
 {
     @Unique
     private static final ModuleCache<NoSlowDown>

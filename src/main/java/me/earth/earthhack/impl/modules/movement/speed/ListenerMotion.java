@@ -41,7 +41,7 @@ final class ListenerMotion extends ModuleListener<Speed, MotionUpdateEvent>
         if (module.mode.getValue() == SpeedMode.OldGround) {
 
             switch (event.getStage()) {
-                case PRE -> {
+                case PRE: {
                     if (module.notColliding()) {
                         module.oldGroundStage++;
                     } else {
@@ -56,14 +56,15 @@ final class ListenerMotion extends ModuleListener<Speed, MotionUpdateEvent>
                             ? 0.2
                             : 0.4)
                             + MovementUtil.getJumpSpeed());
+                    break;
                 }
-                case POST -> {
+                case POST: {
                     if (module.oldGroundStage == 3) {
                         mc.player.setVelocity(mc.player.getVelocity().withAxis(Direction.Axis.X, mc.player.getVelocity().x * 3.25));
-                        mc.player.setVelocity(mc.player.getVelocity().withAxis(Direction.Axis.X, mc.player.getVelocity().z * 3.25));
+                        mc.player.setVelocity(mc.player.getVelocity().withAxis(Direction.Axis.Z, mc.player.getVelocity().z * 3.25));
                     } else if (module.oldGroundStage == 4) {
                         mc.player.setVelocity(mc.player.getVelocity().withAxis(Direction.Axis.X, mc.player.getVelocity().x / 1.4));
-                        mc.player.setVelocity(mc.player.getVelocity().withAxis(Direction.Axis.X, mc.player.getVelocity().z / 1.4));
+                        mc.player.setVelocity(mc.player.getVelocity().withAxis(Direction.Axis.Z, mc.player.getVelocity().z / 1.4));
                         module.oldGroundStage = 2;
                     }
                 }

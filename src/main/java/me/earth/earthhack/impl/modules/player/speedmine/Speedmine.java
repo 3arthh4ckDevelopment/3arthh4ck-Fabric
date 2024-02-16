@@ -159,7 +159,7 @@ public class Speedmine extends Module {
 
     /* ---------------- Swap Settings -------------- */
     protected final Setting<CooldownBypass> cooldownBypass =
-            register(new EnumSetting<>("CoolDownBypass", CooldownBypass.None))
+            register(new EnumSetting<>("CoolDownBypass", CooldownBypass.Swap))
                     .setComplexity(Complexity.Medium);
     protected final Setting<Boolean> swap      =
             register(new BooleanSetting("SilentSwitch", false))
@@ -235,12 +235,6 @@ public class Speedmine extends Module {
     protected final Setting<Boolean> smoothenRender =
             register(new BooleanSetting("Smoothen", false))
                     .setComplexity(Complexity.Medium);
-    // protected final Setting<Color> pbColor  =
-    //         register(new ColorSetting("PB-Color", new Color(0, 255, 0, 240)))
-    //                 .setComplexity(Complexity.Expert);
-    // protected final Setting<Color> pbOutline  =
-    //         register(new ColorSetting("PB-Outline", new Color(0, 255, 0, 120)))
-    //                 .setComplexity(Complexity.Expert);
 
     protected final FastHelper fastHelper = new FastHelper(this);
     public final CrystalHelper crystalHelper = new CrystalHelper(this);
@@ -662,14 +656,14 @@ public class Speedmine extends Module {
 
     public void onSendPacket()
     {
-        ModuleUtil.sendMessage(this, "Yooooo sending the packet didnt fail");
+        ModuleUtil.sendMessage(this, "Yooooo sending the packet didnt fail", "packet");
         sentPacket = true;
         resetTimer.reset();
     }
 
     public void updateDamages()
     {
-        ModuleUtil.sendMessage(this, "Updating damages.");
+        ModuleUtil.sendMessage(this, "Updating damages.", "damageUpdate");
         maxDamage = 0.0f;
         for (int i = 0; i < 9; i++)
         {

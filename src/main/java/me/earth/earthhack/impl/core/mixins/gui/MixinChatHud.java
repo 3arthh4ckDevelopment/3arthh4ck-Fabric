@@ -71,13 +71,6 @@ public abstract class MixinChatHud implements IChatHud
     @Final private final List<String> messageHistory = Lists.newArrayList();
     @Final @Shadow private final List<ChatHudLine.Visible> visibleMessages = Lists.newArrayList();
 
-    @Shadow
-    protected abstract void addMessage(Text message,
-                                       @Nullable MessageSignatureData signature,
-                                       int ticks,
-                                       @Nullable MessageIndicator indicator,
-                                       boolean refresh);
-
     @Override
     @Invoker("addMessage")
     public abstract void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, int addedTime,
@@ -103,7 +96,7 @@ public abstract class MixinChatHud implements IChatHud
     public void addMessage(Text message, CallbackInfo info)
     {
         ChatEvent.Send event = new ChatEvent.Send((IChatHud) client.inGameHud.getChatHud(),
-                Text.literal(message.getString()), client.inGameHud.getChatHud().getVisibleLineCount(), 0, true);
+                Text.literal(message.getString()), client.inGameHud.getChatHud().getVisibleLineCount(), client.inGameHud.getTicks(), true);
         Bus.EVENT_BUS.post(event);
 
         if (event.isCancelled())

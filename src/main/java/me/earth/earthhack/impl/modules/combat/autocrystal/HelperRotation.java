@@ -303,14 +303,14 @@ public class HelperRotation implements Globals
                 }
 
                 ray = new BlockHitResult(
-                        new Vec3d(0.5, 1.0, 0.5), Direction.UP, pos, false);
+                        new Vec3d(0.5, 1.0, 0.5).add(pos.toCenterPos()), Direction.UP, pos, false);
             }
             else if (module.fallbackTrace.getValue()
                 && mc.world.getBlockState(ray.getBlockPos().offset(ray.getSide()))
                            .isSolid())
             {
                 ray = new BlockHitResult(
-                        new Vec3d(0.5, 1.0, 0.5), Direction.UP, pos, false);
+                        new Vec3d(0.5, 1.0, 0.5).add(pos.toCenterPos()), Direction.UP, pos, false);
             }
 
             module.switching = false;
@@ -345,7 +345,9 @@ public class HelperRotation implements Globals
                 }
 
                 mc.player.networkHandler.sendPacket(
-                    new PlayerInteractBlockC2SPacket(finalHand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), finalRay.getSide(), pos, false), 0));
+                    new PlayerInteractBlockC2SPacket(finalHand,
+                            new BlockHitResult(new Vec3d(f[0], f[1], f[2]).add(pos.toCenterPos()),
+                                    finalRay.getSide(), pos, false), 0));
                 module.sequentialHelper.setExpecting(pos);
 
                 if (finalNoGodded)
@@ -572,7 +574,7 @@ public class HelperRotation implements Globals
                 Ray ray = positions[i];
                 BlockPos pos = ray.getPos().offset(ray.getFacing());
                 PacketUtil.startDigging(pos, ray.getFacing().getOpposite());
-                PacketUtil.stopDigging( pos, ray.getFacing().getOpposite());
+                PacketUtil.stopDigging(pos, ray.getFacing().getOpposite());
                 Swing.Packet.swing(Hand.MAIN_HAND);
             }
 

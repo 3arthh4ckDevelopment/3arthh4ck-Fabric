@@ -32,8 +32,7 @@ final class ListenerMultiBlockChange extends
                 && module.mode.getValue() != MineMode.Instant
                 && module.mode.getValue() != MineMode.Civ)
         {
-            for (BlockPos data :
-                    packet.getAffectedBlocks())
+            for (BlockPos data : packet.getAffectedBlocks())
             {
                 if (data.equals(module.pos)
                         && mc.world.getBlockState(data).getBlock() == Blocks.AIR)

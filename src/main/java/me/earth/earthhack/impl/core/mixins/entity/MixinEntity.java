@@ -3,12 +3,14 @@ package me.earth.earthhack.impl.core.mixins.entity;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.event.bus.instance.Bus;
+import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.entity.IEntity;
 import me.earth.earthhack.impl.event.events.movement.MoveEvent;
+import me.earth.earthhack.impl.event.events.movement.StepEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
@@ -285,34 +287,6 @@ public abstract class MixinEntity implements IEntity, Globals
         }
     }
 
-    // @ModifyVariable(
-    //          method = "move",
-    //          at = @At(
-    //                  value = "HEAD"),
-    //          ordinal = 0)
-    // private double setX(double x)
-    // {
-    //     return this.moveEvent != null ? this.moveEvent.getX() : x;
-    // }
-//
-    // @ModifyVariable(
-    //         method = "move",
-    //         at = @At("HEAD"),
-    //         ordinal = 1)
-    // private double setY(double y)
-    // {
-    //     return this.moveEvent != null ? this.moveEvent.getY() : y;
-    // }
-//
-    // @ModifyVariable(
-    //          method = "move",
-    //          at = @At("HEAD"),
-    //          ordinal = 2)
-    // private double setZ(double z)
-    // {
-    //      return this.moveEvent != null ? this.moveEvent.getZ() : z;
-    // }
-
     @ModifyVariable(
             method = "move",
             at = @At("HEAD"),
@@ -336,26 +310,27 @@ public abstract class MixinEntity implements IEntity, Globals
     //             : entity.isSneaking();
     // }
 
-    // @Inject(
-    //         method = "move",
-    //         at = @At(
-    //                 value = "INVOKE",
-    //                 target = "Lnet/minecraft/block/Block;onSteppedOn(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/Entity;)V",
-    //                 ordinal = 2))
-    // public void onGroundHook(MovementType type,
-    //                          Vec3d movement,
-    //                          CallbackInfo info)
-    // {
-    //     //noinspection ConstantConditions
-    //     if (ClientPlayerEntity.class.isInstance(this) && !STEP_COMP.getValue()) {
-    //         StepEvent event = new StepEvent(Stage.PRE,
-    //                 this.getBoundingBox(),
-    //                 this.stepHeight);
-    //         Bus.EVENT_BUS.post(event);
-    //         this.prevHeight = this.stepHeight;
-    //         this.stepHeight = event.getHeight();
-    //     }
-    // }
+    @Inject(
+            method = "move",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/block/Block;onSteppedOn(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;" +
+                            "Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/Entity;)V"
+                    /*, ordinal = 2*/))
+    public void onGroundHook(MovementType type,
+                             Vec3d movement,
+                             CallbackInfo info)
+    {
+        //noinspection ConstantConditions
+        if (ClientPlayerEntity.class.isInstance(this) && !STEP_COMP.getValue()) {
+            StepEvent event = new StepEvent(Stage.PRE,
+                    this.getBoundingBox(),
+                    this.stepHeight);
+            Bus.EVENT_BUS.post(event);
+            this.prevHeight = this.stepHeight;
+            this.stepHeight = event.getHeight();
+        }
+    }
 
     // @Inject(
     //         method = "move",

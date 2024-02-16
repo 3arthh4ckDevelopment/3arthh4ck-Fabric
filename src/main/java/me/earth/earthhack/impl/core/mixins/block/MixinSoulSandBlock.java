@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(SoulSandBlock.class)
-public class MixinSoulSandBlock
+public abstract class MixinSoulSandBlock
 {
     @Unique
     private static final ModuleCache<NoSlowDown>

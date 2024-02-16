@@ -6,6 +6,7 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.util.helpers.disabling.DisablingModule;
 import me.earth.earthhack.impl.util.helpers.render.BlockESPModule;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import net.minecraft.util.math.Box;
@@ -56,7 +57,7 @@ public class Step extends BlockESPModule
         this.listeners.add(new ListenerWorldClient(this));
         this.listeners.add(new ListenerPreMotionUpdate(this));
         register(new BooleanSetting("Compatibility", false));
-        // DisablingModule.makeDisablingModule(this);
+        DisablingModule.makeDisablingModule(this);
         super.color.setValue(new Color(0, 255, 255, 76));
         super.outline.setValue(new Color(0, 255, 255));
         mode.addObserver(e -> mc.execute(this::reset));

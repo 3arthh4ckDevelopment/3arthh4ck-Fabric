@@ -15,10 +15,8 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShape;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -143,6 +141,23 @@ public class Speed extends Module
         return mode.getValue().toString();
     }
 
+    protected boolean notColliding()
+    {
+        boolean stepping = false;
+        List<VoxelShape> collisions =
+                (List<VoxelShape>) mc.world.getBlockCollisions(mc.player,
+                        mc.player.getBoundingBox().expand(0.1, 0.0, 0.1));
+        if (STEP.isEnabled() && !collisions.isEmpty())
+        {
+            stepping = true;
+        }
+
+        return mc.player.isOnGround()
+                && !stepping
+                && !PositionUtil.inLiquid()
+                && !PositionUtil.inLiquid(true);
+    }
+
     public double getCap()
     {
         double ret = cap.getValue();
@@ -171,27 +186,6 @@ public class Speed extends Module
         }
 
         return ret;
-    }
-
-    protected boolean notColliding()
-    {
-        boolean stepping = false;
-        Iterable<VoxelShape> collisions = mc.world.getCollisions(mc.player, mc.player.getBoundingBox().stretch(0.1, 0.0, 0.1));
-        List<Box> realCollisions = new ArrayList<>();
-        //  kinda chinese but it's there for it to build + maybe work =D
-        for(VoxelShape shape : collisions){
-            realCollisions.add(shape.getBoundingBox());
-        }
-
-        if (STEP.isEnabled() && !realCollisions.isEmpty())
-        {
-            stepping = true;
-        }
-
-        return mc.player.isOnGround()
-                && !stepping
-                && !PositionUtil.inLiquid()
-                && !PositionUtil.inLiquid(true);
     }
 
     public SpeedMode getMode()

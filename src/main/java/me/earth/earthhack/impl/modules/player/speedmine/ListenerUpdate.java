@@ -16,6 +16,7 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -83,6 +84,8 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
         {
             return;
         }
+
+        ChatUtil.sendMessage("Received UpdateEvent!", "updateevent");
 
         // if (!PlayerUtil.isCreative(mc.player)
         //     && PingBypass.isConnected()
@@ -178,7 +181,7 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                 if (placeTarg != null) {
                     final BlockPos p = PlayerUtil.getBestPlace(module.pos, placeTarg);
                     if (module.placeCrystal.getValue() && AUTOCRYSTAL.isEnabled() && p != null && BlockUtil.canPlaceCrystal(p,false,false)) {
-                        final BlockHitResult result = new BlockHitResult(new Vec3d(0.5, 1.0, 0.5), Direction.UP, p, false);
+                        final BlockHitResult result = new BlockHitResult(new Vec3d(0.5, 1.0, 0.5).add(p.toCenterPos()), Direction.UP, p, false);
 
                         if (mc.player.getOffHandStack() != ItemStack.EMPTY && mc.player.getOffHandStack().getItem() == Items.END_CRYSTAL) {
                             final PlayerInteractBlockC2SPacket place =
@@ -198,7 +201,8 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                                 Locks.acquire(Locks.WINDOW_CLICK_LOCK, () -> {
                                     module.cooldownBypass.getValue().switchTo(crystalSlot);
                                     final PlayerInteractBlockC2SPacket place =
-                                        new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(result.getPos(), result.getSide(), p, false), 0);
+                                        new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(result.getPos().add(p.toCenterPos()),
+                                                                         result.getSide(), p, false), 0);
                                     final HandSwingC2SPacket animation =
                                         new HandSwingC2SPacket(Hand.MAIN_HAND);
                                     mc.player.networkHandler.sendPacket(place);
@@ -212,9 +216,11 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
 
                 Locks.acquire(Locks.WINDOW_CLICK_LOCK, () ->
                 {
+                    ChatUtil.sendMessage("Acquiring WINDOW_CLICK_LOCK!", module.getName());
                     if (module.swap.getValue())
                     {
                         module.cooldownBypass.getValue().switchTo(pickSlot);
+                        ChatUtil.sendMessage("Attempted Swap to " + pickSlot, module.getName() + "swap");
                     }
 
                     NetworkUtil.sendPacketNoEvent(
@@ -228,6 +234,7 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                     {
                         module.cooldownBypass.getValue().switchBack(
                             lastSlot, pickSlot);
+                        ChatUtil.sendMessage("Attempted SwapBack to " + lastSlot, module.getName() + "swap");
                     }
                 });
 
@@ -235,7 +242,7 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                 {
                     mc.interactionManager.breakBlock(module.pos);
                 }
-
+                ChatUtil.sendMessage("Sending packets!", module.getName() + "packet");
                 module.onSendPacket();
             }
         }
