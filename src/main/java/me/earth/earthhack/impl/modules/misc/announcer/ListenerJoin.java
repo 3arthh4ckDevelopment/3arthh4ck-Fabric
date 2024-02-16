@@ -16,7 +16,7 @@ final class ListenerJoin extends ModuleListener<Announcer, ConnectionEvent.Join>
     {
         if (module.join.getValue()
                 && !event.getName()
-                         .equals(mc.getSession().getProfile().getName()))
+                         .equals(mc.player.getGameProfile().getName()))
         {
             module.addWordAndIncrement(AnnouncementType.Join, event.getName());
         }

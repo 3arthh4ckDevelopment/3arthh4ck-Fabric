@@ -19,7 +19,6 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.network.packet.s2c.play.ExperienceOrbSpawnS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerSpawnS2CPacket;
 import net.minecraft.util.Hand;
 
 import java.util.List;
@@ -46,8 +45,8 @@ public class IDHelper extends SubscriberImpl implements Globals
             event -> checkID(event.getPacket().getId())));
         this.listeners.add(new ReceiveListener<>(ExperienceOrbSpawnS2CPacket.class,
             event -> checkID(event.getPacket().getId())));
-        this.listeners.add(new ReceiveListener<>(PlayerSpawnS2CPacket.class,
-            event -> checkID(event.getPacket().getId())));
+        //this.listeners.add(new ReceiveListener<>(PlayerSpawnS2CPacket.class,
+        //    event -> checkID(event.getPacket().getId())));
         // this.listeners.add(new ReceiveListener<>(SPacketSpawnGlobalEntity.class,
         //     event -> checkID(event.getPacket().getId())));
         // this.listeners.add(new ReceiveListener<>(SPacketSpawnPainting.class,

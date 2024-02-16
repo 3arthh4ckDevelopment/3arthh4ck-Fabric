@@ -5,7 +5,7 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.pingbypass.PingBypassModule;
-import net.minecraft.network.packet.c2s.play.ResourcePackStatusC2SPacket;
+import net.minecraft.network.packet.c2s.common.ResourcePackStatusC2SPacket;
 
 final class ListenerResources
         extends ModuleListener<PingSpoof,

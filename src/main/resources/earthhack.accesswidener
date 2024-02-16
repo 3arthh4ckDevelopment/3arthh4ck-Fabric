@@ -2,7 +2,8 @@ accessWidener	v1  named
 
 accessible field net/minecraft/util/math/Direction HORIZONTAL [Lnet/minecraft/util/math/Direction;
 accessible method net/minecraft/entity/Entity unsetRemoved ()V
-accessible method net/minecraft/client/gui/screen/ConnectScreen <init> (Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;)V
+accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen <init> (Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;)V
+accessible class net/minecraft/client/MinecraftClient$LoadingContext
 
 # BlockBox (mutable bb)
 accessible field net/minecraft/util/math/BlockBox minX I

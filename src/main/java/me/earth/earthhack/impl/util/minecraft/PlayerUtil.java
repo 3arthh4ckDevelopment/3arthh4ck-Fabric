@@ -32,7 +32,7 @@ public class PlayerUtil implements Globals {
         }
 
         FAKE_PLAYERS.put(randomID, fakePlayer);
-        mc.world.addEntity(randomID, fakePlayer);
+        mc.world.addEntity(fakePlayer);
         return fakePlayer;
     }
 

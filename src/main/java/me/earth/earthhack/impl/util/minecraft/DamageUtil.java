@@ -353,7 +353,7 @@ public class DamageUtil implements Globals
                 ((densityDistance * densityDistance + distance)
                         / 2.0 * 7.0 * 12.0 + 1.0));
 
-        DamageSource damageSource = new Explosion(mc.world, mc.player, x, y, z, power, false, Explosion.DestructionType.DESTROY).getDamageSource();
+        DamageSource damageSource = new Explosion(mc.world, mc.player, x, y, z, power, false, Explosion.DestructionType.DESTROY).getCausingEntity().getRecentDamageSource();
 
         ICachedDamage cache = (ICachedDamage) base;
         int armorValue = cache.getArmorValue();

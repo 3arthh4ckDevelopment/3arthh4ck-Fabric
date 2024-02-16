@@ -5,21 +5,21 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.pingbypass.PingBypassModule;
-import net.minecraft.network.packet.c2s.play.PlayPongC2SPacket;
+import net.minecraft.network.packet.c2s.common.CommonPongC2SPacket;
 
 final class ListenerTransaction extends
-        ModuleListener<PingSpoof, PacketEvent.Send<PlayPongC2SPacket>>
+        ModuleListener<PingSpoof, PacketEvent.Send<CommonPongC2SPacket>>
 {
     private static final ModuleCache<PingBypassModule> PINGBYPASS =
             Caches.getModule(PingBypassModule.class);
 
     public ListenerTransaction(PingSpoof module)
     {
-        super(module, PacketEvent.Send.class, PlayPongC2SPacket.class);
+        super(module, PacketEvent.Send.class, CommonPongC2SPacket.class);
     }
 
     @Override
-    public void invoke(PacketEvent.Send<PlayPongC2SPacket> event)
+    public void invoke(PacketEvent.Send<CommonPongC2SPacket> event)
     {
         if (!PINGBYPASS.isEnabled() && module.transactions.getValue())
         {

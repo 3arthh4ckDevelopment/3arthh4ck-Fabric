@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Mixin(LoginHelloC2SPacket.class)
@@ -17,5 +16,5 @@ public interface ILoginHelloC2SPacket
 
     @Mutable
     @Accessor(value = "profileId")
-    void setUuid(Optional<UUID> profileId);
+    void setUuid(UUID profileId);
 }

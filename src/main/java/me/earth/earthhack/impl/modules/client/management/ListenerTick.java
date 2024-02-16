@@ -33,8 +33,8 @@ final class ListenerTick extends ModuleListener<Management, TickEvent>
             }
 
             if (module.lastProfile != null
-                && !module.lastProfile.equals(mc.getSession().getProfile())) {
-                module.lastProfile = mc.getSession().getProfile();
+                && !module.lastProfile.equals(mc.getGameProfile())) {
+                module.lastProfile = mc.getGameProfile();
                 Managers.FRIENDS.add(module.lastProfile.getName(),
                                      module.lastProfile.getId());
                 MEDIA.computeIfPresent(Media::reload);

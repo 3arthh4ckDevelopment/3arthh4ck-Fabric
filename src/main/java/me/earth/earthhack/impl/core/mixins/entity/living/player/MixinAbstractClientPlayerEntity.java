@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 public abstract class MixinAbstractClientPlayerEntity extends MixinPlayerEntity
 {
     @Shadow public abstract boolean isSpectator();
-    @Shadow public abstract String getModel();
 
     @Shadow
     @Nullable

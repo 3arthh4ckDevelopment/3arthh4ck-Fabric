@@ -166,7 +166,7 @@ public class SetDeadManager extends SubscriberImpl implements Globals
         {
             Entity entity = time.getEntity();
             entity.unsetRemoved();
-            mc.world.addEntity(entity.getId(), entity);
+            mc.world.addEntity(entity);
             entity.unsetRemoved();
         }
     }
@@ -192,7 +192,7 @@ public class SetDeadManager extends SubscriberImpl implements Globals
                 entity.unsetRemoved();
                 if (!Managers.ENTITIES.getEntities().contains(entity))
                 {
-                    mc.world.addEntity(entry.getKey(), entity);
+                    mc.world.addEntity(entity);
                     entity.unsetRemoved();
                     killed.remove(entry.getKey());
                 }

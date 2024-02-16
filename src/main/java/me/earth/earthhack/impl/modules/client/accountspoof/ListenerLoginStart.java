@@ -7,7 +7,6 @@ import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
 
-import java.util.Optional;
 import java.util.UUID;
 
 final class ListenerLoginStart extends ModuleListener<AccountSpoof, PacketEvent.Send<LoginHelloC2SPacket>> {
@@ -30,7 +29,7 @@ final class ListenerLoginStart extends ModuleListener<AccountSpoof, PacketEvent.
             uuid = UUID.randomUUID();
         }
         loginAccessor.setName(module.accountName.getValue());
-        loginAccessor.setUuid(Optional.of(uuid));
+        loginAccessor.setUuid(uuid);
     }
 
 }

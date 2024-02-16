@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
-import com.mojang.util.UUIDTypeAdapter;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.TextUtil;
 import me.earth.earthhack.api.util.interfaces.Globals;
@@ -92,7 +91,7 @@ public class LookUpUtil implements Globals
                             .get("id")
                             .getAsString();
                     UUID result =
-                            UUIDTypeAdapter.fromString(id);
+                            UUID.fromString(id);
                     CACHE.forcePut(name, result);
                     return result;
                 }

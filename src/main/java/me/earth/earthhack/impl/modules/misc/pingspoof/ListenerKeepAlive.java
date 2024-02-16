@@ -5,7 +5,7 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.pingbypass.PingBypassModule;
-import net.minecraft.network.packet.c2s.play.KeepAliveC2SPacket;
+import net.minecraft.network.packet.c2s.common.KeepAliveC2SPacket;
 
 final class ListenerKeepAlive extends
         ModuleListener<PingSpoof, PacketEvent.Send<KeepAliveC2SPacket>>

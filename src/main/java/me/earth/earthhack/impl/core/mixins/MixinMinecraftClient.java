@@ -171,7 +171,7 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
             method = "onInitFinished",
             at = @At("HEAD")
     )
-    public  void onInitFinishedHook(CallbackInfo info) {
+    public  void onInitFinishedHook(MinecraftClient.LoadingContext loadingContext, CallbackInfoReturnable<Runnable> cir) {
         Bus.EVENT_BUS.post(new ClientInitEvent());
     }
 

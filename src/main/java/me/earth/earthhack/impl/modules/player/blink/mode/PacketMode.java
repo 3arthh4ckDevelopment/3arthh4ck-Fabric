@@ -2,9 +2,9 @@ package me.earth.earthhack.impl.modules.player.blink.mode;
 
 import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.common.CommonPongC2SPacket;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.c2s.play.ClientStatusC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayPongC2SPacket;
 import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
 
 public enum PacketMode
@@ -32,7 +32,7 @@ public enum PacketMode
         {
             return !(packet instanceof ChatMessageC2SPacket
                         || packet instanceof TeleportConfirmC2SPacket
-                        || packet instanceof PlayPongC2SPacket
+                        || packet instanceof CommonPongC2SPacket
                         // || packet instanceof CPacketTabComplete // TODO find this
                         || packet instanceof ClientStatusC2SPacket);
         }

@@ -100,7 +100,7 @@ public class HudEditorGui extends Screen
         {
             if (BACK.getValue())
             {
-                this.renderBackground(context);
+                this.renderBackground(context, mouseX, mouseY, delta);
             }
             else
             {

@@ -134,7 +134,7 @@ public class Management extends Module {
     {
         if (friend.getValue())
         {
-            lastProfile = mc.getSession().getProfile();
+            lastProfile = mc.getGameProfile();
             Managers.FRIENDS.add(lastProfile.getName(), lastProfile.getId());
         }
         pluginsUpdate(pluginSection.getValue());

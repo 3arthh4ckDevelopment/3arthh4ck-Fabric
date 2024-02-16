@@ -54,7 +54,7 @@ final class ListenerExplosion extends
                                     / 2.0 * 7.0 * size * 2.0f + 1.0);
         DamageSource damageSource = (
                 new Explosion(mc.world, mc.player, x, y, z, size, false, Explosion.DestructionType.DESTROY)
-                        .getDamageSource());
+                        .getCausingEntity().getRecentDamageSource());
 
         float limbSwing = module.fakePlayer.handSwingProgress;
         module.fakePlayer.damage(damageSource, damage);

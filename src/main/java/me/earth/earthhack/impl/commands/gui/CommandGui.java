@@ -9,6 +9,7 @@ import me.earth.earthhack.impl.modules.client.commands.Commands;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -45,10 +46,8 @@ public class CommandGui extends Screen implements Globals
                 this.width - 20 - 4,
                 4,
                 20, 20,
-                0, 80, 20,
-                GUI_TEXTURES,
-                256, 256,
-                button -> this.client.setScreen(parent));
+                new ButtonTextures(GUI_TEXTURES, GUI_TEXTURES),
+                button -> client.setScreen(parent));
         //noinspection ConstantConditions
         textField = new TextFieldWidget(
                 this.client.textRenderer,

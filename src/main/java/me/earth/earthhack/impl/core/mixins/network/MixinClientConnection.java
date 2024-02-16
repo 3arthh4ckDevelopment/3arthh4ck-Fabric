@@ -27,9 +27,9 @@ public abstract class MixinClientConnection implements IClientConnection
     @Inject(method = "sendImmediately",
             at = @At("HEAD"),
             cancellable = true)
-    private void earthhack$onSendPacket(Packet<?> packet, PacketCallbacks callbacks, CallbackInfo info)
+    private void earthhack$onSendPacket(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci)
     {
-        earthhack$onSendPacket(packet, info);
+        earthhack$onSendPacket(packet, ci);
     }
 
     @Unique
