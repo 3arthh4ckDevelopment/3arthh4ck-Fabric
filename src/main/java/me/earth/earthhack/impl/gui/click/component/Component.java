@@ -64,7 +64,13 @@ public class Component {
         context.drawTextWithShadow(mc.textRenderer, text, (int) (x / scale), (int) (y / scale), color);
     }
 
-    public void keyTyped(char character, int keyCode) {
+    public void charTyped(char character, int keyCode) {
+    }
+
+    public void keyPressed(int keyCode) {
+    }
+
+    public void mouseScrolled(double mouseX, double mouseY, double scrollAmount) {
     }
 
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {

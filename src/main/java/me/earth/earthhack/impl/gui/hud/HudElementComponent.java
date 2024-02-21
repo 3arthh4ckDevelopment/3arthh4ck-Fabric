@@ -131,15 +131,27 @@ public class HudElementComponent extends Component {
         updatePositions();
     }
 
-
     @Override
-    public void keyTyped(char character, int keyCode) {
-        super.keyTyped(character, keyCode);
+    public void charTyped(char character, int keyCode) {
+        super.charTyped(character, keyCode);
         if (isExtended()) {
             for (Component component : getComponents()) {
                 if (component instanceof SettingComponent
                         && Visibilities.VISIBILITY_MANAGER.isVisible(((SettingComponent<?, ?>) component).getSetting())) {
-                    component.keyTyped(character, keyCode);
+                    component.charTyped(character, keyCode);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void keyPressed(int keyCode) {
+        super.keyPressed(keyCode);
+        if (isExtended()) {
+            for (Component component : getComponents()) {
+                if (component instanceof SettingComponent
+                        && Visibilities.VISIBILITY_MANAGER.isVisible(((SettingComponent<?, ?>) component).getSetting())) {
+                    component.keyPressed(keyCode);
                 }
             }
         }

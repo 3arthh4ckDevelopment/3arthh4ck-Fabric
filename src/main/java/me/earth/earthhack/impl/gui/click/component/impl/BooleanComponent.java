@@ -36,11 +36,6 @@ public class BooleanComponent extends SettingComponent<Boolean, Setting<Boolean>
     }
 
     @Override
-    public void keyTyped(char character, int keyCode) {
-        super.keyTyped(character, keyCode);
-    }
-
-    @Override
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + getWidth() - 17,getFinishedY() + 1,12,getHeight() - 2);

@@ -45,19 +45,6 @@ public class ModulesFrame extends Frame {
             drawStringWithShadow(context, disString, (getPosX() + getWidth() - 3 - Managers.TEXT.getStringWidth(disString)), (getPosY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1)), 0xFFFFFFFF);
         }
         if (isExtended()) {
-            if (isExtended()) {
-                if (RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1) && getScrollCurrentHeight() > scrollMaxHeight) {
-                    final float scrollSpeed =(CLICK_GUI.get().scrollSpeed.getValue() >> 2);
-                    int wheel = 1; //TODO: mouse scroll
-                    if (wheel < 0) {
-                        if (getScrollY() - scrollSpeed < -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)))
-                            setScrollY((int) -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)));
-                        else setScrollY((int) (getScrollY() - scrollSpeed));
-                    } else if (wheel > 0) {
-                        setScrollY((int) (getScrollY() + scrollSpeed));
-                    }
-                }
-            }
             if (getScrollY() > 0) setScrollY(0);
             if (getScrollCurrentHeight() > scrollMaxHeight) {
                 if (getScrollY() - 6 < -(getScrollCurrentHeight() - scrollMaxHeight))
@@ -75,8 +62,21 @@ public class ModulesFrame extends Frame {
     }
 
     @Override
-    public void keyTyped(char character, int keyCode) {
-        super.keyTyped(character, keyCode);
+    public void mouseScrolled(double mouseX, double mouseY, double scrollAmount) {
+        super.mouseScrolled(mouseX, mouseY, scrollAmount);
+        if (isExtended()) {
+            final float scrollMaxHeight = mc.getWindow().getScaledHeight();
+            if (RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1) && getScrollCurrentHeight() > scrollMaxHeight) {
+                final float scrollSpeed =(CLICK_GUI.get().scrollSpeed.getValue() >> 2);
+                if (scrollAmount < 0) {
+                    if (getScrollY() - scrollSpeed < -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)))
+                        setScrollY((int) -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)));
+                    else setScrollY((int) (getScrollY() - scrollSpeed));
+                } else if (scrollAmount > 0) {
+                    setScrollY((int) (getScrollY() + scrollSpeed));
+                }
+            }
+        }
     }
 
     @Override

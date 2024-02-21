@@ -165,19 +165,31 @@ public class Click extends Screen {
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
-        getFrames().forEach(frame -> frame.keyTyped(chr, modifiers));
+        getFrames().forEach(frame -> frame.charTyped(chr, modifiers));
         return super.charTyped(chr, modifiers);
     }
 
     @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        getFrames().forEach(frame -> frame.keyPressed(keyCode));
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        getFrames().forEach(frame -> frame.mouseScrolled(mouseX, mouseY, verticalAmount));
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+    }
+
+    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        getFrames().forEach(frame -> frame.mouseClicked(mouseX,mouseY,mouseButton));
+        getFrames().forEach(frame -> frame.mouseClicked(mouseX, mouseY, mouseButton));
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int mouseButton) {
-        getFrames().forEach(frame -> frame.mouseReleased(mouseX,mouseY,mouseButton));
+        getFrames().forEach(frame -> frame.mouseReleased(mouseX, mouseY, mouseButton));
         return super.mouseReleased(mouseX, mouseY, mouseButton);
     }
 

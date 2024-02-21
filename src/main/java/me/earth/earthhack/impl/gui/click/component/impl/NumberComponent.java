@@ -41,11 +41,6 @@ public class NumberComponent extends SettingComponent<Number, NumberSetting<Numb
     }
 
     @Override
-    public void keyTyped(char character, int keyCode) {
-        super.keyTyped(character, keyCode);
-    }
-
-    @Override
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());

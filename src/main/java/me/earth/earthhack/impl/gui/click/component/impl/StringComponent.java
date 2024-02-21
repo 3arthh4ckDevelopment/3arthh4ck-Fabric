@@ -47,8 +47,15 @@ public class StringComponent extends SettingComponent<String, StringSetting> {
     }
 
     @Override
-    public void keyTyped(char character, int keyCode) {
-        super.keyTyped(character, keyCode);
+    public void charTyped(char character, int keyCode) {
+        super.charTyped(character, keyCode);
+        if (isListening && isAllowedCharacter(character)) {
+            setString(currentString.getString() + character);
+        }
+    }
+
+    public void keyPressed(int keyCode) {
+        super.keyPressed(keyCode);
         if (isListening) {
             if (keyCode == 1) {
                 return;
@@ -65,10 +72,6 @@ public class StringComponent extends SettingComponent<String, StringSetting> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    return;
-                }
-                if (isAllowedCharacter(character)) {
-                    setString(currentString.getString() + character);
                 }
             }
         }

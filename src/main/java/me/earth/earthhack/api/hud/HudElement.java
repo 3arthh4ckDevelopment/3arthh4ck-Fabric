@@ -187,7 +187,8 @@ public abstract class HudElement extends SettingContainer
         Render2DUtil.drawBorderedRect(context.getMatrices(), x.getValue(), y.getValue(), x.getValue() + width, y.getValue() + height, 1.0f, 0x00000000, 0xaa000000);
     }
 
-    public void guiKeyPressed(char eventChar, int key) {}
+    public void guiCharTyped(char eventChar, int key) {}
+    public void guiKeyPressed(int keyCode) {}
 
     public void guiMouseClicked(double mouseX, double mouseY, int mouseButton) {
         // currentEdge = GuiUtil.getHoveredEdge(this, mouseX, mouseY, 5);
