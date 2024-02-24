@@ -154,7 +154,7 @@ public class RenderUtil implements Globals {
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, 12, 0);
-        BLOCK_FILL_BUFFER.draw(/*GL_QUADS*/);
+        BLOCK_FILL_BUFFER.draw();
         BLOCK_FILL_BUFFER.unbind();
         glDisableClientState(GL_VERTEX_ARRAY);
         glTranslated(-(x - viewX), -(y - viewY), -(z - viewZ));
@@ -163,14 +163,9 @@ public class RenderUtil implements Globals {
 
     public static void drawBox(MatrixStack matrix, Box bb, Color color)
     {
-        RenderSystem.enableBlend();
-        RenderSystem.disableDepthTest();
-        RenderSystem.depthMask(false);
-        color(color);
+        startRender();
         fillBox(matrix, bb, color.getRGB());
-        RenderSystem.depthMask(true);
-        RenderSystem.enableDepthTest();
-        disableBlend();
+        endRender();
     }
 
     public static void renderBox(MatrixStack matrix,
@@ -180,19 +175,17 @@ public class RenderUtil implements Globals {
                                  float lineWidth)
     {
         startRender();
+        RenderSystem.lineWidth(lineWidth);
         drawOutline(matrix, bb, lineWidth, outLineColor);
+        RenderSystem.lineWidth(1.0f);
         endRender();
-//        startRender();
-//        drawBox(matrix, bb, color);
-//        endRender();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        startRender();
+        drawBox(matrix, bb, color);
+        endRender();
     }
 
     public static void renderBox(MatrixStack matrix, BlockPos vertex, Color color, float height)
     {
-        glPushMatrix();
-        glPushAttrib(GL_ALL_ATTRIB_BITS);
-
         Box bb = Interpolation.interpolatePos(vertex, height);
         startRender();
         drawOutline(matrix, bb, 1.5f, color);
@@ -201,148 +194,78 @@ public class RenderUtil implements Globals {
         startRender();
         drawBox(matrix, bb, boxColor);
         endRender();
-
-        glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        glPopAttrib();
-        glPopMatrix();
     }
 
-    public static void drawOutline(MatrixStack matrix, Box bb, float lineWidth)
-    {
-        glPushMatrix();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_TEXTURE_2D);
-        glEnable(GL_LINE_SMOOTH);
-        glDisable(GL_DEPTH_TEST);
-        glDepthMask(false);
-        glLineWidth(lineWidth);
-        fillOutline(matrix, bb, 0);
-        glLineWidth(1.0f);
-        glDisable(GL_LINE_SMOOTH);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_LIGHTING);
-        glEnable(GL_DEPTH_TEST);
-        glDepthMask(true);
-        glDisable(GL_BLEND);
-        glPopMatrix();
-    }
     public static void drawOutline(MatrixStack matrix, Box bb, float lineWidth, Color color)
     {
-
-
+        startRender();
         RenderSystem.lineWidth(lineWidth);
-        fillOutline(matrix, bb, color.getRGB());
-
-
+        fillOutline(matrix, bb, color);
+        endRender();
     }
 
-    public static void fillBox(MatrixStack matrix, Box boundingBox, int color)
-    {
-        if (boundingBox != null)
-        {
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferBuilder = tessellator.getBuffer();
-            Matrix4f posMatrix = matrix.peek().getPositionMatrix();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.vertex(posMatrix, (float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ).color(color).next();
-            bufferBuilder.end();
-
-            tessellator.draw();
-        }
-    }
-
-    public static void fillOutline(MatrixStack matrix, Box bb, int color)
+    public static void fillBox(MatrixStack matrix, Box bb, int color)
     {
         if (bb != null)
         {
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferBuilder = tessellator.getBuffer();
+            Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
+            RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.minY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.minY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.minY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.minY, (float) bb.maxZ).color(color).next();
+
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.maxY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.maxY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.maxY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.maxY, (float) bb.minZ).color(color).next();
+
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.minY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.maxY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.maxY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.minY, (float) bb.minZ).color(color).next();
+
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.minY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.maxY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.maxY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.minY, (float) bb.maxZ).color(color).next();
+
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.minY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.minY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.maxX, (float) bb.maxY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.maxY, (float) bb.maxZ).color(color).next();
+
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.minY, (float) bb.minZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.minY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.maxY, (float) bb.maxZ).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.minX, (float) bb.maxY, (float) bb.minZ).color(color).next();
+
+            tessellator.draw();
+        }
+    }
+
+    public static void fillOutline(MatrixStack matrix, Box bb, Color color)
+    {
+        if (bb != null)
+        {
+            float alpha = color.getAlpha() / 255.0F;
+            float red = color.getRed() / 255.0F;
+            float green = color.getGreen() / 255.0F;
+            float blue = color.getBlue() / 255.0F;
+
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
+
+            RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram);
+            bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.LINES);
+            WorldRenderer.drawBox(matrix, bufferBuilder, bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ, red, green, blue, alpha);
+
+            tessellator.draw();
         }
     }
 
@@ -353,25 +276,6 @@ public class RenderUtil implements Globals {
         float normalSqrt = MathHelper.sqrt(xNormal * xNormal + yNormal * yNormal + zNormal * zNormal);
 
         return new Vector3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt);
-    }
-
-    public static void color(Color color)
-    {
-        RenderSystem.setShaderColor(color.getRed() / 255.0f,
-                color.getGreen() / 255.0f,
-                color.getBlue() / 255.0f,
-                color.getAlpha() / 255.0f);
-    }
-
-    public static void color(int color)
-    {
-        float[] color4f = ColorUtil.toArray(color);
-        glColor4f(color4f[0], color4f[1], color4f[2], color4f[3]);
-    }
-
-    public static void color(float r, float g, float b, float a)
-    {
-        glColor4f(r, g, b, a);
     }
 
     public static void scissor(float x, float y, float x1, float y1)
@@ -387,17 +291,18 @@ public class RenderUtil implements Globals {
     public static void startRender()
     {
         RenderSystem.enableBlend();
-        //RenderSystem.disableCull();
+        RenderSystem.defaultBlendFunc();
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
+        RenderSystem.disableCull();
     }
 
     public static void endRender()
     {
-        RenderSystem.depthMask(true);
+        RenderSystem.disableBlend();
         RenderSystem.enableDepthTest();
-        //RenderSystem.enableCull();
-        disableBlend();
+        RenderSystem.depthMask(true);
+        RenderSystem.enableCull();
     }
 
     public static boolean mouseWithinBounds(double mouseX, double mouseY, double x, double y, double width, double height)
