@@ -5,16 +5,16 @@ import me.earth.earthhack.api.hud.HudElement;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
+import me.earth.earthhack.impl.util.render.Render2DUtil;
 import net.minecraft.client.gui.DrawContext;
 
 public class Model extends HudElement {
 
-    protected final Setting<Float> modelScale =
-            register(new NumberSetting<>("ModelScale", 0.8f, 0.4f, 2.0f));
+    private final Setting<Integer> modelScale =
+            register(new NumberSetting<>("ModelScale", 30, 1, 80));
 
-    private void render() {
-        // TODO: this
-        //Render2DUtil.drawPlayer(mc.player, modelScale.getValue(), getX() + getWidth() / 2, getY() + getHeight());
+    private void render(DrawContext context) {
+        Render2DUtil.drawPlayer(context, mc.player, modelScale.getValue(), (int) (getX() + getWidth() / 2), (int) (getY() + getHeight()));
     }
 
     public Model() {
@@ -25,7 +25,7 @@ public class Model extends HudElement {
     @Override
     public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
         super.guiDraw(context, mouseX, mouseY, partialTicks);
-        render();
+        render(context);
     }
 
     @Override
@@ -44,17 +44,17 @@ public class Model extends HudElement {
 
     @Override
     public void hudDraw(DrawContext context) {
-        render();
+        render(context);
     }
 
     @Override
     public float getWidth() {
-        return 66.0f * modelScale.getValue();
+        return modelScale.getValue();
     }
 
     @Override
     public float getHeight() {
-        return 90.0f * modelScale.getValue();
+        return modelScale.getValue();
     }
 
 }

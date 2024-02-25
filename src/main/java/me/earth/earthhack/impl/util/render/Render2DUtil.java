@@ -2,8 +2,13 @@ package me.earth.earthhack.impl.util.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
 
 import java.awt.*;
@@ -36,10 +41,6 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawRect(MatrixStack matrix, float startX, float startY, float endX, float endY, int color) {
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        float red = (float) (color >> 16 & 255) / 255.0F;
-        float green = (float) (color >> 8 & 255) / 255.0F;
-        float blue = (float) (color & 255) / 255.0F;
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
@@ -47,10 +48,55 @@ public class Render2DUtil implements Globals {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        bufferBuilder.vertex(posMatrix, startX, endY, 0.0F).color(red, green, blue, alpha).next();
-        bufferBuilder.vertex(posMatrix, endX, endY, 0.0F).color(red, green, blue, alpha).next();
-        bufferBuilder.vertex(posMatrix, endX, startY, 0.0F).color(red, green, blue, alpha).next();
-        bufferBuilder.vertex(posMatrix, startX, startY, 0.0F).color(red, green, blue, alpha).next();
+        bufferBuilder.vertex(posMatrix, startX, endY, 0.0F).color(color).next();
+        bufferBuilder.vertex(posMatrix, endX, endY, 0.0F).color(color).next();
+        bufferBuilder.vertex(posMatrix, endX, startY, 0.0F).color(color).next();
+        bufferBuilder.vertex(posMatrix, startX, startY, 0.0F).color(color).next();
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+        RenderSystem.disableBlend();
+    }
+
+    public static void drawQuarterCircle(MatrixStack matrix, float x, float y, float radius, int color, int position) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        Matrix4f posMatrix = matrix.peek().getPositionMatrix();
+
+        double angle = 90;
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        bufferBuilder.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR);
+        for (double i = angle * (position - 1); i < angle * (position - 1) + 90; i += 0.5f) {
+            bufferBuilder.vertex(posMatrix, (float) (x + Math.sin(i * 3.141593 / 180.0) * radius), (float) (y + Math.cos(i * 3.141593 / 180.0) * radius), 0.0F).color(color).next();
+        }
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+
+        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
+
+        //TODO: fix this triangle drawing
+        if (position == 1) {
+            bufferBuilder.vertex(posMatrix, x, y + radius, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x + radius, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
+        }
+        else if (position == 2) {
+            bufferBuilder.vertex(posMatrix, x, y - radius, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x + radius, y, 0.0F).color(color).next();
+        }
+        else if (position == 3) {
+            bufferBuilder.vertex(posMatrix, x, y - radius - 0.1f, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x - radius, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
+        }
+        else if (position == 4) {
+            bufferBuilder.vertex(posMatrix, x, y + radius, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x - radius, y, 0.0F).color(color).next();
+        }
+
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
         RenderSystem.disableBlend();
     }
@@ -63,20 +109,34 @@ public class Render2DUtil implements Globals {
         drawRect(matrix, x, y, x2, y + lineSize, borderColor);
     }
 
+    public static void progressBar(MatrixStack matrix, float startX, float endX, float y, float radius, int color) {
+        // y is the horizontal middle of the bar
+        float startY = y - radius / 2, endY = y + radius / 2;
+        drawRect(matrix, startX - radius, startY, endX + radius, endY, color);
+
+        drawQuarterCircle(matrix, startX - radius, y, radius / 2 - 0.3f, color, 3);
+        drawQuarterCircle(matrix, startX - radius, y, radius / 2 - 0.3f, color, 4);
+        drawQuarterCircle(matrix, endX + radius, y, radius / 2 - 0.3f, color, 1);
+        drawQuarterCircle(matrix, endX + radius, y, radius / 2 - 0.3f, color, 2);
+    }
+
     public static void roundedRect(MatrixStack matrix, float startX, float startY, float endX, float endY, float radius, int color) {
-        drawRect(matrix, startX, startY, endX, endY, color);
+        drawRect(matrix, startX, startY - radius, endX, endY + radius, color);
+        drawRect(matrix, startX - radius, startY, startX, endY, color);
+        drawRect(matrix, endX, startY, endX + radius, endY, color);
+
+        drawQuarterCircle(matrix, endX, endY, radius - 0.2f, color, 1);
+        drawQuarterCircle(matrix, endX, startY, radius - 0.2f, color, 2);
+        drawQuarterCircle(matrix, startX, startY, radius - 0.2f, color, 3);
+        drawQuarterCircle(matrix, startX, endY, radius - 0.2f, color, 4);
     }
 
     public static void drawCheckMark(MatrixStack matrix, float x, float y, int width, int color) {
-        drawLine(matrix, x + width - 6.5f, y + 3f, x + width - 11.5f, y + 10f, 1, color);
-        drawLine(matrix, x + width - 11.5f, y + 10f, x + width - 13.5f, y + 8, 1, color);
+        drawLine(matrix, x + width - 6.5f, y + 3f, x + width - 11.5f, y + 10f, 0.8f, color);
+        drawLine(matrix, x + width - 11.5f, y + 10f, x + width - 13.5f, y + 8, 0.8f, color);
     }
 
     public static void drawLine(MatrixStack matrix, float x, float y, float x1, float y1, float lineWidth, int color) {
-        float alpha = (float) (color >> 24 & 255) / 255.0F;
-        float red = (float) (color >> 16 & 255) / 255.0F;
-        float green = (float) (color >> 8 & 255) / 255.0F;
-        float blue = (float) (color & 255) / 255.0F;
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
@@ -93,15 +153,24 @@ public class Render2DUtil implements Globals {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        bufferBuilder.vertex(posMatrix, x + normalizedY * width, y + normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
-        bufferBuilder.vertex(posMatrix, x1 + normalizedY * width, y1 + normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
-        bufferBuilder.vertex(posMatrix, x1 - normalizedY * width, y1 - normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
-        bufferBuilder.vertex(posMatrix, x - normalizedY * width, y - normalizedX * width, 0.0F).color(red, green, blue, alpha).next();
+        bufferBuilder.vertex(posMatrix, x + normalizedY * width, y + normalizedX * width, 0.0F).color(color).next();
+        bufferBuilder.vertex(posMatrix, x1 + normalizedY * width, y1 + normalizedX * width, 0.0F).color(color).next();
+        bufferBuilder.vertex(posMatrix, x1 - normalizedY * width, y1 - normalizedX * width, 0.0F).color(color).next();
+        bufferBuilder.vertex(posMatrix, x - normalizedY * width, y - normalizedX * width, 0.0F).color(color).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
         RenderSystem.disableBlend();
     }
 
-    public static void drawCheckeredBackground(float x, float y, float x2, float y2) {
+    public static void drawCheckeredBackground(MatrixStack matrix, float x, float y, float x2, float y2) {
+        drawRect(matrix, x, y, x2, y2, 0xFFFFFFFF);
+
+        for (boolean offset = false; y < y2; y++) {
+            for (float x1 = x + ((offset = !offset) ? 1 : 0); x1 < x2; x1 += 2) {
+                if (x1 > x2 - 1)
+                    continue;
+                drawRect(matrix, x1, y, x1 + 1, y + 1, 0xFF808080);
+            }
+        }
     }
 
     public static void blurArea(int x, int y, int width, int height, float intensity, float blurWidth, float blurHeight) {
@@ -137,6 +206,28 @@ public class Render2DUtil implements Globals {
         }
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
         RenderSystem.disableBlend();
+    }
+
+    public static void drawPlayerFace(DrawContext context, PlayerEntity entityplayer , int x, int y, int width, int height) {
+        if (entityplayer != null && mc.world != null) {
+            if (mc.player.networkHandler == null) return;
+            PlayerListEntry networkPlayerInfo = mc.player.networkHandler.getPlayerList().stream().filter(info -> info.getProfile().getName().equals(entityplayer.getName().getString())).findFirst().orElse(null);
+            if (networkPlayerInfo == null) return;
+            Identifier resourceLocation = networkPlayerInfo.getSkinTextures().texture();
+            if (resourceLocation == null) return;
+
+            RenderSystem.enableBlend();
+            RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+            RenderSystem.setShaderTexture(0, resourceLocation);
+
+            context.drawTexture(resourceLocation, x, y, 8, 8, width, height, 64, 64);
+
+            RenderSystem.disableBlend();
+        }
+    }
+
+    public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {
+        InventoryScreen.drawEntity(context, x, y, x + 49, y + 70, playerScale, 0.0625F, (float) mc.player.getRotationVector().x, (float) mc.player.getRotationVector().y, player);
     }
 
 }

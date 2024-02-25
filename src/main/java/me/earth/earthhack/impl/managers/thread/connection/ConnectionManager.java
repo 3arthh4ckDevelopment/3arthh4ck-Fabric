@@ -11,7 +11,6 @@ import me.earth.earthhack.impl.managers.thread.lookup.LookUp;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import static net.minecraft.network.packet.s2c.play.PlayerListS2CPacket.Action.ADD_PLAYER;
@@ -47,7 +46,7 @@ public class ConnectionManager extends SubscriberImpl implements Globals
 
         packet.getEntries()
                 .stream()
-                .filter(Objects::nonNull)
+                .filter(data -> data != null && data.profile() != null)
                 .filter(data ->
                         data.profile().getName() != null
                                 && !data.profile().getName().isEmpty()

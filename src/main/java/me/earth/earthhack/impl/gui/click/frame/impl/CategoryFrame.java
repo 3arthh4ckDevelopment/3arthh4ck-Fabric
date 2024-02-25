@@ -1,6 +1,6 @@
 package me.earth.earthhack.impl.gui.click.frame.impl;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.impl.gui.click.Click;
@@ -49,9 +49,9 @@ public class CategoryFrame extends ModulesFrame {
 
     public static void catEarsRender(DrawContext context, float x, float y, float width) {
         final Color clr = Click.CLICK_GUI.get().getCatEars();
-        GlStateManager._clearColor(clr.getRed() / 255.f, clr.getGreen() / 255.f, clr.getBlue() / 255.f, 1.0F);
+        RenderSystem.setShaderColor(clr.getRed() / 255.f, clr.getGreen() / 255.f, clr.getBlue() / 255.f, 1.0F);
         context.drawTexture(LEFT_EAR, (int) x - 7, (int) y - 8, 0, 0, 20, 20, 20, 20, 20, 20); //TODO: check
         context.drawTexture(RIGHT_EAR, (int) (x + width) - 14, (int) y - 8, 0, 0, 20, 20, 20, 20, 20, 20);
-        GlStateManager._clearColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

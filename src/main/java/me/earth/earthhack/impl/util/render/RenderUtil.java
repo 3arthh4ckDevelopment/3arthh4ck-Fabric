@@ -10,9 +10,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -22,8 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import static com.mojang.blaze3d.systems.RenderSystem.disableBlend;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glScissor;
 
 
 // TODO: One Mutable.BlockPos for the MainThread
@@ -143,24 +139,6 @@ public class RenderUtil implements Globals {
       //  }
     }
 
-    public static void renderBox(double x, double y, double z)
-    {
-        startRender();
-        BLOCK_FILL_BUFFER.bind();
-        double viewX = mc.gameRenderer.getCamera().getPos().x;
-        double viewY = mc.gameRenderer.getCamera().getPos().y;
-        double viewZ = mc.gameRenderer.getCamera().getPos().z;
-        glTranslated(x - viewX, y - viewY, z - viewZ);
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 12, 0);
-        BLOCK_FILL_BUFFER.draw();
-        BLOCK_FILL_BUFFER.unbind();
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glTranslated(-(x - viewX), -(y - viewY), -(z - viewZ));
-        endRender();
-    }
-
     public static void drawBox(MatrixStack matrix, Box bb, Color color)
     {
         startRender();
@@ -168,11 +146,7 @@ public class RenderUtil implements Globals {
         endRender();
     }
 
-    public static void renderBox(MatrixStack matrix,
-                                 Box bb,
-                                 Color color,
-                                 Color outLineColor,
-                                 float lineWidth)
+    public static void renderBox(MatrixStack matrix, Box bb, Color color, Color outLineColor, float lineWidth)
     {
         startRender();
         RenderSystem.lineWidth(lineWidth);
@@ -184,9 +158,9 @@ public class RenderUtil implements Globals {
         endRender();
     }
 
-    public static void renderBox(MatrixStack matrix, BlockPos vertex, Color color, float height)
+    public static void renderBox(MatrixStack matrix, BlockPos pos, Color color, float height)
     {
-        Box bb = Interpolation.interpolatePos(vertex, height);
+        Box bb = Interpolation.interpolatePos(pos, height);
         startRender();
         drawOutline(matrix, bb, 1.5f, color);
         endRender();
