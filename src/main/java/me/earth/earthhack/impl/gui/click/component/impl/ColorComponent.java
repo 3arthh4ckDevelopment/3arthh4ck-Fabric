@@ -195,7 +195,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
 
             Render2DUtil.drawRect(context.getMatrices(), colorPickerLeft - 0.5F, alphaSliderTop - 0.5F, colorPickerRight + 0.5F, alphaSliderBottom + 0.5F, 0xFF000000);
 
-            Render2DUtil.drawCheckeredBackground(colorPickerLeft, alphaSliderTop, colorPickerRight, alphaSliderBottom);
+            Render2DUtil.drawCheckeredBackground(context.getMatrices(), colorPickerLeft, alphaSliderTop, colorPickerRight, alphaSliderBottom);
 
             Render2DUtil.drawGradientRect(context.getMatrices(), colorPickerLeft, alphaSliderTop, colorPickerRight,
                     alphaSliderBottom, true,

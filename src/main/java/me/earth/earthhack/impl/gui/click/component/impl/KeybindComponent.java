@@ -37,8 +37,8 @@ public class KeybindComponent extends SettingComponent<Bind, BindSetting> {
     }
 
     @Override
-    public void keyTyped(char character, int keyCode) {
-        super.keyTyped(character, keyCode);
+    public void keyPressed(int keyCode) {
+        super.keyPressed(keyCode);
         if (isBinding()) {
             final Bind bind = Bind.fromKey(keyCode == Keyboard.getEscape() || keyCode == Keyboard.getSpace() || keyCode == Keyboard.getDelete() ? Keyboard.getNone() : keyCode);
             getBindSetting().setValue(bind);

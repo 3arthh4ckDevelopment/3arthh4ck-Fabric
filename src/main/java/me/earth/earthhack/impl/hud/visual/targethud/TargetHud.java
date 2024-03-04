@@ -27,7 +27,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -145,8 +144,8 @@ public class TargetHud extends HudElement {
                         } else {
                             RENDERER.drawString(context, name, x + (v - nameWidth / 2.0f), y + 7, fColor.getValue().getRGB());
                         }
-                        //Render2DUtil.drawPlayerFace(closestPlayer, (int) x, (int) y, (int) (endY - y), (int) (endY - y));
-                        //Render2DUtil.progressBar(x + (10 + (endY - y)), x + (((endY - y) + hp / 36.0F * (endX - (endY - y) - x)) - 10), y + 19, 3, 0x77ff0000);
+                        Render2DUtil.drawPlayerFace(context, closestPlayer, (int) x, (int) y, (int) (endY - y), (int) (endY - y));
+                        Render2DUtil.progressBar(context.getMatrices(), x + (10 + (endY - y)), x + (((endY - y) + hp / 36.0F * (endX - (endY - y) - x)) - 10), y + 19, 3, 0x77ff0000);
                         break;
 
                     case Mode2:
@@ -176,7 +175,7 @@ public class TargetHud extends HudElement {
 
                         int xEnd = (int) (x + 160);
                         int yEnd = (int) (y);
-                        // Render2DUtil.drawPlayerFace(closestPlayer, xEnd - 5, yEnd, 25, 25);
+                         Render2DUtil.drawPlayerFace(context, closestPlayer, xEnd - 5, yEnd, 25, 25);
                         if (distance.getValue()) {
                             RENDERER.drawString(context, "Distance: " + df.format(closestPlayer.distanceTo(mc.player)), x + 7, y + 70, fColor.getValue().getRGB());
                         }
@@ -185,7 +184,7 @@ public class TargetHud extends HudElement {
                         if (ping.getValue()) {
                             RENDERER.drawString(context, "Ping: " + playerInfo.getLatency() + "ms", x + 7, y + 80, fColor.getValue().getRGB());
                         }
-                        // Render2DUtil.progressBar(x + 48, x + 48 + (hp / 36.0F * 80), y + 28, 5, 0x77ff0000);
+                         Render2DUtil.progressBar(context.getMatrices(), x + 48, x + 48 + (hp / 36.0F * 80), y + 28, 5, 0x77ff0000);
                         renderArmor(context, (int) (x + 80), (int) (y + 65), closestPlayer);
                         break;
 
@@ -202,8 +201,8 @@ public class TargetHud extends HudElement {
                             RENDERER.drawString(context, name, nameX, y, fColor.getValue().getRGB());
                         }
 
-                        //Render2DUtil.progressBar(x + 7, x - 7 + (hp / 36.0F * (Math.max(nameWidth, 58))), endY - 5.0f, 5, 0x77ff0000);
-                        //Render2DUtil.drawPlayer(closestPlayer, 0.8f, x + (float) (Math.max(nameWidth, 58)) / 2, endY - 15.0f);
+                        Render2DUtil.progressBar(context.getMatrices(), x + 7, x - 7 + (hp / 36.0F * (Math.max(nameWidth, 58))), endY - 5.0f, 5, 0x77ff0000);
+                        Render2DUtil.drawPlayer(context, closestPlayer, 8, (int) (x + (Math.max(nameWidth, 58)) / 2), (int) (endY - 15.0f));
                         break;
 
                     case Mode4:
@@ -232,10 +231,10 @@ public class TargetHud extends HudElement {
 
                         renderArmor(context, (int) x - 17, (int) (y + 19), closestPlayer);
 
-                        // Render2DUtil.drawPlayerFace(closestPlayer, (int) (endX - 28), (int) (y + Managers.TEXT.getStringHeight() + 2), 22, 22);
+                        Render2DUtil.drawPlayerFace(context, closestPlayer, (int) (endX - 28), (int) (y + Managers.TEXT.getStringHeight() + 2), 22, 22);
                         float endX1 = x - 7.5f + (hp / 36.0F * endMeasureX);
-                        // Render2DUtil.progressBar(x + 7.5f, endX1, endY - 2.5f, 5, 0x77ff0000);
-                        GL11.glScalef(0.5f, 0.5f, 1.0f);
+                        Render2DUtil.progressBar(context.getMatrices(), x + 7.5f, endX1, endY - 2.5f, 5, 0x77ff0000);
+                        context.getMatrices().scale(0.5f, 0.5f, 1.0f);
                         break;
 
                     default:

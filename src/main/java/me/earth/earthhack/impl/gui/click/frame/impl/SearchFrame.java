@@ -83,8 +83,16 @@ public class SearchFrame extends Frame implements Globals {
     }
 
     @Override
-    public void keyTyped(char character, int keyCode) {
-        super.keyTyped(character, keyCode);
+    public void charTyped(char character, int keyCode) {
+        super.charTyped(character, keyCode);
+        if (isListening && isAllowedCharacter(character)) {
+            setString(currentString.getString() + character);
+            updateRating();
+        }
+    }
+
+    public void keyPressed(int keyCode) {
+        super.keyPressed(keyCode);
         if (isListening) {
             if (keyCode == 1) {
                 return;
@@ -101,10 +109,6 @@ public class SearchFrame extends Frame implements Globals {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    return;
-                }
-                if (isAllowedCharacter(character)) {
-                    setString(currentString.getString() + character);
                 }
             }
             updateRating();

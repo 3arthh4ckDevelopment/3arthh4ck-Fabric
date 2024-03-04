@@ -66,8 +66,16 @@ public class Frame {
         }
     }
 
-    public void keyTyped(char character, int keyCode)  {
-        if (isExtended()) getComponents().forEach(component -> component.keyTyped(character, keyCode));
+    public void charTyped(char character, int keyCode)  {
+        if (isExtended()) getComponents().forEach(component -> component.charTyped(character, keyCode));
+    }
+
+    public void keyPressed(int keyCode)  {
+        if (isExtended()) getComponents().forEach(component -> component.keyPressed(keyCode));
+    }
+
+    public void mouseScrolled(double mouseX, double mouseY, double scrollAmount) {
+        if (isExtended()) getComponents().forEach(component -> component.mouseScrolled(mouseX, mouseY, scrollAmount));
     }
 
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {

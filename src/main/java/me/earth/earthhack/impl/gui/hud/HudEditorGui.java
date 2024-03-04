@@ -173,11 +173,24 @@ public class HudEditorGui extends Screen
         for (HudElement element : Managers.ELEMENTS.getRegistered())
         {
             if (element.isEnabled()) {
-                element.guiKeyPressed(character, keyCode);
+                element.guiCharTyped(character, keyCode);
             }
         }
-        getFrames().forEach(frame -> frame.keyTyped(character,keyCode));
+        getFrames().forEach(frame -> frame.charTyped(character,keyCode));
         return super.charTyped(character, keyCode);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+
+        for (HudElement element : Managers.ELEMENTS.getRegistered())
+        {
+            if (element.isEnabled()) {
+                element.guiKeyPressed(keyCode);
+            }
+        }
+        getFrames().forEach(frame -> frame.keyPressed(keyCode));
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
