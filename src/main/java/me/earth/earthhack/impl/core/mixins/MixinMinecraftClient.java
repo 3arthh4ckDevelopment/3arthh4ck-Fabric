@@ -7,6 +7,7 @@ import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.event.events.client.ClientInitEvent;
 import me.earth.earthhack.impl.event.events.client.ShutDownEvent;
+import me.earth.earthhack.impl.event.events.misc.GameLoopEvent;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.events.render.GuiScreenEvent;
 import me.earth.earthhack.impl.managers.Managers;
@@ -134,6 +135,18 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
         {
             info.cancel();
         }
+    }
+
+    @Inject(
+        method = "render",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/util/profiler/Profiler;pop()V",
+            ordinal = 0,
+            shift = At.Shift.AFTER))
+    private void post_scheduledTasks(boolean tick, CallbackInfo ci)
+    {
+        Bus.EVENT_BUS.post(new GameLoopEvent());
     }
 
     @Inject(

@@ -125,11 +125,11 @@ public class Offhand extends Module
     public Offhand()
     {
         super("Offhand", Category.Combat);
-        // this.listeners.add(new ListenerGameLoop(this));
-        // this.listeners.add(new ListenerKeyboard(this));
-        // this.listeners.add(new ListenerRightClick(this));
-        // this.listeners.add(new ListenerTotem(this));
-        // this.listeners.add(new ListenerSetSlot(this));
+        this.listeners.add(new ListenerGameLoop(this));
+        this.listeners.add(new ListenerKeyboard(this));
+        this.listeners.add(new ListenerRightClick(this));
+        this.listeners.add(new ListenerTotem(this));
+        this.listeners.add(new ListenerSetSlot(this));
         this.setData(new OffhandData(this));
     }
 
