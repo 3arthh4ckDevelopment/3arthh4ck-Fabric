@@ -48,6 +48,7 @@ import me.earth.earthhack.impl.modules.movement.packetfly.PacketFly;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.modules.movement.velocity.Velocity;
+import me.earth.earthhack.impl.modules.player.arrows.Arrows;
 import me.earth.earthhack.impl.modules.player.automine.AutoMine;
 import me.earth.earthhack.impl.modules.player.autotool.AutoTool;
 import me.earth.earthhack.impl.modules.player.blink.Blink;
@@ -123,7 +124,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new KillAura());
         this.forceRegister(new Offhand());
         // this.forceRegister(new PistonAura());
-        // this.forceRegister(new Arrows());
+        this.forceRegister(new Arrows());
         this.forceRegister(new Surround());
         // this.forceRegister(new SelfTrap());
         // this.forceRegister(new WebAura());
