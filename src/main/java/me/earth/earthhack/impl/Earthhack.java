@@ -16,7 +16,6 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
 
     private static final Logger LOGGER = LogManager.getLogger("3arthh4ck");
     public static final String NAME = "3arthh4ck";
-    public static final String MOD_ID = "earthhack";
     public static final String VERSION = "2.0.0-fabric";
     public static long startMS;
 

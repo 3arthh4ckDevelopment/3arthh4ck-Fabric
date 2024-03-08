@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("all")
 public class FileManager
 {
-    private static final File EARTHHACK_ROOT = FabricLoader.getInstance().getGameDir().resolve(Earthhack.MOD_ID).toFile();
+    private static final File EARTHHACK_ROOT = FabricLoader.getInstance().getGameDir().resolve("earthhack").toFile();
     private static final File IMAGES = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/images");
     private static final File MODELS = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/models");
     private static final File SHADERS = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/shaders");

@@ -69,7 +69,6 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
                 : ""));
     }
 
-    // can be done with AW, but I'll just do it like this (for now maybe).
     @Override
     @Accessor(value = "itemUseCooldown")
     public abstract int earthhack$getRightClickDelay();
@@ -135,6 +134,12 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
         {
             info.cancel();
         }
+    }
+
+    @Inject(method = "render", at = @At("HEAD"))
+    private void renderHead(boolean tick, CallbackInfo ci)
+    {
+        gameLoop++;
     }
 
     @Inject(
