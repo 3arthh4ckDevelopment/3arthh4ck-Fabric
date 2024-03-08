@@ -73,8 +73,8 @@ public class HudEditor extends Module {
                 brackets.setValue(brackets.getInitial());
             }
         });
+*/
 
-         */
     }
 
     public final String[] getBrackets() {

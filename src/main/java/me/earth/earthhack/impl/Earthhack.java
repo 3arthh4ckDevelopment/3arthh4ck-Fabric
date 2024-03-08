@@ -38,8 +38,13 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
         return LOGGER;
     }
 
+    /**
+     * Used by plugins? No idea to be honest, but probably by something.
+     * @return if 3arthh4ck is currently running.
+     */
+    @SuppressWarnings("unused")
     public static boolean isRunning()
     {
-        return ((IMinecraftClient) mc).isEarthhackRunning();
+        return ((IMinecraftClient) mc).earthhack$isRunning();
     }
 }

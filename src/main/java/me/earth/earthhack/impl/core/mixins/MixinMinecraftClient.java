@@ -12,12 +12,18 @@ import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.events.render.GuiScreenEvent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
+import me.earth.earthhack.impl.modules.client.autoconfig.AutoConfig;
 import me.earth.earthhack.impl.modules.client.management.Management;
+import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.entity.Entity;
+import net.minecraft.resource.ResourcePackManager;
+import net.minecraft.server.SaveLoader;
+import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,11 +43,14 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
             Caches.getModule(Sorter.class);
     private static final ModuleCache<MultiTask> MULTI_TASK =
             Caches.getModule(MultiTask.class);
+    */
+    @Unique
     private static final ModuleCache<Spectate> SPECTATE =
             Caches.getModule(Spectate.class);
+    @Unique
     private static final ModuleCache<AutoConfig> CONFIG =
             Caches.getModule(AutoConfig.class);
-    */
+
 
     @Unique
     private static final ModuleCache<Management> MANAGEMENT =
@@ -83,12 +92,12 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
 
 
     @Override
-    public int getGameLoop() {
+    public int earthhack$getGameLoop() {
         return gameLoop;
     }
 
     @Override
-    public boolean isEarthhackRunning() {
+    public boolean earthhack$isRunning() {
         return isEarthhackRunning;
     }
 
@@ -193,4 +202,27 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
         Bus.EVENT_BUS.post(new ClientInitEvent());
     }
 
+    @Inject(method = "startIntegratedServer", at = @At("HEAD"))
+    public void startIntegratedServerHook(LevelStorage.Session session,
+                                          ResourcePackManager dataPackManager,
+                                          SaveLoader saveLoader, boolean newWorld,
+                                          CallbackInfo ci)
+    {
+        if (CONFIG.isEnabled())
+        {
+            CONFIG.get().onConnect("singleplayer");
+        }
+    }
+
+    @Inject(
+        method = "getCameraEntity",
+        at = @At("HEAD"),
+        cancellable = true)
+    public void getCameraEntityHook(CallbackInfoReturnable<Entity> cir)
+    {
+        if (SPECTATE.isEnabled())
+        {
+            cir.setReturnValue(SPECTATE.get().getRender());
+        }
+    }
 }

@@ -15,6 +15,11 @@ import java.util.function.Consumer;
 public class ChatUtil implements Globals {
     private static final Random RND = new Random();
 
+    public static void sendMessage(String message)
+    {
+        if (mc.inGameHud != null)
+            sendMessage(((IChatHud) mc.inGameHud.getChatHud()), Text.of(message == null ? "null" : message), message);
+    }
     public static void sendMessage(String message, String identifier)
     {
         if (mc.inGameHud != null)

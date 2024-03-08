@@ -11,6 +11,8 @@ import me.earth.earthhack.impl.event.events.client.PostInitEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.RenderTest;
 import me.earth.earthhack.impl.modules.client.accountspoof.AccountSpoof;
+import me.earth.earthhack.impl.modules.client.anticheat.AntiCheat;
+import me.earth.earthhack.impl.modules.client.autoconfig.AutoConfig;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.modules.client.compatibility.Compatibility;
@@ -84,8 +86,8 @@ public class ModuleManager extends IterationRegister<Module>
 
         /* ----- CLIENT ----- */
         this.forceRegister(new AccountSpoof());
-        // this.forceRegister(new AntiCheat());
-        // this.forceRegister(new AutoConfig());
+        this.forceRegister(new AntiCheat());
+        this.forceRegister(new AutoConfig());
         // this.forceRegister(new Capes());
         this.forceRegister(new ClickGui());
         // this.forceRegister(new Colors());

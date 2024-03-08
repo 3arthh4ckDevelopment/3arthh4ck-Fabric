@@ -30,10 +30,10 @@ public interface IMinecraftClient
     RenderTickCounter earthhack$getTimer();
 
     /** @return the current gameloop, will be incremented every gameloop. */
-    int getGameLoop();
+    int earthhack$getGameLoop();
 
     /** @return <tt>true</tt> if 3arthh4ck is running. */
-    boolean isEarthhackRunning();
+    boolean earthhack$isRunning();
 
 
     /** @return Minecraft's DataFixer (as MetadataSerializer's replacement). */

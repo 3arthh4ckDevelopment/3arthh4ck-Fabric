@@ -28,7 +28,7 @@ public class Scheduler extends SubscriberImpl implements Globals {
                     @Override
                     public void invoke(GameLoopEvent event)
                     {
-                        gameLoop  = ((IMinecraftClient) mc).getGameLoop(); // will NOT :fire: work
+                        gameLoop  = ((IMinecraftClient) mc).earthhack$getGameLoop(); // will NOT :fire: work
 
                         executing = true;
                         CollectionUtil.emptyQueue(scheduled, Runnable::run);
@@ -87,7 +87,7 @@ public class Scheduler extends SubscriberImpl implements Globals {
         if (mc.isOnThread())
         {
             if (executing || checkGameLoop
-                    && gameLoop != ((IMinecraftClient) mc).getGameLoop())
+                    && gameLoop != ((IMinecraftClient) mc).earthhack$getGameLoop())
             {
                 toSchedule.add(runnable);
             }
