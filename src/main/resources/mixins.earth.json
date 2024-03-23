@@ -26,6 +26,7 @@
     "util.ITimer",
     "util.MixinClickEvent",
     "util.MixinHoverEvent",
+    "util.MixinText",
     "MixinMinecraftClient",
     "entity.living.player.MixinAbstractClientPlayerEntity",
     "entity.living.player.MixinClientPlayerEntity",
