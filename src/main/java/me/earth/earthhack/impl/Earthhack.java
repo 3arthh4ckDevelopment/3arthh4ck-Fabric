@@ -1,18 +1,15 @@
 package me.earth.earthhack.impl;
 
-import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * {@link me.earth.earthhack.impl.core.mixins.MixinMinecraftClient}
  */
-public class Earthhack implements ModInitializer, ClientModInitializer, Globals {
+public class Earthhack implements ClientModInitializer {
 
     private static final Logger LOGGER = LogManager.getLogger("3arthh4ck");
     public static final String NAME = "3arthh4ck";
@@ -20,7 +17,7 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
     public static long startMS;
 
     @Override
-    public void onInitialize() {
+    public void onInitializeClient() {
         startMS = System.currentTimeMillis();
         LOGGER.info("\n\n ------------------ Initializing 3arthh4ck-fabric. ------------------ \n");
         Managers.load();
@@ -28,23 +25,9 @@ public class Earthhack implements ModInitializer, ClientModInitializer, Globals 
         LOGGER.info("\n\n ------------------ 3arthh4ck-fabric initialized. ------------------ \n");
     }
 
-    @Override
-    public void onInitializeClient() {
-
-    }
-
     public static Logger getLogger()
     {
-        return LOGGER;
+        return LOGGER;//why?
     }
 
-    /**
-     * Used by plugins? No idea to be honest, but probably by something.
-     * @return if 3arthh4ck is currently running.
-     */
-    @SuppressWarnings("unused")
-    public static boolean isRunning()
-    {
-        return ((IMinecraftClient) mc).earthhack$isRunning();
-    }
 }
