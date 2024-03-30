@@ -113,8 +113,7 @@ public abstract class MixinClientConnection implements IClientConnection
             method = "disconnect",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/network/ClientConnection;isOpen()Z",
-                    remap = false))
+                    target = "Lnet/minecraft/network/ClientConnection;isOpen()Z"))
     public void onDisconnectHook(Text component, CallbackInfo info)
     {
         if (this.isOpen())
