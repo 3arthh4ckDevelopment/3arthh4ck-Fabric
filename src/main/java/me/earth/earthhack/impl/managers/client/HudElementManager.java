@@ -9,6 +9,7 @@ import me.earth.earthhack.api.register.exception.CantUnregisterException;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.hud.text.arraylist.HudArrayList;
 import me.earth.earthhack.impl.hud.text.binds.Binds;
+import me.earth.earthhack.impl.hud.text.coordinates.Coordinates;
 import me.earth.earthhack.impl.hud.text.cps.Cps;
 import me.earth.earthhack.impl.hud.text.degrees.Degrees;
 import me.earth.earthhack.impl.hud.text.direction.Direction;
@@ -47,7 +48,7 @@ public class HudElementManager extends IterationRegister<HudElement> {
         Earthhack.getLogger().info("Initializing HUD elements...");
         this.forceRegister(new Watermark());
         this.forceRegister(new Greeter());
-        //this.forceRegister(new Coordinates()); //TODO: fix
+        this.forceRegister(new Coordinates()); //TODO: fix
         this.forceRegister(new Ping());
         this.forceRegister(new Tps());
         this.forceRegister(new FPS());

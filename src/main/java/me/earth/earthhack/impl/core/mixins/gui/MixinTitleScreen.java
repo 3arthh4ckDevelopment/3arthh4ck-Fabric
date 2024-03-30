@@ -32,7 +32,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                     shift = At.Shift.AFTER))
     public void buttonHook(CallbackInfo info)
     {
-        // noinspection ConstantConditions
+        //noinspection ConstantConditions
         this.addDrawableChild(new TexturedButtonWidget(
                 this.width / 2 + 2 + 98 + 4,
                 this.height / 4 + 48 + 72 + 12 - (20 + 4 * 4),

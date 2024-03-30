@@ -10,10 +10,10 @@ import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.dimension.DimensionType;
 
 import java.util.Random;
 
@@ -33,7 +33,7 @@ public class Coordinates extends HudElement {
     private static Vec3i realPos = null;
     Random rng = new Random();
 
-    private void render() {
+    private void render(DrawContext context) {
         if (mc.player != null && mc.world != null) {
             final Vec3i pos = smartCoords();
             final long x = pos.getX();
@@ -43,7 +43,7 @@ public class Coordinates extends HudElement {
             String overworld = String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s", x, y, z);
 
             if (dimension.getValue())
-                coords = mc.player.getEntityWorld().getDimension() ==  ? String.format(Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + actualBracket()[0] + "%s" + actualBracket()[1] + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + actualBracket()[0] + "%s" + actualBracket()[1], x, x * 8, y, z, z * 8) : (mc.player.dimension == 0 ? String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + actualBracket()[0] + "%s" + actualBracket()[1] + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + actualBracket()[0] + "%s" + actualBracket()[1],
+                coords = mc.world.getDimension().ultrawarm() ? String.format(Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + actualBracket()[0] + "%s" + actualBracket()[1] + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + actualBracket()[0] + "%s" + actualBracket()[1], x, x * 8, y, z, z * 8) : (mc.world.getDimension().bedWorks() ? String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + actualBracket()[0] + "%s" + actualBracket()[1] + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + actualBracket()[0] + "%s" + actualBracket()[1],
                         x,
                         x / 8,
                         y,
@@ -52,7 +52,7 @@ public class Coordinates extends HudElement {
             else
                 coords = overworld;
         }
-        HudRenderUtil.renderText(coords, getX(), getY());
+        HudRenderUtil.renderText(context, coords, getX(), getY());
     }
 
     private Vec3i smartCoords() {
