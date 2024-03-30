@@ -19,7 +19,6 @@ import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.minecraft.PushMode;
 import me.earth.earthhack.impl.util.otherplayers.IgnoreSelfClosest;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.enchantment.Enchantment;
@@ -180,7 +179,7 @@ public class TargetHud extends HudElement {
                             RENDERER.drawString(context, "Distance: " + df.format(closestPlayer.distanceTo(mc.player)), x + 7, y + 70, fColor.getValue().getRGB());
                         }
 
-                        PlayerListEntry playerInfo = mc.getNetworkHandler().getPlayerListEntry(closestPlayer.getUuid() != FakePlayer.DEFAULT_UUID ? closestPlayer.getUuid() : mc.player.getUuid()); //TODO: our fakeplayer
+                        PlayerListEntry playerInfo = mc.getNetworkHandler().getPlayerListEntry(closestPlayer.getUuid() != PlayerUtil.fakePlayerUUID ? closestPlayer.getUuid() : mc.player.getUuid()); //TODO: our fakeplayer
                         if (ping.getValue()) {
                             RENDERER.drawString(context, "Ping: " + playerInfo.getLatency() + "ms", x + 7, y + 80, fColor.getValue().getRGB());
                         }
