@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.core.mixins.gui;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.commands.gui.CommandGui;
+import me.earth.earthhack.impl.util.render.image.EarthhackTextures;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -21,14 +22,12 @@ public abstract class MixinTitleScreen extends Screen implements Globals
         super(Text.of("3arthh4ck"));
     }
 
-    @Unique
-    private static final Identifier EARTHHACK_TEXTURES = new Identifier("earthhack:textures/gui/gui_textures.png");
-
     @Inject(
             method = "init",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/TitleScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
+                    target = "Lnet/minecraft/client/gui/screen/TitleScreen;addDrawableChild" +
+                            "(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
                     ordinal = 2,
                     shift = At.Shift.AFTER))
     public void buttonHook(CallbackInfo info)
@@ -38,8 +37,8 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                 this.width / 2 + 2 + 98 + 4,
                 this.height / 4 + 48 + 72 + 12 - (20 + 4 * 4),
                 20, 20,
-                new ButtonTextures(EARTHHACK_TEXTURES, EARTHHACK_TEXTURES),
-                button -> this.client.setScreen(new CommandGui(new TitleScreen()))));
+                new ButtonTextures(EarthhackTextures.TITLE_TEXTURES[0], EarthhackTextures.TITLE_TEXTURES[1]),
+                action -> this.client.setScreen(new CommandGui(new TitleScreen()))));
     }
 
 }

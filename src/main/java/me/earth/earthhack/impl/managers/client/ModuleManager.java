@@ -126,7 +126,6 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new KillAura());
         this.forceRegister(new Offhand());
         // this.forceRegister(new PistonAura());
-        this.forceRegister(new Arrows());
         this.forceRegister(new Surround());
         // this.forceRegister(new SelfTrap());
         // this.forceRegister(new WebAura());
@@ -195,7 +194,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new TickShift());
         this.forceRegister(new Velocity());
 
-
+        this.forceRegister(new Arrows());
         this.forceRegister(new AutoMine());
         this.forceRegister(new AutoTool());
         this.forceRegister(new Blink());
