@@ -16,10 +16,13 @@ import net.minecraft.util.math.Direction;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 // TODO: THIS IS CHINESE (REWRITE)
 public class PlayerUtil implements Globals {
+    public static final UUID fakePlayerUUID = UUID.fromString("41C82C87-7AfB-4024-BA57-13D2C99CAE77");
+
     public static final Map<Integer, PlayerEntity> FAKE_PLAYERS =
             new HashMap<>();
 
