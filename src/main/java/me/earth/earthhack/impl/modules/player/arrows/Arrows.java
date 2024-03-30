@@ -33,7 +33,7 @@ import java.util.Set;
 
 public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
 {
-    protected static final Potion SPECTRAL = new Potion();
+    protected static Potion SPECTRAL;
     /** Potions that don't give lasting Effects */
     protected static final Set<Potion> BAD_TYPES = Sets.newHashSet(
             Potions.EMPTY,

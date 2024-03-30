@@ -27,7 +27,6 @@ public class Earthhack implements ClientModInitializer {
 
     public static Logger getLogger()
     {
-        return LOGGER;//why?
+        return LOGGER;
     }
-
 }
