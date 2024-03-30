@@ -33,6 +33,7 @@ import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import me.earth.earthhack.impl.util.network.ServerUtil;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.impl.util.thread.SafeRunnable;
 import me.earth.earthhack.impl.util.thread.ThreadUtil;
@@ -968,7 +969,6 @@ public class AutoCrystal extends Module
             new AtomicInteger();
 
     /* ---------------- Timers -------------- */
-
     protected final DiscreteTimer placeTimer =
             new GuardTimer(1000, 5).reset(placeDelay.getValue());
     protected final DiscreteTimer breakTimer =
@@ -1175,12 +1175,11 @@ public class AutoCrystal extends Module
         reset();
     }
 
-    String damageInfo;
     @Override
     public String getDisplayInfo() {
 
         PlayerEntity t = getTarget();
-        damageInfo = damage == null
+        String damageInfo = damage == null
                 ? "0.0"
                 : damage;
         switch (hudMode.getValue()) {
@@ -1192,13 +1191,13 @@ public class AutoCrystal extends Module
             }
             case Info -> {
                 return t == null
-                        ? "None"
+                        ? null
                         : t.getName()
                         + ", "
                         + Objects.requireNonNull(damageInfo);
             }
             default -> {
-                return "None";
+                return null;
             }
         }
     }
@@ -1243,6 +1242,7 @@ public class AutoCrystal extends Module
     public void setTarget(PlayerEntity target) {
         this.targetTimer.reset();
         this.target = target;
+        ChatUtil.sendMessage("Currently targeting " + target.getName().getString() + "!", target.getName().getString());
     }
 
     /**

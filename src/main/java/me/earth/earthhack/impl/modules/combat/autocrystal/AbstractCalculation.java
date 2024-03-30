@@ -27,6 +27,7 @@ import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.misc.MutableWrapper;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import me.earth.earthhack.impl.util.ncp.Visible;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -142,6 +143,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
     {
         if (check())
         {
+            ChatUtil.sendMessage("Calculation discarded; failed base check.");
             return;
         }
 
@@ -149,6 +151,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                 && module.antiTotem.getValue()
                 && checkForceAntiTotem())
         {
+            ChatUtil.sendMessage("Calculation discarded; can't force AntiTotem.");
             return;
         }
 
@@ -201,9 +204,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                                                    minDamage,
                                                    blackList,
                                                    maxY);
-
-            // Check LegSwitch again there's some time passing during calc
-            // ^^ legswitch removed as it doesn't work on 1.13+
+            ChatUtil.sendMessage("Computed PlaceData for next placement: " + placeData.toString());
             if (ANTISURROUND.returnIfPresent(AntiSurround::isActive, false))
             {
                 return;
@@ -434,7 +435,8 @@ public abstract class AbstractCalculation<T extends CrystalData>
 
     protected boolean check()
     {
-        if (!module.spectator.getValue() && mc.player.isSpectator()
+        if (!module.spectator.getValue()
+                && mc.player.isSpectator()
             || ANTISURROUND.returnIfPresent(AntiSurround::isActive, false)
             || raw == null
             || entities == null
@@ -442,12 +444,14 @@ public abstract class AbstractCalculation<T extends CrystalData>
             || module.stopWhenEatingOffhand.getValue() && module.isEatingOffhand()
             || module.stopWhenMining.getValue() && module.isMining())
         {
+            ChatUtil.sendMessage("failed generic check");
             return true;
         }
 
         setFriendsAndEnemies();
         if (all.isEmpty() || module.isPingBypass())
         {
+            ChatUtil.sendMessage("failed due to empty player list");
             return true;
         }
 
@@ -456,6 +460,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                 && !module.weaknessHelper.canSwitch()
                 && !module.switching)
         {
+            ChatUtil.sendMessage("failed due to switching or AttackCalc");
             return true;
         }
 
@@ -465,6 +470,8 @@ public abstract class AbstractCalculation<T extends CrystalData>
 
     protected void setFriendsAndEnemies()
     {
+        ChatUtil.sendMessage("setting friends and enemies!");
+
         if (module.isSuicideModule()) {
             // in case it gets modified
             //noinspection ArraysAsListWithZeroOrOneArgument
@@ -522,7 +529,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
         {
             return validity != BreakValidity.INVALID;
         }
-
+        ChatUtil.sendMessage("attacking " + entity.toString());
         module.setCrystal(entity);
         switch (validity) {
             case VALID -> {
@@ -534,7 +541,6 @@ public abstract class AbstractCalculation<T extends CrystalData>
                                 new MutableWrapper<>(false));
                         r.run();
                         attacking = true;
-
                         if (!module.rotate.getValue().noRotate(ACRotate.Break)) {
                             module.rotation =
                                     module.rotationHelper.forBreaking(entity,
@@ -553,6 +559,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                 }
                 if (module.breakSwing.getValue() == SwingTime.Post) {
                     Swing.Packet.swing(Hand.MAIN_HAND);
+                    ChatUtil.sendMessage("completed attack");
                 }
                 Swing.Client.swing(Hand.MAIN_HAND);
                 attacking = true;
@@ -617,6 +624,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
 
     protected boolean place(PlaceData data)
     {
+        ChatUtil.sendMessage("Placing on data " + data.toString());
         AntiTotemData antiTotem = null;
         boolean god = module.godAntiTotem.getValue()
                             && module.idHelper.isSafe(raw,
@@ -951,19 +959,24 @@ public abstract class AbstractCalculation<T extends CrystalData>
         if (liquidBreak != null) {
             module.liquidTimer.reset();
         }
-        if(module.pingSync.getValue())
-            module.placeTimer.reset(resetSlow ? module.slowPlaceDelay.getValue() : module.getPingSyncedDelay(AutoCrystal.PingSync.Place));
-        else
-            module.placeTimer.reset(resetSlow ? module.slowPlaceDelay.getValue() : module.placeDelay.getValue());
+
+        module.placeTimer.reset(resetSlow
+                ? module.slowPlaceDelay.getValue()
+                : module.pingSync.getValue()
+                    ? module.getPingSyncedDelay(AutoCrystal.PingSync.Place)
+                : module.placeDelay.getValue());
+
         BlockPos pos = data.getPos();
         BlockPos crystalPos = BlockPos.ofFloored(
             pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f);
 
         module.placed.put(crystalPos, new CrystalTimeStamp(damage, shield));
+        ChatUtil.sendMessage("placed on position" + crystalPos);
         module.damageSyncHelper.setSync(pos,
                                         data.getMaxDamage(),
                                         module.newVerEntities.getValue());
         module.setTarget(target);
+        ChatUtil.sendMessage("targetting " + target);
         boolean realtime = module.realtime.getValue();
         if (!realtime) {
             module.setRenderPos(pos, data.getMaxDamage());

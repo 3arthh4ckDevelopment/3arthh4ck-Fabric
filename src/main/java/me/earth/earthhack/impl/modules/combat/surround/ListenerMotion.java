@@ -134,7 +134,7 @@ final class ListenerMotion extends ModuleListener<Surround, MotionUpdateEvent>
         }
         else if (module.setPosition)
         {
-            // if we dont need to rotate and are centered, send immediately.
+            // if we don't need to rotate and are centered, send immediately.
             Locks.acquire(Locks.PLACE_SWITCH_LOCK, module::execute);
         }
     }

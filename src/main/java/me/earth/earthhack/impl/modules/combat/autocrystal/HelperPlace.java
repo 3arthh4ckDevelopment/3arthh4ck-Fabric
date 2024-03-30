@@ -27,6 +27,7 @@ import me.earth.earthhack.impl.util.minecraft.MotionTracker;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.ncp.Visible;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -66,12 +67,14 @@ public class HelperPlace implements Globals
 
         if (target == null && module.targetMode.getValue() != Target.Damage)
         {
+            ChatUtil.sendMessage("Target is null, returning data with only MinDamage!");
             return data;
         }
 
         data.setTarget(target);
         evaluate(data, general, friends, entities, blackList, maxY);
         data.addAllCorrespondingData();
+        ChatUtil.sendMessage("All params met, returning full Data: " + data);
         return data;
     }
 
@@ -282,7 +285,7 @@ public class HelperPlace implements Globals
             placeData.setHighestSelfDamage(selfDamage);
         }
 
-        if (selfDamage > EntityUtil.getHealth(mc.player) - 1.0)
+        if (selfDamage > EntityUtil.getHealth(RotationUtil.getRotationPlayer()) - 1.0)
         {
             if (!data.usesObby() && !data.isLiquid())
             {
@@ -481,7 +484,7 @@ public class HelperPlace implements Globals
                         new Vec3d(pos.getX() + 0.5f,
                                   pos.getY() + 1 + 1.7,
                                   pos.getZ() + 0.5f),
-                        mc.player);
+                        RotationUtil.getRotationPlayer());
         }
 
         return false;

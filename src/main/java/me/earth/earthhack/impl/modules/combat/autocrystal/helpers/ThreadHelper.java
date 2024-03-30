@@ -9,7 +9,9 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autocrystal.Calculation;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotationThread;
+import me.earth.earthhack.impl.util.client.ModuleUtil;
 import me.earth.earthhack.impl.util.math.StopWatch;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -148,11 +150,13 @@ public class ThreadHelper implements Globals
     {
         if (multiThread)
         {
+            ModuleUtil.sendMessageWithAquaModule(module, "Starting new CalculationThread", "threadCalc");
             Managers.THREAD.submitRunnable(calculation);
             threadTimer.reset();
         }
         else
         {
+            ModuleUtil.sendMessageWithAquaModule(module, "Running single-threaded calculation", "calc");
             threadTimer.reset();
             calculation.run();
         }

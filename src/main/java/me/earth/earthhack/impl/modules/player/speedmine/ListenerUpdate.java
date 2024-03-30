@@ -85,8 +85,6 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
             return;
         }
 
-        ChatUtil.sendMessage("Received UpdateEvent!", "updateevent");
-
         // if (!PlayerUtil.isCreative(mc.player)
         //     && PingBypass.isConnected()
         //     && module.esp.getValue() != ESPMode.None

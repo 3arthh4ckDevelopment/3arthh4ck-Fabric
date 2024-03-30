@@ -208,7 +208,6 @@ public class Speedmine extends Module {
     protected final Setting<Double> maxSelfDmg =
             register(new NumberSetting<>("MaxSelfDamage", 10.0, 0.0, 36.0))
                     .setComplexity(Complexity.Expert);
-
     protected final Setting<Boolean> offhandPlace =
             register(new BooleanSetting("OffhandPlace", false))
                     .setComplexity(Complexity.Expert);
@@ -227,7 +226,7 @@ public class Speedmine extends Module {
             register(new NumberSetting<>("OutlineAlpha", 100, 0, 255))
                     .setComplexity(Complexity.Medium);
     protected final Setting<Boolean> airFastRender =
-            register(new BooleanSetting("NoFastOnAir", true))
+            register(new BooleanSetting("RenderAir", false))
                     .setComplexity(Complexity.Expert);
     protected final Setting<Boolean> growRender =
             register(new BooleanSetting("GrowRender", false))
@@ -306,7 +305,7 @@ public class Speedmine extends Module {
         this.listeners.add(new ListenerDamage(this));
         this.listeners.add(new ListenerReset(this));
         this.listeners.add(new ListenerClick(this));
-        // this.listeners.add(new ListenerRender(this));
+        this.listeners.add(new ListenerRender(this));
         this.listeners.add(new ListenerUpdate(this));
         this.listeners.add(new ListenerBlockChange(this));
         this.listeners.add(new ListenerMultiBlockChange(this));
@@ -320,7 +319,7 @@ public class Speedmine extends Module {
         this.setData(new SpeedMineData(this));
         new PageBuilder<>(this, pages)
                 .addPage(p -> p == SpeedminePages.Break, mode, tickTime)
-                .addPage(p -> p == SpeedminePages.Swap, swap, aASSwitchTime)
+                .addPage(p -> p == SpeedminePages.Swap, cooldownBypass, aASSwitchTime)
                 .addPage(p -> p == SpeedminePages.Crystal, prePlace, offhandPlace)
                 .addPage(p -> p == SpeedminePages.Render, esp, smoothenRender)
                 .register(Visibilities.VISIBILITY_MANAGER);
@@ -398,14 +397,6 @@ public class Speedmine extends Module {
         reset();
 
         mc.interactionManager.attackBlock(cachedPos, facing);
-        mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(
-                PlayerActionC2SPacket.Action.START_DESTROY_BLOCK,
-                cachedPos,
-                facing));
-        mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(
-                PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK,
-                cachedPos,
-                facing));
     }
 
     /**

@@ -43,18 +43,18 @@ final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
                 cachedBB = Interpolation.interpolateAxis(renderBB);
             }
 
-            if(module.getMode() == MineMode.Fast
+            if ((module.getMode() == MineMode.Fast
+                    || module.getMode() == MineMode.Instant)
                     && mc.world.getBlockState(module.getPos()).getBlock().equals(Blocks.AIR)
                     && module.airFastRender.getValue())
+            {
                 return;
+            }
 
             event.getStack().push();
-            //GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
             Box bb = cachedBB;
             module.esp.getValue().drawEsp(event.getStack(), module, bb, Math.min(module.maxDamage, 1.0f));
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            // GL11.glPopAttrib();
             event.getStack().pop();
         }
     }
