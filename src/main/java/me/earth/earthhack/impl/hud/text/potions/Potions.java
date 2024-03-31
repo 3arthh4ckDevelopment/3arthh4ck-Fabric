@@ -19,6 +19,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -54,7 +55,10 @@ public class Potions extends DynamicHudElement {
             if (!sorted.isEmpty()) {
                 for (StatusEffectInstance effect : sorted) {
                     if (effect != null) {
-                        String label = effect.getEffectType().getName().getString() + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "") + Formatting.GRAY + " " + getPotionDuration(effect);
+                        final String label = effect.getEffectType().getName().getString()
+                                + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "")
+                                + Formatting.GRAY + " " + getPotionDuration(effect);
+
                         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                         float xPos = getX() - simpleCalcH(RENDERER.getStringWidth(label));
                         if (directionV() == TextDirectionV.BottomToTop)

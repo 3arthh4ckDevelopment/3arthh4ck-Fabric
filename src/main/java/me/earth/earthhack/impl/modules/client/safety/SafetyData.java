@@ -15,9 +15,9 @@ final class SafetyData extends DefaultData<Safety>
                 " like AutoTotem more strict.");
         register("BedCheck", "Takes beds into account. Use this on" +
                 " servers where beds are common.");
-        register("1.13+", "Takes changes to minecraft mechanics" +
-                " after 1.13+ into account. Use on ViaVersion servers" +
-                " that are on one of those version.");
+        register("1.12", "Ignore changes to Minecraft mechanics" +
+                " after 1.13 into account. Use on ViaVersion servers" +
+        " that are still on versions under 1.13.");
         register("SafetyPlayer", "Will be less strict if no player" +
                 " in range of a damaging crystal/position can be found." +
                 " Be careful not to blow yourself up!");

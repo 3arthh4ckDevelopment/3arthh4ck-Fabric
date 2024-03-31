@@ -74,7 +74,7 @@ public abstract class MixinChatHud implements IChatHud
     @Override
     @Invoker("addMessage")
     public abstract void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, int addedTime,
-                                                    @Nullable MessageIndicator indicator, boolean refresh);
+                                                               @Nullable MessageIndicator indicator, boolean refresh);
 
     @Inject(
         method = "clear",
@@ -120,9 +120,8 @@ public abstract class MixinChatHud implements IChatHud
 
     @Override
     public void earthhack$remove(@Nullable MessageSignatureData signature, boolean all) {
-        if (signature == null) {
+        if (signature == null)
             return;
-        }
 
         ListIterator<ChatHudLine> listIterator = this.messages.listIterator();
         boolean changed = false;

@@ -40,7 +40,7 @@ public class Blink extends DisablingModule
         data.register(packetMode,
                 """
                         - All : Cancels all packets. Will cause packet spam.
-                        - C2SPacket : Only cancels movement packets.
+                        - MoveC2SPacket : Only cancels movement packets.
                         - Filtered : Leaves some packets through, still spammy.""");
         data.register(lagDisable,
                 "Disable this module when the server lags you back.");

@@ -55,6 +55,10 @@ public class Timer extends Module
 
     public Timer() {
         super("Timer", Category.Player);
+        this.listeners.add(new ListenerPosLook(this));
+        this.listeners.add(new ListenerMotion(this));
+        this.listeners.addAll(new ListenerPlayerPackets(this).getListeners());
+        this.setData(new TimerData(this));
     }
 
     @Override
@@ -63,7 +67,7 @@ public class Timer extends Module
         packets = 0;
         sent    = 0;
         isSlow = false;
-        // shouldDisable = deathDisable.getValue(); // probably bad way to do this but for now =D TODO fix later!!!
+        // shouldDisable = deathDisable.getValue(); // todo deathdisable
         offTimer.reset();
     }
 
