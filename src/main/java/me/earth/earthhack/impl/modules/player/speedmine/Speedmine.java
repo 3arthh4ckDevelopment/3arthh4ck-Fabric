@@ -458,8 +458,6 @@ public class Speedmine extends Module {
                                 .STOP_DESTROY_BLOCK,
                         pos,
                         facing);
-        ModuleUtil.sendMessage(this, "Attempting to send STOP_DESTROY_BLOCK packet!");
-        ModuleUtil.sendMessage(this, "Parameters: " + pos + ", " + facing);
         try
         {
             if (toAir)
