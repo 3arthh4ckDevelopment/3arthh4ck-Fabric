@@ -14,7 +14,7 @@ import net.minecraft.client.gui.DrawContext;
 public class Pops extends HudElement {
 
     private final Setting<String> name =
-            register(new StringSetting("CustomName", "Pops "));
+            register(new StringSetting("CustomName", "Pops"));
 
     private String popsNumber = name.getValue();
 
