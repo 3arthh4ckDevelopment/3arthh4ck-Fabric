@@ -20,5 +20,4 @@ public enum HudRainbow
     {
         return color;
     }
-
 }

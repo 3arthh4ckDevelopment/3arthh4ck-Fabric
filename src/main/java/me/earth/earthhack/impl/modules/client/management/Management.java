@@ -27,7 +27,7 @@ public class Management extends Module {
     protected final Setting<Boolean> friend =
             register(new BooleanSetting("SelfFriend", true));
     public final Setting<Boolean> pluginSection =
-            register(new BooleanSetting("PluginSection", true));
+            register(new BooleanSetting("PluginSection", false));
     protected final Setting<Boolean> soundRemove =
             register(new BooleanSetting("SoundRemove", true));
     protected final Setting<Integer> deathTime =

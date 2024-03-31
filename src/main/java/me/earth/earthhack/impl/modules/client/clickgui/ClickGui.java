@@ -57,7 +57,7 @@ public class ClickGui extends Module
     public final Setting<Integer> blurSize =
             register(new NumberSetting<>("Blur-Size", 3, 1, 20));
 
-    /* ---------------- Modules -------------- */
+    /* ---------------- ModuleSorting -------------- */
     private final Setting<BoxesStyle> styleBoxes =
             register(new EnumSetting<>("Style-Boxes", BoxesStyle.New));
     public final Setting<ModuleBox> moduleBox =

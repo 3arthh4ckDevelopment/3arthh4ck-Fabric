@@ -204,9 +204,9 @@ public abstract class HudElement extends SettingContainer
         // scaling = false;
     }
 
-    public void hudUpdate() {}
+    public void update() {}
 
-    public abstract void hudDraw(DrawContext context);
+    public abstract void draw(DrawContext context);
 
     public boolean isOverlapping(HudElement other) {
         double[] rec1 = new double[]{this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight()};

@@ -19,7 +19,7 @@ final class ListenerGameLoop extends ModuleListener<Chat, GameLoopEvent>
         if (!module.cleared && mc.inGameHud != null)
         {
             IChatHud chat = (IChatHud) mc.inGameHud.getChatHud();
-            if (chat.getScrollPos() == 0)
+            if (chat.earthhack$getScrollPos() == 0)
                 module.clearNoScroll();
         }
 

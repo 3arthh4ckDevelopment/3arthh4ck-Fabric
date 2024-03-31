@@ -28,7 +28,7 @@ public class HudEditor extends Module {
     public final Setting<Color> color =
             register(new ColorSetting("Color", Color.WHITE));
     public final Setting<Boolean> shadow =
-            register(new BooleanSetting("Text-Shadow", true));
+            register(new BooleanSetting("Shadow", true));
     public final Setting<Boolean> testShadow =
             register(new BooleanSetting("OffsetShadow", true))
                     .setComplexity(Complexity.Expert);

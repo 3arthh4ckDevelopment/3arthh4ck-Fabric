@@ -13,13 +13,13 @@ final class ListenerRender extends ModuleListener<HudEditor, Render2DEvent> {
 
     @Override
     public void invoke(Render2DEvent event) {
-        if (mc.player != null && mc.world != null) {
-            if (module.show.getValue() && !(mc.currentScreen instanceof HudEditorGui)) {
-                for (HudElement element : Managers.ELEMENTS.getRegistered()) {
-                    if (element.isEnabled()) {
-                        element.hudUpdate();
-                        element.hudDraw(event.getContext());
-                    }
+        if (mc.player == null || mc.world == null) return;
+
+        if (module.show.getValue() && !(mc.currentScreen instanceof HudEditorGui)) {
+            for (HudElement element : Managers.ELEMENTS.getRegistered()) {
+                if (element.isEnabled()) {
+                    element.update();
+                    element.draw(event.getContext());
                 }
             }
         }

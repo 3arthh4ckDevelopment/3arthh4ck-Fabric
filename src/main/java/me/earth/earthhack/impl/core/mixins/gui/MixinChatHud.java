@@ -144,22 +144,22 @@ public abstract class MixinChatHud implements IChatHud
 
     @Override
     @Accessor(value = "scrolledLines")
-    public abstract int getScrollPos();
+    public abstract int earthhack$getScrollPos();
 
     @Override
     @Accessor(value = "scrolledLines")
-    public abstract void setScrollPos(int pos);
+    public abstract void earthhack$setScrollPos(int pos);
     @Override
     @Accessor(value = "hasUnreadNewMessages")
-    public abstract boolean getScrolled();
+    public abstract boolean earthhack$getScrolled();
 
     @Override
     @Accessor(value = "hasUnreadNewMessages")
-    public abstract void setScrolled(boolean scrolled);
+    public abstract void earthhack$setScrolled(boolean scrolled);
 
 
     @Override
-    public void invokeClearChat(boolean sent)
+    public void earthhack$invokeClearChat(boolean sent)
     {
         this.visibleMessages.clear();
         this.messages.clear();

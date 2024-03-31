@@ -225,14 +225,11 @@ public class Speedmine extends Module {
     protected final Setting<Integer> outlineA  =
             register(new NumberSetting<>("OutlineAlpha", 100, 0, 255))
                     .setComplexity(Complexity.Medium);
-    protected final Setting<Boolean> airFastRender =
+    protected final Setting<Boolean> renderOnAir =
             register(new BooleanSetting("RenderAir", false))
                     .setComplexity(Complexity.Expert);
     protected final Setting<Boolean> growRender =
             register(new BooleanSetting("GrowRender", false))
-                    .setComplexity(Complexity.Medium);
-    protected final Setting<Boolean> smoothenRender =
-            register(new BooleanSetting("Smoothen", false))
                     .setComplexity(Complexity.Medium);
 
     protected final FastHelper fastHelper = new FastHelper(this);
@@ -321,7 +318,7 @@ public class Speedmine extends Module {
                 .addPage(p -> p == SpeedminePages.Break, mode, tickTime)
                 .addPage(p -> p == SpeedminePages.Swap, cooldownBypass, aASSwitchTime)
                 .addPage(p -> p == SpeedminePages.Crystal, prePlace, offhandPlace)
-                .addPage(p -> p == SpeedminePages.Render, esp, smoothenRender)
+                .addPage(p -> p == SpeedminePages.Render, esp, growRender)
                 .register(Visibilities.VISIBILITY_MANAGER);
     }
 
@@ -353,15 +350,15 @@ public class Speedmine extends Module {
     public void abortCurrentPos()
     {
         AUTO_MINE.computeIfPresent(a -> a.addToBlackList(pos));
-        mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(
+        NetworkUtil.send(new PlayerActionC2SPacket(
                 PlayerActionC2SPacket.Action.ABORT_DESTROY_BLOCK,
                 pos,
                 facing));
 
         ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setIsHittingBlock(false);
         ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setCurBlockDamageMP(0.0f);
-        mc.world.setBlockBreakingInfo(this.mc.player.getId(), pos, -1);
-        mc.player.resetLastAttackedTicks(); // todo : mc.player.resetCooldown(); is probably different
+        mc.world.setBlockBreakingInfo(mc.player.getId(), pos, -1);
+        mc.player.resetLastAttackedTicks();
         reset();
     }
 
@@ -647,14 +644,12 @@ public class Speedmine extends Module {
 
     public void onSendPacket()
     {
-        ModuleUtil.sendMessage(this, "Yooooo sending the packet didnt fail", "packet");
         sentPacket = true;
         resetTimer.reset();
     }
 
     public void updateDamages()
     {
-        ModuleUtil.sendMessage(this, "Updating damages.", "damageUpdate");
         maxDamage = 0.0f;
         for (int i = 0; i < 9; i++)
         {
@@ -669,7 +664,6 @@ public class Speedmine extends Module {
             {
                 maxDamage = damages[i];
             }
-            ModuleUtil.sendMessage(this, "Updated; Maximum is " + MathUtil.round(maxDamage, 1));
         }
     }
 

@@ -38,7 +38,7 @@ public class ModuleListCommand extends Command
 
     public static MutableText getComponent()
     {
-        AbstractTextComponent component = new SimpleComponent("Modules: ");
+        AbstractTextComponent component = new SimpleComponent("ModuleSorting: ");
         component.setWrap(true);
 
         List<Module> moduleList = Managers

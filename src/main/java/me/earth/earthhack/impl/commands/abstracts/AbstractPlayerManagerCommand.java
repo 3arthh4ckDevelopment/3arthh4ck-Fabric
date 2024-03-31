@@ -41,7 +41,7 @@ public abstract class AbstractPlayerManagerCommand extends Command
      *
      * @param manager the manager to use.
      * @param name the name of the command
-     * @param listingName example: "Modules", "Friends", or "Enemies".
+     * @param listingName example: "ModuleSorting", "Friends", or "Enemies".
      * @param verb example: "friended", "enemied"
      * @param added completes "added as" ... example:
      *              "an enemy" or "a friend".

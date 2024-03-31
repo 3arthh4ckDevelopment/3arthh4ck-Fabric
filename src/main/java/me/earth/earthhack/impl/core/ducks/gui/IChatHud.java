@@ -16,18 +16,18 @@ public interface IChatHud {
                                     @Nullable MessageIndicator indicator, boolean refresh);
     void earthhack$remove(@Nullable MessageSignatureData signature, boolean all);
 
-    int getScrollPos();
+    int earthhack$getScrollPos();
 
-    void setScrollPos(int pos);
+    void earthhack$setScrollPos(int pos);
 
-    boolean getScrolled();
+    boolean earthhack$getScrolled();
 
-    void setScrolled(boolean scrolled);
+    void earthhack$setScrolled(boolean scrolled);
 
-    void invokeSetChatLine(Text chatComponent,
-                           int chatLineId,
-                           int updateCounter,
-                           boolean displayOnly);
+    void earthhack$invokeSetChatLine(Text chatComponent,
+                                     int chatLineId,
+                                     int updateCounter,
+                                     boolean displayOnly);
 
-    void invokeClearChat(boolean sent);
+    void earthhack$invokeClearChat(boolean sent);
 }

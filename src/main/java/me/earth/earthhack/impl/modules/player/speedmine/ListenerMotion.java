@@ -13,10 +13,10 @@ import net.minecraft.network.packet.Packet;
 
 final class ListenerMotion extends ModuleListener<Speedmine, MotionUpdateEvent>
 {
-   // private static final ModuleCache<Nuker> NUKER =
-   //     Caches.getModule(Nuker.class);
-   // private static final SettingCache<Boolean, BooleanSetting, Nuker> NUKE =
-   //     Caches.getSetting(Nuker.class, BooleanSetting.class, "Nuke", false);
+    // private static final ModuleCache<Nuker> NUKER =
+    //     Caches.getModule(Nuker.class);
+    // private static final SettingCache<Boolean, BooleanSetting, Nuker> NUKE =
+    //     Caches.getSetting(Nuker.class, BooleanSetting.class, "Nuke", false);
 
     public ListenerMotion(Speedmine module)
     {

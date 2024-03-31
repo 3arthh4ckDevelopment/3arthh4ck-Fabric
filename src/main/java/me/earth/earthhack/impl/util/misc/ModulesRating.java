@@ -29,7 +29,7 @@ public class ModulesRating {
     /**
      * Calculates the module name rating based on the user input
      *
-     * @return A List with the active Modules
+     * @return A List with the active ModuleSorting
      */
 
     public List<Module> modulesVisibility(String input, Boolean precision, Boolean aliases) {

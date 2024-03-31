@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Container for a Modules data:
+ * Container for a ModuleSorting data:
  * - the color of the module.
  * - a description of the module.
  * - descriptions for each setting of the module.

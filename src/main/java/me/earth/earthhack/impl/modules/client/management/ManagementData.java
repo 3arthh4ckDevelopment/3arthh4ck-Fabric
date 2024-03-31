@@ -13,7 +13,7 @@ final class ManagementData extends DefaultData<Management>
                 "If on: totempops get cleared when you log off.");
         register(module.friend, "If on: Friends you " +
                 "automatically.");
-        register(module.deathTime, "DeathTime for Modules that " +
+        register(module.deathTime, "DeathTime for ModuleSorting that " +
                 "use SetDead and similar stuff.");
         register(module.time, "Sets the worlds time. A value" +
                 " of 0 means that time is running normally.");

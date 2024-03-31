@@ -99,7 +99,7 @@ public class Managers
         COMMANDS.init();
         subscribe(COMMANDS);
 
-        Earthhack.getLogger().info("Loading Modules");
+        Earthhack.getLogger().info("Loading ModuleSorting");
         MODULES.init();
         /*
          * Initialize PingBypass here!!!
@@ -116,7 +116,7 @@ public class Managers
             e.printStackTrace();
         }
 
-        Earthhack.getLogger().info("Initializing Modules");
+        Earthhack.getLogger().info("Initializing ModuleSorting");
         MODULES.load();
         ELEMENTS.load();
     }

@@ -18,7 +18,7 @@ final class ListenerChat extends ModuleListener<Chat, ChatEvent.Send>
         if (module.noScroll.getValue() && mc.inGameHud != null)
         {
             IChatHud chat = (IChatHud) mc.inGameHud.getChatHud();
-            if (chat.getScrollPos() != 0)
+            if (chat.earthhack$getScrollPos() != 0)
             {
                 module.events.add(event);
                 module.cleared = false;

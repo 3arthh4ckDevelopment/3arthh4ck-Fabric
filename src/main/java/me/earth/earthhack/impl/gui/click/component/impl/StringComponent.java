@@ -6,6 +6,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.RenderUtil;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.pingbypass.input.Keyboard;
 import net.minecraft.client.gui.DrawContext;
 
@@ -60,10 +61,10 @@ public class StringComponent extends SettingComponent<String, StringSetting> {
             if (keyCode == 1) {
                 return;
             }
-            if (keyCode == 28) {
+            if (keyCode == 257) { // enter
                 enterString();
                 setListening(false);
-            } else if (keyCode == 14) {
+            } else if (keyCode == 259) { // backspace
                 setString(removeLastChar(currentString.getString()));
             } else {
                 if (keyCode == Keyboard.getKeyV() && (Keyboard.isKeyDown(Keyboard.getRControl()) || Keyboard.isKeyDown(Keyboard.getLControl()))) {

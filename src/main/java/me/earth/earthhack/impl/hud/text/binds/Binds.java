@@ -85,7 +85,7 @@ public class Binds extends DynamicHudElement {
 
     private String[] actualBracket() {
         if (customBrackets.getValue())
-            return new String[]{ HudRenderUtil.BracketsColor() + HudRenderUtil.Brackets()[0] + HudRenderUtil.BracketsTextColor(), HudRenderUtil.BracketsColor() + HudRenderUtil.Brackets()[1] + TextColor.WHITE };
+            return new String[]{ HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[0] + HudRenderUtil.bracketsTextColor(), HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[1] + TextColor.WHITE };
         else
             return new String[]{ TextColor.GRAY + "[", TextColor.GRAY + "]" };
     }
@@ -102,7 +102,7 @@ public class Binds extends DynamicHudElement {
     }
 
     @Override
-    public void hudDraw(DrawContext context) {
+    public void draw(DrawContext context) {
         render(context);
     }
 
@@ -114,8 +114,8 @@ public class Binds extends DynamicHudElement {
     }
 
     @Override
-    public void hudUpdate() {
-        super.hudUpdate();
+    public void update() {
+        super.update();
         setWidth(getWidth());
         setHeight(getHeight());
     }

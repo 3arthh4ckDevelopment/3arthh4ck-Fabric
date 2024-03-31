@@ -205,7 +205,7 @@ public class ModuleCache<T extends Module> extends Cache<T>
      *
      * @param name the name for the Module.
      * @param manager the Register to get the Module from.
-     * @return a ModuleCache for Modules of the given Name.
+     * @return a ModuleCache for ModuleSorting of the given Name.
      */
     public static ModuleCache<Module> forName(String name,
                                               Register<Module> manager)

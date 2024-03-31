@@ -52,7 +52,7 @@ final class ListenerPostKey extends EventListener<KeyboardEvent.Post> implements
             //TODO: pb
              */
 
-            if (module.moduleRender.getValue() == Modules.Length)
+            if (module.moduleRender.getValue() == ModuleSorting.Length)
                 module.modules.sort(Comparator.comparing(entry -> Managers.TEXT.getStringWidth(entry.getKey()) *  -1));
             else
                 module.modules.sort(Map.Entry.comparingByKey());

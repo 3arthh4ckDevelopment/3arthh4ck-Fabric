@@ -78,7 +78,7 @@ public class ModuleManager extends IterationRegister<Module>
 {
     public void init()
     {
-        Earthhack.getLogger().info("Initializing Modules.");
+        Earthhack.getLogger().info("Initializing ModuleSorting.");
 
         this.forceRegister(new RenderTest());
 

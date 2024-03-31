@@ -41,9 +41,9 @@ public class Notifications extends Module
     //         register(new NumberSetting<>("posY", 380.0f, 0.0f, (float) Render2DUtil.getScreenHeight()));
 
     protected final Setting<Boolean> modules     =
-            register(new BooleanSetting("Modules", true));
+            register(new BooleanSetting("ModuleSorting", true));
     protected final Setting<Boolean> configure   =
-            register(new BooleanSetting("Show-Modules", true));
+            register(new BooleanSetting("Show-ModuleSorting", true));
     protected final Setting<Category.CategoryEnum> categories =
             register(new EnumSetting<>("Categories", Category.CategoryEnum.Combat));
 

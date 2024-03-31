@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 
 public class HudArrayList extends DynamicHudElement {
 
-    protected final Setting<Modules> moduleRender =
-            register(new EnumSetting<>("Modules", Modules.Length));
+    protected final Setting<ModuleSorting> moduleRender =
+            register(new EnumSetting<>("ModuleSorting", ModuleSorting.Length));
     private final Setting<Integer> textOffset =
             register(new NumberSetting<>("Offset", 2, 0, 10));
     private final Setting<Boolean> animations =
@@ -53,7 +53,7 @@ public class HudArrayList extends DynamicHudElement {
                 }
             }
 
-            if (moduleRender.getValue() == Modules.Length) {
+            if (moduleRender.getValue() == ModuleSorting.Length) {
                 arrayEntriesSorted = getArrayEntries().entrySet().stream().sorted(Comparator.comparingDouble(entry -> Managers.TEXT.getStringWidth(getHudName(entry.getKey())) * -1)).collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -99,7 +99,7 @@ public class HudArrayList extends DynamicHudElement {
 
     private String[] actualBracket() {
         if (customBrackets.getValue())
-            return new String[]{ " " + HudRenderUtil.BracketsColor() + HudRenderUtil.Brackets()[0] + HudRenderUtil.BracketsTextColor(), HudRenderUtil.BracketsColor() + HudRenderUtil.Brackets()[1] + TextColor.WHITE };
+            return new String[]{ " " + HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[0] + HudRenderUtil.bracketsTextColor(), HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[1] + TextColor.WHITE };
         else
             return new String[]{ " " + TextColor.GRAY + "[", TextColor.GRAY + "]"};
     }
@@ -113,9 +113,9 @@ public class HudArrayList extends DynamicHudElement {
     }
 
     public HudArrayList() {
-        super("ModuleList", HudCategory.Text, 200, 200);
+        super("Modules", HudCategory.Text, 200, 200);
         this.listeners.add(new ListenerPostKey(this));
-        this.setData(new SimpleHudData(this, "Displays enabled modules."));
+        this.setData(new SimpleHudData(this, "If you want to show enabled modules."));
     }
 
     protected boolean isArrayMember(Module module) {
@@ -132,7 +132,7 @@ public class HudArrayList extends DynamicHudElement {
     }
 
     @Override
-    public void hudDraw(DrawContext context) {
+    public void draw(DrawContext context) {
         render(context);
     }
 
@@ -144,8 +144,8 @@ public class HudArrayList extends DynamicHudElement {
     }
 
     @Override
-    public void hudUpdate() {
-        super.hudUpdate();
+    public void update() {
+        super.update();
         setWidth(getWidth());
         setHeight(getHeight());
     }

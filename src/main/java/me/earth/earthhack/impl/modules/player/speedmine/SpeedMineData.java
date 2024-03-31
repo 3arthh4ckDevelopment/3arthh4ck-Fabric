@@ -54,7 +54,6 @@ final class SpeedMineData extends DefaultData<Speedmine>
         register(module.resetAfterPacket,
                  "Only for Mode - Smart with Normal on.");
         register(module.tpsSync, "Syncs mode Smart and Fast with the TPS.");
-        register(module.smoothenRender, "Smoothens the SpeedMine rendering.");
     }
 
     @Override

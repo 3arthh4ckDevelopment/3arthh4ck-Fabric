@@ -154,7 +154,7 @@ public class TextRadar extends DynamicHudElement {
     }
 
     @Override
-    public void hudDraw(DrawContext context) {
+    public void draw(DrawContext context) {
         render(context, false);
     }
 
@@ -166,8 +166,8 @@ public class TextRadar extends DynamicHudElement {
     }
 
     @Override
-    public void hudUpdate() {
-        super.hudUpdate();
+    public void update() {
+        super.update();
         setWidth(getWidth());
         setHeight(getHeight());
     }
