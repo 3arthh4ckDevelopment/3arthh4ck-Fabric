@@ -9,8 +9,7 @@ final class HudEditorData extends DefaultData<HudEditor>
         register(module.show, "If you want to render the HUD.");
         register(module.colorMode, "If you want a Rainbow on the HUD.");
         register(module.color, "The color of the HUD text.");
-        register(module.shadow, "If you want the HUD text to have a shadow.");
-        register(module.testShadow, "If you want to offset the shadow closer to the text.");
+        register(module.shadow, "If you want to modify the Minecraft shadow.");
         register(module.bracketsColor, "The custom brackets color");
         register(module.insideText, "The color of the Text setting inside the shadow.");
         register(module.brackets, """
@@ -19,7 +18,5 @@ final class HudEditorData extends DefaultData<HudEditor>
                 Example:
                  [:] -> [Strafe]
                  (:) -> (Strafe)""");
-
-
     }
 }

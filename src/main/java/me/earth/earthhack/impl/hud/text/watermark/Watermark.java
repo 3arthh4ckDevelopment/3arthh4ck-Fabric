@@ -33,10 +33,8 @@ public class Watermark extends HudElement {
         text = logoText.getValue() + (showVersion.getValue() ? " - " + Earthhack.VERSION : "");
         if (sync.getValue())
             HudRenderUtil.renderText(context, text, getX(), getY());
-        else if (Caches.getModule(HudEditor.class).get().shadow.getValue())
-            Managers.TEXT.drawStringWithShadow(context, text, getX(), getY(), color.getValue().getRGB());
         else
-            Managers.TEXT.drawString(context, text, getX(), getY(), color.getValue().getRGB());
+            Managers.TEXT.drawStringWithShadow(context, text, getX(), getY(), color.getValue().getRGB());
     }
 
     public Watermark() {

@@ -32,6 +32,8 @@ public interface IMinecraftClient
     /** @return the current gameloop, will be incremented every gameloop. */
     int earthhack$getGameLoop();
 
+    int earthhack$getFpsCounter();
+
     /** @return <tt>true</tt> if 3arthh4ck is running. */
     boolean earthhack$isRunning();
 

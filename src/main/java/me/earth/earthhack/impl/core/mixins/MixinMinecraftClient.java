@@ -78,6 +78,8 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
                 : ""));
     }
 
+
+
     @Override
     @Accessor(value = "itemUseCooldown")
     public abstract int earthhack$getRightClickDelay();
@@ -95,6 +97,10 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     public int earthhack$getGameLoop() {
         return gameLoop;
     }
+
+    @Override
+    @Accessor(value = "fpsCounter")
+    public abstract int earthhack$getFpsCounter();
 
     @Override
     public boolean earthhack$isRunning() {

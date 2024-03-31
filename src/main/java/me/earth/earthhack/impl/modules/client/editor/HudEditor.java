@@ -27,11 +27,8 @@ public class HudEditor extends Module {
             register(new EnumSetting<>("Rainbow", HudRainbow.None));
     public final Setting<Color> color =
             register(new ColorSetting("Color", Color.WHITE));
-    public final Setting<Boolean> shadow =
-            register(new BooleanSetting("Shadow", true));
-    public final Setting<Boolean> testShadow =
-            register(new BooleanSetting("OffsetShadow", true))
-                    .setComplexity(Complexity.Expert);
+    public final Setting<Boolean> shadow = // TODO!!
+            register(new BooleanSetting("Shadow", false));
     public final Setting<TextColor> bracketsColor =
             register(new EnumSetting<>("BracketsColor", TextColor.None));
     public final Setting<TextColor> insideText =
@@ -74,7 +71,6 @@ public class HudEditor extends Module {
             }
         });
 */
-
     }
 
     public final String[] getBrackets() {

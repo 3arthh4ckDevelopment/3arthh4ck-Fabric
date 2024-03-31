@@ -39,7 +39,7 @@ public class HudRenderUtil implements Globals {
 
     public static void renderText(DrawContext context, String text, float x, float y, float scale) {
         String colorCode = HUD_EDITOR.get().colorMode.getValue().getColor();
-        RENDERER.drawStringScaled(context, colorCode + text, x, y, textColor(y), HUD_EDITOR.get().shadow.getValue(), scale);
+        RENDERER.drawStringScaled(context, colorCode + text, x, y, textColor(y), true, scale);
     }
 
     public static void drawItemStack(DrawContext context, ItemStack stack, int x, int y)

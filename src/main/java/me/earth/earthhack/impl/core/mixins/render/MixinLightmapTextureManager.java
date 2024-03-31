@@ -18,9 +18,8 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
  *
  * I think we also need to set Ambience on here
  */
-
 @Mixin(LightmapTextureManager.class)
-public class MixinLightmapTextureManager
+public abstract class MixinLightmapTextureManager
 {
     @Unique
     private static final ModuleCache<Fullbright> FULL_BRIGHT =

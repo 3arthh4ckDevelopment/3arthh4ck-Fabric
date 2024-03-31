@@ -19,10 +19,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * Made by cattyn <a href="https://github.com/mioclient/oyvey-ported/blob/master/src/main/java/me/alpha432/oyvey/mixin/MixinWorldRenderer.java">...</a>
  */
-@Mixin( WorldRenderer.class )
-public class MixinWorldRenderer {
+@Mixin(WorldRenderer.class)
+public abstract class MixinWorldRenderer
+{
     @Inject(method = "render", at = @At("RETURN"))
-    private void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
+    private void render(MatrixStack matrices,
+                        float tickDelta,
+                        long limitTime,
+                        boolean renderBlockOutline,
+                        Camera camera,
+                        GameRenderer gameRenderer,
+                        LightmapTextureManager lightmapTextureManager,
+                        Matrix4f positionMatrix, CallbackInfo ci)
+    {
         MinecraftClient.getInstance().getProfiler().push("earthhack-render-3d");
         RenderSystem.clear(GL11.GL_DEPTH_BUFFER_BIT, MinecraftClient.IS_SYSTEM_MAC);
         Bus.EVENT_BUS.post(new Render3DEvent(matrices, tickDelta));
