@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.hud.text.potions;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.hud.HudCategory;
 import me.earth.earthhack.api.setting.Setting;
@@ -18,7 +19,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.Formatting;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //TODO: hud potion symbols
+// TODO: Rewrite @Ai_2473 ....
 public class Potions extends DynamicHudElement {
 
     private static final Potions INSTANCE = new Potions();
@@ -54,7 +55,7 @@ public class Potions extends DynamicHudElement {
                 for (StatusEffectInstance effect : sorted) {
                     if (effect != null) {
                         String label = effect.getEffectType().getName().getString() + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "") + Formatting.GRAY + " " + getPotionDuration(effect);
-                        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+                        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                         float xPos = getX() - simpleCalcH(RENDERER.getStringWidth(label));
                         if (directionV() == TextDirectionV.BottomToTop)
                             renderPotionText(context, label, borderDistance + xPos, yPos - offset - animationY, effect.getEffectType());
