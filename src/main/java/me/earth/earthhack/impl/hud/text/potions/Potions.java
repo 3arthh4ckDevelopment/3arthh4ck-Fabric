@@ -19,7 +19,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class Potions extends DynamicHudElement {
             return "**:**";
         else {
             int totalTime = effect.getDuration();
-
+            totalTime /= 20;
             // h:mm:ss
             String hours = totalTime / 3600 != 0 ? String.valueOf(totalTime / 3600) : "";
             String m = (totalTime % 3600) / 60 != 0 ? String.valueOf((totalTime % 3600) / 60) : "0";

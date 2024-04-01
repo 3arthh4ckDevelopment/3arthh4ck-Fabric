@@ -133,8 +133,8 @@ public class ModuleComponent extends Component {
                 moduleBinding = moduleBinding.substring(0, 3);
             }
             moduleBinding = "[" + moduleBinding + "]";
-            float offset = getFinishedX() + getWidth() - Managers.TEXT.getStringWidth(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue());
-            drawStringWithShadow(moduleBinding, (offset - (Managers.TEXT.getStringWidth(moduleBinding) >> 1)) * 2 - 12, (getFinishedY() + getHeight() / 1.5f - (Managers.TEXT.getStringHeightI() >> 1)) * 2.0f, getModule().isEnabled() ? getClickGui().get().getOnModule().brighter().getRGB() : getClickGui().get().getOffModule().brighter().getRGB(), 0.5f);
+            float offset = getFinishedX() + getWidth() - Managers.TEXT.getStringWidth(isExtended() ? getClickGui().get().close.getValue() : getClickGui().get().open.getValue()) * 2;
+            Managers.TEXT.drawStringScaled(context, moduleBinding, offset - (Managers.TEXT.getStringWidth(moduleBinding) >> 1), (getFinishedY() + getHeight() / 1.5f - (Managers.TEXT.getStringHeightI() >> 1)), getModule().isEnabled() ? getClickGui().get().getOnModule().brighter().getRGB() : getClickGui().get().getOffModule().brighter().getRGB(), true, 0.5f);
         }
         if (isExtended()) {
             for (Component component : getComponents()) {

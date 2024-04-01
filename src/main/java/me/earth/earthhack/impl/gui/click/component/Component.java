@@ -2,13 +2,12 @@ package me.earth.earthhack.impl.gui.click.component;
 
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.impl.gui.click.Click;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.util.render.RenderUtil;
 import net.minecraft.client.gui.DrawContext;
 
 import java.util.function.Supplier;
-
-import static me.earth.earthhack.api.util.interfaces.Globals.mc;
 
 public class Component {
     private final String label;
@@ -57,11 +56,7 @@ public class Component {
     }
 
     protected void drawStringWithShadow(String text, double x, double y, int color) {
-        context.drawTextWithShadow(mc.textRenderer, text, (int) x, (int) y, color);
-    }
-
-    protected void drawStringWithShadow(String text, double x, double y, int color, float scale) {
-        context.drawTextWithShadow(mc.textRenderer, text, (int) (x / scale), (int) (y / scale), color);
+        Managers.TEXT.drawStringWithShadow(context, text, (int) x, (int) y, color);
     }
 
     public void charTyped(char character, int keyCode) {

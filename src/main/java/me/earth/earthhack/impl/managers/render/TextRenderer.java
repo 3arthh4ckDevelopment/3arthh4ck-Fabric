@@ -2,133 +2,106 @@ package me.earth.earthhack.impl.managers.render;
 
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.gui.font.CustomFontRenderer;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
+import me.earth.earthhack.impl.util.render.NVGRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.StringVisitable;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"UnusedReturnValue", "unused"})
+@SuppressWarnings("unused")
 public class TextRenderer implements Globals
 {
     private final ModuleCache<FontMod> fontMod =
             Caches.getModule(FontMod.class);
 
-    private CustomFontRenderer renderer =
-        new CustomFontRenderer(new Font("Arial", Font.PLAIN, 17), true, true);
+    public static final NVGRenderer FONTS = new NVGRenderer();
 
-    public float drawStringWithShadow(DrawContext context, String text, float x, float y, int color)
-    {
-        if (fontMod.isEnabled())
-        {
-            return renderer.drawStringWithShadow(text, x, y, color);
-        }
-
-        return context.drawTextWithShadow(mc.textRenderer, text, (int) x, (int) y, color);
-    }
-
-    public float drawString(DrawContext context, String text, float x, float y, int color)
-    {
-        if (fontMod.isEnabled())
-        {
-            return renderer.drawString(text, x, y, color);
-        }
-        return context.drawText(mc.textRenderer, text, (int) x, (int) y, color, false);
-    }
-
-    public float drawString(DrawContext context,
-                            String text,
-                            float x,
-                            float y,
-                            int color,
-                            boolean dropShadow)
-    {
-        if (fontMod.isEnabled())
-        {
-            if (dropShadow)
-            {
-                return renderer.drawStringWithShadow(text, x, y, color);
+    private void drawString(DrawContext context, String text, float x, float y, int color, boolean shadow, float scale) {
+        if (text == null || text.isEmpty())
+            return;
+        if (fontMod.isEnabled()) {
+            if (FONTS.isInitialized()) {
+                FONTS.startDraw();
+                FONTS.drawText(text, x, y, fontMod.get().fontSize.getValue() * scale, new Color(color), shadow);
+                FONTS.endDraw();
+            } else {
+                FONTS.initialize();
             }
-
-            return renderer.drawString(text, x, y, color);
+        } else {
+            context.getMatrices().scale(scale, scale, scale);
+            context.drawText(mc.textRenderer, text, (int) (x / scale), (int) (y / scale), color, shadow);
+            context.getMatrices().scale(1 / scale, 1 / scale, 1 / scale);
         }
+    }
 
-        return context.drawText(mc.textRenderer, text, (int) x, (int) y, color, dropShadow);
+    public void drawStringWithShadow(DrawContext context, String text, float x, float y, int color) {
+        drawString(context, text, x, y, color, true, 1);
+    }
+
+    public void drawString(DrawContext context, String text, float x, float y, int color) {
+        drawString(context, text, x, y, color, false, 1);
+    }
+
+    public void drawString(DrawContext context, String text, float x, float y, int color, boolean dropShadow) {
+        drawString(context, text, x, y, color, dropShadow, 1);
     }
 
     public void drawStringScaled(DrawContext context, String text, float x, float y, int color, boolean dropShadow, float scale) {
-        context.getMatrices().scale(scale, scale, scale);
-        drawString(context, text, x / scale, y / scale, color, dropShadow);
-        context.getMatrices().scale(1 / scale, 1 / scale, 1 / scale);
+        drawString(context, text, x, y, color, dropShadow, scale);
     }
 
-    public int getStringWidth(String text)
-    {
-        if (fontMod.isEnabled())
-        {
-            return renderer.getStringWidth(text);
+    public int getStringWidth(String text) {
+        if (usingCustomFont()) {
+            return (int) FONTS.getWidth(text);
+        } else {
+            return mc.textRenderer.getWidth(text);
         }
-
-        return mc.textRenderer.getWidth(text);
     }
 
-    public float getStringWidthScaled(String text, float scale) {
-        if (fontMod.isEnabled())
-        {
-            return renderer.getStringWidth(text) * scale;
+    public int getStringHeightI() {
+        if (usingCustomFont()) {
+            return (int) FONTS.getHeight();
+        } else {
+            return mc.textRenderer.fontHeight;
         }
-
-        return mc.textRenderer.getWidth(text) * scale;
     }
 
-    public int getStringHeightI()
-    {
-        if (fontMod.isEnabled())
-        {
-            return renderer.getHeight();
+    public float getStringHeight() {
+        if (usingCustomFont()) {
+            return FONTS.getHeight();
+        } else {
+            return mc.textRenderer.fontHeight;
         }
-
-        return mc.textRenderer.fontHeight;
     }
 
-    // this is here to not break compatibility with plugins that still use it
-    public float getStringHeight()
-    {
-        if (fontMod.isEnabled())
-        {
-            return renderer.getHeight();
+    public List<String> listFormattedStringToWidth(String str, int wrapWidth) {
+        List<String> lines = new ArrayList<>();
+        boolean hasChars = true;
+
+        while (hasChars) {
+            if (getStringWidth(str) > wrapWidth) {
+                int i = 0;
+                while (getStringWidth(str.substring(0, i)) <= wrapWidth) {
+                    i++;
+                    if (i >= str.length()) {
+                        break;
+                    }
+                }
+                String cut = str.substring(0, i);
+                lines.add(cut);
+                str = str.substring(i);
+            } else {
+                lines.add(str);
+                hasChars = false;
+            }
         }
-
-        return mc.textRenderer.fontHeight;
+        return lines;
     }
 
-    public float getStringHeightI(float scale)
-    {
-        if (fontMod.isEnabled())
-        {
-            return renderer.getHeight() * scale;
-        }
-
-        return mc.textRenderer.fontHeight * scale;
+    public boolean usingCustomFont() {
+        return fontMod.isEnabled() && FONTS.isInitialized();
     }
-
-    public void setFontRenderer(Font font, boolean antiAlias, boolean metrics)
-    {
-        renderer = new CustomFontRenderer(font, antiAlias, metrics);
-    }
-
-    public List<OrderedText> listFormattedStringToWidth(String str, int wrapWidth)
-    {
-        if (fontMod.isEnabled())
-        {
-            // return renderer.wrapWords(str, wrapWidth);
-        }
-        return new ArrayList<>(mc.textRenderer.wrapLines(StringVisitable.plain(str), wrapWidth));
-    }
-
 }

@@ -19,6 +19,7 @@ repositories {
 }
 
 configurations {
+    implementation.extendsFrom(library)
     shadow.extendsFrom(library)
 }
 
@@ -31,7 +32,12 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    library("club.minnced:java-discord-rpc:2.0.2")
+    library "club.minnced:java-discord-rpc:2.0.2"
+
+    library group: 'org.lwjgl', name: 'lwjgl-nanovg', version: '3.3.2'
+    library "org.lwjgl:lwjgl-nanovg::natives-windows"
+    library "org.lwjgl:lwjgl-nanovg::natives-linux"
+    library "org.lwjgl:lwjgl-nanovg::natives-macos"
 }
 
 processResources {
@@ -78,22 +84,5 @@ jar {
                 'Manifest-Version': 1.0,
                 "Main-Class": 'me.earth.earthhack.Main'
         )
-    }
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
     }
 }

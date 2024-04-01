@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.gui.click.frame;
 
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.impl.gui.click.component.Component;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.util.render.RenderUtil;
@@ -103,7 +104,7 @@ public class Frame {
     }
 
     protected void drawStringWithShadow(DrawContext context, String text, double x, double y, int color) {
-        context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, text, (int) x, (int) y, color);
+        Managers.TEXT.drawStringWithShadow(context, text, (float) x, (float) y, color);
     }
 
     public ArrayList<Component> getComponents() {

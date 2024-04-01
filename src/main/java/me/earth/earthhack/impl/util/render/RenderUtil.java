@@ -252,16 +252,6 @@ public class RenderUtil implements Globals {
         return new Vector3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt);
     }
 
-    public static void scissor(float x, float y, float x1, float y1)
-    {
-        wnd = mc.getWindow();
-        double scale = wnd.getScaleFactor();
-        glScissor((int) (x * scale),
-                (int) ((wnd.getScaledHeight() - y1) * scale),
-                (int)((x1 - x) * scale),
-                (int)((y1 - y) * scale));
-    }
-
     public static void startRender()
     {
         RenderSystem.enableBlend();
