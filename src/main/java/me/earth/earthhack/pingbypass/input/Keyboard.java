@@ -16,10 +16,7 @@ public class Keyboard {
     }
 
     public static String getKeyName(int key) {
-        String s = GLFW.glfwGetKeyName(key, 0);
-        if (s == null || s.isEmpty())
-            s = InputUtil.fromKeyCode(key, 0).getTranslationKey().substring(13).replace('.', ' ');
-        return s.toUpperCase();
+        return InputUtil.fromKeyCode(key, 0).getTranslationKey().substring(13).replace('.', ' ').toUpperCase();
     }
 
     public static int getRControl() {
@@ -59,7 +56,7 @@ public class Keyboard {
     }
 
     public static int getKeyIndex(String string) {
-        string = string.toLowerCase();
+        string = string.replace(" ", ".").toLowerCase();
         switch (string) {
             case "+":
                 return 334;
@@ -89,6 +86,7 @@ public class Keyboard {
                 return 346;
         }
         try {
+            System.out.println("key.keyboard." + string + " Code: " + InputUtil.fromTranslationKey("key.keyboard." + string).getCode());
             return InputUtil.fromTranslationKey("key.keyboard." + string).getCode();
         } catch (NumberFormatException exception) {
             return -1;
