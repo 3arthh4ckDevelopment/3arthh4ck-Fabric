@@ -34,7 +34,7 @@ dependencies {
 
     library "club.minnced:java-discord-rpc:2.0.2"
 
-    library group: 'org.lwjgl', name: 'lwjgl-nanovg', version: '3.3.2'
+    library group: 'org.lwjgl', name: 'lwjgl-nanovg', version: '3.3.3'
     library "org.lwjgl:lwjgl-nanovg::natives-windows"
     library "org.lwjgl:lwjgl-nanovg::natives-linux"
     library "org.lwjgl:lwjgl-nanovg::natives-macos"
