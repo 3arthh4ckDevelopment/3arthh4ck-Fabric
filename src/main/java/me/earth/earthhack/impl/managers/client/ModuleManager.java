@@ -27,9 +27,11 @@ import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.modules.client.safety.Safety;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
 import me.earth.earthhack.impl.modules.combat.antisurround.AntiSurround;
+import me.earth.earthhack.impl.modules.combat.antitrap.AntiTrap;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
 import me.earth.earthhack.impl.modules.combat.bowspam.BowSpam;
+import me.earth.earthhack.impl.modules.combat.criticals.Criticals;
 import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
 import me.earth.earthhack.impl.modules.combat.offhand.Offhand;
@@ -110,7 +112,7 @@ public class ModuleManager extends IterationRegister<Module>
 
         /* ----- COMBAT ----- */
         this.forceRegister(new AntiSurround());
-        // this.forceRegister(new AntiTrap());
+        this.forceRegister(new AntiTrap());
         // this.forceRegister(new AnvilAura());
         // this.forceRegister(new AutoArmor());
         this.forceRegister(new AutoCrystal());
@@ -120,7 +122,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new BowSpam());
         // this.forceRegister(new Blocker());
         // this.forceRegister(new BowKiller());
-        // this.forceRegister(new Criticals());
+        this.forceRegister(new Criticals());
         // this.forceRegister(new CrystalBomber());
         this.forceRegister(new HoleFiller());
         this.forceRegister(new KillAura());

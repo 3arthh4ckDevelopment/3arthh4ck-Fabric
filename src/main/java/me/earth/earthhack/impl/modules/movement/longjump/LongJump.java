@@ -86,11 +86,12 @@ public class LongJump extends Module
     protected void onDisable()
     {
         Managers.TIMER.reset();
-        if(!SPEED.isEnabled() && pauseSpeed.getValue() && timeoutTimer.passed(speedTimeout.getValue())){
-            if(speedCheck.getValue()){
-                if(wasSpeedActive)
+        if (!SPEED.isEnabled() && pauseSpeed.getValue() && timeoutTimer.passed(speedTimeout.getValue())) {
+            if (speedCheck.getValue()) {
+                if (wasSpeedActive)
                     SPEED.enable();
-            } else
+            }
+            else
                  SPEED.enable();
         }
     }

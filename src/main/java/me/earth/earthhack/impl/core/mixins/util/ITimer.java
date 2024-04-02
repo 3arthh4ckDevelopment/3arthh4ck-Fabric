@@ -9,5 +9,4 @@ public interface ITimer
 {
     @Accessor(value = "lastFrameDuration")
     void setTickLength(float length);
-
 }

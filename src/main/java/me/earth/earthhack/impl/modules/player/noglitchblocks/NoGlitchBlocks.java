@@ -7,7 +7,7 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.impl.util.client.SimpleData;
 
 /**
- * {@link me.earth.earthhack.forge.mixins.entity.MixinPlayerControllerMP} //TODO: make
+ * TODO: Remove this, modern versions of Minecraft make this module redundant
  */
 public class NoGlitchBlocks extends Module
 {

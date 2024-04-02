@@ -20,7 +20,7 @@ final class ListenerClick extends ModuleListener<Speedmine, ClickBlockEvent>
                 && (module.noReset.getValue()
                     || module.mode.getValue() == MineMode.Reset)
                 && ((IClientPlayerInteractionManager) mc.interactionManager)
-                                                .earthhack$getCurBlockDamageMP() > 0.1f)
+                                                .earthhack$getCurrentBreakingProgress() > 0.1f)
         {
             ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setIsHittingBlock(true);
         }

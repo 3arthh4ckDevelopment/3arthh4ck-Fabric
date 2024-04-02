@@ -45,11 +45,11 @@ public abstract class MixinClientPlayerInteractionManager implements IClientPlay
 
     @Override
     @Accessor(value = "currentBreakingProgress")
-    public abstract float earthhack$getCurBlockDamageMP();
+    public abstract float earthhack$getCurrentBreakingProgress();
 
     @Override
     @Accessor(value = "currentBreakingProgress")
-    public abstract void earthhack$setCurBlockDamageMP(float damage);
+    public abstract void earthhack$setCurrentBreakingProgress(float damage);
 
     @Override
     @Accessor(value = "breakingBlock")

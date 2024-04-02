@@ -51,10 +51,9 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 
 // TODO Tps Sync
-// TODO Test around with multiple blocks
+// TODO Test around with multiple blocks <-- Grim...
 // TODO: Rotations reset if Facing becomes invalid.
 // TODO: Rewrite
-// TODO: ^^ redo this, maybe inspiration from Phobot since this is not very good
 public class Speedmine extends Module {
 
     private static final ModuleCache<AutoMine> AUTO_MINE =
@@ -356,7 +355,7 @@ public class Speedmine extends Module {
                 facing));
 
         ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setIsHittingBlock(false);
-        ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setCurBlockDamageMP(0.0f);
+        ((IClientPlayerInteractionManager) mc.interactionManager).earthhack$setCurrentBreakingProgress(0.0f);
         mc.world.setBlockBreakingInfo(mc.player.getId(), pos, -1);
         mc.player.resetLastAttackedTicks();
         reset();

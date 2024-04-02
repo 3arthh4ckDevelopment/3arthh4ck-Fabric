@@ -3,7 +3,7 @@ package me.earth.earthhack.impl.util.text;
 import me.earth.earthhack.impl.modules.client.debug.AnsiColors;
 
 /**
- * TextColors for {@link me.earth.earthhack.impl.gui.font.CustomFontRenderer}
+ * TextColors for {@link me.earth.earthhack.impl.gui}
  * and {@link net.minecraft.client.gui}. Note that there's also
  * {@link TextColor#CUSTOM}, but it's not contained in the enum, because
  * it's more complex.

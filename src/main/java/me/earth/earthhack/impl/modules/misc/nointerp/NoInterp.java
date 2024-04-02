@@ -4,6 +4,7 @@ import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
+import me.earth.earthhack.impl.util.client.SimpleData;
 
 public class NoInterp extends Module {
 
@@ -19,6 +20,7 @@ public class NoInterp extends Module {
 
     public NoInterp() {
         super("NoInterp", Category.Misc);
+        this.setData(new SimpleData(this, "Makes the client more accurate."));
     }
 
     public boolean isSilent()

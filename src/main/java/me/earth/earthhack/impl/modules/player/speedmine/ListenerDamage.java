@@ -6,12 +6,10 @@ import me.earth.earthhack.impl.event.events.misc.DamageBlockEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.combat.antisurround.AntiSurround;
-import me.earth.earthhack.impl.util.client.ModuleUtil;
 import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.minecraft.blocks.mine.MineUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
-import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.Hand;
 
@@ -36,7 +34,6 @@ final class ListenerDamage extends ModuleListener<Speedmine, DamageBlockEvent>
         {
             return;
         }
-        ModuleUtil.sendMessage(module, "received DamageBlockEvent; position: " + event.getPos());
 
         module.checkReset();
         if (MineUtil.canBreak(event.getPos())
@@ -87,10 +84,10 @@ final class ListenerDamage extends ModuleListener<Speedmine, DamageBlockEvent>
                 case Damage:
                     setPos(event);
                     if (((IClientPlayerInteractionManager) mc.interactionManager)
-                            .earthhack$getCurBlockDamageMP() >= module.limit.getValue())
+                            .earthhack$getCurrentBreakingProgress() >= module.limit.getValue())
                     {
                         ((IClientPlayerInteractionManager) mc.interactionManager)
-                                .earthhack$setCurBlockDamageMP(1.0f);
+                                .earthhack$setCurrentBreakingProgress(1.0f);
                     }
                     break;
                 case Fast:

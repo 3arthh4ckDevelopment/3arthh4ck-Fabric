@@ -73,7 +73,7 @@ public class AntiPackets extends Module
                 }
             }
         }
-*/
+        */
         EnumSetting<Page> pageEnumSetting =
                 register(new EnumSetting<>("Page", Page.CPackets));
 

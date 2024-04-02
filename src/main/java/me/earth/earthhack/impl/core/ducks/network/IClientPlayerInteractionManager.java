@@ -37,14 +37,14 @@ public interface IClientPlayerInteractionManager {
      *
      * @return curBlockDamageMP.
      */
-    float earthhack$getCurBlockDamageMP();
+    float earthhack$getCurrentBreakingProgress();
 
     /**
      * Accessor for curBlockDamageMP.
      *
      * @param damage set curBlockDamageMP.
      */
-    void earthhack$setCurBlockDamageMP(float damage);
+    void earthhack$setCurrentBreakingProgress(float damage);
 
     /**
      * Accessor for isHittingBlock.
