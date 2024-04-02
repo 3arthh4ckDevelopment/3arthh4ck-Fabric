@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6.3'
+    id 'fabric-loom' version '1.6.5'
     id 'maven-publish'
     id "com.github.johnrengelman.shadow" version "8.1.1"
 }
