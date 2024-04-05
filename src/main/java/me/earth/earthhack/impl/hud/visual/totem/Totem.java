@@ -22,7 +22,7 @@ public class Totem extends HudElement {
             if (totems <= 0 && mc.currentScreen instanceof HudEditorGui) {
                 HudRenderUtil.renderText(context, "0", (int) getX() + 17 - RENDERER.getStringWidth("0"), (int) getY() + 9);
             } else {
-                HudRenderUtil.drawItemStack(context, totemStack, (int) getX(), (int) getY());
+                HudRenderUtil.drawItemStack(context, totemStack, (int) getX(), (int) getY(), true);
             }
         }
     }

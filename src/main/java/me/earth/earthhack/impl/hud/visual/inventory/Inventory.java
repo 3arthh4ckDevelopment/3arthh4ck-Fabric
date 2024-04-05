@@ -8,6 +8,7 @@ import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
@@ -37,16 +38,17 @@ public class Inventory extends HudElement {
                     Render2DUtil.drawBorderedRect(context.getMatrices(), getX(), getY(), getX() + 9 * 18, getY() + 55.0f, 1.0f, boxColor.getValue().getRGB(), outlineColor.getValue().getRGB());
             }
 
-            ItemRender(context, mc.player.getInventory().main, (int) getX(), (int) getY(), xCarry.getValue());
+            renderItems(context, mc.player.getInventory().main, (int) getX(), (int) getY(), xCarry.getValue());
         }
     }
 
-    protected void ItemRender(DrawContext context, final DefaultedList<ItemStack> items, final int x, final int y, boolean xCarry) {
+    protected void renderItems(DrawContext context, final DefaultedList<ItemStack> items, final int x, final int y, boolean xCarry) {
         for (int i = 0; i < items.size() - 9; i++) {
             int iX = x + (i % 9) * (18);
             int iY = y + (i / 9) * (18);
             ItemStack itemStack = items.get(i + 9);
-            context.drawItem(itemStack, iX, iY, 100203, (int) getZ());
+            HudRenderUtil.drawItemStack(context, itemStack, iX, iY, true);
+            // context.drawItem(itemStack, iX, iY, 100203, (int) getZ());
             // Managers.TEXT.drawString(context, String.valueOf(itemStack.getCount()), iX, iY, 0xffffffff);
         }
 
@@ -55,8 +57,9 @@ public class Inventory extends HudElement {
                 int iX = x + ((i + 4) % 9) * (18);
                 ItemStack itemStack = mc.player.getInventory().getStack(i);
                 if (itemStack != null && !itemStack.isEmpty()) {
-                    context.drawItem(itemStack, iX, y - 18, 100204, (int) getZ());
-                    Managers.TEXT.drawString(context, String.valueOf(itemStack.getCount()), iX, y - 18, 0xffffffff);
+                    HudRenderUtil.drawItemStack(context, itemStack, iX, y - 18, true);
+                    // context.drawItem(itemStack, iX, y - 18, 100204, (int) getZ());
+                    // Managers.TEXT.drawString(context, String.valueOf(itemStack.getCount()), iX, y - 18, 0xffffffff);
                 }
             }
         }
