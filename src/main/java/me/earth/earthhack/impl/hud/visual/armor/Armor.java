@@ -5,6 +5,8 @@ import me.earth.earthhack.api.hud.HudElement;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.modules.Caches;
+import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.render.ColorHelper;
@@ -29,14 +31,14 @@ public class Armor extends HudElement {
             if (!stack.isEmpty())
             {
                 if (durability.getValue()) {
-                    context.getMatrices().push();
-                    context.getMatrices().scale(0.625f, 0.625f, 0.625f);
-                    Managers.TEXT.drawStringWithShadow(context,
-                            ((int) (percent * 100.0f)) + "%",
-                            (x + 2) * 1.6f, (getY() - 3) * 1.6f - 1,
-                            ColorHelper.toColor(percent * 120.0f, 100.0f, 50.0f, 1.0f).getRGB());
-                    context.getMatrices().scale(1.0f, 1.0f, 1.0f);
-                    context.getMatrices().pop();
+                        context.getMatrices().push();
+                        context.getMatrices().scale(0.625f, 0.625f, 0.625f);
+                        Managers.TEXT.drawStringWithShadow(context,
+                                ((int) (percent * 100.0f)) + "%",
+                                (x + 2) * 1.6f, (getY() - 3) * 1.6f - 1,
+                                ColorHelper.toColor(percent * 120.0f, 100.0f, 50.0f, 1.0f).getRGB());
+                        context.getMatrices().scale(1.0f, 1.0f, 1.0f);
+                        context.getMatrices().pop();
                 }
                 HudRenderUtil.drawItemStack(context, stack, (int) x, (int) getY());
                 x += 18;

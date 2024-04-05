@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
 @SuppressWarnings("unused")
 public class NVGRenderer implements Globals {
 
-    private final ModuleCache<FontMod> fontMod =
+    private final ModuleCache<FontMod> CUSTOM_FONT =
             Caches.getModule(FontMod.class);
 
     private static final float BLUR = 0.0f;
@@ -44,29 +44,29 @@ public class NVGRenderer implements Globals {
         System.out.println("NanoVG context: " + context);
 
         try {
-            byte[] fontBytes = fontMod.get().getSelectedFont();
+            byte[] fontBytes = CUSTOM_FONT.get().getSelectedFont();
 
             destroyBuffer();
             buf = MemoryUtil.memAlloc(fontBytes.length);
             buf.put(fontBytes);
             buf.flip();
 
-            if (NanoVG.nvgCreateFontMem(context, fontMod.get().fontName.getValue(), buf, false) == -1)
-                throw new RuntimeException("Failed to create font " + fontMod.get().fontName.getValue());
+            if (NanoVG.nvgCreateFontMem(context, CUSTOM_FONT.get().fontName.getValue(), buf, false) == -1)
+                throw new RuntimeException("Failed to create font " + CUSTOM_FONT.get().fontName.getValue());
 
             // font id
-            id = NanoVG.nvgFindFont(context, fontMod.get().fontName.getValue());
+            id = NanoVG.nvgFindFont(context, CUSTOM_FONT.get().fontName.getValue());
             if (id == -1) {
-                fontMod.disable();
-                ChatUtil.sendMessage("Failed to find font " + fontMod.get().fontName.getValue() + " in memory", "FontMod");
+                CUSTOM_FONT.disable();
+                ChatUtil.sendMessage("Failed to find font " + CUSTOM_FONT.get().fontName.getValue() + " in memory", "FontMod");
             }
 
-            System.out.println("Loaded font " + fontMod.get().fontName.getValue() + " into memory");
+            System.out.println("Loaded font " + CUSTOM_FONT.get().fontName.getValue() + " into memory");
             init = true;
         } catch (Exception e) {
             e.printStackTrace();
-            fontMod.disable();
-            ChatUtil.sendMessage("Failed to load font " + fontMod.get().fontName.getValue() + " into memory", "FontMod");
+            CUSTOM_FONT.disable();
+            ChatUtil.sendMessage("Failed to load font " + CUSTOM_FONT.get().fontName.getValue() + " into memory", "FontMod");
         }
     }
 
@@ -90,16 +90,16 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgClosePath(context);
     }
 
-    private void textSizedShadow(String text, float x, float y, float size, NVGColor color) {
+    private void textSizedShadow(String text, float x, float y, float size, NVGColor color, Color shadowColor) {
         NanoVG.nvgBeginPath(context);
 
         NanoVG.nvgFontFaceId(context, id);
         NanoVG.nvgFontSize(context, size);
         NanoVG.nvgTextAlign(context, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_TOP);
 
-        NanoVG.nvgFontBlur(context, BLUR + 1.0f);
-        NanoVG.nvgFillColor(context, blackColor);
-        NanoVG.nvgText(context, x + 1.0f, y + 1.0f, text);
+        NanoVG.nvgFontBlur(context, BLUR + (CUSTOM_FONT.get().blurShadow.getValue() ? 1.0f : 0.0f));
+        NanoVG.nvgFillColor(context, getColorNVG(shadowColor.darker().darker().darker()));
+        NanoVG.nvgText(context, x + CUSTOM_FONT.get().shadowOffset.getValue(), y + CUSTOM_FONT.get().shadowOffset.getValue(), text);
 
         NanoVG.nvgFontBlur(context, BLUR);
         NanoVG.nvgFillColor(context, color);
@@ -126,7 +126,7 @@ public class NVGRenderer implements Globals {
             if (s.isEmpty()) continue;
             if (s.length() < 2) {
                 if (shadow)
-                    textSizedShadow(s, x, y, size, getColorNVG(color));
+                    textSizedShadow(s, x, y, size, getColorNVG(color), color);
                 else
                     textSized(s, x, y, size, getColorNVG(color));
                 x += getWidth(s);
@@ -182,7 +182,7 @@ public class NVGRenderer implements Globals {
 
             String text1 = colorChanged ? s.substring(1) : s;
             if (shadow)
-                textSizedShadow(text1, x, y, size, getColorNVG(color));
+                textSizedShadow(text1, x, y, size, getColorNVG(color), color);
             else
                 textSized(text1, x, y, size, getColorNVG(color));
             x += getWidth(text1);
@@ -251,7 +251,7 @@ public class NVGRenderer implements Globals {
     }
 
     public void startDraw() {
-        NanoVG.nvgBeginFrame(context, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight(), fontMod.get().pixelRatio.getValue());
+        NanoVG.nvgBeginFrame(context, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight(), CUSTOM_FONT.get().pixelRatio.getValue());
     }
 
     public void endDraw() {

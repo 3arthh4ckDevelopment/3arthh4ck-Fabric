@@ -33,7 +33,8 @@ public class TextRenderer implements Globals
         } else {
             context.getMatrices().scale(scale, scale, scale);
             context.drawText(mc.textRenderer, text, (int) (x / scale), (int) (y / scale), color, shadow);
-            context.getMatrices().scale(1 / scale, 1 / scale, 1 / scale);
+            // context.getMatrices().scale(1 / scale, 1 / scale, 1 / scale); // ????
+            context.getMatrices().scale(1.0f, 1.0f, 1.0f);
         }
     }
 
