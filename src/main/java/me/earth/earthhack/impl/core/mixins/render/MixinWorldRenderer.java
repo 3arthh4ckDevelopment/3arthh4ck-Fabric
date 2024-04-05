@@ -34,6 +34,7 @@ public abstract class MixinWorldRenderer
     {
         MinecraftClient.getInstance().getProfiler().push("earthhack-render-3d");
         RenderSystem.clear(GL11.GL_DEPTH_BUFFER_BIT, MinecraftClient.IS_SYSTEM_MAC);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         Bus.EVENT_BUS.post(new Render3DEvent(matrices, tickDelta));
         MinecraftClient.getInstance().getProfiler().pop();
     }

@@ -27,6 +27,10 @@ import static org.lwjgl.opengl.GL11.glScissor;
 // TODO: One Frustum for the MainThread
 //  That way we don't need to instantiate neither of them at all
 //  Which could actually save quite the cost, since we render often
+// TODO: MSAAFramebuffer
+//  Then rendering won't be pixelated and will look like it did in 1.12
+// TODO: maybe just rewrite this util, most of this shit is unnecessary
+//  and WILL cause the game to crash
 public class RenderUtil implements Globals {
     private static Window wnd;
     private final static GlShader IMAGE_SHADER = GlShader.createShader("image");
