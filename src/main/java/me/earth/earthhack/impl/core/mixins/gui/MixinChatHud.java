@@ -20,6 +20,7 @@ import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.Text;
+import net.minecraft.util.collection.ArrayListDeque;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -64,11 +65,10 @@ public abstract class MixinChatHud implements IChatHud
     @Shadow public abstract double getChatScale();
     @Shadow protected abstract void refresh();
 
-    @Final @Shadow private MinecraftClient client; //TODO: is this variable needed?
-    @Unique
-    @Final private final List<ChatHudLine> messages = Lists.newArrayList(); //TODO: find out why shadow doesn't work
-    @Unique
-    @Final private final List<String> messageHistory = Lists.newArrayList();
+    @Final @Shadow private MinecraftClient client;
+    @Unique @Final private final List<ChatHudLine> messages = Lists.newArrayList();
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    @Unique @Final private final ArrayListDeque<String> messageHistory = new ArrayListDeque<>(100);
     @Final @Shadow private final List<ChatHudLine.Visible> visibleMessages = Lists.newArrayList();
 
     @Override

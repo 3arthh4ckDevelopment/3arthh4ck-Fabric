@@ -3,25 +3,34 @@ package me.earth.earthhack.impl.modules.movement.autosprint;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.setting.Setting;
+import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.impl.event.events.misc.UpdateEvent;
+import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.listeners.LambdaListener;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.movement.autosprint.mode.SprintMode;
+import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.KeyBoardUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.util.math.Direction;
 
 public class AutoSprint extends Module
 {
     protected final Setting<SprintMode> mode =
             register(new EnumSetting<>("Mode", SprintMode.Rage));
+    protected final Setting<Boolean> faceDirection =
+            register(new BooleanSetting("RotationSync", false));
 
     public AutoSprint()
     {
         super("Sprint", Category.Movement);
         this.listeners.add(new LambdaListener<>(
                 UpdateEvent.class, e -> onTick()));
+        this.listeners.add(new LambdaListener<>(
+                MotionUpdateEvent.class, this::onMotion));
         this.setData(new AutoSprintData(this));
     }
 
@@ -42,6 +51,12 @@ public class AutoSprint extends Module
     public SprintMode getMode()
     {
         return mode.getValue();
+    }
+
+    public void onMotion(MotionUpdateEvent event) {
+        if (MovementUtil.isMoving()) {
+            event.setYaw(mc.player.getMovementDirection().asRotation());
+        }
     }
 
     public void onTick()

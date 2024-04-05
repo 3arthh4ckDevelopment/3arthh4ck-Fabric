@@ -59,7 +59,7 @@ public class FontMod extends Module {
         try {
             return new FileInputStream(getOSFontPath() + FileSystems.getDefault().getSeparator() + fontName.getValue() + ".ttf").readAllBytes();
         } catch (IOException e) {
-            ChatUtil.sendMessage("Font not found, using a fallback font!", getName());
+            ChatUtil.sendMessage("Font not found, loading fallback!", getName());
             try {
                 return Earthhack.class.getClassLoader().getResourceAsStream("assets/earthhack/fallback-font-corbel.ttf").readAllBytes();
             } catch (IOException ex) {
@@ -69,9 +69,19 @@ public class FontMod extends Module {
     }
 
     private String getOSFontPath() {
-        //TODO: Add support for other operating systems
-        //String os = System.getProperty("os.name");
-        return "C:\\Windows\\Fonts\\";
+        String os = System.getProperty("os.name").toLowerCase();
+
+        if (os.contains("win")) {
+            return "C:\\Windows\\Fonts";
+        }
+        else if (os.contains("darwin")) {
+            return "/Library/Fonts/";
+        }
+        else if (os.contains("linux")) {
+            return "/usr/share/fonts/truetype";
+            // TODO: maybe get this from /etc/fonts/fonts.conf since this might not be the location?
+        }
+        return "none";
     }
 
     private List<File> getAllFonts() {

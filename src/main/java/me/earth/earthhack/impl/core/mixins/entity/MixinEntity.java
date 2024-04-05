@@ -71,85 +71,47 @@ public abstract class MixinEntity implements IEntity, Globals
             Caches.getSetting(Management.class, Setting.class, "DeathTime", 500);
 
     // so they can be used in other mixins extending off this one
-    @Shadow
-    public Vec3d pos;
-    @Shadow
-    private Vec3d velocity;
-    @Shadow
-    public float yaw;
-    @Shadow
-    public float pitch;
-    @Shadow
-    public boolean onGround;
-    @Shadow
-    private World world;
-    @Shadow
-    public double prevX;
-    @Shadow
-    public double prevY;
-    @Shadow
-    public double prevZ;
-    @Shadow
-    public double lastRenderX;
-    @Shadow
-    public double lastRenderY;
-    @Shadow
-    public double lastRenderZ;
-    @Final
-    @Shadow
-    protected DataTracker dataTracker;
-    @Shadow
-    private float stepHeight;
-    @Shadow
-    private Entity.RemovalReason removalReason;
-    @Shadow
-    private EntityDimensions dimensions;
-    @Shadow
-    public float prevYaw;
-    @Shadow
-    public float prevPitch;
+    @Shadow public Vec3d pos;
+    @Shadow private Vec3d velocity;
+    @Shadow public float yaw;
+    @Shadow public float pitch;
+    @Shadow public boolean onGround;
+    @Shadow private World world;
+    @Shadow public double prevX;
+    @Shadow public double prevY;
+    @Shadow public double prevZ;
+    @Shadow public double lastRenderX;
+    @Shadow public double lastRenderY;
+    @Shadow public double lastRenderZ;
+    @Final @Shadow protected DataTracker dataTracker;
+    @Shadow private float stepHeight;
+    @Shadow private Entity.RemovalReason removalReason;
+    @Shadow private EntityDimensions dimensions;
+    @Shadow public float prevYaw;
+    @Shadow public float prevPitch;
 
-    @Unique
-    private long oldServerX;
-    @Unique
-    private long oldServerY;
-    @Unique
-    private long oldServerZ;
-    @Unique
-    private final StopWatch pseudoWatch = new StopWatch();
-    @Unique
-    private MoveEvent moveEvent;
-    @Unique
-    private Float prevHeight;
-    @Unique
-    private Supplier<EntityType> type;
-    @Unique
-    private boolean pseudoDead;
-    @Unique
-    private long stamp;
-    @Unique
-    private boolean dummy;
+    @Unique private long oldServerX;
+    @Unique private long oldServerY;
+    @Unique private long oldServerZ;
+    @Unique private final StopWatch pseudoWatch = new StopWatch();
+    @Unique private MoveEvent moveEvent;
+    @Unique private Float prevHeight;
+    @Unique private Supplier<EntityType> type;
+    @Unique private boolean pseudoDead;
+    @Unique private long stamp;
+    @Unique private boolean dummy;
 
-    @Shadow
-    public abstract Box getBoundingBox();
-    @Shadow
-    public abstract boolean isSneaking();
-    @Shadow
-    protected abstract boolean getFlag(int flag);
-    @Shadow
-    public abstract boolean equals(Object p_equals_1_);
-    @Shadow
-    protected abstract void setRotation(float yaw, float pitch);
-    @Shadow
-    public abstract boolean hasVehicle();
+    @Shadow public abstract Box getBoundingBox();
+    @Shadow public abstract boolean isSneaking();
+    @Shadow protected abstract boolean getFlag(int flag);
+    @Shadow public abstract boolean equals(Object p_equals_1_);
+    @Shadow protected abstract void setRotation(float yaw, float pitch);
+    @Shadow public abstract boolean hasVehicle();
 
-    @Shadow
-    public boolean noClip;
+    @Shadow public boolean noClip;
 
-    @Shadow
-    public abstract void move(MovementType movementType, Vec3d movement);
-    @Shadow
-    public abstract Text getName();
+    @Shadow public abstract void move(MovementType movementType, Vec3d movement);
+    @Shadow public abstract Text getName();
 
     @Shadow public abstract int getId();
 
