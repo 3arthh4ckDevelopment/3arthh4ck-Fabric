@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.pingbypass.modules.PbModule;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.util.Formatting;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -91,7 +92,7 @@ public class HudArrayList extends DynamicHudElement {
                 + (module.getDisplayInfo() == null
                 || module.isHidden() == Hidden.Info
                 ? ""
-                : TextColor.GRAY
+                : Formatting.GRAY
                 + actualBracket()[0] + TextColor.WHITE
                 + module.getDisplayInfo()
                 + TextColor.GRAY + actualBracket()[1]);

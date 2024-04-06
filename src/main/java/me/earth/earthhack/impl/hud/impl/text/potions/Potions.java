@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: hud potion symbols
+// TODO: hud potion symbols
 // TODO: Rewrite @Ai_2473 ....
 public class Potions extends DynamicHudElement {
 
@@ -39,7 +39,7 @@ public class Potions extends DynamicHudElement {
     private final Setting<Integer> textOffset =
             register(new NumberSetting<>("Offset", 2, 0, 10));
 
-    private final String label = "Potions [you don't have any effect!!]"; // render this?
+    private final String label = "[Potions] No effects applied."; // render this?
     int effCounter = 0;
 
     private void render(DrawContext context, boolean isHud) {

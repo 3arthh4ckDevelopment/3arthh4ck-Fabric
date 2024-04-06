@@ -229,7 +229,7 @@ public enum TextColor {
     };
 
     /** The '§' char every color code starts with. */
-    public static final char SECTIONSIGN  = '\u00A7';
+    public static final char SECTIONSIGN  = '§';
     /** $ + 0 */
     public static final String BLACK        = SECTIONSIGN + "0";
     /** $ + 1 */

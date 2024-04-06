@@ -28,6 +28,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
+ * TODO: add something to adjust HudElement positions if
+ *  they're going off-screen or start overlapping
  * hud element
  * @author megyn
  */
