@@ -35,7 +35,7 @@ public class NVGRenderer implements Globals {
     public void initialize() {
         if (blackColor == null) {
             blackColor = NVGColor.calloc();
-            blackColor.r(0.f);
+            blackColor.r(0.0f);
             blackColor.g(0.0f);
             blackColor.b(0.0f);
             blackColor.a(0.25f);
@@ -98,7 +98,7 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgTextAlign(context, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_TOP);
 
         NanoVG.nvgFontBlur(context, BLUR + (CUSTOM_FONT.get().blurShadow.getValue() ? 1.0f : 0.0f));
-        NanoVG.nvgFillColor(context, getColorNVG(shadowColor.darker().darker().darker()));
+        NanoVG.nvgFillColor(context, blackColor);
         NanoVG.nvgText(context, x + CUSTOM_FONT.get().shadowOffset.getValue(), y + CUSTOM_FONT.get().shadowOffset.getValue(), text);
 
         NanoVG.nvgFontBlur(context, BLUR);
@@ -106,7 +106,6 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgText(context, x, y, text);
 
         NanoVG.nvgClosePath(context);
-
     }
 
     public void drawRect(float x, float y, float x2, float y2, int color) {
@@ -123,7 +122,9 @@ public class NVGRenderer implements Globals {
         Color oldColor = color;
 
         for (String s : textParts) {
-            if (s.isEmpty()) continue;
+            if (s.isEmpty() || s.equals("f"))
+                continue;
+
             if (s.length() < 2) {
                 if (shadow)
                     textSizedShadow(s, x, y, size, getColorNVG(color), color);
@@ -132,49 +133,72 @@ public class NVGRenderer implements Globals {
                 x += getWidth(s);
                 continue;
             }
+
             char c = s.charAt(0);
-            if (c == 'r') {
-                color = oldColor;
-            } else if (c == '0') {
-                color = Color.BLACK;
-            } else if (c == '1') {
-                color = new Color(170);
-            } else if (c == '2') {
-                color = new Color(43520);
-            } else if (c == '3') {
-                color = new Color(43690);
-            } else if (c == '4') {
-                color = new Color(11141120);
-            } else if (c == '5') {
-                color = new Color(11141290);
-            } else if (c == '6') {
-                color = new Color(16755200);
-            } else if (c == '7') {
-                color = Color.GRAY;
-            } else if (c == '8') {
-                color = Color.DARK_GRAY;
-            } else if (c == '9') {
-                color = Color.BLUE;
-            } else if (c == 'a') {
-                color = Color.GREEN;
-            } else if (c == 'b') {
-                color = new Color(5636095);
-            } else if (c == 'c') {
-                color = Color.RED;
-            } else if (c == 'd') {
-                color = new Color(16733695);
-            } else if (c == 'e') {
-                color = Color.YELLOW;
-            } else if (c == 'f') {
-                color = Color.WHITE;
-            } else if (c == 'l') {
-                size += 1;
-            } else if (c == 'm') {
-                size -= 1;
-            } else if (c == 'n') {
-                shadow = true;
-            } else if (c == 'o') {
-                shadow = false;
+            switch (c) {
+                case 'r':
+                    color = oldColor;
+                    break;
+                case '0':
+                    color = Color.BLACK;
+                    break;
+                case '1':
+                    color = new Color(170);
+                    break;
+                case '2':
+                    color = new Color(43520);
+                    break;
+                case '3':
+                    color = new Color(43690);
+                    break;
+                case '4':
+                    color = new Color(11141120);
+                    break;
+                case '5':
+                    color = new Color(11141290);
+                    break;
+                case '6':
+                    color = new Color(16755200);
+                    break;
+                case '7':
+                    color = Color.GRAY;
+                    break;
+                case '8':
+                    color = Color.DARK_GRAY;
+                    break;
+                case '9':
+                    color = Color.BLUE;
+                    break;
+                case 'a':
+                    color = Color.GREEN;
+                    break;
+                case 'b':
+                    color = new Color(5636095);
+                    break;
+                case 'c':
+                    color = Color.RED;
+                    break;
+                case 'd':
+                    color = new Color(16733695);
+                    break;
+                case 'e':
+                    color = Color.YELLOW;
+                    break;
+                case 'f':
+                    color = Color.WHITE;
+                    break;
+                case 'l':
+                    size += 1;
+                    break;
+                case 'm':
+                    size -= 1;
+                    break;
+                case 'n':
+                    shadow = true;
+                    break;
+                case 'o':
+                    shadow = false;
+                    break;
             }
 
             if (color.getRGB() != oldColor.getRGB())

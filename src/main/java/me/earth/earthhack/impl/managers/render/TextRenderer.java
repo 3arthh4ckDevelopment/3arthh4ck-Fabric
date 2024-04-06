@@ -5,10 +5,10 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.util.render.NVGRenderer;
+import me.earth.earthhack.impl.util.render.TextRenderUtil;
 import net.minecraft.client.gui.DrawContext;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -33,8 +33,7 @@ public class TextRenderer implements Globals
         } else {
             context.getMatrices().scale(scale, scale, scale);
             context.drawText(mc.textRenderer, text, (int) (x / scale), (int) (y / scale), color, shadow);
-            // context.getMatrices().scale(1 / scale, 1 / scale, 1 / scale); // ????
-            context.getMatrices().scale(1.0f, 1.0f, 1.0f);
+            context.getMatrices().scale(1 / scale, 1 / scale, 1 / scale);
         }
     }
 
@@ -79,27 +78,7 @@ public class TextRenderer implements Globals
     }
 
     public List<String> listFormattedStringToWidth(String str, int wrapWidth) {
-        List<String> lines = new ArrayList<>();
-        boolean hasChars = true;
-
-        while (hasChars) {
-            if (getStringWidth(str) > wrapWidth) {
-                int i = 0;
-                while (getStringWidth(str.substring(0, i)) <= wrapWidth) {
-                    i++;
-                    if (i >= str.length()) {
-                        break;
-                    }
-                }
-                String cut = str.substring(0, i);
-                lines.add(cut);
-                str = str.substring(i);
-            } else {
-                lines.add(str);
-                hasChars = false;
-            }
-        }
-        return lines;
+        return TextRenderUtil.wrapWords(str, wrapWidth);
     }
 
     public boolean usingCustomFont() {
