@@ -9,7 +9,7 @@ import me.earth.earthhack.impl.util.client.SimpleData;
 import net.minecraft.entity.effect.StatusEffects;
 
 /**
- * {@link net.minecraft.client.render.LightmapTextureManager}
+ * {@link net.minecraft.client.render.LightmapTextureManager} for Mode - Gamma
  */
 public class Fullbright extends Module
 {
