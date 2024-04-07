@@ -226,14 +226,27 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgFill(context);
     }
 
-    public void drawLine(float x, float y, float x2, float y2, float width, int color) {
+    public void drawRoundedRect(float x, float y, float w, float h, float r, int color) {
+        NanoVG.nvgBeginPath(context);
+        NanoVG.nvgRoundedRect(context, x, y, w, h, r);
+        NanoVG.nvgFillColor(context, getColorNVG(color));
+        NanoVG.nvgFill(context);
+        NanoVG.nvgClosePath(context);
+    }
+
+    public void drawLine(float x, float y, float x2, float y2, float w, int color) {
         NanoVG.nvgBeginPath(context);
         NanoVG.nvgMoveTo(context, x, y);
         NanoVG.nvgLineTo(context, x2, y2);
-        NanoVG.nvgStrokeWidth(context, width);
+        NanoVG.nvgStrokeWidth(context, w);
         NanoVG.nvgStrokeColor(context, getColorNVG(color));
         NanoVG.nvgStroke(context);
         NanoVG.nvgClosePath(context);
+    }
+
+    public void drawScissor(float x, float y, float w, float h) {
+        //NanoVG.nvgScissor(context, 100, 100, 100, 100);
+        //drawRect(100, 100, 100 + w, 100 + h, new Color(255, 50, 0, 120).getRGB());
     }
 
     public void beginScissor(int x, int y, int w, int h) {
@@ -285,4 +298,5 @@ public class NVGRenderer implements Globals {
     public boolean isInitialized() {
         return init;
     }
+
 }

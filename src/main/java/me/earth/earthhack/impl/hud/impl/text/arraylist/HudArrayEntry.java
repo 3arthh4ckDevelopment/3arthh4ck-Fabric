@@ -6,9 +6,7 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import org.lwjgl.opengl.GL11;
 
 /**
  * @author Gerald
@@ -30,11 +28,9 @@ public class HudArrayEntry extends HudArrayList implements Globals {
 
     public void drawArrayEntry(DrawContext context, float desiredX, float desiredY) {
         final float textWidth = RENDERER.getStringWidth(getHudName(getModule()));
-        final float xSpeed = textWidth / (MinecraftClient.getInstance().getCurrentFps() >> 2);
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        Render2DUtil.scissor(desiredX - textWidth, desiredY, desiredX, desiredY + RENDERER.getStringHeightI() + 3);
+        final float xSpeed = textWidth / (mc.getCurrentFps() >> 2);
+        Render2DUtil.scissor(context, desiredX - textWidth, desiredY, desiredX, desiredY + RENDERER.getStringHeightI() + 3);
         HudRenderUtil.renderText(context, getHudName(getModule()), getX(), desiredY);
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
         if (module.isEnabled() && module.isHidden() != Hidden.Hidden) {
             if (stopWatch.passed(1000)) {
                 setX(desiredX - textWidth);

@@ -41,7 +41,6 @@ public class SafetyHud extends HudElement {
                     + (Managers.SAFETY.isSafe() ? safeColor.getValue().getColor() + safeName.getValue() : unsafeColor.getValue().getColor() + unsafeName.getValue())
                     + (showBrackets.getValue() ? actualBracket()[1] : "");
         }
-        System.out.println("text: " + text);
         HudRenderUtil.renderText(context, text, getX(), getY(), scale.getValue());
     }
 

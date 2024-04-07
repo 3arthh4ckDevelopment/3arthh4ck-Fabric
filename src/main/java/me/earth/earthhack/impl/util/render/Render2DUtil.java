@@ -127,14 +127,18 @@ public class Render2DUtil implements Globals {
     }
 
     public static void roundedRect(MatrixStack matrix, float startX, float startY, float endX, float endY, float radius, int color) {
-        drawRect(matrix, startX, startY - radius, endX, endY + radius, color);
-        drawRect(matrix, startX - radius, startY, startX, endY, color);
-        drawRect(matrix, endX, startY, endX + radius, endY, color);
+        if (Managers.TEXT.usingCustomFont()) {
+            TextRenderer.FONTS.drawRoundedRect(startX, startY, endX, endY, radius, color);
+        } else {
+            drawRect(matrix, startX, startY - radius, endX, endY + radius, color);
+            drawRect(matrix, startX - radius, startY, startX, endY, color);
+            drawRect(matrix, endX, startY, endX + radius, endY, color);
 
-        drawQuarterCircle(matrix, endX, endY, radius - 0.2f, color, 1);
-        drawQuarterCircle(matrix, endX, startY, radius - 0.2f, color, 2);
-        drawQuarterCircle(matrix, startX, startY, radius - 0.2f, color, 3);
-        drawQuarterCircle(matrix, startX, endY, radius - 0.2f, color, 4);
+            drawQuarterCircle(matrix, endX, endY, radius - 0.2f, color, 1);
+            drawQuarterCircle(matrix, endX, startY, radius - 0.2f, color, 2);
+            drawQuarterCircle(matrix, startX, startY, radius - 0.2f, color, 3);
+            drawQuarterCircle(matrix, startX, endY, radius - 0.2f, color, 4);
+        }
     }
 
     public static void drawCheckMark(MatrixStack matrix, float x, float y, int width, int color) {
@@ -240,8 +244,12 @@ public class Render2DUtil implements Globals {
         }
     }
 
-    public static void scissor(float x, float y, float x1, float y1) {
-        //TODO: scissor
+    public static void scissor(DrawContext context, float x, float y, float x1, float y1) {
+        if (Managers.TEXT.usingCustomFont()) {
+            TextRenderer.FONTS.drawScissor(x, y, x1, y1);
+        } else {
+            context.enableScissor((int) x, (int) y, (int) x1, (int) y1);
+        }
     }
 
     public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {

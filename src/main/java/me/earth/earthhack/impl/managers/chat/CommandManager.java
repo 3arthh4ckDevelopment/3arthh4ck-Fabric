@@ -16,6 +16,7 @@ import me.earth.earthhack.impl.commands.hidden.HListSettingCommand;
 import me.earth.earthhack.impl.commands.hidden.HSettingCommand;
 import me.earth.earthhack.impl.commands.util.CommandUtil;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.client.gui.DrawContext;
@@ -213,19 +214,18 @@ public class CommandManager extends SubscriberImpl
         concatenated = concatenateCommands();
     }
 
-    public void renderCommandGui(String message, int x, int y)
+    public void renderCommandGui(DrawContext context, String message, int x, int y)
     {
         if (message != null
                 && message.startsWith(Commands.getPrefix()))
         {
-            DrawContext CONTEXT = new DrawContext(mc, mc.getBufferBuilders().getEffectVertexConsumers());
             String[] array = createArray(message);
             String possible = getCommandForMessage(array)
                     .getPossibleInputs(array)
                     .getFullText();
 
             int width = x + mc.textRenderer.getWidth(message.trim());
-            CONTEXT.drawText(mc.textRenderer, possible, width, y, 0xffffffff, true);
+            Managers.TEXT.drawStringWithShadow(context, possible, width, y, 0xffffffff);
         }
     }
 
