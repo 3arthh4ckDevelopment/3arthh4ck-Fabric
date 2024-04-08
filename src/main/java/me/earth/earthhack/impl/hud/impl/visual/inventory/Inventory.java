@@ -7,7 +7,6 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.impl.hud.util.HudBox;
-import me.earth.earthhack.impl.modules.combat.autocrystal.HelperSequential;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;

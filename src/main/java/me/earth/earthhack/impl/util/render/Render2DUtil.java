@@ -253,7 +253,7 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {
-        InventoryScreen.drawEntity(context, x, y, x + 49, y + 70, playerScale, 0.0625F, (float) mc.player.getRotationVector().x, (float) mc.player.getRotationVector().y, player);
+        InventoryScreen.drawEntity(context, x, y, x, y, playerScale, 0.0625F, mc.player.yaw, mc.player.pitch, player);
     }
 
 }

@@ -8,14 +8,11 @@ import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.impl.event.events.misc.UpdateEvent;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.listeners.LambdaListener;
-import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.movement.autosprint.mode.SprintMode;
-import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.KeyBoardUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.util.math.Direction;
 
 public class AutoSprint extends Module
 {

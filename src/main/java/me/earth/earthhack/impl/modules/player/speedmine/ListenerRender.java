@@ -5,12 +5,9 @@ import me.earth.earthhack.impl.event.events.render.Render3DEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.player.speedmine.mode.ESPMode;
 import me.earth.earthhack.impl.modules.player.speedmine.mode.MineMode;
-import me.earth.earthhack.impl.util.client.ModuleUtil;
 import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.render.Interpolation;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.math.Box;
-import org.lwjgl.opengl.GL11;
 
 final class ListenerRender extends ModuleListener<Speedmine, Render3DEvent>
 {

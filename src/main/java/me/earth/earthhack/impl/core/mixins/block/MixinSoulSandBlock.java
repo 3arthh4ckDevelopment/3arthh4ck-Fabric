@@ -8,9 +8,6 @@ import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
 import net.minecraft.block.SoulSandBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SoulSandBlock.class)
 public abstract class MixinSoulSandBlock

@@ -4,7 +4,6 @@ import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.network.IClientConnection;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
-import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.ClientConnection;

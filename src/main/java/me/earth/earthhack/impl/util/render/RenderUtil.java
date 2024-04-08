@@ -19,8 +19,6 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import static org.lwjgl.opengl.GL11.glScissor;
-
 
 // TODO: One Mutable.BlockPos for the MainThread
 // TODO: One Mutable Box (aabb) for the MainThread

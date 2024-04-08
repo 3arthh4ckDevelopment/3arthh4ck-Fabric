@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.modules.player.speedmine.mode;
 
 import me.earth.earthhack.impl.modules.player.speedmine.Speedmine;
 import me.earth.earthhack.impl.util.render.RenderUtil;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Box;
 

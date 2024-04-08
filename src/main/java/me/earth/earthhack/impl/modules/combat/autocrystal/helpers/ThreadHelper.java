@@ -11,7 +11,6 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotationThread;
 import me.earth.earthhack.impl.util.client.ModuleUtil;
 import me.earth.earthhack.impl.util.math.StopWatch;
-import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
