@@ -7,11 +7,11 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.event.events.keyboard.KeyboardEvent;
 import me.earth.earthhack.impl.managers.Managers;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Comparator;
+import java.util.Map;
 
-final class ListenerPostKey extends EventListener<KeyboardEvent.Post> implements Globals
-{
-    private final Set<Module> addedModules = new HashSet<>();
+final class ListenerPostKey extends EventListener<KeyboardEvent.Post> implements Globals {
     private final HudArrayList module;
 
     public ListenerPostKey(HudArrayList module)
@@ -28,13 +28,11 @@ final class ListenerPostKey extends EventListener<KeyboardEvent.Post> implements
         }
 
         module.modules.clear();
-        addedModules.clear();
 
         if (module.moduleRender.getValue() != null) {
             for (Module mod : Managers.MODULES.getRegistered()) {
                 if (mod.isEnabled() && mod.isHidden() != Hidden.Hidden) {
                     Map.Entry<String, Module> entry = new AbstractMap.SimpleEntry<>(module.getHudName(mod), mod);
-                    addedModules.add(mod);
                     module.modules.add(entry);
                 }
             }

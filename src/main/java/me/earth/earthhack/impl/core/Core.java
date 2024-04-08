@@ -22,11 +22,16 @@ public class Core {
     /** Logger for the Core. */
     public static final Logger LOGGER = LogManager.getLogger("3arthh4ck-Core");
 
+    /** Load the core */
+    public Core() {
+        init(getClass().getClassLoader());
+    }
+
     /**
      * Initialize the Core.
      * @param pluginClassLoader PluginClassLoader for loading Plugins.
      */
-    public void init(ClassLoader pluginClassLoader)
+    private void init(ClassLoader pluginClassLoader)
     {
         LOGGER.info("Found Environment: " + FabricLoader.getInstance().getEnvironmentType());
         Bus.EVENT_BUS.subscribe(Scheduler.getInstance());
@@ -34,7 +39,6 @@ public class Core {
         File util = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/util");
         if (!util.exists())
             util.mkdir();
-        System.out.println("---------------------------------------------------------------------------------------------------------");
 
         File plugins = new File(FabricLoader.getInstance().getConfigDir() + "/earthhack/plugins");
         if (!plugins.exists())
@@ -52,8 +56,6 @@ public class Core {
         MixinEnvironment.getEnvironment(MixinEnvironment.Phase.DEFAULT)
                 .setSide(MixinEnvironment.Side.CLIENT);
 
-        // Mixins.addConfiguration("mixins.forge.json"); // No mixins to be applied...
-
         for (PluginConfig config : PluginManager.getInstance()
                 .getConfigs()
                 .values())
@@ -68,10 +70,5 @@ public class Core {
                 Mixins.addConfiguration(config.getMixinConfig());
             }
         }
-
-        // Mixins.addConfiguration("mixins.earth.json");
-        // String obfuscationContext = "yarn";
-        // MixinEnvironment.getDefaultEnvironment()
-        //         .setObfuscationContext(obfuscationContext);
     }
 }

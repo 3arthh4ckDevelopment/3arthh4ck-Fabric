@@ -7,6 +7,7 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
+import me.earth.earthhack.impl.event.events.keyboard.KeyboardEvent;
 import me.earth.earthhack.impl.gui.hud.DynamicHudElement;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
@@ -115,7 +116,9 @@ public class HudArrayList extends DynamicHudElement {
 
     public HudArrayList() {
         super("Modules", HudCategory.Text, 200, 200);
-        this.listeners.add(new ListenerPostKey(this));
+        ListenerPostKey listener = new ListenerPostKey(this);
+        this.listeners.add(listener);
+        listener.invoke(new KeyboardEvent.Post());
         this.setData(new SimpleHudData(this, "If you want to show enabled modules."));
     }
 
