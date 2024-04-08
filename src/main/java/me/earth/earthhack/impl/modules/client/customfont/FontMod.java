@@ -41,8 +41,7 @@ public class FontMod extends Module {
     public final Setting<Boolean> showFonts =
             register(new BooleanSetting("ShowFonts", false));
 
-    public FontMod()
-    {
+    public FontMod() {
         super("CustomFont", Category.Client);
 
         showFonts.addObserver(event -> {
