@@ -245,11 +245,11 @@ public class Render2DUtil implements Globals {
     }
 
     public static void scissor(DrawContext context, float x, float y, float x1, float y1) {
-        if (Managers.TEXT.usingCustomFont()) {
-            TextRenderer.FONTS.drawScissor(x, y, x1, y1);
-        } else {
-            context.enableScissor((int) x, (int) y, (int) x1, (int) y1);
-        }
+//        if (Managers.TEXT.usingCustomFont()) {
+//            TextRenderer.FONTS.drawScissor(x, y, x1, y1);
+//        } else {
+//            context.enableScissor((int) x, (int) y, (int) x1, (int) y1);
+//        }
     }
 
     public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {
