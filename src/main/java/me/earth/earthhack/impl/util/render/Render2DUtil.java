@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.util.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
@@ -250,6 +251,23 @@ public class Render2DUtil implements Globals {
 //        } else {
 //            context.enableScissor((int) x, (int) y, (int) x1, (int) y1);
 //        }
+
+        double sx = Math.min(x, x1);
+        double sy = Math.min(y, y1);
+        double w = Math.abs(x1 - x);
+        double h = Math.abs(y1 - y);
+        double height = mc.getWindow().getFramebufferHeight();
+        double f = mc.getWindow().getScaleFactor();
+        int px = (int) Math.round(sx * f);
+        int py = (int) Math.round(height - f * (sy + h));
+        int pw = (int) Math.round(f * w);
+        int ph = (int) Math.round(f * h);
+        GlStateManager._enableScissorTest();
+        GlStateManager._scissorBox(px, py, pw, ph);
+    }
+
+    public static void disableScissor() {
+        GlStateManager._disableScissorTest();
     }
 
     public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {

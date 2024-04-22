@@ -31,6 +31,7 @@ public class HudArrayEntry extends HudArrayList implements Globals {
         final float xSpeed = textWidth / (mc.getCurrentFps() >> 2);
         Render2DUtil.scissor(context, desiredX - textWidth, desiredY, desiredX, desiredY + RENDERER.getStringHeightI() + 3);
         HudRenderUtil.renderText(context, getHudName(getModule()), getX(), desiredY);
+        Render2DUtil.disableScissor();
         if (module.isEnabled() && module.isHidden() != Hidden.Hidden) {
             if (stopWatch.passed(1000)) {
                 setX(desiredX - textWidth);
