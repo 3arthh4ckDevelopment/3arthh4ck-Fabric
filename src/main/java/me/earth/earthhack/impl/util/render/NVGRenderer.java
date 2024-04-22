@@ -244,13 +244,14 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgClosePath(context);
     }
 
-    public void drawScissor(float x, float y, float w, float h) {
-        //NanoVG.nvgScissor(context, 100, 100, 100, 100);
-        //drawRect(100, 100, 100 + w, 100 + h, new Color(255, 50, 0, 120).getRGB());
+    public void enableScissors(float x, float y, float w, float h) {
+        NanoVG.nvgSave(context);
+        NanoVG.nvgScissor(context, x, y, w, h);
     }
 
-    public void beginScissor(int x, int y, int w, int h) {
-        NanoVG.nvgScissor(context, x, y, w, h);
+    public void disableScissors() {
+        NanoVG.nvgResetScissor(context);
+        NanoVG.nvgRestore(context);
     }
 
     public void endScissor() {

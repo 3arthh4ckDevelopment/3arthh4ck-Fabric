@@ -36,7 +36,7 @@ public class RenderTest extends DisablingModule {
         this.listeners.add(new LambdaListener<>(Render2DEvent.class, e -> {
             if (mc.world != null && mc.player != null) {
                 if (Managers.TEXT.usingCustomFont()) {
-                    TextRenderer.FONTS.drawScissor(50, 50, width.getValue(), height.getValue());
+                    TextRenderer.FONTS.enableScissors(50, 50, width.getValue(), height.getValue());
                 }
             }
         }));

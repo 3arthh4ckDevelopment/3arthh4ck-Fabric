@@ -194,7 +194,7 @@ public class Render2DUtil implements Globals {
 
     public static void drawGradientRect(MatrixStack matrix, float left, float top, float right, float bottom, boolean sideways, int startColor, int endColor) {
         if (Managers.TEXT.usingCustomFont()) {
-            TextRenderer.FONTS.drawGradientRect(left, top, right, bottom, startColor, endColor);
+            TextRenderer.FONTS.drawGradientRect(left, top, right - left, bottom - top, startColor, endColor);
         } else {
             float f = (float) (startColor >> 24 & 255) / 255.0F;
             float f1 = (float) (startColor >> 16 & 255) / 255.0F;
@@ -246,12 +246,6 @@ public class Render2DUtil implements Globals {
     }
 
     public static void scissor(DrawContext context, float x, float y, float x1, float y1) {
-//        if (Managers.TEXT.usingCustomFont()) {
-//            TextRenderer.FONTS.drawScissor(x, y, x1, y1);
-//        } else {
-//            context.enableScissor((int) x, (int) y, (int) x1, (int) y1);
-//        }
-
         double sx = Math.min(x, x1);
         double sy = Math.min(y, y1);
         double w = Math.abs(x1 - x);
@@ -262,12 +256,21 @@ public class Render2DUtil implements Globals {
         int py = (int) Math.round(height - f * (sy + h));
         int pw = (int) Math.round(f * w);
         int ph = (int) Math.round(f * h);
-        GlStateManager._enableScissorTest();
-        GlStateManager._scissorBox(px, py, pw, ph);
+        if (Managers.TEXT.usingCustomFont()) {
+            TextRenderer.FONTS.enableScissors(px, py, pw, ph);
+        } else {
+            GlStateManager._enableScissorTest();
+            GlStateManager._scissorBox(px, py, pw, ph);
+        }
+
     }
 
     public static void disableScissor() {
-        GlStateManager._disableScissorTest();
+        if (Managers.TEXT.usingCustomFont()) {
+            TextRenderer.FONTS.disableScissors();
+        } else {
+            GlStateManager._disableScissorTest();
+        }
     }
 
     public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {
