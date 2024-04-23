@@ -5,17 +5,28 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.util.text.ChatUtil;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NVGPaint;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.nanovg.NanoVGGL3;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryUtil;
 
 import java.awt.*;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL20.GL_CURRENT_PROGRAM;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL30.GL_VERTEX_ARRAY_BINDING;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 // thanks to Mironov and the demo <a href="https://github.com/LWJGL/lwjgl3/blob/master/modules/samples/src/test/java/org/lwjgl/demo/nanovg/"></a>
-
+// Thanks to FeSis/asphyxia1337 for the state saving thing (I forgot who made it I'm sorry)
 @SuppressWarnings("unused")
 public class NVGRenderer implements Globals {
 
@@ -25,21 +36,34 @@ public class NVGRenderer implements Globals {
     private static final float BLUR = 0.0f;
 
     private long context = 0;
-    private boolean init = false;
+    private boolean init = false,
+            depthTest,
+            scissorTest;
 
     private ByteBuffer buf = null;
-    private int id = -1;
+    private int id = -1, program,
+            blendSrc,
+            blendDst,
+            stencilMask,
+            stencilRef,
+            stencilFuncMask,
+            activeTexture,
+            vertexArray,
+            arrayBuffer,
+            textureBinding;
+    private final boolean[] colorMask = new boolean[4];
 
-    private NVGColor blackColor = null;
+
+    // private NVGColor blackColor = null;
 
     public void initialize() {
-        if (blackColor == null) {
-            blackColor = NVGColor.calloc();
-            blackColor.r(0.0f);
-            blackColor.g(0.0f);
-            blackColor.b(0.0f);
-            blackColor.a(0.25f);
-        }
+        // if (blackColor == null) {
+        //     blackColor = NVGColor.calloc();
+        //     blackColor.r(0.0f);
+        //     blackColor.g(0.0f);
+        //     blackColor.b(0.0f);
+        //     blackColor.a(0.25f);
+        // }
         context = NanoVGGL3.nvgCreate(NanoVGGL3.NVG_ANTIALIAS);
         System.out.println("NanoVG context: " + context);
 
@@ -98,7 +122,7 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgTextAlign(context, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_TOP);
 
         NanoVG.nvgFontBlur(context, BLUR + (CUSTOM_FONT.get().blurShadow.getValue() ? 1.0f : 0.0f));
-        NanoVG.nvgFillColor(context, blackColor);
+        NanoVG.nvgFillColor(context, getColorNVG(shadowColor));
         NanoVG.nvgText(context, x + CUSTOM_FONT.get().shadowOffset.getValue(), y + CUSTOM_FONT.get().shadowOffset.getValue(), text);
 
         NanoVG.nvgFontBlur(context, BLUR);
@@ -136,69 +160,27 @@ public class NVGRenderer implements Globals {
 
             char c = s.charAt(0);
             switch (c) {
-                case 'r':
-                    color = oldColor;
-                    break;
-                case '0':
-                    color = Color.BLACK;
-                    break;
-                case '1':
-                    color = new Color(170);
-                    break;
-                case '2':
-                    color = new Color(43520);
-                    break;
-                case '3':
-                    color = new Color(43690);
-                    break;
-                case '4':
-                    color = new Color(11141120);
-                    break;
-                case '5':
-                    color = new Color(11141290);
-                    break;
-                case '6':
-                    color = new Color(16755200);
-                    break;
-                case '7':
-                    color = Color.GRAY;
-                    break;
-                case '8':
-                    color = Color.DARK_GRAY;
-                    break;
-                case '9':
-                    color = Color.BLUE;
-                    break;
-                case 'a':
-                    color = Color.GREEN;
-                    break;
-                case 'b':
-                    color = new Color(5636095);
-                    break;
-                case 'c':
-                    color = Color.RED;
-                    break;
-                case 'd':
-                    color = new Color(16733695);
-                    break;
-                case 'e':
-                    color = Color.YELLOW;
-                    break;
-                case 'f':
-                    color = Color.WHITE;
-                    break;
-                case 'l':
-                    size += 1;
-                    break;
-                case 'm':
-                    size -= 1;
-                    break;
-                case 'n':
-                    shadow = true;
-                    break;
-                case 'o':
-                    shadow = false;
-                    break;
+                case 'r' -> color = oldColor;
+                case '0' -> color = Color.BLACK;
+                case '1' -> color = new Color(170);
+                case '2' -> color = new Color(43520);
+                case '3' -> color = new Color(43690);
+                case '4' -> color = new Color(11141120);
+                case '5' -> color = new Color(11141290);
+                case '6' -> color = new Color(16755200);
+                case '7' -> color = Color.GRAY;
+                case '8' -> color = Color.DARK_GRAY;
+                case '9' -> color = Color.BLUE;
+                case 'a' -> color = Color.GREEN;
+                case 'b' -> color = new Color(5636095);
+                case 'c' -> color = Color.RED;
+                case 'd' -> color = new Color(16733695);
+                case 'e' -> color = Color.YELLOW;
+                case 'f' -> color = Color.WHITE;
+                case 'l' -> size += 1;
+                case 'm' -> size -= 1;
+                case 'n' -> shadow = true;
+                case 'o' -> shadow = false;
             }
 
             if (color.getRGB() != oldColor.getRGB())
@@ -206,7 +188,7 @@ public class NVGRenderer implements Globals {
 
             String text1 = colorChanged ? s.substring(1) : s;
             if (shadow)
-                textSizedShadow(text1, x, y, size, getColorNVG(color), color);
+                textSizedShadow(text1, x, y, size, getColorNVG(color), color.darker().darker().darker());
             else
                 textSized(text1, x, y, size, getColorNVG(color));
             x += getWidth(text1);
@@ -258,6 +240,8 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgResetScissor(context);
     }
 
+
+
     public static NVGColor getColorNVG(Color color) {
         NVGColor clr = NVGColor.create();
         clr.r(color.getRed() / 255.0f);
@@ -289,11 +273,67 @@ public class NVGRenderer implements Globals {
     }
 
     public void startDraw() {
-        NanoVG.nvgBeginFrame(context, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight(), CUSTOM_FONT.get().pixelRatio.getValue());
+        IntBuffer buffer = BufferUtils.createIntBuffer(1);
+        glGetIntegerv(GL_CURRENT_PROGRAM, buffer);
+        program = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL_BLEND_SRC, buffer);
+        blendSrc = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL_BLEND_DST, buffer);
+        blendDst = buffer.get(0);
+        depthTest = glIsEnabled(GL_DEPTH_TEST);
+        scissorTest = glIsEnabled(GL_SCISSOR_TEST);
+        ByteBuffer colorMaskBuffer = BufferUtils.createByteBuffer(4);
+        glGetBooleanv(GL_COLOR_WRITEMASK, colorMaskBuffer);
+        for (int i = 0; i < 4; i++)
+            colorMask[i] = colorMaskBuffer.get(i) != 0;
+        buffer.clear();
+        glGetIntegerv(GL_STENCIL_WRITEMASK, buffer);
+        stencilMask = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL_STENCIL_FUNC, buffer);
+        stencilRef = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL_STENCIL_VALUE_MASK, buffer);
+        stencilFuncMask = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL13.GL_ACTIVE_TEXTURE, buffer);
+        activeTexture = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, buffer);
+        vertexArray = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL15.GL_ARRAY_BUFFER_BINDING, buffer);
+        arrayBuffer = buffer.get(0);
+        buffer.clear();
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, buffer);
+        textureBinding = buffer.get(0);
+        //
+        NanoVG.nvgBeginFrame(context, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight(), 3f);
     }
 
     public void endDraw() {
         NanoVG.nvgEndFrame(context);
+        //
+        glUseProgram(program);
+        glBlendFunc(blendSrc, blendDst);
+        if (depthTest)
+            glEnable(GL_DEPTH_TEST);
+        else
+            glDisable(GL_DEPTH_TEST);
+        if (scissorTest)
+            glEnable(GL_SCISSOR_TEST);
+        else
+            glDisable(GL_SCISSOR_TEST);
+        glColorMask(colorMask[0], colorMask[1], colorMask[2], colorMask[3]);
+        glStencilMask(stencilMask);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+        glStencilFunc(stencilRef, stencilFuncMask, 0xffffffff);
+        GL13.glActiveTexture(activeTexture);
+        glBindVertexArray(vertexArray);
+        glBindBuffer(GL15.GL_ARRAY_BUFFER, arrayBuffer);
+        glBindTexture(GL_TEXTURE_2D, textureBinding);
     }
 
     public boolean isInitialized() {

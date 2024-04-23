@@ -32,8 +32,6 @@ public class FontMod extends Module {
             register(new StringSetting("Font", "Verdana"));
     public final Setting<Float> fontSize =
             register(new NumberSetting<>("Size", 9.0f, 4.0f, 12.0f));
-    public final Setting<Float> pixelRatio =
-            register(new NumberSetting<>("PixelRatio", 5.0f, 3.0f, 6.0f));
     public final Setting<Float> shadowOffset =
             register(new NumberSetting<>("ShadowOffset", 0.5f, 0.2f, 1.0f));
     public final Setting<Boolean> blurShadow =
@@ -70,7 +68,7 @@ public class FontMod extends Module {
     private String getOSFontPath() {
         String os = System.getProperty("os.name").toLowerCase();
 
-        if (os.contains("win")) {
+        if (os.contains("windows")) {
             return "C:\\Windows\\Fonts";
         }
         else if (os.contains("darwin")) {
