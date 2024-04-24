@@ -25,7 +25,7 @@ import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.GL_VERTEX_ARRAY_BINDING;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-// thanks to Mironov and the demo <a href="https://github.com/LWJGL/lwjgl3/blob/master/modules/samples/src/test/java/org/lwjgl/demo/nanovg/"></a>
+// thanks to Mironov and the demo <a href="https://github.com/LWJGL/lwjgl3/blob/master/modules/samples/src/test/java/org/lwjgl/demo/nanovg/">Demo</a>
 // Thanks to FeSis/asphyxia1337 for the state saving thing (I forgot who made it I'm sorry)
 @SuppressWarnings("unused")
 public class NVGRenderer implements Globals {
@@ -33,37 +33,15 @@ public class NVGRenderer implements Globals {
     private final ModuleCache<FontMod> CUSTOM_FONT =
             Caches.getModule(FontMod.class);
 
-    private static final float BLUR = 0.0f;
-
-    private long context = 0;
-    private boolean init = false,
-            depthTest,
-            scissorTest;
-
-    private ByteBuffer buf = null;
-    private int id = -1, program,
-            blendSrc,
-            blendDst,
-            stencilMask,
-            stencilRef,
-            stencilFuncMask,
-            activeTexture,
-            vertexArray,
-            arrayBuffer,
-            textureBinding;
+    private int program, blendSrc, blendDst, stencilMask, stencilRef, stencilFuncMask, activeTexture, vertexArray, arrayBuffer, textureBinding;
+    private boolean depthTest, scissorTest, init = false;
     private final boolean[] colorMask = new boolean[4];
-
-
-    // private NVGColor blackColor = null;
+    private static final float BLUR = 0.0f;
+    private ByteBuffer buf = null;
+    private long context = 0;
+    private int id = -1;
 
     public void initialize() {
-        // if (blackColor == null) {
-        //     blackColor = NVGColor.calloc();
-        //     blackColor.r(0.0f);
-        //     blackColor.g(0.0f);
-        //     blackColor.b(0.0f);
-        //     blackColor.a(0.25f);
-        // }
         context = NanoVGGL3.nvgCreate(NanoVGGL3.NVG_ANTIALIAS);
         System.out.println("NanoVG context: " + context);
 
@@ -101,11 +79,11 @@ public class NVGRenderer implements Globals {
         }
     }
 
-    private void textSized(String text, float x, float y, float size, NVGColor color) {
+    private void textSized(String text, float x, float y, float size, Color color) {
         NanoVG.nvgBeginPath(context);
 
         NanoVG.nvgFontFaceId(context, id);
-        NanoVG.nvgFillColor(context, color);
+        NanoVG.nvgFillColor(context, getColorNVG(color));
         NanoVG.nvgFontSize(context, size);
         NanoVG.nvgFontBlur(context, BLUR);
         NanoVG.nvgTextAlign(context, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_TOP);
@@ -114,7 +92,7 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgClosePath(context);
     }
 
-    private void textSizedShadow(String text, float x, float y, float size, NVGColor color, Color shadowColor) {
+    private void textSizedShadow(String text, float x, float y, float size, Color color, Color shadowColor) {
         NanoVG.nvgBeginPath(context);
 
         NanoVG.nvgFontFaceId(context, id);
@@ -126,10 +104,65 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgText(context, x + CUSTOM_FONT.get().shadowOffset.getValue(), y + CUSTOM_FONT.get().shadowOffset.getValue(), text);
 
         NanoVG.nvgFontBlur(context, BLUR);
-        NanoVG.nvgFillColor(context, color);
+        NanoVG.nvgFillColor(context, getColorNVG(color));
         NanoVG.nvgText(context, x, y, text);
 
         NanoVG.nvgClosePath(context);
+    }
+
+    public void drawText(String text, float x, float y, float size, Color color, boolean shadow) {
+        Color shadowColor = color.darker().darker().darker();
+        Color activeColor = color;
+
+        String[] textParts = text.trim().split("§");
+
+        if (textParts.length == 1) {
+            if (shadow)
+                textSizedShadow(text, x, y, size, color, shadowColor);
+            else
+                textSized(text, x, y, size, color);
+            return;
+        }
+
+        for (String s : textParts) {
+            if (s.isEmpty())
+                continue;
+
+            switch (s.charAt(0)) {
+                case '0' -> activeColor = Color.BLACK;
+                case '1' -> activeColor = new Color(170);
+                case '2' -> activeColor = new Color(43520);
+                case '3' -> activeColor = new Color(43690);
+                case '4' -> activeColor = new Color(11141120);
+                case '5' -> activeColor = new Color(11141290);
+                case '6' -> activeColor = new Color(16755200);
+                case '7' -> activeColor = Color.GRAY;
+                case '8' -> activeColor = Color.DARK_GRAY;
+                case '9' -> activeColor = Color.BLUE;
+                case 'a' -> activeColor = Color.GREEN;
+                case 'b' -> activeColor = new Color(5636095);
+                case 'c' -> activeColor = Color.RED;
+                case 'd' -> activeColor = new Color(16733695);
+                case 'e' -> activeColor = Color.YELLOW;
+                case 'f' -> activeColor = Color.WHITE;
+                case 'l' -> size += 1;
+                case 'm' -> size -= 1;
+                case 'n' -> shadow = true;
+                case 'o' -> shadow = false;
+                default -> activeColor = color;
+            }
+
+            if (s.length() > 1)  {
+                if (activeColor != color)
+                    s = s.substring(1);
+
+                if (shadow)
+                    textSizedShadow(s, x, y, size, activeColor, shadowColor);
+                else
+                    textSized(s, x, y, size, activeColor);
+                x += getWidth(s) + (s.endsWith(" ") ? getWidth("a") : 0);
+            }
+        }
     }
 
     public void drawRect(float x, float y, float x2, float y2, int color) {
@@ -138,64 +171,6 @@ public class NVGRenderer implements Globals {
         NanoVG.nvgFillColor(context, getColorNVG(color));
         NanoVG.nvgFill(context);
         NanoVG.nvgClosePath(context);
-    }
-
-    public void drawText(String text, float x, float y, float size, Color color, boolean shadow) {
-        String[] textParts = text.split("§");
-        boolean colorChanged = false;
-        Color oldColor = color;
-
-        for (String s : textParts) {
-            if (s.isEmpty() || s.equals("f"))
-                continue;
-
-            if (s.length() < 2) {
-                if (shadow)
-                    textSizedShadow(s, x, y, size, getColorNVG(color), color);
-                else
-                    textSized(s, x, y, size, getColorNVG(color));
-                x += getWidth(s);
-                continue;
-            }
-
-            char c = s.charAt(0);
-            switch (c) {
-                case 'r' -> color = oldColor;
-                case '0' -> color = Color.BLACK;
-                case '1' -> color = new Color(170);
-                case '2' -> color = new Color(43520);
-                case '3' -> color = new Color(43690);
-                case '4' -> color = new Color(11141120);
-                case '5' -> color = new Color(11141290);
-                case '6' -> color = new Color(16755200);
-                case '7' -> color = Color.GRAY;
-                case '8' -> color = Color.DARK_GRAY;
-                case '9' -> color = Color.BLUE;
-                case 'a' -> color = Color.GREEN;
-                case 'b' -> color = new Color(5636095);
-                case 'c' -> color = Color.RED;
-                case 'd' -> color = new Color(16733695);
-                case 'e' -> color = Color.YELLOW;
-                case 'f' -> color = Color.WHITE;
-                case 'l' -> size += 1;
-                case 'm' -> size -= 1;
-                case 'n' -> shadow = true;
-                case 'o' -> shadow = false;
-            }
-
-            if (color.getRGB() != oldColor.getRGB())
-                colorChanged = true;
-
-            String text1 = colorChanged ? s.substring(1) : s;
-            if (shadow)
-                textSizedShadow(text1, x, y, size, getColorNVG(color), color.darker().darker().darker());
-            else
-                textSized(text1, x, y, size, getColorNVG(color));
-            x += getWidth(text1);
-            if (s.charAt(s.length() - 1) == ' ') {
-                x += getWidth("a");
-            }
-        }
     }
 
     public void drawGradientRect(float x, float y, float w, float h, int startColor, int endColor) {
@@ -239,8 +214,6 @@ public class NVGRenderer implements Globals {
     public void endScissor() {
         NanoVG.nvgResetScissor(context);
     }
-
-
 
     public static NVGColor getColorNVG(Color color) {
         NVGColor clr = NVGColor.create();
@@ -309,13 +282,13 @@ public class NVGRenderer implements Globals {
         buffer.clear();
         glGetIntegerv(GL_TEXTURE_BINDING_2D, buffer);
         textureBinding = buffer.get(0);
-        //
+
         NanoVG.nvgBeginFrame(context, mc.getWindow().getScaledWidth(), mc.getWindow().getScaledHeight(), 3f);
     }
 
     public void endDraw() {
         NanoVG.nvgEndFrame(context);
-        //
+
         glUseProgram(program);
         glBlendFunc(blendSrc, blendDst);
         if (depthTest)

@@ -37,7 +37,7 @@ public class Watermark extends HudElement {
 
     public Watermark() {
         super("Watermark", HudCategory.Text, 2, 2);
-        this.setData(new SimpleHudData(this, "Displays a watermark."));
+        this.setData(new SimpleHudData(this, "Displays the client watermark."));
     }
 
     @Override
