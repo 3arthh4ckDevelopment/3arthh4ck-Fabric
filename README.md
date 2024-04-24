@@ -14,7 +14,7 @@ bundled with the client, however due to it not being a necessity (thus not being
 By default, any message prefixed with a `+` will be handled as command, e.g. `+bind clickgui RShift`
 to set the default gui key to the Right Shift. 
 
-Because of bloat, some of the more complicated Settings are hided by default. You can find those by using the Settings module.
+Because of bloat, some of the more complicated Settings are hidden by default. You can find those by using the Settings module.
 
 <details>
 <summary> Proxy/PingBypass (not yet implemented) </summary>
