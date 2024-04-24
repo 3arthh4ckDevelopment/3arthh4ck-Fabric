@@ -712,26 +712,6 @@ public class AutoCrystal extends Module
             register(new BooleanSetting("SurroundSync", true))
                     .setComplexity(Complexity.Expert);
 
-    /* ------------------ PingSync Settings ----------------- */
-    protected final Setting<Boolean> pingSync =
-            register(new BooleanSetting("Ping-Sync", false))
-                    .setComplexity(Complexity.Expert);
-    protected final Setting<Integer> pingSyncStrength =
-            register(new NumberSetting<>("PingSync-%", 70, 1, 100))
-                    .setComplexity(Complexity.Expert);
-    protected final Setting<Boolean> absolutePingSync =
-            register(new BooleanSetting("Absolute", true))
-                    .setComplexity(Complexity.Expert);
-    protected final Setting<Boolean> ignorePingBypass =
-            register(new BooleanSetting("IgnorePingbypass", false))
-                    .setComplexity(Complexity.Expert);
-    protected final Setting<Boolean> ignorePingspoof =
-            register(new BooleanSetting("IgnorePingSpoof", false))
-                    .setComplexity(Complexity.Expert);
-    protected final Setting<Integer> pingSyncRemoval =
-            register(new NumberSetting<>("BreakRemoval", 2, 0, 15))
-                    .setComplexity(Complexity.Expert);
-
     /* ---------------- Extrapolation Settings -------------- */
     // TODO: make this not suck, keep in mind that
     //  we might not be able to place when target moves in a block!
@@ -1129,7 +1109,6 @@ public class AutoCrystal extends Module
                 .addPage(p -> p == ACPages.Liquids, interact, sponges)
                 .addPage(p -> p == ACPages.AntiTotem, antiTotem, attempts)
                 .addPage(p -> p == ACPages.DamageSync, damageSync, surroundSync)
-                .addPage(p -> p == ACPages.PingSync, pingSync, pingSyncRemoval)
                 .addPage(p -> p == ACPages.Extrapolation, extrapol, selfExtrapolation)
                 .addPage(p -> p == ACPages.GodModule, idPredict, godSwing)
                 .addPage(p -> p == ACPages.MultiThread, preCalc, blockChangeThread)
@@ -1496,37 +1475,5 @@ public class AutoCrystal extends Module
         }
 
         return deathTime.getValue();
-    }
-
-    public long getCorrectPing(){
-        return ignorePingspoof.getValue()
-                ? ServerUtil.getPingNoPingSpoof()
-                : ServerUtil.getPing();
-    }
-
-    protected int getPingSyncedDelay(PingSync type)
-    {
-        long absolutePlaceDelay = getCorrectPing() / 100 * pingSyncStrength.getValue();
-        long absoluteBreakDelay = getCorrectPing() / 100 * pingSyncStrength.getValue() - 2;
-        long pingSyncedPlaceDelay = getCorrectPing() / 100 * pingSyncStrength.getValue();
-        long pingSyncedBreakDelay = getCorrectPing() / 100 * pingSyncStrength.getValue() - pingSyncRemoval.getValue();
-
-        if(absolutePingSync.getValue())
-        {
-            return type == PingSync.Place
-                    ? (int) absolutePlaceDelay
-                    : (int) absoluteBreakDelay;
-        }
-        else
-        {
-            return type == PingSync.Place
-                    ? (int) pingSyncedPlaceDelay
-                    : (int) pingSyncedBreakDelay;
-        }
-    }
-
-    protected enum PingSync {
-        Place,
-        Break
     }
 }

@@ -962,8 +962,6 @@ public abstract class AbstractCalculation<T extends CrystalData>
 
         module.placeTimer.reset(resetSlow
                 ? module.slowPlaceDelay.getValue()
-                : module.pingSync.getValue()
-                    ? module.getPingSyncedDelay(AutoCrystal.PingSync.Place)
                 : module.placeDelay.getValue());
 
         BlockPos pos = data.getPos();

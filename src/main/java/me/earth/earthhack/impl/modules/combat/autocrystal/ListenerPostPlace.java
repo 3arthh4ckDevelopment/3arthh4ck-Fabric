@@ -37,11 +37,7 @@ final class ListenerPostPlace extends ModuleListener<AutoCrystal,
                                    module.idOffset.getValue(),
                                    module.idPackets.getValue(),
                                    module.idDelay.getValue());
-
-            if(module.pingSync.getValue())
-                module.breakTimer.reset(module.getPingSyncedDelay(AutoCrystal.PingSync.Break));
-            else
-                module.breakTimer.reset(module.breakDelay.getValue());
+            module.breakTimer.reset(module.breakDelay.getValue());
         }
     }
 
