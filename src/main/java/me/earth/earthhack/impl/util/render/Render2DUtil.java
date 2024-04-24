@@ -245,7 +245,7 @@ public class Render2DUtil implements Globals {
         }
     }
 
-    public static void scissor(DrawContext context, float x, float y, float x1, float y1) {
+    public static void scissor(float x, float y, float x1, float y1) {
         double sx = Math.min(x, x1);
         double sy = Math.min(y, y1);
         double w = Math.abs(x1 - x);
@@ -262,7 +262,6 @@ public class Render2DUtil implements Globals {
             GlStateManager._enableScissorTest();
             GlStateManager._scissorBox(px, py, pw, ph);
         }
-
     }
 
     public static void disableScissor() {

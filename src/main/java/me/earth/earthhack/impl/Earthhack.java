@@ -27,13 +27,12 @@ public class Earthhack implements ClientModInitializer, ModInitializer {
         LOGGER.info("\n\n ------------------ 3arthh4ck-fabric initialized. ------------------ \n");
     }
 
-    public static Logger getLogger()
-    {
-        return LOGGER;
-    }
-
     @Override
     public void onInitialize() {
         Core CORE = new Core();
+    }
+
+    public static Logger getLogger() {
+        return LOGGER;
     }
 }
