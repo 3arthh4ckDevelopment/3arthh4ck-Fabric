@@ -39,14 +39,7 @@ public abstract class MixinTitleScreen extends Screen implements Globals
                 true));
         earthhackButton.setPosition(this.width / 2 + 2 + 98 + 4, this.height / 4 + 48 + 72 + 12 - (20 + 4 * 4));
 
-        // // TODO: adjust position if it is blocked, this is not very hard
-        // TextIconButtonWidget button = TextIconButtonWidget.builder(Text.of("Phobos"),
-        //                 action -> this.client.setScreen(new CommandGui(new TitleScreen())), true)
-        //         .width(20)
-        //         .texture(EarthhackTextures.SKIN, 16, 16)
-        //         .build();
-        // button.setPosition(this.width / 2 + 2 + 98 + 4, this.height / 4 + 48 + 72 + 12 - (20 + 4 * 4));
-        // this.addDrawableChild(button);
+        // TODO: adjust position if it is blocked, this is not very hard
     }
 
 }
