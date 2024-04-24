@@ -7,8 +7,5 @@ import net.minecraft.util.Identifier;
  * Textures the client uses.
  */
 public final class EarthhackTextures {
-    public static final Identifier[] TITLE_TEXTURES = new Identifier[] {
-            new Identifier("earthhack:textures/gui/title/unfocused.png"),
-            new Identifier("earthhack:textures/gui/title/focused.png")
-    };
+    public static final Identifier SKIN = new Identifier("earthhack", "icon/skin");
 }
