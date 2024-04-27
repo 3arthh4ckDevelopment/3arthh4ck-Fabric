@@ -67,7 +67,6 @@ public abstract class MixinChatHud implements IChatHud
 
     @Final @Shadow private MinecraftClient client;
     @Shadow @Final private final List<ChatHudLine> messages = Lists.newArrayList();
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Shadow @Final private final ArrayListDeque<String> messageHistory = new ArrayListDeque<>(100);
     @Final @Shadow private final List<ChatHudLine.Visible> visibleMessages = Lists.newArrayList();
 
@@ -75,6 +74,21 @@ public abstract class MixinChatHud implements IChatHud
     @Invoker("addMessage")
     public abstract void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, int addedTime,
                                                                @Nullable MessageIndicator indicator, boolean refresh);
+    @Override
+    @Accessor(value = "scrolledLines")
+    public abstract int earthhack$getScrollPos();
+
+    @Override
+    @Accessor(value = "scrolledLines")
+    public abstract void earthhack$setScrollPos(int pos);
+    @Override
+    @Accessor(value = "hasUnreadNewMessages")
+    public abstract boolean earthhack$getScrolled();
+
+    @Override
+    @Accessor(value = "hasUnreadNewMessages")
+    public abstract void earthhack$setScrolled(boolean scrolled);
+
 
     @Inject(
         method = "clear",
@@ -141,20 +155,20 @@ public abstract class MixinChatHud implements IChatHud
         }
     }
 
-    @Override
-    @Accessor(value = "scrolledLines")
-    public abstract int earthhack$getScrollPos();
+    @Inject(
+            method = "clear",
+            at = @At("HEAD"),
+            cancellable = true)
+    public void clearChatMessagesHook(boolean sent, CallbackInfo info)
+    {
+        ChatEvent.Clear event = new ChatEvent.Clear(sent);
+        Bus.EVENT_BUS.post(event);
 
-    @Override
-    @Accessor(value = "scrolledLines")
-    public abstract void earthhack$setScrollPos(int pos);
-    @Override
-    @Accessor(value = "hasUnreadNewMessages")
-    public abstract boolean earthhack$getScrolled();
-
-    @Override
-    @Accessor(value = "hasUnreadNewMessages")
-    public abstract void earthhack$setScrolled(boolean scrolled);
+        if (event.isCancelled())
+        {
+            info.cancel();
+        }
+    }
 
 
     @Override
