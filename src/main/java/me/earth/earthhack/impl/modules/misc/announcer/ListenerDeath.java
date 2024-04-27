@@ -26,7 +26,7 @@ final class ListenerDeath extends ModuleListener<Announcer, DeathEvent>
                 && !player.equals(event.getEntity())
                 && event.getEntity() instanceof PlayerEntity
                 && (!module.friends.getValue()
-                    || !Managers.FRIENDS.contains(event.getEntity()))
+                    || !Managers.FRIENDS.containsEntity(event.getEntity()))
                 && (!module.targetsOnly.getValue()
                     || module.targets.remove(event.getEntity()))
                 && mc.player.distanceTo(event.getEntity()) <= 144)

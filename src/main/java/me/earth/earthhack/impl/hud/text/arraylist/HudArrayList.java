@@ -119,6 +119,12 @@ public class HudArrayList extends DynamicHudElement {
         ListenerPostKey listener = new ListenerPostKey(this);
         this.listeners.add(listener);
         listener.invoke(new KeyboardEvent.Post());
+
+        if (moduleRender.getValue() == ModuleSorting.Length)
+            modules.sort(Comparator.comparing(entry -> Managers.TEXT.getStringWidth(entry.getKey()) *  -1));
+        else
+            modules.sort(Map.Entry.comparingByKey());
+
         this.setData(new SimpleHudData(this, "If you want to show enabled modules."));
     }
 

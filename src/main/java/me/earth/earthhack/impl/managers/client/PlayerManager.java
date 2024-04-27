@@ -17,7 +17,7 @@ public class PlayerManager extends Observable<PlayerEvent>
 {
     private final Map<String, UUID> players = new ConcurrentHashMap<>();
 
-    public boolean contains(Entity player)
+    public boolean containsEntity(Entity player)
     {
         if (player instanceof PlayerEntity)
         {

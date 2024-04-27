@@ -26,7 +26,7 @@ public class Tps extends HudElement {
         if (mc.player != null) {
             tps = name.getValue() + " " + TextColor.GRAY + MathUtil.round(Managers.TPS.getTps(), 2);
             if (currentTps.getValue())
-                tps += actualBracket()[0] + MathUtil.round(Managers.TPS.getCurrentTps(), 2) + actualBracket()[1];
+                tps += " " + actualBracket()[0] + MathUtil.round(Managers.TPS.getCurrentTps(), 2) + actualBracket()[1];
         }
         HudRenderUtil.renderText(context, tps, getX(), getY());
     }

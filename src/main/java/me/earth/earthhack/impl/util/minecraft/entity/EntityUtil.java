@@ -183,7 +183,7 @@ public class EntityUtil implements Globals
         return player != null
                 && !isDead(player)
                 && mc.player.squaredDistanceTo(player) <= MathUtil.square(range)
-                && !Managers.FRIENDS.contains(player);
+                && !Managers.FRIENDS.containsEntity(player);
     }
 
 }

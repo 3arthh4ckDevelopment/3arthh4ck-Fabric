@@ -285,14 +285,14 @@ final class ListenerSpawnObject extends
     private float getSelfDamage(Entity entity)
     {
         float damage = module.damageHelper.getDamage(entity);
-        if (damage > EntityUtil.getHealth(mc.player) - 1.0f
+        if (damage > EntityUtil.getHealth(RotationUtil.getRotationPlayer()) - 1.0f
                 || damage > DMG.getValue())
         {
             Managers.SAFETY.setSafe(false);
         }
 
         return damage > module.maxSelfBreak.getValue()
-                || damage > EntityUtil.getHealth(mc.player) - 1.0f
+                || damage > EntityUtil.getHealth(RotationUtil.getRotationPlayer()) - 1.0f
                 && !module.suicide.getValue()
                     ? -1.0f
                     : damage;

@@ -66,9 +66,9 @@ public abstract class MixinChatHud implements IChatHud
     @Shadow protected abstract void refresh();
 
     @Final @Shadow private MinecraftClient client;
-    @Unique @Final private final List<ChatHudLine> messages = Lists.newArrayList();
+    @Shadow @Final private final List<ChatHudLine> messages = Lists.newArrayList();
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @Unique @Final private final ArrayListDeque<String> messageHistory = new ArrayListDeque<>(100);
+    @Shadow @Final private final ArrayListDeque<String> messageHistory = new ArrayListDeque<>(100);
     @Final @Shadow private final List<ChatHudLine.Visible> visibleMessages = Lists.newArrayList();
 
     @Override

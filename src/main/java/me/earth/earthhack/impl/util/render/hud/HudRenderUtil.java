@@ -54,7 +54,7 @@ public class HudRenderUtil implements Globals {
             String count = String.valueOf(stack.getCount());
             if (CUSTOM_FONT.isEnabled()) {
                 context.drawItem(stack, x, y);
-                if (!count.equals("0"))
+                if (stack.getCount() > 0)
                     Managers.TEXT.drawString(context, count, x + 19 - 2 - Managers.TEXT.getStringWidth(count), y + 9, HUD_EDITOR.get().color.getValue().getRGB(), true);
             } else {
                 context.drawItemInSlot(mc.textRenderer, stack, x, y);

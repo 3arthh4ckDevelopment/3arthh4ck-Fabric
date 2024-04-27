@@ -3,10 +3,14 @@ package me.earth.earthhack.impl.hud.text.arraylist;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Hidden;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import net.minecraft.client.gui.DrawContext;
+
+import java.util.Comparator;
+import java.util.Map;
 
 /**
  * @author Gerald
