@@ -20,7 +20,6 @@ public abstract class SmartClickEvent extends ClickEvent
     }
 
     @Override
-    @SuppressWarnings("NullableProblems")
     public abstract String getValue();
 
     @Override

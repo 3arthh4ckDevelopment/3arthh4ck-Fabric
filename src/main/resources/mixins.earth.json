@@ -37,7 +37,8 @@
     "util.MixinGameOptions",
     "util.MixinHoverEvent",
     "util.MixinKeyBinding",
-    "util.MixinText"
+    "util.MixinText",
+    "MixinClientWorld"
   ],
   "injectors": {
     "defaultRequire": 1
