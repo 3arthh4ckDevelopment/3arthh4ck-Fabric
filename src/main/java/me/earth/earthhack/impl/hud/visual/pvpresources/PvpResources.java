@@ -7,10 +7,12 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
+import me.earth.earthhack.impl.gui.hud.HudEditorGui;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.helpers.addable.ItemAddingModule;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,11 +36,11 @@ public class PvpResources extends HudElement {
     private final Setting<String> blocks =
             register(new StringSetting("Add/Remove", "Add/Remove"));
 
-    ArrayList<Item> items = new ArrayList<>();
-    Item[] defaultIds = {Items.END_CRYSTAL, Items.EXPERIENCE_BOTTLE, Items.ENCHANTED_GOLDEN_APPLE, Items.TOTEM_OF_UNDYING};
-    int x = 0;
-    int y = 0;
-    int finalOffset;
+    private final ArrayList<Item> items = new ArrayList<>();
+    private final Item[] defaultIds = {Items.END_CRYSTAL, Items.EXPERIENCE_BOTTLE, Items.ENCHANTED_GOLDEN_APPLE, Items.TOTEM_OF_UNDYING};
+    private int x = 0;
+    private int y = 0;
+    private int finalOffset;
     
     private void render(DrawContext context) {
         if (mc.player != null) {
@@ -87,7 +89,6 @@ public class PvpResources extends HudElement {
         else
             Render2DUtil.drawRect(context.getMatrices(), x - 3, y - 3, x + 40, y + 40, color.getValue().getRGB());
 
-
         renderItem(context, Items.END_CRYSTAL, x, y);
         renderItem(context, Items.EXPERIENCE_BOTTLE, x, y + 20);
         renderItem(context, Items.ENCHANTED_GOLDEN_APPLE, x + 20, y);
@@ -109,17 +110,27 @@ public class PvpResources extends HudElement {
     }
 
     public void renderItem(DrawContext context, Item item, int xPosition, int yPosition) {
-        Managers.TEXT.drawStringWithShadow(context, getItemCount(item), xPosition + 18 - Managers.TEXT.getStringWidth(getItemCount(item)), yPosition + 9, -1);
-        context.drawItem(item.getDefaultStack(), xPosition, yPosition, 100205, (int) getZ());
+        int count = getCount(item);
+        if (count > 0 && !(mc.currentScreen instanceof HudEditorGui))
+            HudRenderUtil.drawItemStack(context, item.getDefaultStack().copyWithCount(count), xPosition, yPosition, true);
     }
 
-    public static String getItemCount(Item item) {
+    private static String getItemCount(Item item) {
         int itemCount = mc.player.getInventory().main.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum() + ((mc.player.getOffHandStack().getItem() == item)
                 ? mc.player.getOffHandStack().getCount() : 0);
         if (itemCount >= 1000)
             return Integer.toString(itemCount).charAt(0) + "." + Integer.toString(itemCount).charAt(1) + "K";
         else
             return Integer.toString(itemCount);
+    }
+
+    private static int getCount(Item item) {
+        return mc.player.getInventory().main
+                .stream()
+                .filter(itemStack -> itemStack.getItem() == item)
+                    .mapToInt(ItemStack::getCount).sum() + ((mc.player.getOffHandStack().getItem() == item)
+                            ? mc.player.getOffHandStack().getCount()
+                            : 0);
     }
 
     public PvpResources() {
@@ -136,9 +147,7 @@ public class PvpResources extends HudElement {
                 }
             }
         });
-
         this.mode.addObserver(event -> items.clear());
-
         this.setData(new SimpleHudData(this, "Displays some items from your Inventory."));
     }
 
@@ -169,7 +178,7 @@ public class PvpResources extends HudElement {
 
     @Override
     public float getWidth() {
-        if (mode.getValue() == Mode.Extended && items.isEmpty())
+        if (mode.getValue() == Mode.List && items.isEmpty())
             return 17;
         else
             return style.getValue() == Styles.Horizontal
@@ -181,7 +190,7 @@ public class PvpResources extends HudElement {
 
     @Override
     public float getHeight() {
-        if (mode.getValue() == Mode.Extended && items.isEmpty())
+        if (mode.getValue() == Mode.List && items.isEmpty())
             return 17;
         else
             return style.getValue() == Styles.Vertical
@@ -199,7 +208,7 @@ public class PvpResources extends HudElement {
 
     private enum Mode {
         Simple,
-        Extended
+        List
     }
 
 }
