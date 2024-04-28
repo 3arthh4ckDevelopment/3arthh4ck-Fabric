@@ -30,6 +30,7 @@ public class Direction extends HudElement {
     public String getDirection4D(boolean name, boolean symbol)
     {
         String nameValue, symbolValue;
+
         switch (RotationUtil.getDirection4D())
         {
             case 0:
