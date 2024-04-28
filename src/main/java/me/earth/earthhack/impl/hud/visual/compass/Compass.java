@@ -71,7 +71,7 @@ public class Compass extends HudElement {
     }
 
     private static double getPosOnCompass(Direction dir) {
-        double yaw = Math.toRadians(MathHelper.wrapDegrees(mc.player.getHeadYaw()));
+        double yaw = Math.toRadians(MathHelper.wrapDegrees(mc.player.getBodyYaw()));
         int index = dir.ordinal();
         return yaw + (index * Math.PI / 2);
     }
