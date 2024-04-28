@@ -437,7 +437,7 @@ public class RotationUtil implements Globals
     public static int getDirection4D()
     {
         return MathHelper.floor(
-                (mc.player.headYaw * 4.0F / 360.0F) + 0.5D) & 3;
+                (getRotationPlayer().getHeadYaw() * 4.0F / 360.0F) + 0.5D) & 3;
     }
 
 }
