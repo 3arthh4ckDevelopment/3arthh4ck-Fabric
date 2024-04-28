@@ -29,7 +29,7 @@ public class Degrees extends HudElement {
             if (yaw.getValue()) {
                 if (pitch.getValue())
                     deg += " : ";
-                deg += String.valueOf(((int) (mc.player.getBodyYaw() * 100) / 100.0f));
+                deg += String.valueOf(((int) (mc.player.getHeadYaw() * 100) / 100.0f));
             }
             deg +=  " " + actualBracket()[1];
         }

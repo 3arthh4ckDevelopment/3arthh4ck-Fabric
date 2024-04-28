@@ -27,7 +27,7 @@ public class Compass extends HudElement {
             float x = getX();
             float y = getY();
             if (compass.getValue() == CompassMode.Line) {
-                float playerYaw = mc.player.getBodyYaw();
+                float playerYaw = mc.player.getHeadYaw();
                 float rotationYaw = wrap(playerYaw);
                 Render2DUtil.drawRect(context.getMatrices(), x, y, x + 100, y + Managers.TEXT.getStringHeight(), 0x75101010);
                 glScissor(x, y, x + 100, y + Managers.TEXT.getStringHeight());
@@ -71,7 +71,7 @@ public class Compass extends HudElement {
     }
 
     private static double getPosOnCompass(Direction dir) {
-        double yaw = Math.toRadians(MathHelper.wrapDegrees(mc.player.getBodyYaw()));
+        double yaw = Math.toRadians(MathHelper.wrapDegrees(mc.player.getHeadYaw()));
         int index = dir.ordinal();
         return yaw + (index * Math.PI / 2);
     }
