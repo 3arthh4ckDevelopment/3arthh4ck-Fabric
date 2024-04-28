@@ -309,6 +309,11 @@ public class NVGRenderer implements Globals {
         glBindTexture(GL_TEXTURE_2D, textureBinding);
     }
 
+    public void setupForReInit(){
+        this.init = false;
+
+    }
+
     public boolean isInitialized() {
         return init;
     }

@@ -11,6 +11,7 @@ import me.earth.earthhack.impl.gui.chat.clickevents.SmartClickEvent;
 import me.earth.earthhack.impl.gui.chat.components.SimpleComponent;
 import me.earth.earthhack.impl.gui.chat.components.SuppliedComponent;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.ChatIDs;
 import me.earth.earthhack.impl.util.text.ChatUtil;
@@ -47,6 +48,14 @@ public class FontMod extends Module {
                 event.setCancelled(true);
                 sendFonts();
             }
+        });
+
+        fontName.addObserver(event -> {
+           if (!event.getValue().isEmpty() && isEnabled()) {
+               TextRenderer.FONTS.setupForReInit();
+               disable();
+               enable();
+           }
         });
 
         this.setData(new FontData(this));

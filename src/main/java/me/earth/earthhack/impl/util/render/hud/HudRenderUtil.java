@@ -49,12 +49,11 @@ public class HudRenderUtil implements Globals {
     public static void drawItemStack(DrawContext context, ItemStack stack, int x, int y, boolean amount)
     {
         context.drawItem(stack, x, y, 1);
-
         if (amount) {
             String count = String.valueOf(stack.getCount());
             if (CUSTOM_FONT.isEnabled()) {
                 context.drawItem(stack, x, y);
-                if (stack.getCount() > 0)
+                if (stack.getCount() > 1)
                     Managers.TEXT.drawString(context, count, x + 19 - 2 - Managers.TEXT.getStringWidth(count), y + 9, HUD_EDITOR.get().color.getValue().getRGB(), true);
             } else {
                 context.drawItemInSlot(mc.textRenderer, stack, x, y);
@@ -65,8 +64,8 @@ public class HudRenderUtil implements Globals {
     private static int textColor(float y) {
         return HUD_EDITOR.get().colorMode.getValue() == HudRainbow.None
                 ? HUD_EDITOR.get().color.getValue().getRGB()
-                : (HUD_EDITOR.get().colorMode.getValue() == HudRainbow.Static
-                ? (ColorUtil.staticRainbow((y + 1) * 0.89f, HUD_EDITOR.get().color.getValue()))
+                    : (HUD_EDITOR.get().colorMode.getValue() == HudRainbow.Static
+                    ? (ColorUtil.staticRainbow((y + 1) * 0.89f, HUD_EDITOR.get().color.getValue()))
                 : 0xffffffff);
     }
 }
