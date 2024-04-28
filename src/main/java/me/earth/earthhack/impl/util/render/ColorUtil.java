@@ -50,6 +50,13 @@ public class ColorUtil {
                 };
     }
 
+    public static Color getDarker(final Color origin, int by) {
+        return new Color(
+                Math.max(origin.getRed() - by, 0),
+                Math.max(origin.getGreen() - by, 0),
+                Math.max(origin.getBlue() - by, 0));
+    }
+
     public static int staticRainbow(float offset, Color color) {
         double timer = System.currentTimeMillis() % 1750.0 / 850.0;
         float[] hsb = new float[3];

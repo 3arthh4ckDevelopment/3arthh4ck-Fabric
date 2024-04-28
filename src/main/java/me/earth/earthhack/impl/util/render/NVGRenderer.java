@@ -111,7 +111,7 @@ public class NVGRenderer implements Globals {
     }
 
     public void drawText(String text, float x, float y, float size, Color color, boolean shadow) {
-        Color shadowColor = color.darker().darker().darker();
+        Color shadowColor = ColorUtil.getDarker(color, 165);
         Color activeColor = color;
 
         String[] textParts = text.trim().split("§");
