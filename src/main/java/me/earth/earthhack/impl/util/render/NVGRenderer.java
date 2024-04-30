@@ -151,7 +151,8 @@ public class NVGRenderer implements Globals {
                 case 'o' -> shadow = false;
                 default -> activeColor = color;
             }
-            shadowColor = new Color(ColorUtil.getDarker(activeColor));
+            if (activeColor != color)
+                shadowColor = new Color(ColorUtil.getDarker(activeColor));
 
             if (s.length() > 1)  {
                 if (activeColor != color)
