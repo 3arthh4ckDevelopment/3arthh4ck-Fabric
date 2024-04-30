@@ -39,7 +39,8 @@ public class ListenerBlockBreakAnimation extends ModuleListener<BreakESP, Packet
                 if (exists == null
                         && mc.world.getBlockState(event.getPacket().getPos()).getBlock() != Blocks.BEDROCK
                         && mc.world.getBlockState(event.getPacket().getPos()).getBlock() != Blocks.AIR
-                        && mc.world.getBlockState(event.getPacket().getPos()).isOpaque()) // check fullblock, not opaque
+                        && mc.world.getBlockState(event.getPacket().getPos())
+                                    .isFullCube(mc.world, event.getPacket().getPos()))
                 {
                     module.blocks.add(new BreakESPBlock(event.getPacket().getPos(), event.getPacket().getEntityId(), System.currentTimeMillis()));
                     if (module.chatPos.getValue())
