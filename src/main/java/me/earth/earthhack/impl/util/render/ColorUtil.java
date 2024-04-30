@@ -1,5 +1,8 @@
 package me.earth.earthhack.impl.util.render;
 
+import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 
 public class ColorUtil {
@@ -52,9 +55,22 @@ public class ColorUtil {
 
     public static Color getDarker(final Color origin, int by) {
         return new Color(
-                Math.max(origin.getRed() - by, 0),
-                Math.max(origin.getGreen() - by, 0),
-                Math.max(origin.getBlue() - by, 0));
+                MathHelper.clamp(origin.getRed() - by, 5, 255),
+                MathHelper.clamp(origin.getGreen() - by, 5, 255),
+                MathHelper.clamp(origin.getBlue() - by, 5, 255),
+                origin.getAlpha());
+    }
+
+    public static int getDarker(@NotNull Color color) {
+        return (color.getRGB() & 0xFCFCFC) >> 2 | color.getRGB() & 0xFF000000;
+    }
+
+    public static Color getDarker(final Color origin, float factor) {
+        return new Color(
+                Math.max((int)(origin.getRed() * factor), 0),
+                Math.max((int)(origin.getRed() * factor), 0),
+                Math.max((int)(origin.getRed() * factor), 0),
+                origin.getAlpha());
     }
 
     public static int staticRainbow(float offset, Color color) {

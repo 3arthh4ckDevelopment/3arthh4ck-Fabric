@@ -1,5 +1,6 @@
 package me.earth.earthhack.api.hud;
 
+import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.event.bus.api.Listener;
 import me.earth.earthhack.api.event.bus.api.Subscriber;
 import me.earth.earthhack.api.event.bus.instance.Bus;
@@ -15,6 +16,8 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.api.util.interfaces.Nameable;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
+import me.earth.earthhack.impl.modules.Caches;
+import me.earth.earthhack.impl.modules.client.editor.HudEditor;
 import me.earth.earthhack.impl.util.misc.GuiUtil;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 import net.minecraft.client.gui.DrawContext;
@@ -35,6 +38,10 @@ import java.util.stream.Collectors;
  */
 public abstract class HudElement extends SettingContainer
         implements Globals, Subscriber, Nameable {
+
+    protected static final ModuleCache<HudEditor> HUD_EDITOR =
+            Caches.getModule(HudEditor.class);
+
     private final Setting<Boolean> enabled =
             register(new BooleanSetting("Enabled", false));
     /**

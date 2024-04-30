@@ -111,8 +111,8 @@ public class NVGRenderer implements Globals {
     }
 
     public void drawText(String text, float x, float y, float size, Color color, boolean shadow) {
-        Color shadowColor = ColorUtil.getDarker(color, 125);
         Color activeColor = color;
+        Color shadowColor = new Color(ColorUtil.getDarker(activeColor));
 
         String[] textParts = text.trim().split("§");
 
@@ -309,9 +309,10 @@ public class NVGRenderer implements Globals {
         glBindTexture(GL_TEXTURE_2D, textureBinding);
     }
 
-    public void setupForReInit(){
+    public void reInit(FontMod fontModule) {
         this.init = false;
-
+        fontModule.disable();
+        fontModule.enable();
     }
 
     public boolean isInitialized() {

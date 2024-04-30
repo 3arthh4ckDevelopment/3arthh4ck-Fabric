@@ -4,6 +4,7 @@ import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
+import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.Earthhack;
@@ -13,11 +14,14 @@ import me.earth.earthhack.impl.gui.chat.components.SuppliedComponent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
+import me.earth.earthhack.impl.modules.client.customfont.mode.FontStyle;
 import me.earth.earthhack.impl.util.text.ChatIDs;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.text.ClickEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,8 +37,10 @@ public class FontMod extends Module {
             register(new StringSetting("Font", "Verdana"));
     public final Setting<Float> fontSize =
             register(new NumberSetting<>("Size", 9.0f, 4.0f, 12.0f));
+    public final Setting<FontStyle> fontStyle = // TODO: This!
+            register(new EnumSetting<>("FontStyle", FontStyle.Plain));
     public final Setting<Float> shadowOffset =
-            register(new NumberSetting<>("ShadowOffset", 0.5f, 0.2f, 1.0f));
+            register(new NumberSetting<>("ShadowOffset", 0.6f, 0.2f, 1.0f));
     public final Setting<Boolean> blurShadow =
             register(new BooleanSetting("ShadowBlur", false));
     public final Setting<Boolean> showFonts =
@@ -52,11 +58,10 @@ public class FontMod extends Module {
 
         fontName.addObserver(event -> {
            if (!event.getValue().isEmpty() && isEnabled()) {
-               TextRenderer.FONTS.setupForReInit();
-               disable();
-               enable();
+               TextRenderer.FONTS.reInit(this);
            }
         });
+
 
         this.setData(new FontData(this));
     }
@@ -101,9 +106,9 @@ public class FontMod extends Module {
     }
 
     public void sendFonts() {
-        SimpleComponent component =
-                new SimpleComponent("Available Fonts: ");
-        component.setWrap(true);
+        MutableText component =
+                Text.empty().append("Available Fonts: ");
+        // component.setWrap(true);
 
         List<String> fonts = getAllFonts().stream().map(File::getName).filter(name -> name.contains(".ttf")).toList();
 
