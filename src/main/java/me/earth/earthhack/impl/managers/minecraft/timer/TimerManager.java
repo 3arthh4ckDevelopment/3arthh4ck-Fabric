@@ -18,7 +18,7 @@ public class TimerManager extends SubscriberImpl implements Globals {
 
     public TimerManager()
     {
-        this.listeners.add(new EventListener<TickEvent>(TickEvent.class)
+        this.listeners.add(new EventListener<>(TickEvent.class)
         {
             @Override
             public void invoke(TickEvent event)

@@ -37,6 +37,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Supplier;
@@ -263,8 +264,7 @@ public abstract class MixinEntity implements IEntity, Globals
     //         method = "move",
     //         at = @At(
     //                 value = "INVOKE",
-    //                 target = "net/minecraft/entity/Entity.isSneaking()Z",
-    //                 ordinal = 0))
+    //                 target = "net/minecraft/entity/Entity.isSneaking()Z"))
     // public boolean isSneakingHook(Entity entity)
     // {
     //     return this.moveEvent != null
@@ -276,9 +276,10 @@ public abstract class MixinEntity implements IEntity, Globals
             method = "move",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/block/Block;onSteppedOn(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;" +
-                            "Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/Entity;)V"
-                    /*, ordinal = 2*/))
+                    target = "Lnet/minecraft/block/Block;onSteppedOn(Lnet/minecraft/world/World;" +
+                            "Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;" +
+                            "Lnet/minecraft/entity/Entity;)V"/*,
+                             ordinal = 2*/))
     public void onGroundHook(MovementType type,
                              Vec3d movement,
                              CallbackInfo info)

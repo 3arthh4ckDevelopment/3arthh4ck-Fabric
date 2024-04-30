@@ -4,6 +4,8 @@ import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.impl.event.events.movement.StepEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.modules.movement.step.mode.StepMode;
+import me.earth.earthhack.impl.modules.movement.step.mode.StepOffsetMode;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
@@ -64,7 +66,7 @@ final class ListenerStep extends ModuleListener<Step, StepEvent> {
                  */
                 //} else {
                     for (double offset : offsets) {
-                        mc.player.networkHandler.sendPacket(
+                        mc.getNetworkHandler().sendPacket(
                             new PlayerMoveC2SPacket.PositionAndOnGround(
                                 mc.player.getX(),
                                 mc.player.getY() + offset,
@@ -111,41 +113,68 @@ final class ListenerStep extends ModuleListener<Step, StepEvent> {
         }
     }
 
-    // thank you xyzbtw :)
-
+    // Thanks to xyzbtw for giving the New offsets :)
+    // this looks bad, i'll clean it up later
     private double[] getOffsets(double height) {
         double[] offsets = new double[0];
-        if (height >= 2.0)
-        {
-            offsets = new double[8];
-            offsets[0] = 0.42;
-            offsets[1] = 0.78;
-            offsets[2] = 0.63;
-            offsets[3] = 0.51;
-            offsets[4] = 0.9;
-            offsets[5] = 1.21;
-            offsets[6] = 1.45;
-            offsets[7] = 1.43;
-        }  else if(height == 1.875)
-        {
-            offsets = new double[8];
-            offsets[0] = 0.425;
-            offsets[1] = 0.821;
-            offsets[2] = 0.699;
-            offsets[3] = 0.599;
-            offsets[4] = 1.022;
-            offsets[5] = 1.372;
-            offsets[6] = 1.652;
-            offsets[7] = 1.869;
-        } else if (height<1.875) {
-            offsets = new double[height > 1.0 ? 6 : 2];
-            offsets[0] = height < 1.0 && height > 0.8 ? 0.39 : 0.42;
-            offsets[1] = height < 1.0 && height > 0.8 ? 0.7 : 0.753;
-            if (height > 1.0) {
-                offsets[2] = 1.0;
-                offsets[3] = 1.16;
-                offsets[4] = 1.23;
-                offsets[5] = 1.2;
+
+        if (module.offsetMode.getValue() == StepOffsetMode.Old) {
+            if (height >= 2.0)
+            {
+                offsets = new double[8];
+                offsets[0] = 0.42;
+                offsets[1] = 0.78;
+                offsets[2] = 0.63;
+                offsets[3] = 0.51;
+                offsets[4] = 0.9;
+                offsets[5] = 1.21;
+                offsets[6] = 1.45;
+                offsets[7] = 1.43;
+            } else {
+                offsets = new double[height > 1.0 ? 6 : 2];
+                offsets[0] = 0.42;
+                offsets[1] = height < 1.0 && height > 0.8 ? 0.753 : 0.75;
+                if (height > 1.0) {
+                    offsets[2] = 1.0;
+                    offsets[3] = 1.16;
+                    offsets[4] = 1.23;
+                    offsets[5] = 1.2;
+                }
+            }
+        } else {
+            if (height >= 2.0)
+            {
+                offsets = new double[8];
+                offsets[0] = 0.42;
+                offsets[1] = 0.78;
+                offsets[2] = 0.63;
+                offsets[3] = 0.51;
+                offsets[4] = 0.9;
+                offsets[5] = 1.21;
+                offsets[6] = 1.45;
+                offsets[7] = 1.43;
+            }
+            else if(height == 1.875)
+            {
+                offsets = new double[8];
+                offsets[0] = 0.425;
+                offsets[1] = 0.821;
+                offsets[2] = 0.699;
+                offsets[3] = 0.599;
+                offsets[4] = 1.022;
+                offsets[5] = 1.372;
+                offsets[6] = 1.652;
+                offsets[7] = 1.869;
+            } else if (height<1.875) {
+                offsets = new double[height > 1.0 ? 6 : 2];
+                offsets[0] = height < 1.0 && height > 0.8 ? 0.39 : 0.42;
+                offsets[1] = height < 1.0 && height > 0.8 ? 0.7 : 0.753;
+                if (height > 1.0) {
+                    offsets[2] = 1.0;
+                    offsets[3] = 1.16;
+                    offsets[4] = 1.23;
+                    offsets[5] = 1.2;
+                }
             }
         }
         return offsets;
