@@ -227,10 +227,10 @@ public class Render2DUtil implements Globals {
         }
     }
 
-    public static void drawPlayerFace(DrawContext context, PlayerEntity entityplayer , int x, int y, int width, int height) {
-        if (entityplayer != null && mc.player != null) {
+    public static void drawPlayerFace(DrawContext context, PlayerEntity player, int x, int y, int width, int height) {
+        if (player != null && mc.player != null) {
             if (mc.player.networkHandler == null) return;
-            PlayerListEntry networkPlayerInfo = mc.player.networkHandler.getPlayerList().stream().filter(info -> info.getProfile().getName().equals(entityplayer.getName().getString())).findFirst().orElse(null);
+            PlayerListEntry networkPlayerInfo = mc.player.networkHandler.getPlayerList().stream().filter(info -> info.getProfile().getName().equals(player.getName().getString())).findFirst().orElse(null);
             if (networkPlayerInfo == null) return;
             Identifier resourceLocation = networkPlayerInfo.getSkinTextures().texture();
             if (resourceLocation == null) return;

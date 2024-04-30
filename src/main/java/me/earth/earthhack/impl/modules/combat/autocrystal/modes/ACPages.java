@@ -14,7 +14,6 @@ public enum ACPages
     Liquids,
     AntiTotem,
     DamageSync,
-    PingSync,
     Extrapolation,
     GodModule,
     MultiThread,
