@@ -8,7 +8,6 @@ import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.gui.hud.HudEditorGui;
-import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.helpers.addable.ItemAddingModule;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
@@ -33,7 +32,7 @@ public class PvpResources extends HudElement {
             register(new ColorSetting("Color", new Color(0, 0, 0, 0)));
     private final Setting<Boolean> obby =
             register(new BooleanSetting("Obsidian", false));
-    private final Setting<String> blocks =
+    private final Setting<String> itemsSetting =
             register(new StringSetting("Add/Remove", "Add/Remove"));
 
     private final ArrayList<Item> items = new ArrayList<>();
@@ -136,7 +135,7 @@ public class PvpResources extends HudElement {
     public PvpResources() {
         super("Items", HudCategory.Visual, 60, 70);
 
-        this.blocks.addObserver(event -> {
+        this.itemsSetting.addObserver(event -> {
             if (!event.isCancelled()) {
                 Item item = ItemAddingModule.getItemStartingWith(event.getValue(), i -> true);
                 if (item != null) {

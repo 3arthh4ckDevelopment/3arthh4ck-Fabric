@@ -31,25 +31,23 @@ public class Direction extends HudElement {
     {
         String nameValue, symbolValue;
 
-        switch (RotationUtil.getDirection4D())
-        {
-            case 0:
+        switch (RotationUtil.getDirection4D()) {
+            case 0 -> {
                 nameValue = "South";
                 symbolValue = symbolBuilder("+Z", name);
-                break;
-            case 1:
+            }
+            case 1 -> {
                 nameValue = "West";
                 symbolValue = symbolBuilder("-X", name);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 nameValue = "North";
                 symbolValue = symbolBuilder("-Z", name);
-                break;
-            case 3:
-            default:
+            }
+            default -> {
                 nameValue = "East";
                 symbolValue = symbolBuilder("+X", name);
-                break;
+            }
         }
         return (name ? nameValue :  "") + (name && symbol ? " " : "") + (symbol ? symbolValue : "");
     }

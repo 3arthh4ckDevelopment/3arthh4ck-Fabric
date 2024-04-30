@@ -12,14 +12,14 @@ import net.minecraft.client.gui.DrawContext;
 
 public class ServerBrand extends HudElement {
 
-    private static String serverBrand = "";
-
+    private String serverBrand = "";
     private final Setting<String> name =
             register(new StringSetting("BrandText", "ServerBrand"));
 
     private void render(DrawContext context) {
-        if (mc.player != null && mc.getServer() != null)
-            serverBrand = name.getValue() + " " + TextColor.GRAY + (mc.isInSingleplayer() && mc.getServer() != null ? "singleplayer" : mc.getServer().getServerModName());
+        if (mc.player == null || mc.getServer() == null) return;
+
+        serverBrand = name.getValue() + " " + TextColor.GRAY + (mc.isInSingleplayer() && mc.getServer() != null ? "fabric" : mc.getServer().getServerModName());
         HudRenderUtil.renderText(context, serverBrand, getX(), getY());
     }
 
