@@ -19,38 +19,20 @@ public class Greeter extends HudElement {
 
     private final Setting<GreeterMode> greeterMode =
             register(new EnumSetting<>("Mode", GreeterMode.LongNew));
-    private final Setting<String> custom =
+    protected final Setting<String> custom =
             register(new StringSetting("Custom", "Welcome to Future Beta >:D"));
-
-    public static String text = "Welcome to Future Beta >:D";
+    private String text;
 
     private void render(DrawContext context) {
-        if (mc.player != null) {
-            String name = mc.player.getDisplayName().getString().trim();
-            String playerName = Caches.getModule(Media.class).returnIfPresent(m -> m.convert(name), name);
-            switch (greeterMode.getValue()) {
-                case LongNew:
-                    text = "Welcome to " + Earthhack.NAME + " " + playerName + " :^)";
-                    break;
-                case LongVer:
-                    text = "Welcome to " + Earthhack.NAME + " " + Earthhack.VERSION + " " + playerName + " :^)";
-                    break;
-                case LongOld:
-                    text = "Welcome to Phobos.eu " + playerName + " :^)";
-                    break;
-                case Time:
-                    text = getTimeOfDay() + playerName;
-                    break;
-                case Weird:
-                    text = "Welcome to phobro hack " + playerName;
-                    break;
-                case Custom:
-                    text = custom.getValue().replace("%player%", playerName);
-                    break;
-                default:
-                    text = "Welcome " + playerName;
-            }
-        }
+        if (mc.player == null) return;
+
+        String name = mc.player.getGameProfile().getName();
+        String playerName = Caches.getModule(Media.class).returnIfPresent(m -> m.convert(name), name);
+
+        if (greeterMode.getValue().equals(GreeterMode.Custom))
+            text = custom.getValue().replace("%player%", playerName);
+        else
+            text = greeterMode.getValue().getMessage(playerName);
         HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
@@ -111,13 +93,23 @@ public class Greeter extends HudElement {
     }
 
     private enum GreeterMode {
-        Time,
-        LongNew,
-        LongVer,
-        LongOld,
-        Weird,
-        Custom,
-        Simple
+        Time(getTimeOfDay() + "%player%"),
+        LongNew("Welcome to " + Earthhack.NAME + " %player% :^)"),
+        LongVer("Welcome to " + Earthhack.NAME + " " + Earthhack.VERSION + " %player% :^)"),
+        LongOld("Welcome to Phobos.eu %player% :^)"),
+        Weird("Welcome to phobro hack %player%"),
+        Custom(""),
+        Simple("Welcome %player%");
+
+        private final String message;
+
+        GreeterMode(String message) {
+            this.message = message;
+        }
+
+        public String getMessage(String player) {
+            return message.replace("%player%", player);
+        }
     }
 
 }

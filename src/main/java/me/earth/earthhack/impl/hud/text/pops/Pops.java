@@ -21,7 +21,7 @@ public class Pops extends HudElement {
     private void render(DrawContext context) {
         if (mc.player != null) {
             int pops = Managers.COMBAT.getPops(mc.player);
-            popsNumber = name.getValue() + " " + TextColor.GRAY + (pops <= 0 ? "0" : "-" + pops + " ");
+            popsNumber = name.getValue() + " " + TextColor.GRAY + (pops <= 0 ? "0" : "-" + pops);
         }
         HudRenderUtil.renderText(context, popsNumber, getX(), getY());
     }

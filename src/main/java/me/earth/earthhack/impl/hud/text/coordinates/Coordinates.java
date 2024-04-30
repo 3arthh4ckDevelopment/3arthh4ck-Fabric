@@ -31,7 +31,7 @@ public class Coordinates extends HudElement {
     private static String coords = "";
     private static Vec3i startingPos = null;
     private static Vec3i realPos = null;
-    Random rng = new Random();
+    private final Random rng = new Random();
 
     private void render(DrawContext context) {
         if (mc.player != null && mc.world != null) {
