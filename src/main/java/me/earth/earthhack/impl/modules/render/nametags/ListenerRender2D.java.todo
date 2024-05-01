@@ -1,0 +1,165 @@
+package me.earth.earthhack.impl.modules.render.nametags;
+
+import me.earth.earthhack.impl.event.events.render.Render2DEvent;
+import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.util.math.MathUtil;
+import me.earth.earthhack.impl.util.render.Interpolation;
+import me.earth.earthhack.impl.util.render.RenderUtil;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
+import org.joml.Vector4f;
+
+final class ListenerRender2D extends ModuleListener<Nametags, Render2DEvent>
+{
+    private int xOffset;
+    private int maxEnchHeight;
+    private boolean renderDurability;
+
+    public ListenerRender2D(Nametags module)
+    {
+        super(module, Render2DEvent.class);
+    }
+
+    @Override
+    public void invoke(Render2DEvent event)
+    {
+        Entity renderEntity;
+        if (module.twoD.getValue()
+            && mc.player != null
+            && mc.world != null
+            && (renderEntity = RenderUtil.getEntity()) != null)
+        {
+            module.updateNametags();
+            Nametag.isRendering = true;
+            int[] scaledResolution = new int[] { event.getContext().getScaledWindowWidth(), event.getContext().getScaledWindowHeight() };
+            for (Nametag nametag : module.nametags)
+            {
+                if (nametag.player.isDead()
+                    || nametag.player.isInvisible() && !module.invisibles.getValue()
+                    || module.withDistance.getValue()
+                        && renderEntity.squaredDistanceTo(nametag.player)
+                            > MathUtil.square(module.distance.getValue()))
+                    // || module.fov.getValue()
+                    //     && !RenderUtil.isInFrustum(nametag.player.getBoundingBox())
+                    //     && (!module.close.getValue() || mc.player.squaredDistanceTo(nametag.player) > 1.0))
+                {
+                    continue;
+                }
+
+                renderNametag(event.getContext(), nametag, nametag.player, scaledResolution);
+            }
+
+            Nametag.isRendering = false;
+        }
+    }
+
+    private void renderNametag(DrawContext ctx,
+                               Nametag nametag,
+                               PlayerEntity entity,
+                               int[] scaledResolution)
+    {
+        final Box bb = entity.getBoundingBox().expand(0.1, 0.1, 0.1);
+        final MatrixStack stack = ctx.getMatrices();
+        Vec3d pos = Interpolation.interpolateEntityNoRenderPos(entity);
+        final Vec3d vec = new Vec3d(bb.maxX - bb.minX - entity.getWidth() / 2.0f, bb.maxY - bb.minY, bb.maxZ - bb.minZ - entity.getWidth() / 2.0f);
+        final Vector4f transformed = new Vector4f(
+                -1,
+                -1,
+                scaledResolution[1] + 1,
+                scaledResolution[0] + 1);
+
+        GLUProjection.Projection result = GLUProjection.getInstance().project(
+                pos.x + vec.x - mc.getCameraEntity().getX(),
+                pos.y + vec.y - mc.getCameraEntity().getY(),
+                pos.z + vec.z - mc.getCameraEntity().getZ(),
+                GLUProjection.ClampMode.DIRECT, true);
+
+        if (result.isType(GLUProjection.Projection.Type.FAIL))
+        {
+            return;
+        }
+
+        transformed.set((float) Math.max(transformed.getX(), result.getX()));
+        transformed.set((float) Math.max(transformed.getY(), result.getY()));
+        transformed.set((float) Math.min(transformed.getW(), result.getX()));
+        transformed.set((float) Math.min(transformed.getZ(), result.getY()));
+
+        if (transformed.getX() < 0
+                || transformed.getY() < 0
+                || transformed.getW() > scaledResolution[0]
+                || transformed.getZ() > scaledResolution[1])
+        {
+            return;
+        }
+
+        final float x1 = transformed.x;
+        final float w1 = transformed.w - x1;
+        final float h1 = transformed.z;
+        int nameWidth = nametag.nameWidth / 2;
+
+        stack.push();
+        Managers.TEXT.drawStringWithShadow(ctx,
+                nametag.nameString,
+                (x1 + (w1 / 2)) - nameWidth,
+                h1 - 3 - mc.textRenderer.fontHeight,
+                nametag.nameColor);
+
+        xOffset = -nametag.stacks.size() * 8
+                - (nametag.mainHand == null ? 0 : 8);
+        maxEnchHeight = nametag.maxEnchHeight;
+        renderDurability = nametag.renderDura;
+        stack.pop();
+
+        stack.push();
+        if (nametag.mainHand != null)
+        {
+            renderStackRenderer(nametag.mainHand, x1 + (w1 / 2), h1 - 3, true);
+        }
+
+        for (StackRenderer sr : nametag.stacks)
+        {
+            renderStackRenderer(sr, x1 + (w1 / 2), h1 - 3, false);
+        }
+
+        stack.pop();
+    }
+
+    private void renderStackRenderer(StackRenderer sr, float x, float y, boolean main)
+    {
+        int fontOffset = module.getFontOffset(maxEnchHeight);
+        if (module.armor.getValue())
+        {
+            sr.renderStack2D((int) x + xOffset, (int) y + fontOffset, maxEnchHeight);
+            fontOffset -= 32;
+        }
+
+        if (module.durability.getValue() && sr.isDamageable())
+        {
+            sr.renderDurability(x + xOffset, (y * 2) + fontOffset);
+            fontOffset -= Managers.TEXT.getStringHeightI();
+        } else
+        {
+            if (renderDurability)
+            {
+                fontOffset -= Managers.TEXT.getStringHeightI();
+            }
+        }
+
+        if (module.itemStack.getValue() && main)
+        {
+            sr.renderText(x * 2, (y * 2) + fontOffset);
+        }
+
+        if (module.armor.getValue()
+                || module.durability.getValue()
+                || sr.isDamageable())
+        {
+            xOffset += 16;
+        }
+    }
+}

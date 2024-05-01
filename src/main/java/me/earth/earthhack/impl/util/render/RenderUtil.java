@@ -7,6 +7,7 @@ import net.minecraft.client.gl.VertexBuffer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -63,7 +64,11 @@ public class RenderUtil implements Globals {
     
     // TODO: perhaps programmatically gen vbos when settings in block esp modules change to support gradient rendering and differed boxes?
     // TODO: vbos for planes + streamline code for
-    
+
+    public static Entity getEntity() {
+        return mc.getCameraEntity() == null ? mc.player : mc.getCameraEntity();
+    }
+
     public static void genOpenGlBuffers()
     {
       //  if (OpenGlHelper.areVbosSupported()) // todo
