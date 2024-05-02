@@ -77,7 +77,7 @@ public class Coordinates extends HudElement {
 
     private String[] actualBracket() {
         if (customBrackets.getValue())
-            return new String[]{ HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[0] + HudRenderUtil.bracketsTextColor(), HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[1] + TextColor.WHITE };
+            return new String[]{ HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[0], HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[1] + TextColor.WHITE };
         else
             return new String[]{ TextColor.GRAY + "[", TextColor.GRAY + "]"};
     }
