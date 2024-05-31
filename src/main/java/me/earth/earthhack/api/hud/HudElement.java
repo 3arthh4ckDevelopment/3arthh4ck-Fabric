@@ -189,7 +189,7 @@ public abstract class HudElement extends SettingContainer
         }
     }
 
-    public void guiUpdate(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+    public void guiUpdate(DrawContext context, int mouseX, int mouseY) {
         if (dragging) {
             setX(mouseX - draggingX);
             setY(mouseY - draggingY);
@@ -199,15 +199,15 @@ public abstract class HudElement extends SettingContainer
         }
     }
 
-    public void guiMouseClicked(int mouseX, int mouseY, int mouseButton) {
+    public void guiMouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (GuiUtil.isHovered(this, mouseX, mouseY)) {
             setDragging(true);
-            draggingX = mouseX - getX();
-            draggingY = mouseY - getY();
+            draggingX = (float) mouseX - getX();
+            draggingY = (float) mouseY - getY();
         }
     }
 
-    public void guiMouseReleased(int mouseX, int mouseY, int mouseButton) {
+    public void guiMouseReleased(double mouseX, double mouseY, int mouseButton) {
         setDragging(false);
     }
 

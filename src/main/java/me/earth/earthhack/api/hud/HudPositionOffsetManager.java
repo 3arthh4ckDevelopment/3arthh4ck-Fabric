@@ -13,7 +13,7 @@ public class HudPositionOffsetManager extends SubscriberImpl {
 
     private Screen screen = null;
     private float y = 0;
-    private float endY = 10000;
+    private float endY = 2000;
 
     public HudPositionOffsetManager() {
         Bus.EVENT_BUS.register(new LambdaListener<>(GuiScreenEvent.class, e -> {

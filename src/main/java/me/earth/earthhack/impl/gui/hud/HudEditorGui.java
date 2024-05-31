@@ -141,54 +141,29 @@ public class HudEditorGui extends Screen
 
         for (HudElement element : Managers.ELEMENTS.getRegistered()) {
             if (element.isEnabled()) {
-                double minX = Math.min(mouseClickedX, mouseX);
-                double minY = Math.min(mouseClickedY, mouseY);
-                double maxWidth = Math.max(mouseClickedX, mouseY) - minX;
-                double maxHeight = Math.max(mouseClickedY, mouseY) - minY;
-                if (GuiUtil.isOverlapping(
-                        new double[]{minX, minY, minX + maxWidth, minY + maxHeight},
-                        new double[]{element.getX(), element.getY(), element.getX() + element.getWidth(), element.getY() + element.getHeight()}))
-                {
-                    elements.add(element);
-                }
-                element.guiUpdate(mouseX, mouseY);
-                element.guiDraw(context, mouseX, mouseY, delta);
+                element.guiUpdate(context, mouseX, mouseY);
+                element.guiDraw(context);
             }
         }
 
         if (selecting) {
-            double minX = Math.min(mouseClickedX, mouseX);
-            double minY = Math.min(mouseClickedY, mouseY);
-            double maxWidth = Math.max(mouseClickedX, mouseY);
-            double maxHeight = Math.max(mouseClickedY, mouseY);
-            Render2DUtil.drawRect(context.getMatrices(), (float) minX, (float) minY, (float) maxWidth, (float) maxHeight, new Color(255, 255, 255, 128).getRGB());
+            double minX = Math.min(mouseX, mouseClickedX);
+            double minY = Math.min(mouseY, mouseClickedY);
+            double maxX = Math.max(mouseX, mouseClickedX);
+            double maxY = Math.max(mouseY, mouseClickedY);
+            Render2DUtil.drawBorderedRect(context.getMatrices(), (float) minX, (float) minY, (float) maxX, (float) maxY, 0.2f, new Color(255, 255, 255, 90).getRGB(), new Color(255, 255, 255, 160).getRGB());
         }
-
         getFrames().forEach(frame -> frame.drawScreen(context, mouseX, mouseY, delta));
     }
 
     @Override
     public boolean charTyped(char character, int keyCode) {
-
-        for (HudElement element : Managers.ELEMENTS.getRegistered())
-        {
-            if (element.isEnabled()) {
-                element.guiCharTyped(character, keyCode);
-            }
-        }
         getFrames().forEach(frame -> frame.charTyped(character,keyCode));
         return super.charTyped(character, keyCode);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-
-        for (HudElement element : Managers.ELEMENTS.getRegistered())
-        {
-            if (element.isEnabled()) {
-                element.guiKeyPressed(keyCode);
-            }
-        }
         getFrames().forEach(frame -> frame.keyPressed(keyCode));
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
@@ -196,32 +171,26 @@ public class HudEditorGui extends Screen
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+
         List<HudElement> clicked = new ArrayList<>();
-        boolean hasDragging = false;
-        for (HudElement element : Managers.ELEMENTS.getRegistered())
-        {
+        boolean isDragging = false;
+        for (HudElement element : Managers.ELEMENTS.getRegistered()) {
             if (element.isEnabled() && GuiUtil.isHovered(element, mouseX, mouseY)) {
                 clicked.add(element);
-                if (element.isDragging()) hasDragging = true;
-                // element.guiMouseClicked(mouseX, mouseY, mouseButton);
+                if (element.isDragging())
+                    isDragging = true;
             }
         }
         clicked.sort(Comparator.comparing(HudElement::getZ));
 
         if (!clicked.isEmpty()) {
             clicked.get(0).guiMouseClicked(mouseX, mouseY, mouseButton);
+        } else if (!isDragging) {
+            selecting = true;
+            mouseClickedX = mouseX;
+            mouseClickedY = mouseY;
         }
-        //TODO: fix this when we want to
-        /* else {
-            if (!GuiUtil.isHovered(frame, mouseX, mouseY) && !hasDragging) {
-                selecting = true;
-                mouseClickedX = mouseX;
-                mouseClickedY = mouseY;
-                return;
-            }
-        }
-         */
-        getFrames().forEach(frame -> frame.mouseClicked(mouseX,mouseY,mouseButton));
+        getFrames().forEach(frame -> frame.mouseClicked(mouseX, mouseY, mouseButton));
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
@@ -232,19 +201,25 @@ public class HudEditorGui extends Screen
             mouseReleasedX = mouseX;
             mouseReleasedY = mouseY;
         }
-        for (HudElement element : Managers.ELEMENTS.getRegistered())
-        {
+
+        for (HudElement element : Managers.ELEMENTS.getRegistered()) {
             if (element.isEnabled()) {
                 element.guiMouseReleased(mouseX, mouseY, mouseButton);
-                if (elements.remove(element) && selecting) {
-                    element.setDraggingX((float) mouseX - element.getX());
-                    element.setDraggingY((float) mouseY - element.getY());
-                    element.setDragging(true); // TODO: better solution
+                double minX = Math.min(mouseClickedX, mouseReleasedX);
+                double minY = Math.min(mouseClickedY, mouseReleasedY);
+                double maxWidth = Math.max(mouseClickedX, mouseReleasedX) - minX;
+                double maxHeight = Math.max(mouseClickedY, mouseReleasedY) - minY;
+                if (selecting && GuiUtil.isOverlapping(
+                        new double[]{minX, minY, minX + maxWidth, minY + maxHeight},
+                        new double[]{element.getX(), element.getY(), element.getX() + element.getWidth(), element.getY() + element.getHeight()})) {
+                    element.setDraggingX((float) (mouseX - element.getX()));
+                    element.setDraggingY((float) (mouseY - element.getY()));
+                    element.setDragging(true);
                 }
             }
         }
         selecting = false;
-        getFrames().forEach(frame -> frame.mouseReleased(mouseX,mouseY,mouseButton));
+        getFrames().forEach(frame -> frame.mouseReleased(mouseX, mouseY, mouseButton));
         return super.mouseReleased(mouseX, mouseY, mouseButton);
     }
 

@@ -48,7 +48,7 @@ public class HudElementManager extends IterationRegister<HudElement> {
         Earthhack.getLogger().info("Initializing HUD elements...");
         this.forceRegister(new Watermark());
         this.forceRegister(new Greeter());
-        this.forceRegister(new Coordinates()); //TODO: fix
+        this.forceRegister(new Coordinates());
         this.forceRegister(new Ping());
         this.forceRegister(new Tps());
         this.forceRegister(new FPS());

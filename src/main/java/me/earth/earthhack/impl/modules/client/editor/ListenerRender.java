@@ -18,8 +18,7 @@ final class ListenerRender extends ModuleListener<HudEditor, Render2DEvent> {
         if (module.show.getValue() && !(mc.currentScreen instanceof HudEditorGui)) {
             for (HudElement element : Managers.ELEMENTS.getRegistered()) {
                 if (element.isEnabled()) {
-                    element.update();
-                    element.draw(event.getContext());
+                    element.hudDraw(event.getContext());
                 }
             }
         }

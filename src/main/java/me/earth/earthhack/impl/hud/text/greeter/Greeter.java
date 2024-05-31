@@ -9,7 +9,6 @@ import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.media.Media;
-import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import net.minecraft.client.gui.DrawContext;
 
@@ -68,7 +67,7 @@ public class Greeter extends HudElement {
     }
 
     public Greeter() {
-        super("Greeter", "Greets you.", HudCategory.Text, (Render2DUtil.getScreenWidth() - Managers.TEXT.getStringWidth(text)) / 2.0f, 2);
+        super("Greeter", "Greets you.", HudCategory.Text, 200, 2);
     }
 
     @Override

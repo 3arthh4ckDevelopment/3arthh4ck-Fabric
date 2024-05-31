@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.gui.hud;
 
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.hud.HudElement;
-import me.earth.earthhack.api.module.data.ModuleData;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.*;
 import me.earth.earthhack.impl.gui.click.component.Component;
@@ -17,7 +16,6 @@ import me.earth.earthhack.impl.util.render.RenderUtil;
 import net.minecraft.client.gui.DrawContext;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 // TODO: Again, maybe generify these classes in the future. Making HudElement a subclass of Module is messy.
 public class HudElementComponent extends Component {
@@ -38,10 +36,6 @@ public class HudElementComponent extends Component {
     public void init() {
         getComponents().clear();
         float offY = getHeight();
-        ModuleData<?> data = getElement().getData();
-        if (data != null) {
-            this.setDescription(data::getDescription);
-        }
 
         if (!getElement().getSettings().isEmpty()) {
             for (Setting<?> setting : getElement().getSettings()) {
@@ -73,19 +67,6 @@ public class HudElementComponent extends Component {
                 if (setting instanceof ListSetting) {
                     getComponents().add(new ListComponent<>((ListSetting<?>) setting, getFinishedX(), getFinishedY(), 0, offY, getWidth(), 14));
                     offY += 14;
-                }
-
-                // -_- lazy
-                if (data != null && before != offY)  {
-                    Supplier<String> supplier = () -> {
-                        String desc = data.settingDescriptions().get(setting);
-                        if (desc == null) {
-                            desc = "A Setting (" + setting.getInitial().getClass().getSimpleName() + ").";
-                        }
-                        return desc;
-                    };
-
-                    getComponents().get(getComponents().size() - 1).setDescription(supplier);
                 }
             }
         }

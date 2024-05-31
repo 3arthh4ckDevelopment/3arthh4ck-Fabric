@@ -3,6 +3,7 @@ package me.earth.earthhack.impl.hud.text.arraylist;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Hidden;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
@@ -27,9 +28,9 @@ public class HudArrayEntry extends HudArrayList implements Globals {
     }
 
     public void drawArrayEntry(DrawContext context, float desiredX, float desiredY) {
-        final float textWidth = RENDERER.getStringWidth(getHudName(getModule()));
+        final float textWidth = Managers.TEXT.getStringWidth(getHudName(getModule()));
         final float xSpeed = textWidth / (mc.getCurrentFps() >> 2);
-        Render2DUtil.scissor(desiredX - textWidth, desiredY, desiredX, desiredY + RENDERER.getStringHeightI() + 3);
+        Render2DUtil.scissor(desiredX - textWidth, desiredY, desiredX, desiredY + Managers.TEXT.getStringHeightI() + 3);
         HudRenderUtil.renderText(context, getHudName(getModule()), getX(), desiredY);
         Render2DUtil.disableScissor();
         if (module.isEnabled() && module.isHidden() != Hidden.Hidden) {
@@ -61,7 +62,7 @@ public class HudArrayEntry extends HudArrayList implements Globals {
     }
 
     private boolean isDone(float desiredX) {
-        final float textWidth = RENDERER.getStringWidth(getHudName(getModule()));
+        final float textWidth = Managers.TEXT.getStringWidth(getHudName(getModule()));
         return getX() <= desiredX - textWidth;
     }
 
