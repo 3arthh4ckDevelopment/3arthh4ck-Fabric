@@ -5,7 +5,6 @@ import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.render.fullbright.Fullbright;
 import me.earth.earthhack.impl.modules.render.fullbright.mode.BrightMode;
 import net.minecraft.client.render.LightmapTextureManager;
-import net.minecraft.client.toast.TutorialToast;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

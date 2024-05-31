@@ -29,6 +29,7 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 
 import java.util.Comparator;
@@ -83,12 +84,22 @@ final class ListenerAntiTrap extends ObbyListener<AntiTrap>
             }
 
             BlockPos pos = playerPos.add(offset);
+            boolean pass = false;
+
+            if (module.waitForMine.getValue()) {
+                for (Direction dir : Direction.values()) {
+                    for (BlockPos hitPos : module.hit)
+                        pass = pos.offset(dir).equals(hitPos);
+                }
+            } else pass = true;
+
             if (module.mode.getValue() == AntiTrapMode.Fill
                     && !module.highFill.getValue()
                     && pos.getY() > playerPos.getY()
                 || module.mode.getValue() == AntiTrapMode.FacePlace
                     && !module.highFacePlace.getValue()
-                    && pos.getY() > playerPos.getY() + 1)
+                    && pos.getY() > playerPos.getY() + 1
+                && (module.waitForMine.getValue() && pass))
             {
                 continue;
             }

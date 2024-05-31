@@ -1,10 +1,12 @@
 package me.earth.earthhack.impl.core.mixins.entity.living;
 
 import me.earth.earthhack.api.cache.ModuleCache;
+import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.impl.core.ducks.entity.IEntityNoInterp;
 import me.earth.earthhack.impl.core.ducks.entity.IEntityRemoteAttack;
 import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.core.mixins.entity.MixinEntity;
+import me.earth.earthhack.impl.event.events.misc.DeathEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
@@ -21,17 +23,17 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
@@ -61,23 +63,13 @@ public abstract class MixinLivingEntity extends MixinEntity
     private static final ModuleCache<AutoSprint> SPRINT =
             Caches.getModule(AutoSprint.class);
 
-    @Shadow
-    @Final
-    private static TrackedData<Float> HEALTH;
-    @Shadow
-    public float sidewaysSpeed;
-    @Shadow
-    public float forwardSpeed;
+    @Shadow public float sidewaysSpeed;
+    @Shadow public float forwardSpeed;
     // @Shadow
     // protected int activeItemStackUseCount; // TODO: I forgot this... I'll add it later ~nuk
-    @Shadow
-    protected ItemStack activeItemStack;
-
-    @Shadow
-    public abstract boolean hasStatusEffect(StatusEffect var1);
-
-    @Shadow
-    public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
+    @Shadow protected ItemStack activeItemStack;
+    @Shadow public abstract boolean hasStatusEffect(StatusEffect var1);
+    @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
 
     /* Unique fields. */
     @Unique protected double noInterpX;
@@ -263,6 +255,20 @@ public abstract class MixinLivingEntity extends MixinEntity
                 : (float) this
                 .getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS)
                 .getValue();
+    }
+
+    @Inject(
+            method = "setHealth",
+            at = @At("RETURN"))
+    public void setHealthHook(float health, CallbackInfo info)
+    {
+        if (health <= 0.0
+                && LivingEntity.class.cast(this).getWorld() != null
+                && !LivingEntity.class.cast(this).getWorld().isClient)
+        {
+            Bus.EVENT_BUS.post(new DeathEvent(
+                    LivingEntity.class.cast(this)));
+        }
     }
 
     @Override

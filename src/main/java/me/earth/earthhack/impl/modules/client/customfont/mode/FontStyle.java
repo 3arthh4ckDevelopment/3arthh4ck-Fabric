@@ -20,6 +20,5 @@ public enum FontStyle
     {
         return style;
     }
-
 }
 

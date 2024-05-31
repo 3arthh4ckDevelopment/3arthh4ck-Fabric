@@ -36,14 +36,23 @@ public class AntiTrap extends ObbyListenerModule<ListenerAntiTrap>
     protected final Setting<Boolean> offhand =
         register(new BooleanSetting("Offhand", false))
             .setComplexity(Complexity.Medium);
+    protected final Setting<Boolean> waitForMine =
+            register(new BooleanSetting("WaitForMine", false))
+                    .setComplexity(Complexity.Medium);
     protected final Setting<Integer> timeOut =
         register(new NumberSetting<>("TimeOut", 400, 0, 1000))
             .setComplexity(Complexity.Expert);
+    protected final Setting<Integer> mineTime =
+            register(new NumberSetting<>("MineTime", 400, 0, 2000))
+                    .setComplexity(Complexity.Expert);
     protected final Setting<Boolean> empty   =
         register(new BooleanSetting("Empty", true))
             .setComplexity(Complexity.Expert);
     protected final Setting<Boolean> swing   =
         register(new BooleanSetting("Swing", false))
+            .setComplexity(Complexity.Medium);
+    protected final Setting<Float> mineRange =
+        register(new NumberSetting<>("MineRange", 1.0f, 1.0f, 4.0f))
             .setComplexity(Complexity.Medium);
     protected final Setting<Boolean> highFill =
         register(new BooleanSetting("HighFill", false))
@@ -60,6 +69,9 @@ public class AntiTrap extends ObbyListenerModule<ListenerAntiTrap>
     protected final Map<BlockPos, Long> placed = new HashMap<>();
     /** Positions that have been confirmed by a SPacketBlockChange */
     protected final Set<BlockPos> confirmed = new HashSet<>();
+    /** Positions that have been hit and can be placed on */
+    protected final Set<BlockPos> hit = new HashSet<>();
+
     /** Manages the {@link AntiTrap#timeOut}. */
     protected final StopWatch interval = new StopWatch();
     protected BlockHitResult result;
@@ -70,6 +82,7 @@ public class AntiTrap extends ObbyListenerModule<ListenerAntiTrap>
     public AntiTrap()
     {
         super("AntiTrap", Category.Combat);
+        this.listeners.add(new ListenerBreakingProgress(this));
         this.setData(new AntiTrapData(this));
     }
 

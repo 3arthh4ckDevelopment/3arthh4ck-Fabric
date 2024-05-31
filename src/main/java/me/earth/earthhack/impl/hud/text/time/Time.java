@@ -33,7 +33,6 @@ public class Time extends HudElement {
             Managers.CHAT.sendDeleteMessage(TextColor.RED + "Can not render time: " + e.getMessage(), this.getName(), ChatIDs.MODULE);
             text = name.getValue() + TextColor.GRAY + TextColor.RED + "Invalid";
         }
-
         HudRenderUtil.renderText(context, text, getX(), getY());
     }
 

@@ -78,8 +78,6 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
                 : ""));
     }
 
-
-
     @Override
     @Accessor(value = "itemUseCooldown")
     public abstract int earthhack$getRightClickDelay();
@@ -110,6 +108,17 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     @Override
     @Accessor(value = "dataFixer")
     public abstract DataFixer getDataFixer();
+
+    // @Inject(
+    //         method = "<init>",
+    //         at = @At(
+    //                 value = "INVOKE",
+    //                 target = "Lnet/minecraft/resource/ReloadableResourceManagerImpl;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V",
+    //                 ordinal = 0,
+    //                 shift = At.Shift.AFTER))
+    // public void preInitHook(RunArgs args, CallbackInfo ci) {
+    //     Earthhack.preInit();
+    // }
 
     @Inject(
         method = "stop",

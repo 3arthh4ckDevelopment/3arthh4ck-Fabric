@@ -4,6 +4,8 @@ accessible field net/minecraft/util/math/Direction HORIZONTAL [Lnet/minecraft/ut
 accessible method net/minecraft/entity/Entity unsetRemoved ()V
 accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen <init> (Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/text/Text;)V
 accessible class net/minecraft/client/MinecraftClient$LoadingContext
+accessible field net/minecraft/client/gui/screen/Screen drawables Ljava/util/List;
+
 
 # BlockBox (mutable bb)
 accessible field net/minecraft/util/math/BlockBox minX I

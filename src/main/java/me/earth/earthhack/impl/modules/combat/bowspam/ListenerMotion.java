@@ -57,7 +57,7 @@ final class ListenerMotion extends ModuleListener<BowSpam, MotionUpdateEvent> {
                                 .Full(mc.player.getX(),
                                 mc.player.getY() - 0.0624,
                                 mc.player.getZ(),
-                                mc.player.getBodyYaw(),
+                                mc.player.getHeadYaw(),
                                 mc.player.getPitch(),
                                 false));
 
@@ -65,7 +65,7 @@ final class ListenerMotion extends ModuleListener<BowSpam, MotionUpdateEvent> {
                                 .Full(mc.player.getX(),
                                 mc.player.getY() - 999.0,
                                 mc.player.getZ(),
-                                mc.player.getBodyYaw(),
+                                mc.player.getHeadYaw(),
                                 mc.player.getPitch(),
                                 true));
                     }

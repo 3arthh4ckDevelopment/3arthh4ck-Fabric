@@ -1,0 +1,229 @@
+package me.earth.earthhack.impl.modules.render.nametags;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import me.earth.earthhack.impl.event.events.render.Render3DEvent;
+import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.util.math.MathUtil;
+import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
+import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.render.Interpolation;
+import me.earth.earthhack.impl.util.render.RenderUtil;
+import net.minecraft.client.option.Perspective;
+import net.minecraft.client.render.Frustum;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+
+final class ListenerRender extends ModuleListener<Nametags, Render3DEvent>
+{
+    private int xOffset;
+    private int maxEnchHeight;
+    private boolean renderDurability;
+
+    public ListenerRender(Nametags module)
+    {
+        super(module, Render3DEvent.class);
+    }
+
+    @Override
+    public void invoke(Render3DEvent event) {
+        if (!module.twoD.getValue()) {
+            module.updateNametags();
+            Entity renderEntity = RenderUtil.getEntity();
+            Vec3d interp = Interpolation.interpolateEntity(renderEntity);
+            Nametag.isRendering = true;
+            for (Nametag nametag : module.nametags) {
+                if (nametag.player.isDead()
+                        || nametag.player.isInvisible()
+                            && !module.invisibles.getValue()
+                        || module.withDistance.getValue()
+                            && renderEntity.squaredDistanceTo(nametag.player)
+                                > MathUtil.square(module.distance.getValue())
+                        || module.fov.getValue()
+                            && !(RotationUtil.inFov(nametag.player) || mc.player.getPos() == nametag.player.getPos()) // Frustum?
+                            && (!module.close.getValue() || renderEntity.squaredDistanceTo(nametag.player) > 1.0))
+                {
+                    continue;
+                }
+
+                Vec3d i = Interpolation.interpolateEntity(nametag.player);
+                renderNametag(nametag, nametag.player, i.x, i.y, i.z, interp);
+            }
+            Nametag.isRendering = false;
+
+            if (module.debug.getValue()) {
+                Frustum frustum = Interpolation.createFrustum(renderEntity);
+                // TODO: nametags for entities, like the 'Nether King'
+                for (Entity entity : mc.world.getEntities()) {
+                    if (entity == null
+                            || EntityUtil.isDead(entity)
+                            || entity instanceof PlayerEntity
+                            || entity.isInvisible()
+                                && !module.invisibles.getValue()
+                            || module.withDistance.getValue()
+                                && renderEntity.squaredDistanceTo(entity)
+                                    > MathUtil.square(module.distance.getValue())
+                            || module.fov.getValue()
+                                && !frustum.(entity.getVisibilityBoundingBox())
+                                && (!module.close.getValue() || renderEntity.squaredDistanceTo(entity) > 1.0)) {
+                        continue;
+                    }
+
+                    Vec3d i = Interpolation.interpolateEntity(entity);
+                    RenderUtil.drawNametag(String.valueOf(entity.getId()),
+                            i.x, i.y, i.z,
+                            module.scale.getValue(),
+                            0xffffffff,
+                            false);
+                }
+            }
+        }
+    }
+
+    private void renderNametag(Nametag nametag,
+                               PlayerEntity player,
+                               MatrixStack stack,
+                               double x,
+                               double y,
+                               double z,
+                               Vec3d mcPlayerInterpolation)
+    {
+        double yOffset = y + (player.isSneaking() ? 0.5D : 0.7D);
+        double xDist = mcPlayerInterpolation.x - x;
+        double yDist = mcPlayerInterpolation.y - y;
+        double zDist = mcPlayerInterpolation.z - z;
+        y = MathHelper.sqrt(xDist * xDist + yDist * yDist + zDist * zDist);
+
+        int nameWidth = nametag.nameWidth / 2;
+        double scaling = 0.0018 + module.scale.getValue() * y;
+
+        if (y <= 8.0)
+        {
+            scaling = 0.0245;
+        }
+
+        stack.push();
+        RenderHelper.enableStandardItemLighting();
+        RenderSystem.enablePolygonOffset();
+        RenderSystem.polygonOffset(1.0f, -1500000.0f);
+        RenderSystem.disableCull();
+
+        stack.translate((float) x,
+                (float) yOffset + 1.4F,
+                (float) z);
+
+        GlStateManager.rotate(
+                -mc.getRenderManager().playerViewY, 0.0f, 1.0f, 0.0f);
+
+        float xRot = mc.options.getPerspective() == Perspective.THIRD_PERSON_BACK ? -1.0f : 1.0f;
+
+        GlStateManager.rotate(
+                mc.getRenderManager().playerViewX, xRot, 0.0f, 0.0f);
+
+        stack.scale(-scaling, -scaling, scaling);
+        RenderSystem.disableDepthTest();
+        RenderSystem.enableBlend();
+        RenderSystem.enableBlend();
+
+        if (module.outlineColor.getValue().getAlpha() > 0) {
+            RenderUtil.prepare(-nameWidth - 1,
+                    -Managers.TEXT.getStringHeightI(),
+                    nameWidth + 2,
+                    1.0f,
+                    module.outlineWidth.getValue(),
+                    0x55000000,
+                    module.outlineColor.getValue().getRGB());
+        }
+
+        RenderSystem.disableBlend();
+
+        Managers.TEXT.drawStringWithShadow(
+                nametag.nameString,
+                -nameWidth,
+                -(Managers.TEXT.getStringHeightI() - 1),
+                nametag.nameColor);
+
+        xOffset = -nametag.stacks.size() * 8
+                    - (nametag.mainHand == null ? 0 : 8);
+        maxEnchHeight = nametag.maxEnchHeight;
+        renderDurability = nametag.renderDura;
+        stack.push();
+
+        if (nametag.mainHand != null)
+        {
+            renderStackRenderer(nametag.mainHand, true);
+        }
+
+        for (StackRenderer sr : nametag.stacks)
+        {
+            renderStackRenderer(sr, false);
+        }
+
+        if (module.illegalEffects.getValue()) {
+            int counter = 40;
+            for (StatusEffectInstance effect : player.getActiveStatusEffects().values()) {
+
+                if ((effect.getAmplifier() > 2 && effect.getEffectType() != StatusEffects.ABSORPTION)
+                        || effect.getAmplifier() > 4) { // is it possible to get the default max amplifier?!?!
+                    Managers.TEXT.drawStringWithShadow(
+                            effect.getEffectType().getName().getString().replace("effect.", "") + " " + effect.getAmplifier(),
+                            -(Managers.TEXT.getStringWidth(effect.getEffectType().getName().getString() + " " + effect.getAmplifier()) / 2.0f),
+                            -(Managers.TEXT.getStringHeightI() + counter),
+                            effect.getEffectType().getColor());
+                    counter += Managers.TEXT.getStringHeightI();
+                }
+            }
+        }
+
+        stack.pop();
+        RenderSystem.enableDepthTest();
+        RenderSystem.disableBlend();
+        RenderSystem.disablePolygonOffset();
+        RenderSystem.polygonOffset(1.0f, 1500000.0f);
+        stack.pop();
+    }
+
+    private void renderStackRenderer(StackRenderer sr, boolean main)
+    {
+        if (module.max.getValue()) {
+            maxEnchHeight = 1;
+        }
+
+        int fontOffset = module.getFontOffset(maxEnchHeight);
+        if (module.armor.getValue()) {
+            sr.renderStack(xOffset, fontOffset, 1);
+            fontOffset -= 32;
+        }
+
+        if (module.durability.getValue() && sr.isDamageable())
+        {
+            sr.renderDurability(xOffset, fontOffset);
+            fontOffset -= Managers.TEXT.getStringHeightI();
+        }
+        else
+        {
+            if (renderDurability)
+            {
+                fontOffset -= Managers.TEXT.getStringHeightI();
+            }
+        }
+
+        if (module.itemStack.getValue() && main)
+        {
+            sr.renderText(fontOffset);
+        }
+
+        if (module.armor.getValue()
+                || module.durability.getValue()
+                || sr.isDamageable())
+        {
+            xOffset += 16;
+        }
+    }
+
+}

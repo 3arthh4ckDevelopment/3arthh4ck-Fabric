@@ -6,6 +6,9 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.modules.movement.step.mode.StepESP;
+import me.earth.earthhack.impl.modules.movement.step.mode.StepMode;
+import me.earth.earthhack.impl.modules.movement.step.mode.StepOffsetMode;
 import me.earth.earthhack.impl.util.helpers.disabling.DisablingModule;
 import me.earth.earthhack.impl.util.helpers.render.BlockESPModule;
 import me.earth.earthhack.impl.util.math.StopWatch;
@@ -27,6 +30,8 @@ public class Step extends BlockESPModule
             register(new BooleanSetting("UseTimer", false));
     protected final Setting<Double> timer =
             register(new NumberSetting<>("Timer", 1.0, 0.1, 2.0));
+    protected final Setting<StepOffsetMode> offsetMode =
+            register(new EnumSetting<>("Offsets", StepOffsetMode.New));
     protected final Setting<Boolean> entityStep =
             register(new BooleanSetting("EntityStep", true));
     protected final Setting<Boolean> autoOff =

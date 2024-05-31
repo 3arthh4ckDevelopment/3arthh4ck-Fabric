@@ -111,8 +111,8 @@ public class NVGRenderer implements Globals {
     }
 
     public void drawText(String text, float x, float y, float size, Color color, boolean shadow) {
-        Color shadowColor = ColorUtil.getDarker(color, 125);
         Color activeColor = color;
+        Color shadowColor = new Color(ColorUtil.getDarker(activeColor));
 
         String[] textParts = text.trim().split("§");
 
@@ -151,6 +151,8 @@ public class NVGRenderer implements Globals {
                 case 'o' -> shadow = false;
                 default -> activeColor = color;
             }
+            if (activeColor != color)
+                shadowColor = new Color(ColorUtil.getDarker(activeColor));
 
             if (s.length() > 1)  {
                 if (activeColor != color)
@@ -307,6 +309,12 @@ public class NVGRenderer implements Globals {
         glBindVertexArray(vertexArray);
         glBindBuffer(GL15.GL_ARRAY_BUFFER, arrayBuffer);
         glBindTexture(GL_TEXTURE_2D, textureBinding);
+    }
+
+    public void reInit(FontMod fontModule) {
+        this.init = false;
+        fontModule.disable();
+        fontModule.enable();
     }
 
     public boolean isInitialized() {
