@@ -7,60 +7,50 @@ import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 
 public abstract class DynamicHudElement extends HudElement {
-    public DynamicHudElement(String name, HudCategory category, float x, float y) {
-        super(name, category, x, y);
+
+    private final Setting<textDirectionX> alignmentPos =
+            register(new EnumSetting<>("Alignment", textDirectionX.Smart));
+    private final Setting<TextDirectionY> textDirection =
+            register(new EnumSetting<>("Direction", TextDirectionY.Smart));
+
+    public DynamicHudElement(String name, String description, HudCategory category, float x, float y) {
+        super(name, description, category, x, y);
     }
 
-    private final Setting<TextDirectionH> alignmentPos =
-            register(new EnumSetting<>("Alignment", TextDirectionH.Smart));
-    private final Setting<TextDirectionV> textDirection =
-            register(new EnumSetting<>("Direction", TextDirectionV.Smart));
-
-    public float simpleCalcH(float completeValue) {
-        return (directionH() == TextDirectionH.Center ? completeValue / 2.0f : (directionH() == TextDirectionH.Right ? 0 : completeValue));
+    public float simpleCalcX(float completeValue) {
+        return directionX() == textDirectionX.Center ? completeValue / 2.0f : (directionX() == textDirectionX.Right ? 0 : completeValue);
     }
 
-    public TextDirectionH directionH() {
-        if (alignmentPos.getValue() == TextDirectionH.Smart)
-            return SmartDirectionH();
-        else
-            return alignmentPos.getValue();
+    public textDirectionX directionX() {
+        return alignmentPos.getValue() == textDirectionX.Smart ? SmartDirectionX() : alignmentPos.getValue();
     }
 
-    public TextDirectionV directionV() {
-        if (textDirection.getValue() == TextDirectionV.Smart)
-            return SmartDirectionV();
-        else
-            return textDirection.getValue();
+    public TextDirectionY directionY() {
+        return textDirection.getValue() == TextDirectionY.Smart ? SmartDirectionY() : textDirection.getValue();
     }
 
-    private TextDirectionH SmartDirectionH() {
-        float center = (float) (Render2DUtil.getScreenWidth() / 2 / Render2DUtil.getScreenScale());
+    private textDirectionX SmartDirectionX() {
+        float center = (float) ((Render2DUtil.getScreenWidth() / Render2DUtil.getScreenScale() - getWidth()) / 2.0f);
         if (getX() > center - 60 && getX() < center + 60)
-            return TextDirectionH.Center;
+            return textDirectionX.Center;
         else if (getX() > center)
-            return TextDirectionH.Left;
-        else
-            return TextDirectionH.Right;
+            return textDirectionX.Left;
+        return textDirectionX.Right;
     }
 
-    private TextDirectionV SmartDirectionV() {
+    private TextDirectionY SmartDirectionY() {
         float center = Render2DUtil.getScreenHeight() / 2.0f + getHeight() / 2;
-        if (getY() > center)
-            return TextDirectionV.BottomToTop;
-        else
-            return TextDirectionV.TopToBottom;
+        return getY() > center ? TextDirectionY.BottomToTop : TextDirectionY.TopToBottom;
     }
 
-
-    public enum TextDirectionH {
+    public enum textDirectionX {
         Smart,
         Center,
         Right,
         Left
     }
 
-    public enum TextDirectionV {
+    public enum TextDirectionY {
         Smart,
         TopToBottom,
         BottomToTop

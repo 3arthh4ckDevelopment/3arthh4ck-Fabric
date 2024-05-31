@@ -3,8 +3,6 @@ package me.earth.earthhack.api.hud;
 import me.earth.earthhack.api.event.bus.api.Listener;
 import me.earth.earthhack.api.event.bus.api.Subscriber;
 import me.earth.earthhack.api.event.bus.instance.Bus;
-import me.earth.earthhack.api.hud.data.DefaultHudData;
-import me.earth.earthhack.api.module.data.ModuleData;
 import me.earth.earthhack.api.setting.Complexity;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.SettingContainer;
@@ -13,34 +11,24 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.api.util.interfaces.Nameable;
-import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.util.misc.GuiUtil;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
+import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.math.MathHelper;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
-/**
- * TODO: add something to adjust HudElement positions if
- *  they're going off-screen or start overlapping
- * hud element
- * @author megyn
- */
 public abstract class HudElement extends SettingContainer
         implements Globals, Subscriber, Nameable {
+
     private final Setting<Boolean> enabled =
             register(new BooleanSetting("Enabled", false));
-    /**
-     * These may not be settings in the future, so getting/settings their values will be done through wrapper methods.
-     * These should really not be accessed directly for the time being.
-     */
     private final Setting<Float> x =
             register(new NumberSetting<>("X", 2.0f, -20.0f, 2000.0f))
                     .setComplexity(Complexity.Dev);
@@ -50,34 +38,22 @@ public abstract class HudElement extends SettingContainer
     private final Setting<Integer> z =
             register(new NumberSetting<>("Z", 0, -2000, 2000))
                     .setComplexity(Complexity.Dev); // Z level determines rendering order.
-    private final Setting<Float> textScale =
+    private final Setting<Float> scale =
             register(new NumberSetting<>("Scale", 1.0f, 0.1f, 3.0f))
                     .setComplexity(Complexity.Dev);
 
-
-    protected static final TextRenderer RENDERER = Managers.TEXT;
     protected final List<Listener<?>> listeners = new ArrayList<>();
     private final AtomicBoolean enableCheck = new AtomicBoolean();
     private final AtomicBoolean inOnEnable  = new AtomicBoolean();
-    private HudElement snappedTo;
-    private SnapAxis axis = SnapAxis.NONE;
-    private ModuleData<?> data;
-
-    private final String name;
+    private boolean isScreenGui = false;
     private final HudCategory category;
-    private float width  = 100;
+    private final String name, description;
+    private float width = 100;
     private float height = 100;
-
-    // private float scale  = 1.0f;
-
-    // private final boolean scalable; // TODO: hud element scaling AFTER everything else works!
-    // private boolean scaling = false;
-    // private GuiUtil.Edge currentEdge;
 
     private boolean dragging;
     private float draggingX;
     private float draggingY;
-    protected float animationY = 0;
 
     /**
      * Creates a new HudElement. It's important that the given name
@@ -88,11 +64,10 @@ public abstract class HudElement extends SettingContainer
      * @param x x of the element
      * @param y y of the element
      */
-
-    public HudElement(String name, HudCategory category, float x, float y) {
+    public HudElement(String name, String description, HudCategory category, float x, float y) {
         this.name = name;
+        this.description = description;
         this.category = category;
-        this.data = new DefaultHudData<>(this);
         this.enabled.addObserver(this::onEnabledEvent);
         this.x.setValue(x);
         this.y.setValue(y);
@@ -119,34 +94,25 @@ public abstract class HudElement extends SettingContainer
         }
     }
 
-    // TODO: maybe a bit of abstraction with these?
-    public final void toggle()
-    {
+    public final boolean isEnabled() {
+        return enabled.getValue();
+    }
+
+    public final void toggle() {
         if (isEnabled())
             this.disable();
         else
             this.enable();
     }
 
-    public final void enable()
-    {
+    public final void enable() {
         if (!isEnabled())
             enabled.setValue(true);
     }
 
-    public final void disable()
-    {
+    public final void disable() {
         if (isEnabled())
             enabled.setValue(false);
-    }
-
-    public final void load()
-    {
-        if (this.isEnabled() && !Bus.EVENT_BUS.isSubscribed(this)) {
-            Bus.EVENT_BUS.subscribe(this);
-        }
-
-        onLoad();
     }
 
     protected void onEnable()
@@ -164,65 +130,85 @@ public abstract class HudElement extends SettingContainer
         /* Implemented by the module */
     }
 
+    /* Implemented by the module */
+    protected abstract void onRender(DrawContext context);
+
+    /**
+     * A method to check if the screen is part of the gui
+     * @return true if the screen is part of gui, false if it's world
+     */
+    public boolean isGui() {
+        return isScreenGui;
+    }
+
     public HudCategory getCategory() {
         return category;
     }
 
-    public ModuleData<?> getData()
-    {
-        return data;
+    public String getDescription() {
+        return description;
     }
 
-    public void setData(ModuleData<?> data) {
-        if (data != null)
-            this.data = data;
+    public final void load() {
+        if (this.isEnabled() && !Bus.EVENT_BUS.isSubscribed(this)) {
+            Bus.EVENT_BUS.subscribe(this);
+        }
+        onLoad();
     }
 
-    public void guiUpdate(int mouseX, int mouseY) {
+    /**
+     * Called when the screen is the gui
+     */
+    public void guiDraw(DrawContext context) {
+        if (mc.world != null && mc.player != null) {
+            isScreenGui = true;
+            setWidth(getWidth());
+            setHeight(getHeight());
+
+            context.getMatrices().scale(getScale(), getScale(), getScale());
+            if (width != 0 && height != 0) {
+                Render2DUtil.drawBorderedRect(context.getMatrices(), getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0.7f, 0x00000000, 0xaa000000);
+            }
+            onRender(context);
+            context.getMatrices().scale(1, 1, 1);
+        }
+    }
+
+    /**
+     * Called when the screen is world (null)
+     */
+    public void hudDraw(DrawContext context) {
+        if (mc.world != null && mc.player != null) {
+            isScreenGui = false;
+            setWidth(getWidth());
+            setHeight(getHeight());
+
+            context.getMatrices().scale(getScale(), getScale(), getScale());
+            onRender(context);
+            context.getMatrices().scale(1, 1, 1);
+        }
+    }
+
+    public void guiUpdate(DrawContext context, int mouseX, int mouseY, float partialTicks) {
         if (dragging) {
             setX(mouseX - draggingX);
             setY(mouseY - draggingY);
+            context.getMatrices().scale(getScale(), getScale(), getScale());
+            Render2DUtil.drawRect(context.getMatrices(), getX(), getY(), getX() + getWidth(), getY() + getHeight(),  new Color(51, 204, 255, 130).getRGB(), -100);
+            context.getMatrices().scale(1, 1, 1);
         }
     }
 
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        Render2DUtil.drawBorderedRect(context.getMatrices(), x.getValue(), y.getValue(), x.getValue() + width, y.getValue() + height, 1.0f, 0x00000000, 0xaa000000);
-    }
-
-    public void guiCharTyped(char eventChar, int key) {}
-    public void guiKeyPressed(int keyCode) {}
-
-    public void guiMouseClicked(double mouseX, double mouseY, int mouseButton) {
-        // currentEdge = GuiUtil.getHoveredEdge(this, mouseX, mouseY, 5);
+    public void guiMouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (GuiUtil.isHovered(this, mouseX, mouseY)) {
             setDragging(true);
-            draggingX = (float) mouseX - getX();
-            draggingY = (float) mouseY - getY();
+            draggingX = mouseX - getX();
+            draggingY = mouseY - getY();
         }
     }
 
-    public void guiMouseReleased(double mouseX, double mouseY, int mouseButton) {
+    public void guiMouseReleased(int mouseX, int mouseY, int mouseButton) {
         setDragging(false);
-        // scaling = false;
-    }
-
-    public void update() {}
-
-    public abstract void draw(DrawContext context);
-
-    public boolean isOverlapping(HudElement other) {
-        double[] rec1 = new double[]{this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight()};
-        double[] rec2 = new double[]{other.getX(), other.getY(), other.getX() + other.getWidth(), other.getY() + other.getHeight()};
-        if (rec1[0] == rec1[2] || rec1[1] == rec1[3] ||
-                rec2[0] == rec2[2] || rec2[1] == rec2[3]) {
-            // the line cannot have positive overlap
-            return false;
-        }
-
-        return !(rec1[2] <= rec2[0] ||   // left
-                rec1[3] <= rec2[1] ||   // bottom
-                rec1[0] >= rec2[2] ||   // right
-                rec1[1] >= rec2[3]);    // top
     }
 
     @Override
@@ -236,25 +222,24 @@ public abstract class HudElement extends SettingContainer
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return this.name.hashCode();
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (o == this)
-        {
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
         }
-        else if (o instanceof HudElement)
-        {
-            String name = this.name;
-            return name != null && name.equals(((HudElement) o).name);
+        else if (o instanceof HudElement) {
+            return this.name != null && this.name.equals(((HudElement) o).name);
         }
 
         return false;
+    }
+
+    public String surroundWithBrackets(String text) {
+        return HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[0] + HudRenderUtil.getBracketsTextColor() + text + HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[1] + TextColor.WHITE;
     }
 
     public float getX() {
@@ -262,18 +247,18 @@ public abstract class HudElement extends SettingContainer
     }
 
     public void setX(float x) {
-        this.x.setValue(MathHelper.clamp(x, 0, Render2DUtil.getScreenWidth()));
+        this.x.setValue(MathHelper.clamp(x, 0, mc.getWindow().getScaledWidth() - width));
     }
 
     public float getY() {
-        return y.getValue();
+        return MathHelper.clamp(y.getValue(), HudPositionOffsetManager.getY(), HudPositionOffsetManager.getEndY() - height);
     }
 
     public void setY(float y) {
-        this.y.setValue(MathHelper.clamp(y, 0, Render2DUtil.getScreenHeight()));
+        this.y.setValue(MathHelper.clamp(y, 0, mc.getWindow().getScaledHeight() - height));
     }
 
-    public float getZ() {
+    public int getZ() {
         return z.getValue();
     }
 
@@ -282,11 +267,11 @@ public abstract class HudElement extends SettingContainer
     }
 
     public float getScale() {
-        return textScale.getValue();
+        return scale.getValue();
     }
 
     public void setScale(float scale) {
-        this.textScale.setValue(scale);
+        this.scale.setValue(scale);
     }
 
     public float getWidth() {
@@ -305,16 +290,8 @@ public abstract class HudElement extends SettingContainer
         this.height = height;
     }
 
-    public float getDraggingX() {
-        return draggingX;
-    }
-
     public void setDraggingX(float draggingX) {
         this.draggingX = draggingX;
-    }
-
-    public float getDraggingY() {
-        return draggingY;
     }
 
     public void setDraggingY(float draggingY) {
@@ -327,41 +304,5 @@ public abstract class HudElement extends SettingContainer
 
     public void setDragging(boolean dragging) {
         this.dragging = dragging;
-        if (!dragging) {
-            for (HudElement element : Managers.ELEMENTS.getRegistered()
-                    .stream()
-                    .sorted(Comparator.comparing(HudElement::getZ)).collect(Collectors.toList())) {
-                if (this.isOverlapping(element)) {
-                    this.setSnappedTo(element);
-                    if (this.getY() < element.getY() + element.getHeight() / 2) {
-                        setAxis(SnapAxis.TOP);
-                    } else {
-                        setAxis(SnapAxis.BOTTOM);
-                    }
-                } else {
-                    setAxis(SnapAxis.NONE);
-                }
-            }
-        }
-    }
-
-    public boolean isEnabled() {
-        return this.enabled.getValue();
-    }
-
-    public HudElement getSnappedTo() {
-        return snappedTo;
-    }
-
-    public void setSnappedTo(HudElement snappedTo) {
-        this.snappedTo = snappedTo;
-    }
-
-    public SnapAxis getAxis() {
-        return axis;
-    }
-
-    public void setAxis(SnapAxis axis) {
-        this.axis = axis;
     }
 }

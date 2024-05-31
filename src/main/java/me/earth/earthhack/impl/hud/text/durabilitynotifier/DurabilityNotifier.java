@@ -9,7 +9,6 @@ import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import net.minecraft.client.gui.DrawContext;
@@ -28,22 +27,20 @@ public class DurabilityNotifier extends HudElement {
     private final Setting<Boolean> narratorSetting =
             register(new BooleanSetting("Narrator", false));
 
-
     private final Narrator narrator = Narrator.getNarrator();
     private final StopWatch stopWatch = new StopWatch();
-    private String text = "[EXAMPLE] Your chestplate is low durability! (20%) [EXAMPLE]";
+    private String text = "";
 
-    private void render(DrawContext context) {
-        if (mc.player != null && mc.world != null) {
-            if (stopWatch.getTime() < messageDuration.getValue() * 1000) {
-                HudRenderUtil.renderText(context, text, getX(), getY());
-            }
+    protected void onRender(DrawContext context) {
+        if (isGui()) {
+            text = "[EXAMPLE] Your chestplate is low durability! (20%) [EXAMPLE]";
+        } else if (stopWatch.getTime() < messageDuration.getValue() * 1000) {
+            HudRenderUtil.renderText(context, text, getX(), getY());
         }
     }
 
     public DurabilityNotifier() {
-        super("DurabilityNotifier", HudCategory.Text, 230, 70);
-        this.setData(new SimpleHudData(this, "Displays your FPS"));
+        super("DurabilityNotifier", "Displays your FPS", HudCategory.Text, 230, 70);
 
         String[][] armorPieces = {{"boots", "0"},{"leggings", "0"},{"chestplate", "0"},{"helmet", "0"}};
 
@@ -69,39 +66,12 @@ public class DurabilityNotifier extends HudElement {
     }
 
     @Override
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(context, mouseX, mouseY, partialTicks);
-        text = "[EXAMPLE] Your chestplate is low durability! (20%) [EXAMPLE]";
-        HudRenderUtil.renderText(context, text, getX(), getY());
-    }
-
-    @Override
-    public void draw(DrawContext context) {
-        render(context);
-    }
-
-    @Override
-    public void guiUpdate(int mouseX, int mouseY) {
-        super.guiUpdate(mouseX, mouseY);
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
     public float getWidth() {
-        return Managers.TEXT.getStringWidth(text);
+        return Managers.TEXT.getStringWidth(text.trim());
     }
 
     @Override
     public float getHeight() {
         return Managers.TEXT.getStringHeight();
     }
-
 }

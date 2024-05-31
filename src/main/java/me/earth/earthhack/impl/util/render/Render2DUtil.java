@@ -2,15 +2,19 @@ package me.earth.earthhack.impl.util.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.earth.earthhack.api.util.TextUtil;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
+import me.earth.earthhack.impl.modules.Caches;
+import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
 
@@ -44,6 +48,10 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawRect(MatrixStack matrix, float startX, float startY, float endX, float endY, int color) {
+        drawRect(matrix, startX, startY, endX, endY, color, 0);
+    }
+
+    public static void drawRect(MatrixStack matrix, float startX, float startY, float endX, float endY, int color, int zLevel) {
         if (Managers.TEXT.usingCustomFont()) {
             TextRenderer.FONTS.drawRect(startX, startY, endX, endY, color);
         } else {
@@ -54,10 +62,10 @@ public class Render2DUtil implements Globals {
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
             bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, startX, endY, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, endX, endY, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, endX, startY, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, startX, startY, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, startX, endY, zLevel).color(color).next();
+            bufferBuilder.vertex(posMatrix, endX, endY, zLevel).color(color).next();
+            bufferBuilder.vertex(posMatrix, endX, startY, zLevel).color(color).next();
+            bufferBuilder.vertex(posMatrix, startX, startY, zLevel).color(color).next();
             BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
             RenderSystem.disableBlend();
         }
@@ -273,7 +281,21 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {
-        InventoryScreen.drawEntity(context, x, y, x, y, playerScale, 0.0625F, mc.player.yaw, mc.player.pitch, player);
+        InventoryScreen.drawEntity(context, x, y, x, y, playerScale, 0.0625F, mc.player.yaw, mc.player.pitch, player); //TODO: fix
+    }
+
+    public static void drawItem(DrawContext context, ItemStack itemStack, int x, int y, int zLevel) {
+        if (itemStack.getCount() <= 0)
+            itemStack.setCount(1);
+        String count = TextUtil.numberFormatter(itemStack.getCount());
+
+        context.drawItem(itemStack, x, y, zLevel);
+
+        if (!Caches.getModule(FontMod.class).isEnabled()) {
+            Managers.TEXT.drawStringWithShadow(context, count, x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
+        } else {
+            context.drawItemInSlot(mc.textRenderer, itemStack, x, y);
+        }
     }
 
 }

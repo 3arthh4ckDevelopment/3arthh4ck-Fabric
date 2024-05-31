@@ -6,10 +6,8 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
-import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
@@ -25,34 +23,36 @@ public class Coordinates extends HudElement {
             register(new BooleanSetting("SmartRandom", false));
     private final Setting<Integer> randomRange =
             register(new NumberSetting<>("RandomRange", 5000, 1000, 50_000));
-    private final Setting<Boolean> customBrackets =
-            register(new BooleanSetting("CustomBrackets", true));
 
-    private static String coords = "";
-    private static Vec3i startingPos = null;
-    private static Vec3i realPos = null;
-    Random rng = new Random();
+    private final Random rng = new Random();
+    private String coords = "";
+    private Vec3i startingPos = null;
+    private Vec3i realPos = null;
 
-    private void render(DrawContext context) {
-        if (mc.player != null && mc.world != null) {
-            final Vec3i pos = smartCoords();
-            final long x = pos.getX();
-            final long y = pos.getY();
-            final long z = pos.getZ();
+    protected void onRender(DrawContext context) {
+        Vec3i pos = smartCoords();
+        long x = pos.getX();
+        long y = pos.getY();
+        long z = pos.getZ();
 
-            String overworld = String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s", x, y, z);
+        String overworld = String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s", x, y, z);
 
-            if (dimension.getValue())
-                coords = mc.world.getDimension().ultrawarm() ? String.format(Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + actualBracket()[0] + "%s" + actualBracket()[1] + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + actualBracket()[0] + "%s" + actualBracket()[1], x, x * 8, y, z, z * 8) : (mc.world.getDimension().bedWorks() ? String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + actualBracket()[0] + "%s" + actualBracket()[1] + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + actualBracket()[0] + "%s" + actualBracket()[1],
-                        x,
-                        x / 8,
-                        y,
-                        z,
-                        z / 8) : overworld);
-            else
-                coords = overworld;
-        }
+        if (dimension.getValue())
+            coords = getDimension() == -1
+                    ? String.format(Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + "%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + "%s", x, surroundWithBrackets(String.valueOf(x * 8)), y, z, surroundWithBrackets(String.valueOf(z * 8)))
+                    : (getDimension() == 0 ? String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + "%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + "%s", x, surroundWithBrackets(String.valueOf(x / 8)), y, z, surroundWithBrackets(String.valueOf(z / 8))) : overworld);
+        else
+            coords = overworld;
+
         HudRenderUtil.renderText(context, coords, getX(), getY());
+    }
+
+    private int getDimension() {
+        return switch (mc.world.getRegistryKey().getValue().getPath()) {
+            case "the_nether" -> -1;
+            case "the_end" -> 1;
+            default -> 0;
+        };
     }
 
     private Vec3i smartCoords() {
@@ -75,55 +75,21 @@ public class Coordinates extends HudElement {
         }
     }
 
-    private String[] actualBracket() {
-        if (customBrackets.getValue())
-            return new String[]{ HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[0] + HudRenderUtil.bracketsTextColor(), HudRenderUtil.getBracketColor() + HudRenderUtil.brackets()[1] + TextColor.WHITE };
-        else
-            return new String[]{ TextColor.GRAY + "[", TextColor.GRAY + "]"};
-    }
-
     private Vec3i getRandomVec3i() {
         return new Vec3i(rng.nextInt(), (int) mc.player.getY(), rng.nextInt());
     }
 
     public Coordinates() {
-        super("Coordinates", HudCategory.Text, 110, 150);
-        this.setData(new SimpleHudData(this, "Displays your coordinates."));
-    }
-
-    @Override
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(context, mouseX, mouseY, partialTicks);
-        render(context);
-    }
-
-    @Override
-    public void draw(DrawContext context) {
-        render(context);
-    }
-
-    @Override
-    public void guiUpdate(int mouseX, int mouseY) {
-        super.guiUpdate(mouseX, mouseY);
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        setWidth(getWidth());
-        setHeight(getHeight());
+        super("Coordinates", "Displays your coordinates.", HudCategory.Text, 110, 150);
     }
 
     @Override
     public float getWidth() {
-        return Managers.TEXT.getStringWidth(coords);
+        return Managers.TEXT.getStringWidth(coords.trim());
     }
 
     @Override
     public float getHeight() {
         return Managers.TEXT.getStringHeight();
     }
-
 }

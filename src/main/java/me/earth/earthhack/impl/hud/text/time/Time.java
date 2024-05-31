@@ -5,7 +5,6 @@ import me.earth.earthhack.api.hud.HudElement;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.ChatIDs;
 import me.earth.earthhack.impl.util.text.ChatUtil;
@@ -22,10 +21,11 @@ public class Time extends HudElement {
             register(new StringSetting("Text", "Time"));
     private final Setting<String> timeFormat =
             register(new StringSetting("TimeFormat", "hh:mm:ss"));
+
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
     private String text = TextColor.GRAY + TextColor.RED + "Invalid";
 
-    private void render(DrawContext context) {
+    protected void onRender(DrawContext context) {
         LocalDateTime actualTime = LocalDateTime.now();
         try {
             text = name.getValue() + " " + TextColor.GRAY + formatter.format(actualTime);
@@ -38,8 +38,7 @@ public class Time extends HudElement {
     }
 
     public Time() {
-        super("Time", HudCategory.Text, 320, 70);
-        this.setData(new SimpleHudData(this, "Displays the time."));
+        super("Time", "Displays the time.", HudCategory.Text, 320, 70);
 
         timeFormat.addObserver(e -> {
             if (!e.isCancelled()) {
@@ -54,38 +53,12 @@ public class Time extends HudElement {
     }
 
     @Override
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(context, mouseX, mouseY, partialTicks);
-        render(context);
-    }
-
-    @Override
-    public void draw(DrawContext context) {
-        render(context);
-    }
-
-    @Override
-    public void guiUpdate(int mouseX, int mouseY) {
-        super.guiUpdate(mouseX, mouseY);
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
     public float getWidth() {
-        return Managers.TEXT.getStringWidth(text);
+        return Managers.TEXT.getStringWidth(text.trim());
     }
 
     @Override
     public float getHeight() {
         return Managers.TEXT.getStringHeight();
     }
-
 }

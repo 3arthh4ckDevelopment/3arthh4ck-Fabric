@@ -103,4 +103,18 @@ public class TextUtil {
     {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
+
+    /**
+     * Formats the given number to a more readable format. (1000 -> 1K)
+     * @param number the number to format.
+     * @return the formatted number/the same number
+     */
+    public static String numberFormatter(int number) {
+        if (number >= 1000) {
+            return String.format("%c.%cK", Integer.toString(number).charAt(0), Integer.toString(number).charAt(1));
+        } else {
+            return Integer.toString(number);
+        }
+    }
+
 }

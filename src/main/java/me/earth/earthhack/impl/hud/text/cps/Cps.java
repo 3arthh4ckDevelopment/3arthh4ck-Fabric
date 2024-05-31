@@ -8,7 +8,6 @@ import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.event.listeners.PostSendListener;
 import me.earth.earthhack.impl.event.listeners.ReceiveListener;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
@@ -27,9 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+//TODO: simplify maybe
 public class Cps extends HudElement {
-
-    //TODO: make everything simpler???
 
     private final Setting<String> name =
             register(new StringSetting("CustomName", "Cps "));
@@ -41,18 +39,14 @@ public class Cps extends HudElement {
     private final Map<Integer, BlockPos> ids = new ConcurrentHashMap<>();
     private final List<Integer> time = new ArrayList<>();
 
-    private void render(DrawContext context) {
-        if (mc.player != null && mc.world != null) {
-            int currentTime = (int) System.currentTimeMillis();
-            time.removeIf(i -> currentTime - i > 1000);
-        }
-
+    protected void onRender(DrawContext context) {
+        time.removeIf(i -> (int) System.currentTimeMillis() - i > 1000);
         HudRenderUtil.renderText(context, name.getValue() + TextColor.GRAY + time.size(), getX(), getY());
     }
 
     public Cps() {
-        super("Cps", HudCategory.Text, 130, 30);
-        this.setData(new SimpleHudData(this, "Displays how many crystals are placed/destroyed every second."));
+        super("Cps", "Displays how many crystals are placed/destroyed every second.", HudCategory.Text, 130, 30);
+
         this.mode.addObserver(e -> {
             attack.clear();
             place.clear();
@@ -104,8 +98,9 @@ public class Cps extends HudElement {
                     if (l != null) {
                         time.add((int) System.currentTimeMillis());
                     }
-                } else
+                } else {
                     ids.put(e.getPacket().getId(), pos);
+                }
             }
         }));
 
@@ -123,33 +118,8 @@ public class Cps extends HudElement {
     }
 
     @Override
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(context, mouseX, mouseY, partialTicks);
-        render(context);
-    }
-
-    @Override
-    public void draw(DrawContext context) {
-        render(context);
-    }
-
-    @Override
-    public void guiUpdate(int mouseX, int mouseY) {
-        super.guiUpdate(mouseX, mouseY);
-        setWidth(getWidth());
-        setHeight(Managers.TEXT.getStringHeight());
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
     public float getWidth() {
-        return Managers.TEXT.getStringWidth(name.getValue() + "00");
+        return Managers.TEXT.getStringWidth(name.getValue().trim() + "00");
     }
 
     @Override
@@ -161,5 +131,4 @@ public class Cps extends HudElement {
         Place,
         Break
     }
-
 }

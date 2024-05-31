@@ -10,10 +10,10 @@ import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
-import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.minecraft.PhaseUtil;
 import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.minecraft.PushMode;
@@ -56,191 +56,188 @@ public class TargetHud extends HudElement {
             register(new EnumSetting<>("PhasePushDetect", PushMode.None))
                     .setComplexity(Complexity.Expert);
 
-
     private static final DecimalFormat df = new DecimalFormat("0.00");
+    private final TextRenderer RENDERER = Managers.TEXT;
     float endMeasureX, endMeasureY;
 
-    private void render(DrawContext context) {
-        if (mc.player != null || mc.world != null) {
-            PlayerEntity closestPlayer = IgnoreSelfClosest.GetClosestIgnore((double) maxSetting.getValue());
-            if (closestPlayer != null) {
+    protected void onRender(DrawContext context) {
+        PlayerEntity closestPlayer = IgnoreSelfClosest.GetClosestIgnore((double) maxSetting.getValue());
+        if (closestPlayer == null) return;
 
-                if (targeting.getValue() == TargetType.CrystalAura) {
-                    /*
-                    if (AUTO_CRYSTAL.get().getTarget() != null)
-                        closestPlayer = AUTO_CRYSTAL.get().getTarget();
-                    else
-                        return;
-                     */
-                } else if (targeting.getValue() == TargetType.KillAura) {
-                    /*
-                    if (KILL_AURA.get().getTarget() != null)
-                        closestPlayer = (PlayerEntity) KILL_AURA.get().getTarget();
-                    else
-                        return;
-                     */
+        if (targeting.getValue() == TargetType.CrystalAura) {
+            /*
+            if (AUTO_CRYSTAL.get().getTarget() != null)
+                closestPlayer = AUTO_CRYSTAL.get().getTarget();
+            else
+                return;
+             */
+        } else if (targeting.getValue() == TargetType.KillAura) {
+            /*
+            if (KILL_AURA.get().getTarget() != null)
+                closestPlayer = (PlayerEntity) KILL_AURA.get().getTarget();
+            else
+                return;
+             */
+        }
+
+        float health = closestPlayer.getHealth() + closestPlayer.getAbsorptionAmount();
+        int hp = (int) health;
+        String name = closestPlayer.getName().getString();
+        int nameWidth = Managers.TEXT.getStringWidth(name);
+
+        float x = getX();
+        float y = getY();
+
+        if (style.getValue() == THud.Mode1) {
+            endMeasureX = 100;
+            endMeasureY = 25;
+        } else if (style.getValue() == THud.Mode2) {
+            endMeasureX = 180;
+            endMeasureY = 90;
+        } else if (style.getValue() == THud.Mode3) {
+            endMeasureX = (Math.max(nameWidth, 58));
+            endMeasureY = 100;
+        } else {
+            endMeasureX = 110;
+            endMeasureY = 40;
+        }
+
+        float endX = x + endMeasureX;
+        float endY = y + endMeasureY;
+
+
+        double protVal = 0;
+        double blastVal = 0;
+
+        DefaultedList<ItemStack> armor = closestPlayer.getInventory().armor;
+        for (ItemStack stack : armor) {
+            if (stack != null && !stack.isEmpty()) {
+                if (EnchantmentHelper.getLevel(Enchantment.byRawId(0), stack) != 0) {
+                    protVal++;
                 }
-
-                float health = closestPlayer.getHealth() + closestPlayer.getAbsorptionAmount();
-                int hp = (int) health;
-                String name = closestPlayer.getName().getString();
-                int nameWidth = Managers.TEXT.getStringWidth(name);
-
-                float x = getX();
-                float y = getY();
-
-                if (style.getValue() == THud.Mode1) {
-                    endMeasureX = 100;
-                    endMeasureY = 25;
-                } else if (style.getValue() == THud.Mode2) {
-                    endMeasureX = 180;
-                    endMeasureY = 90;
-                } else if (style.getValue() == THud.Mode3) {
-                    endMeasureX = (Math.max(nameWidth, 58));
-                    endMeasureY = 100;
-                } else {
-                    endMeasureX = 110;
-                    endMeasureY = 40;
-                }
-
-                float endX = x + endMeasureX;
-                float endY = y + endMeasureY;
-
-
-                double protVal = 0;
-                double blastVal = 0;
-
-                DefaultedList<ItemStack> armor = closestPlayer.getInventory().armor;
-                for (ItemStack stack : armor) {
-                    if (stack != null && !stack.isEmpty()) {
-                        if (EnchantmentHelper.getLevel(Enchantment.byRawId(0), stack) != 0) {
-                            protVal++;
-                        }
-                        if (EnchantmentHelper.getLevel(Enchantment.byRawId(3), stack) != 0) {
-                            blastVal++;
-                        }
-                    }
-                }
-
-                double protCalc = protVal * 100 / (protVal + blastVal);
-                double blastCalc = blastVal * 100 / (protVal + blastVal);
-
-                final float nameX = x + ((endX - x) / 2 - nameWidth / 2.0f);
-                switch(style.getValue())
-                {
-                    case Mode1:
-                        if (name.length() > 14)
-                            endX += Managers.TEXT.getStringWidth("a") * name.length() - 14;
-                        if (!pretty.getValue()) {
-                            Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
-                        } else {
-                            Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
-                        }
-
-                        float v = (endX - x + (endY - y)) / 2;
-                        if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(context, name, x + (v - nameWidth / 2.0f), y + 7, 0xff670067);
-                        } else {
-                            RENDERER.drawString(context, name, x + (v - nameWidth / 2.0f), y + 7, fColor.getValue().getRGB());
-                        }
-                        Render2DUtil.drawPlayerFace(context, closestPlayer, (int) x, (int) y, (int) (endY - y), (int) (endY - y));
-                        Render2DUtil.progressBar(context.getMatrices(), x + (10 + (endY - y)), x + (((endY - y) + hp / 36.0F * (endX - (endY - y) - x)) - 10), y + 19, 3, 0x77ff0000);
-                        break;
-
-                    case Mode2:
-                        if (!pretty.getValue()) {
-                            Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
-                        } else {
-                            Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
-                        }
-
-                        if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(context, name, nameX, y + 7, 0xff670067);
-                        } else {
-                            RENDERER.drawString(context, name, nameX, y + 7, fColor.getValue().getRGB());
-                        }
-                        RENDERER.drawString(context, "HP: " + hp, x + 7, y + 25, fColor.getValue().getRGB());
-
-                        if (!Double.isNaN(protCalc)) {
-                            RENDERER.drawString(context, "Protection: " + (int) protCalc + "%", x + 7, y + 43, fColor.getValue().getRGB());
-                        } else {
-                            RENDERER.drawString(context, "Protection: " + 0 + "%", x + 7, y + 43, fColor.getValue().getRGB());
-                        }
-                        if (!Double.isNaN(blastCalc)) {
-                            RENDERER.drawString(context, "Blast: " + (int) blastCalc + "%", x + 7, y + 53, fColor.getValue().getRGB());
-                        } else {
-                            RENDERER.drawString(context, "Blast: " + 0 + "%", x + 7, y + 53, fColor.getValue().getRGB());
-                        }
-
-                        int xEnd = (int) (x + 160);
-                        int yEnd = (int) (y);
-                         Render2DUtil.drawPlayerFace(context, closestPlayer, xEnd - 5, yEnd, 25, 25);
-                        if (distance.getValue()) {
-                            RENDERER.drawString(context, "Distance: " + df.format(closestPlayer.distanceTo(mc.player)), x + 7, y + 70, fColor.getValue().getRGB());
-                        }
-
-                        PlayerListEntry playerInfo = mc.getNetworkHandler().getPlayerListEntry(closestPlayer.getUuid() != PlayerUtil.fakePlayerUUID ? closestPlayer.getUuid() : mc.player.getUuid()); //TODO: our fakeplayer
-                        if (ping.getValue()) {
-                            RENDERER.drawString(context, "Ping: " + playerInfo.getLatency() + "ms", x + 7, y + 80, fColor.getValue().getRGB());
-                        }
-                         Render2DUtil.progressBar(context.getMatrices(), x + 48, x + 48 + (hp / 36.0F * 80), y + 28, 5, 0x77ff0000);
-                        renderArmor(context, (int) (x + 80), (int) (y + 65), closestPlayer);
-                        break;
-
-                    case Mode3:
-                        if (!pretty.getValue()) {
-                            Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
-                        } else {
-                            Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
-                        }
-
-                        if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(context, name, nameX, y, 0xff670067);
-                        } else {
-                            RENDERER.drawString(context, name, nameX, y, fColor.getValue().getRGB());
-                        }
-
-                        Render2DUtil.progressBar(context.getMatrices(), x + 7, x - 7 + (hp / 36.0F * (Math.max(nameWidth, 58))), endY - 5.0f, 5, 0x77ff0000);
-                        Render2DUtil.drawPlayer(context, closestPlayer, 8, (int) (x + (Math.max(nameWidth, 58)) / 2), (int) (endY - 15.0f));
-                        break;
-
-                    case Mode4:
-                        if (!pretty.getValue()) {
-                            Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
-                        } else {
-                            Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
-                        }
-
-                        if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
-                            RENDERER.drawString(context, name, endX - nameWidth - 2, y + 1, 0xff670067);
-                        } else {
-                            RENDERER.drawString(context, name, endX - nameWidth - 2, y + 1, fColor.getValue().getRGB());
-                        }
-
-                        if (protVal != 0 || blastVal != 0) {
-                            RENDERER.drawString(context, "THREAT", x + 2, y + 2, 0xffff0000);
-                        } else {
-                            RENDERER.drawString(context, "NAKED", x + 2, y + 2, 0xff00ff00);
-                        }
-
-                        if (PlayerUtil.isInHole(closestPlayer))
-                            RENDERER.drawString(context, "SAFE", x + 2, y + 12, 0xff00ff00);
-                        else
-                            RENDERER.drawString(context, "UNSAFE", x + 2, y + 12, 0xffff0000);
-
-                        renderArmor(context, (int) x - 17, (int) (y + 19), closestPlayer);
-
-                        Render2DUtil.drawPlayerFace(context, closestPlayer, (int) (endX - 28), (int) (y + Managers.TEXT.getStringHeight() + 2), 22, 22);
-                        float endX1 = x - 7.5f + (hp / 36.0F * endMeasureX);
-                        Render2DUtil.progressBar(context.getMatrices(), x + 7.5f, endX1, endY - 2.5f, 5, 0x77ff0000);
-                        context.getMatrices().scale(0.5f, 0.5f, 1.0f);
-                        break;
-
-                    default:
-                        RENDERER.drawString(context, "TargetHUD", getX(), getY(), 0xffffffff);
-                        break;
+                if (EnchantmentHelper.getLevel(Enchantment.byRawId(3), stack) != 0) {
+                    blastVal++;
                 }
             }
+        }
+
+        double protCalc = protVal * 100 / (protVal + blastVal);
+        double blastCalc = blastVal * 100 / (protVal + blastVal);
+
+        final float nameX = x + ((endX - x) / 2 - nameWidth / 2.0f);
+        switch (style.getValue())
+        {
+            case Mode1:
+                if (name.length() > 14)
+                    endX += Managers.TEXT.getStringWidth("a") * name.length() - 14;
+                if (!pretty.getValue()) {
+                    Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
+                } else {
+                    Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
+                }
+
+                float v = (endX - x + (endY - y)) / 2;
+                if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
+                    RENDERER.drawString(context, name, x + (v - nameWidth / 2.0f), y + 7, 0xff670067);
+                } else {
+                    RENDERER.drawString(context, name, x + (v - nameWidth / 2.0f), y + 7, fColor.getValue().getRGB());
+                }
+                Render2DUtil.drawPlayerFace(context, closestPlayer, (int) x, (int) y, (int) (endY - y), (int) (endY - y));
+                Render2DUtil.progressBar(context.getMatrices(), x + (10 + (endY - y)), x + (((endY - y) + hp / 36.0F * (endX - (endY - y) - x)) - 10), y + 19, 3, 0x77ff0000);
+                break;
+
+            case Mode2:
+                if (!pretty.getValue()) {
+                    Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
+                } else {
+                    Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
+                }
+
+                if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
+                    RENDERER.drawString(context, name, nameX, y + 7, 0xff670067);
+                } else {
+                    RENDERER.drawString(context, name, nameX, y + 7, fColor.getValue().getRGB());
+                }
+                RENDERER.drawString(context, "HP: " + hp, x + 7, y + 25, fColor.getValue().getRGB());
+
+                if (!Double.isNaN(protCalc)) {
+                    RENDERER.drawString(context, "Protection: " + (int) protCalc + "%", x + 7, y + 43, fColor.getValue().getRGB());
+                } else {
+                    RENDERER.drawString(context, "Protection: " + 0 + "%", x + 7, y + 43, fColor.getValue().getRGB());
+                }
+                if (!Double.isNaN(blastCalc)) {
+                    RENDERER.drawString(context, "Blast: " + (int) blastCalc + "%", x + 7, y + 53, fColor.getValue().getRGB());
+                } else {
+                    RENDERER.drawString(context, "Blast: " + 0 + "%", x + 7, y + 53, fColor.getValue().getRGB());
+                }
+
+                int xEnd = (int) (x + 160);
+                int yEnd = (int) (y);
+                 Render2DUtil.drawPlayerFace(context, closestPlayer, xEnd - 5, yEnd, 25, 25);
+                if (distance.getValue()) {
+                    RENDERER.drawString(context, "Distance: " + df.format(closestPlayer.distanceTo(mc.player)), x + 7, y + 70, fColor.getValue().getRGB());
+                }
+
+                PlayerListEntry playerInfo = mc.getNetworkHandler().getPlayerListEntry(closestPlayer.getUuid() != PlayerUtil.fakePlayerUUID ? closestPlayer.getUuid() : mc.player.getUuid()); //TODO: our fakeplayer
+                if (ping.getValue()) {
+                    RENDERER.drawString(context, "Ping: " + playerInfo.getLatency() + "ms", x + 7, y + 80, fColor.getValue().getRGB());
+                }
+                 Render2DUtil.progressBar(context.getMatrices(), x + 48, x + 48 + (hp / 36.0F * 80), y + 28, 5, 0x77ff0000);
+                renderArmor(context, (int) (x + 80), (int) (y + 65), closestPlayer);
+                break;
+
+            case Mode3:
+                if (!pretty.getValue()) {
+                    Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
+                } else {
+                    Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
+                }
+
+                if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
+                    RENDERER.drawString(context, name, nameX, y, 0xff670067);
+                } else {
+                    RENDERER.drawString(context, name, nameX, y, fColor.getValue().getRGB());
+                }
+
+                Render2DUtil.progressBar(context.getMatrices(), x + 7, x - 7 + (hp / 36.0F * (Math.max(nameWidth, 58))), endY - 5.0f, 5, 0x77ff0000);
+                Render2DUtil.drawPlayer(context, closestPlayer, 8, (int) (x + (Math.max(nameWidth, 58)) / 2), (int) (endY - 15.0f));
+                break;
+
+            case Mode4:
+                if (!pretty.getValue()) {
+                    Render2DUtil.drawRect(context.getMatrices(), x, y, endX, endY, bgColor.getRGB());
+                } else {
+                    Render2DUtil.roundedRect(context.getMatrices(), x, y, endX, endY, 3, bgColor.getRGB());
+                }
+
+                if (phase.getValue() && PhaseUtil.isPhasing(closestPlayer, pushMode.getValue())) {
+                    RENDERER.drawString(context, name, endX - nameWidth - 2, y + 1, 0xff670067);
+                } else {
+                    RENDERER.drawString(context, name, endX - nameWidth - 2, y + 1, fColor.getValue().getRGB());
+                }
+
+                if (protVal != 0 || blastVal != 0) {
+                    RENDERER.drawString(context, "THREAT", x + 2, y + 2, 0xffff0000);
+                } else {
+                    RENDERER.drawString(context, "NAKED", x + 2, y + 2, 0xff00ff00);
+                }
+
+                if (PlayerUtil.isInHole(closestPlayer))
+                    RENDERER.drawString(context, "SAFE", x + 2, y + 12, 0xff00ff00);
+                else
+                    RENDERER.drawString(context, "UNSAFE", x + 2, y + 12, 0xffff0000);
+
+                renderArmor(context, (int) x - 17, (int) (y + 19), closestPlayer);
+
+                Render2DUtil.drawPlayerFace(context, closestPlayer, (int) (endX - 28), (int) (y + Managers.TEXT.getStringHeight() + 2), 22, 22);
+                float endX1 = x - 7.5f + (hp / 36.0F * endMeasureX);
+                Render2DUtil.progressBar(context.getMatrices(), x + 7.5f, endX1, endY - 2.5f, 5, 0x77ff0000);
+                context.getMatrices().scale(0.5f, 0.5f, 1.0f);
+                break;
+
+            default:
+                RENDERER.drawString(context, "TargetHUD", getX(), getY(), 0xffffffff);
+                break;
         }
     }
 
@@ -256,36 +253,7 @@ public class TargetHud extends HudElement {
     }
 
     public TargetHud() {
-        super("TargetHUD", HudCategory.Visual, 170, 270);
-        this.setData(new SimpleHudData(this, "Displays the player your combat modules are currently targeting."));
-    }
-
-    @Override
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(context, mouseX, mouseY, partialTicks);
-        if (IgnoreSelfClosest.GetClosestIgnore((double) maxSetting.getValue()) != null) {
-            render(context);
-        } else
-            RENDERER.drawString(context, "Target Hud", getX(), getY(), 0xffffffff);
-    }
-
-    @Override
-    public void draw(DrawContext context) {
-        render(context);
-    }
-
-    @Override
-    public void guiUpdate(int mouseX, int mouseY) {
-        super.guiUpdate(mouseX, mouseY);
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        setWidth(getWidth());
-        setHeight(getHeight());
+        super("TargetHUD", "Displays the player your combat modules are currently targeting.", HudCategory.Visual, 170, 270);
     }
 
     @Override
@@ -310,5 +278,4 @@ public class TargetHud extends HudElement {
         Mode3,
         Mode4
     }
-
 }

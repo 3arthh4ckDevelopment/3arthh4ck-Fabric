@@ -10,7 +10,6 @@ import me.earth.earthhack.impl.gui.hud.DynamicHudElement;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.editor.HudEditor;
-import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.render.ColorUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRainbow;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
@@ -27,11 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 // TODO: hud potion symbols
-// TODO: Rewrite @Ai_2473 ....
 public class Potions extends DynamicHudElement {
 
     private static final Potions INSTANCE = new Potions();
-
     private static final ModuleCache<HudEditor> HUD_EDITOR = Caches.getModule(HudEditor.class);
 
     private final Setting<PotionColor> potionColor =
@@ -40,36 +37,31 @@ public class Potions extends DynamicHudElement {
             register(new NumberSetting<>("Offset", 2, 0, 10));
 
     private final String label = "[Potions] No effects applied."; // render this?
-    int effCounter = 0;
+    private int effCounter = 0;
 
-    private void render(DrawContext context, boolean isHud) {
-        if (mc.player != null) {
-            ArrayList<StatusEffectInstance> sorted = new ArrayList<>(mc.player.getStatusEffects());
-            effCounter = mc.player.getStatusEffects().size();
+    protected void onRender(DrawContext context) {
+        ArrayList<StatusEffectInstance> sorted = new ArrayList<>(mc.player.getStatusEffects());
+        effCounter = mc.player.getStatusEffects().size();
 
-            sorted.sort(Comparator.comparingDouble(effect -> -RENDERER.getStringWidth(effect.getEffectType().getName().getString() + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "") + Formatting.GRAY + " " + getPotionDuration(effect))));
-            int offset = 0;
-            float yPos = (directionV() == TextDirectionV.BottomToTop ? getY() + (sorted.size() * (Managers.TEXT.getStringHeight() + textOffset.getValue())) - Managers.TEXT.getStringHeightI() : getY());
-            float borderDistance = simpleCalcH(getWidth());
-            if (!sorted.isEmpty()) {
-                for (StatusEffectInstance effect : sorted) {
-                    if (effect != null) {
-                        final String label = effect.getEffectType().getName().getString()
-                                + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "")
-                                + Formatting.GRAY + " " + getPotionDuration(effect);
+        sorted.sort(Comparator.comparingDouble(effect -> -Managers.TEXT.getStringWidth(effect.getEffectType().getName().getString() + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "") + Formatting.GRAY + " " + getPotionDuration(effect))));
+        int offset = 0;
+        float yPos = (directionY() == TextDirectionY.BottomToTop ? getY() + (sorted.size() * (Managers.TEXT.getStringHeight() + textOffset.getValue())) - Managers.TEXT.getStringHeightI() : getY());
+        float borderDistance = simpleCalcX(getWidth());
+        if (!sorted.isEmpty()) {
+            for (StatusEffectInstance effect : sorted) {
+                if (effect != null) {
+                    final String label = effect.getEffectType().getName().getString()
+                            + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "")
+                            + Formatting.GRAY + " " + getPotionDuration(effect);
 
-                        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-                        float xPos = getX() - simpleCalcH(RENDERER.getStringWidth(label));
-                        if (directionV() == TextDirectionV.BottomToTop)
-                            renderPotionText(context, label, borderDistance + xPos, yPos - offset - animationY, effect.getEffectType());
-                        else
-                            renderPotionText(context, label, borderDistance + xPos, yPos + offset + animationY, effect.getEffectType());
-                        offset += RENDERER.getStringHeightI() + textOffset.getValue();
-                    }
+                    RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                    float xPos = getX() - simpleCalcX(Managers.TEXT.getStringWidth(label));
+                    renderPotionText(context, label, borderDistance + xPos, yPos + offset * (directionY() == TextDirectionY.BottomToTop ? -1 : 1), effect.getEffectType());
+                    offset += Managers.TEXT.getStringHeightI() + textOffset.getValue();
                 }
-            } else if (isHud) {
-                HudRenderUtil.renderText(context, label, getX(), getY());
             }
+        } else if (isGui()) {
+            HudRenderUtil.renderText(context, label, getX(), getY());
         }
     }
 
@@ -90,7 +82,7 @@ public class Potions extends DynamicHudElement {
 
     public void renderPotionText(DrawContext context, String text, float x, float y, StatusEffect effect) {
         String colorCode = (potionColor.getValue() == PotionColor.OldVersions || potionColor.getValue() == PotionColor.Phobos || potionColor.getValue() == PotionColor.Normal) ? "" : HUD_EDITOR.get().colorMode.getValue().getColor();
-        RENDERER.drawStringWithShadow(context, colorCode + text, x, y, getPotionColor(effect, y));
+        Managers.TEXT.drawStringWithShadow(context, colorCode + text, x, y, getPotionColor(effect, y));
     }
 
     private int getPotionColor(StatusEffect effect, float y) {
@@ -136,9 +128,9 @@ public class Potions extends DynamicHudElement {
     }
 
     private final Map<StatusEffect, Color> potionColorMap = new HashMap<>();
+
     public Potions() {
-        super("PotionEffects", HudCategory.Text, 120, 120);
-        this.setData(new SimpleHudData(this, "Displays active potion effects."));
+        super("PotionEffects", "Displays active potion effects.", HudCategory.Text, 120, 120);
 
         oldVerColors();
 
@@ -186,38 +178,12 @@ public class Potions extends DynamicHudElement {
     }
 
     @Override
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(context, mouseX, mouseY, partialTicks);
-        render(context, true);
-    }
-
-    @Override
-    public void draw(DrawContext context) {
-        render(context, false);
-    }
-
-    @Override
-    public void guiUpdate(int mouseX, int mouseY) {
-        super.guiUpdate(mouseX, mouseY);
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
     public float getWidth() {
-        return Managers.TEXT.getStringWidth(label);
+        return Managers.TEXT.getStringWidth(label.trim());
     }
 
     @Override
     public float getHeight() {
         return (Managers.TEXT.getStringHeight() + textOffset.getValue()) * (effCounter == 0 ? 1 : effCounter);
     }
-
 }

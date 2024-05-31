@@ -26,7 +26,7 @@ public class PotionManager {
         private final List<StatusEffectInstance> effects = new ArrayList<>();
 
         public void addEffect(StatusEffectInstance effect) {
-            if(effect != null) {
+            if (effect != null) {
                 this.effects.add(effect);
             }
         }
@@ -39,7 +39,7 @@ public class PotionManager {
 
     public StatusEffectInstance[] getImportantPotions(PlayerEntity player) {
         StatusEffectInstance[] array = new StatusEffectInstance[3];
-        for(StatusEffectInstance effect : getPlayerPotions(player)) {
+        for (StatusEffectInstance effect : getPlayerPotions(player)) {
             switch(effect.getEffectType().getName().getString().toLowerCase()) {
                 case "strength" :
                     array[0] = effect;
@@ -61,7 +61,7 @@ public class PotionManager {
         StatusEffectInstance strength = array[0];
         StatusEffectInstance weakness = array[1];
         StatusEffectInstance speed = array[2];
-        return "" + (strength != null ? TextColor.RED + " S" + (strength.getAmplifier() + 1) + " " : "")
+        return (strength != null ? TextColor.RED + " S" + (strength.getAmplifier() + 1) + " " : "")
                 + (weakness != null ? TextColor.DARK_GRAY + " W " : "")
                 + (speed != null ? TextColor.AQUA + " S" + (speed.getAmplifier() + 1) + " " : "");
     }

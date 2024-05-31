@@ -7,12 +7,8 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
-import me.earth.earthhack.impl.gui.hud.HudEditorGui;
-import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.client.SimpleHudData;
 import me.earth.earthhack.impl.util.helpers.addable.ItemAddingModule;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,31 +38,29 @@ public class PvpResources extends HudElement {
     private int y = 0;
     private int finalOffset;
     
-    private void render(DrawContext context) {
-        if (mc.player != null) {
-            if (mode.getValue() == Mode.Simple) {
-                for (Item i : defaultIds)
-                    if (!items.contains(i))
-                        items.add(i);
-            }
-            if (obby.getValue()) {
-                if (!items.contains(Items.OBSIDIAN))
-                    items.add(Items.OBSIDIAN);
-            } else {
-                items.remove(Items.OBSIDIAN);
-            }
-
-
-            x = (int) getX();
-            y = (int) getY();
-
-            if (style.getValue() == Styles.Square)
-                drawSquare(context);
-            else if (style.getValue() == Styles.Vertical)
-                drawVertical(context);
-            else
-                drawHorizontal(context);
+    protected void onRender(DrawContext context) {
+        if (mode.getValue() == Mode.Simple) {
+            for (Item i : defaultIds)
+                if (!items.contains(i))
+                    items.add(i);
         }
+        if (obby.getValue()) {
+            if (!items.contains(Items.OBSIDIAN))
+                items.add(Items.OBSIDIAN);
+        } else {
+            items.remove(Items.OBSIDIAN);
+        }
+
+
+        x = (int) getX();
+        y = (int) getY();
+
+        if (style.getValue() == Styles.Square)
+            drawSquare(context);
+        else if (style.getValue() == Styles.Vertical)
+            drawVertical(context);
+        else
+            drawHorizontal(context);
     }
 
     private void drawVertical(DrawContext context) {
@@ -109,32 +103,15 @@ public class PvpResources extends HudElement {
         }
     }
 
-    public void renderItem(DrawContext context, Item item, int xPosition, int yPosition) {
-        int count = getCount(item);
-        if (count > 0 && !(mc.currentScreen instanceof HudEditorGui))
-            HudRenderUtil.drawItemStack(context, item.getDefaultStack().copyWithCount(count), xPosition, yPosition, true);
-    }
-
-    private static String getItemCount(Item item) {
-        int itemCount = mc.player.getInventory().main.stream().filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum() + ((mc.player.getOffHandStack().getItem() == item)
-                ? mc.player.getOffHandStack().getCount() : 0);
-        if (itemCount >= 1000)
-            return Integer.toString(itemCount).charAt(0) + "." + Integer.toString(itemCount).charAt(1) + "K";
-        else
-            return Integer.toString(itemCount);
-    }
-
-    private static int getCount(Item item) {
-        return mc.player.getInventory().main
-                .stream()
-                .filter(itemStack -> itemStack.getItem() == item)
-                    .mapToInt(ItemStack::getCount).sum() + ((mc.player.getOffHandStack().getItem() == item)
-                            ? mc.player.getOffHandStack().getCount()
-                            : 0);
+    public void renderItem(DrawContext context, Item item, int x, int y) {
+        int itemCount = mc.player.getInventory().main .stream() .filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
+        if (mc.player.getOffHandStack().getItem().equals(item))
+            itemCount += mc.player.getOffHandStack().getCount();
+        Render2DUtil.drawItem(context, new ItemStack(item, itemCount), x, y, (int) getZ());
     }
 
     public PvpResources() {
-        super("Items", HudCategory.Visual, 60, 70);
+        super("Items", "Displays some items from your Inventory.", HudCategory.Visual, 60, 70);
 
         this.blocks.addObserver(event -> {
             if (!event.isCancelled()) {
@@ -148,32 +125,6 @@ public class PvpResources extends HudElement {
             }
         });
         this.mode.addObserver(event -> items.clear());
-        this.setData(new SimpleHudData(this, "Displays some items from your Inventory."));
-    }
-
-    @Override
-    public void guiDraw(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        super.guiDraw(context, mouseX, mouseY, partialTicks);
-        render(context);
-    }
-
-    @Override
-    public void draw(DrawContext context) {
-        render(context);
-    }
-
-    @Override
-    public void guiUpdate(int mouseX, int mouseY) {
-        super.guiUpdate(mouseX, mouseY);
-        setWidth(getWidth());
-        setHeight(getHeight());
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        setWidth(getWidth());
-        setHeight(getHeight());
     }
 
     @Override
@@ -184,8 +135,8 @@ public class PvpResources extends HudElement {
             return style.getValue() == Styles.Horizontal
                     ? finalOffset
                     : style.getValue() == Styles.Square
-                        ? 37
-                        : 17;
+                    ? 37
+                    : 17;
     }
 
     @Override
@@ -196,8 +147,8 @@ public class PvpResources extends HudElement {
             return style.getValue() == Styles.Vertical
                     ? finalOffset
                     : style.getValue() == Styles.Square
-                        ? 37
-                        : 20;
+                    ? 37
+                    : 20;
     }
 
     private enum Styles {
@@ -210,5 +161,4 @@ public class PvpResources extends HudElement {
         Simple,
         List
     }
-
 }
