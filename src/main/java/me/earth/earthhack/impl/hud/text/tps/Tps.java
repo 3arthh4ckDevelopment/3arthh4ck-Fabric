@@ -23,7 +23,7 @@ public class Tps extends HudElement {
     protected void onRender(DrawContext context) {
         text = name.getValue() + " " + TextColor.GRAY + MathUtil.round(Managers.TPS.getTps(), 2);
         if (currentTps.getValue())
-            text += surroundWithBrackets(String.valueOf(MathUtil.round(Managers.TPS.getCurrentTps(), 2)));
+            text += " " + surroundWithBrackets(String.valueOf(MathUtil.round(Managers.TPS.getCurrentTps(), 2)));
         HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
