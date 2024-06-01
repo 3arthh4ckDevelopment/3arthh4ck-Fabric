@@ -36,10 +36,10 @@ public abstract class HudElement extends SettingContainer
             register(new NumberSetting<>("Y", 2.0f, -20.0f, 2000.0f))
                     .setComplexity(Complexity.Dev);
     private final Setting<Integer> z =
-            register(new NumberSetting<>("Z", 0, -2000, 2000))
+            register(new NumberSetting<>("Z", 0, -200, 200))
                     .setComplexity(Complexity.Dev); // Z level determines rendering order.
     private final Setting<Float> scale =
-            register(new NumberSetting<>("Scale", 1.0f, 0.1f, 3.0f))
+            register(new NumberSetting<>("Scale", 1.0f, 1.0f, 1.0f)) //TODO: make this
                     .setComplexity(Complexity.Dev);
 
     protected final List<Listener<?>> listeners = new ArrayList<>();
@@ -51,9 +51,8 @@ public abstract class HudElement extends SettingContainer
     private float width = 100;
     private float height = 100;
 
+    private float draggingX, draggingY;
     private boolean dragging;
-    private float draggingX;
-    private float draggingY;
 
     /**
      * Creates a new HudElement. It's important that the given name

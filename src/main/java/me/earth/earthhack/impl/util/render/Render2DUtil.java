@@ -6,8 +6,6 @@ import me.earth.earthhack.api.util.TextUtil;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
-import me.earth.earthhack.impl.modules.Caches;
-import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.PlayerListEntry;
@@ -290,10 +288,6 @@ public class Render2DUtil implements Globals {
         String count = TextUtil.numberFormatter(itemStack.getCount());
         context.drawItem(itemStack, x, y, zLevel);
 
-        if (!Caches.getModule(FontMod.class).isEnabled()) {
-            Managers.TEXT.drawStringWithShadow(context, count, x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
-        } else {
-            context.drawItemInSlot(mc.textRenderer, itemStack, x, y);
-        }
+        Managers.TEXT.drawStringWithShadow(context, count, x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
     }
 }

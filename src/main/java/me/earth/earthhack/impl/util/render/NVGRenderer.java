@@ -113,8 +113,9 @@ public class NVGRenderer implements Globals {
     public void drawText(String text, float x, float y, float size, Color color, boolean shadow) {
         Color activeColor = color;
         Color shadowColor = new Color(ColorUtil.getDarker(activeColor));
+        text = text.trim();
 
-        String[] textParts = text.trim().split("§");
+        String[] textParts = text.split("§");
 
         if (textParts.length == 1) {
             if (shadow)
@@ -162,7 +163,7 @@ public class NVGRenderer implements Globals {
                     textSizedShadow(s, x, y, size, activeColor, shadowColor);
                 else
                     textSized(s, x, y, size, activeColor);
-                x += getWidth(s) + (s.endsWith(" ") ? getWidth("a") : 0);
+                x += getWidth(s) + (s.endsWith(" ") ? getWidth("a") / 1.5f : 0);
             }
         }
     }
@@ -236,6 +237,7 @@ public class NVGRenderer implements Globals {
     }
 
     public float getWidth(String text) {
+        text = text.replaceAll("§[0-9abcdeflmno]", "");
         float[] bounds = new float[4];
         NanoVG.nvgTextBounds(context, 0, 0, text, bounds);
         return bounds[2] - bounds[0];

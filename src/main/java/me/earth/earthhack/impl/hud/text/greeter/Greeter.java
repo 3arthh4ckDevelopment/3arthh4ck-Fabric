@@ -33,7 +33,6 @@ public class Greeter extends HudElement {
     public static String getTimeOfDay() {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-        // this is ugly, ternary operators make it more ugly though so =)
         if (timeOfDay < 12){
             return "Good Morning ";
         } else if(timeOfDay < 16){
