@@ -43,7 +43,7 @@ public class FontMod extends Module {
     public final Setting<Boolean> blurShadow =
             register(new BooleanSetting("ShadowBlur", false));
     public final Setting<Boolean> showFonts =
-            register(new BooleanSetting("ShowFonts", false));
+            register(new BooleanSetting("Fonts", false));
 
     public FontMod() {
         super("CustomFont", Category.Client);
