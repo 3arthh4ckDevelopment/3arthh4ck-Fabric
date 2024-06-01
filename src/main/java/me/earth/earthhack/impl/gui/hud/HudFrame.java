@@ -51,7 +51,7 @@ public class HudFrame extends Frame {
                     setScrollY((int) -(getScrollCurrentHeight() - scrollMaxHeight));
             } else if (getScrollY() < 0) setScrollY(0);
             Render2DUtil.drawRect(context.getMatrices(), getPosX(), getPosY() + getHeight(), getPosX() + getWidth(), getPosY() + getHeight() + 1 + (getCurrentHeight()), 0x92000000);
-            Render2DUtil.scissor(getPosX(), getPosY() + getHeight() + 1, getPosX() + getWidth(), getPosY() + getHeight() + scrollMaxHeight + 1);
+            // Render2DUtil.scissor(getPosX(), getPosY() + getHeight() + 1, getPosX() + getWidth(), getPosY() + getHeight() + scrollMaxHeight + 1);
             getComponents().forEach(component -> component.drawScreen(context, mouseX, mouseY, partialTicks));
             Render2DUtil.disableScissor();
         }

@@ -288,7 +288,6 @@ public class Render2DUtil implements Globals {
         if (itemStack.getCount() <= 0)
             itemStack.setCount(1);
         String count = TextUtil.numberFormatter(itemStack.getCount());
-
         context.drawItem(itemStack, x, y, zLevel);
 
         if (!Caches.getModule(FontMod.class).isEnabled()) {
@@ -297,5 +296,4 @@ public class Render2DUtil implements Globals {
             context.drawItemInSlot(mc.textRenderer, itemStack, x, y);
         }
     }
-
 }
