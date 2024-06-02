@@ -47,7 +47,7 @@ final class ListenerTick extends ModuleListener<Tracker, TickEvent>
                     ModuleUtil.sendMessage(module, TextColor.LIGHT_PURPLE
                             + "Now tracking "
                             + TextColor.DARK_PURPLE
-                            + player.getName()
+                            + player.getName().getString()
                             + TextColor.LIGHT_PURPLE
                             + "!");
                 }

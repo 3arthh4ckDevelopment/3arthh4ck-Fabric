@@ -17,7 +17,7 @@ public class ServerBrand extends HudElement {
     private static String text = "";
 
     protected void onRender(DrawContext context) {
-        text = name.getValue() + " " + TextColor.GRAY + (mc.isInSingleplayer() && mc.getServer() != null ? "singleplayer" : mc.getServer().getServerModName());
+        text = name.getValue() + " " + TextColor.GRAY + (mc.isInSingleplayer() || mc.getServer() == null ? "singleplayer" : mc.getServer().getServerModName());
         HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
