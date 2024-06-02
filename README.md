@@ -10,7 +10,7 @@
 3arthh4ck is an open source Minecraft 1.12.2 and 1.20 utility mod for anarchy PvP. To install the client, just drop the jar file into your Fabric `.minecraft/mods` folder.
 
 By default, any message prefixed with a `+` will be handled as command, e.g. `+bind clickgui RShift`
-to set the default gui key to the Right Shift. 
+to set the default gui key to the Right Shift. You can change the command prefix using `+prefix <key>` command.
 
 Because of bloat, some of the more complicated Settings are hidden by default. You can find those by using the Settings module.
 
