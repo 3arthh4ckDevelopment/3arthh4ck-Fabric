@@ -7,7 +7,6 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
-import me.earth.earthhack.impl.modules.movement.blocklag.ListenerTick;
 import me.earth.earthhack.impl.modules.render.logoutspots.mode.MessageMode;
 import me.earth.earthhack.impl.modules.render.logoutspots.util.LogoutSpot;
 import me.earth.earthhack.impl.util.helpers.render.BlockESPModule;

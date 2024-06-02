@@ -27,7 +27,7 @@ import net.minecraft.util.Formatting;
 public class MiddleClick extends Module {
 
     protected final Setting<Bind> keyBind =
-            register(new BindSetting("KeyBind", Bind.fromKey(mc.options.pickItemKey.getDefaultKey().getCode())));
+            register(new BindSetting("KeyBind", Bind.none()));
     protected final Setting<Boolean> pickBlock =
             register(new BooleanSetting("PickBlock", true));
     protected final Setting<Boolean> cancelPickBlock =
