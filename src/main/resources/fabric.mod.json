@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "earthhack-fabric",
+  "version": "1.0.0",
+  "name": "3arthh4ck",
+  "description": "A 1.20.4 Utility Mod.",
+  "authors": [
+    "3arthqu4ke",
+    "oHare",
+    "Megyn",
+    "Gerald",
+    "nukiz",
+    "Ai_2473",
+    "dabigbulletz638",
+    "Master7720"
+  ],
+  "contact": {
+    "website": "https://github.com/3arthqu4ke/3arthh4ck",
+    "repo": "https://github.com/3arthqu4ke/3arthh4ck"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "accessWidener": "earthhack.accesswidener",
+  "entrypoints": {
+    "client": [
+      "me.earth.earthhack.impl.Earthhack"
+    ]
+    },
+  "mixins": [
+    "mixins.earth.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.7",
+    "minecraft": "~1.20.4",
+    "java": ">=17"
+  }
+}
