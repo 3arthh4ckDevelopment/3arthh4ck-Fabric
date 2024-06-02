@@ -7,6 +7,7 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
+import me.earth.earthhack.impl.modules.movement.blocklag.ListenerTick;
 import me.earth.earthhack.impl.modules.render.logoutspots.mode.MessageMode;
 import me.earth.earthhack.impl.modules.render.logoutspots.util.LogoutSpot;
 import me.earth.earthhack.impl.util.helpers.render.BlockESPModule;
@@ -48,11 +49,11 @@ public class LogoutSpots extends BlockESPModule
     public LogoutSpots()
     {
         super("LogoutSpots", Category.Render);
-        // this.listeners.add(new ListenerDisconnect(this));
-        // this.listeners.add(new ListenerJoin(this));
-        // this.listeners.add(new ListenerLeave(this));
-        // this.listeners.add(new ListenerRender(this));
-        // this.listeners.add(new ListenerTick(this));
+        this.listeners.add(new ListenerDisconnect(this));
+        this.listeners.add(new ListenerJoin(this));
+        this.listeners.add(new ListenerLeave(this));
+        this.listeners.add(new ListenerRender(this));
+        this.listeners.add(new ListenerTick(this));
         this.color.setValue(new Color(255, 0, 0, 255));
         this.outline.setValue(new Color(255, 0, 0, 255));
         this.unregister(this.height);

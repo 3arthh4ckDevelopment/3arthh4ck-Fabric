@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-
 // TODO: One Mutable.BlockPos for the MainThread
 // TODO: One Mutable Box (aabb) for the MainThread
 // TODO: One Frustum for the MainThread
@@ -257,6 +256,25 @@ public class RenderUtil implements Globals {
         float normalSqrt = MathHelper.sqrt(xNormal * xNormal + yNormal * yNormal + zNormal * zNormal);
 
         return new Vector3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt);
+    }
+
+    public static void color(Color color)
+    {
+        color(color.getRed() / 255.0f,
+                color.getGreen() / 255.0f,
+                color.getBlue() / 255.0f,
+                color.getAlpha() / 255.0f);
+    }
+
+    public static void color(int color)
+    {
+        float[] color4f = ColorUtil.toArray(color);
+        RenderSystem.setShaderColor(color4f[0], color4f[1], color4f[2], color4f[3]);
+    }
+
+    public static void color(float r, float g, float b, float a)
+    {
+        RenderSystem.setShaderColor(r, g, b, a);
     }
 
     public static void startRender()
