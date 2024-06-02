@@ -36,6 +36,7 @@
     "render.MixinHeldItemRenderer",
     "render.MixinLightmapTextureManager",
     "render.MixinWorldRenderer",
+    "render.MixinCamera",
     "util.ITimer",
     "util.MixinClickEvent",
     "util.MixinGameOptions",
