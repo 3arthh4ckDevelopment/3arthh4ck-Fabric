@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl.modules.misc.middleclick;
 
+import com.google.common.eventbus.Subscribe;
 import com.mojang.authlib.GameProfile;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
@@ -21,8 +22,13 @@ import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.EnderPearlItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.HitResult;
+import org.lwjgl.glfw.GLFW;
 
 public class MiddleClick extends Module {
 
@@ -44,7 +50,7 @@ public class MiddleClick extends Module {
         Press, Release
     }
 
-    private Runnable runnable;
+    private boolean isButtonPressed = false;
 
     public MiddleClick() {
         super("MCFRewrite", Category.Misc);
@@ -52,9 +58,9 @@ public class MiddleClick extends Module {
         this.listeners.add(new LambdaListener<>(ClickMiddleEvent.class, e -> e.setCancelled(cancelPickBlock.getValue())));
 
         this.listeners.add(new LambdaListener<>(KeyboardEvent.class, e -> {
-           if (e.getKey() == keyBind.getValue().getKey() && e.getEventState() == bindMode.getValue().equals(PressType.Press)) {
-               onClick();
-           }
+            if (e.getKey() == keyBind.getValue().getKey() && e.getEventState() == bindMode.getValue().equals(PressType.Press)) {
+                onClick();
+            }
         }));
 
         this.listeners.add(new LambdaListener<>(MouseEvent.class, e -> {
@@ -66,22 +72,38 @@ public class MiddleClick extends Module {
         this.setData(new MiddleClickData(this));
     }
 
+    @Subscribe
+    public void onPreTick() {
+        if (mc.currentScreen == null) {
+            long windowHandle = mc.getWindow().getHandle();
+            int mouseButtonState = GLFW.glfwGetMouseButton(windowHandle, GLFW.GLFW_MOUSE_BUTTON_MIDDLE);
+
+            if (mouseButtonState == GLFW.GLFW_PRESS) {
+                if (!isButtonPressed) {
+                    isButtonPressed = true;
+                    onClick();
+                }
+            } else {
+                isButtonPressed = false;
+            }
+        }
+    }
+
     private void onClick() {
         if (mc.player != null && mc.world != null && mc.crosshairTarget != null) {
-            switch (mc.crosshairTarget.getType()) {
+            HitResult result = mc.crosshairTarget;
+
+            switch (result.getType()) {
                 case ENTITY:
                     Entity entity = mc.targetedEntity;
                     if (entities.getValue() && entity instanceof PlayerEntity) {
-                        if (Managers.FRIENDS.contains((PlayerEntity) entity))
-                        {
+                        if (Managers.FRIENDS.contains((PlayerEntity) entity)) {
                             Managers.FRIENDS.remove(entity);
                             Managers.CHAT.sendDeleteMessage(
                                     TextColor.RED + entity.getName()
                                             + " unfriended.",
                                     entity.getName().getString(), ChatIDs.FRIEND);
-                        }
-                        else
-                        {
+                        } else {
                             GameProfile profile =
                                     ((PlayerEntity) entity).getGameProfile();
                             Managers.FRIENDS.add(
@@ -95,39 +117,33 @@ public class MiddleClick extends Module {
                     }
                     break;
                 case MISS:
-                    if (air.getValue() && mc.targetedEntity == null) {
-                        if (InventoryUtil.findHotbarItem(Items.ENDER_PEARL) != -1) {
+                    if (air.getValue() && result.getType() == HitResult.Type.MISS) {
+                        int pearlSlot = findPearlInHotbar();
+                        if (pearlSlot != -1) {
                             ChatUtil.sendMessage(Formatting.GREEN + "Throwing Ender Pearl....");
-                            this.runnable = () ->
-                            {
-                                int slot = InventoryUtil.findHotbarItem(Items.ENDER_PEARL);
-                                if (slot == -1) {
-                                    return;
-                                }
-
-                                Locks.acquire(Locks.PLACE_SWITCH_LOCK, () -> {
-                                    int lastSlot = mc.player.getInventory().selectedSlot;
-                                    InventoryUtil.switchTo(slot);
-
-                                    mc.interactionManager.interactItem(mc.player, InventoryUtil.getHand(slot));
-
-                                    InventoryUtil.switchTo(lastSlot);
-                                });
-                            };
+                            int oldSlot = mc.player.getInventory().selectedSlot;
+                            mc.player.getInventory().selectedSlot = pearlSlot;
+                            mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
+                            mc.player.getInventory().selectedSlot = oldSlot;
                         } else {
                             ChatUtil.sendMessage(Formatting.RED + "No Ender Pearl found!");
                         }
                     }
                     break;
             }
+        }
+    }
 
-            if (runnable != null
-                    && Managers.ROTATION.getServerPitch() == mc.player.pitch
-                    && Managers.ROTATION.getServerYaw() == mc.player.yaw)
-            {
-                this.runnable.run();
-                this.runnable = null;
+    private boolean isItemStackPearl(ItemStack itemStack) {
+        return itemStack.getItem() instanceof EnderPearlItem;
+    }
+
+    private int findPearlInHotbar() {
+        for (int index = 0; index < 9; index++) {
+            if (isItemStackPearl(mc.player.getInventory().getStack(index))) {
+                return index;
             }
         }
+        return -1;
     }
 }
