@@ -16,7 +16,7 @@ Because of bloat, some of the more complicated Settings are hidden by default. Y
 
 # ⚠️ WARNING: The client is not complete. Many modules don't work or crash the client! ⚠️
 
-This is different from [Phobot](https://github.com/3arthqu4ke/phobot) and the new [PingBypass](https://github.com/3arthqu4ke/pingbypass) system from 3arthqu4ke
+This is 3arthh4ck, this is NOT related to [Phobot](https://github.com/3arthqu4ke/phobot) or the new [PingBypass](https://github.com/3arthqu4ke/pingbypass) by 3arthqu4ke 
 
 ### Pingbypass
-The pingbypass system is not implemented yet
+The PingBypass system is not implemented yet

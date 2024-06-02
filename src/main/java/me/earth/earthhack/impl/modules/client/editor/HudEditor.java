@@ -10,6 +10,7 @@ import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.LambdaListener;
+import me.earth.earthhack.impl.gui.click.component.impl.StringComponent;
 import me.earth.earthhack.impl.gui.hud.HudEditorGui;
 import me.earth.earthhack.impl.util.render.hud.HudRainbow;
 import me.earth.earthhack.impl.util.text.TextColor;
@@ -26,7 +27,7 @@ public class HudEditor extends Module {
             register(new EnumSetting<>("Rainbow", HudRainbow.None));
     public final Setting<Color> color =
             register(new ColorSetting("Color", Color.WHITE));
-    public final Setting<Boolean> shadow = // TODO!!
+    public final Setting<Boolean> shadow =
             register(new BooleanSetting("Shadow", false));
     public final Setting<TextColor> bracketsColor =
             register(new EnumSetting<>("BracketsColor", TextColor.None));
@@ -50,11 +51,12 @@ public class HudEditor extends Module {
             }
         }));
 
-        /*
         brackets.addObserver(e -> {
             StringBuilder b = new StringBuilder();
             for (char c : brackets.getValue().toCharArray()) {
-                 b.append(StringComponent.isAllowedCharacter(c));
+                if (StringComponent.isAllowedCharacter(c)) {
+                    b.append(c);
+                }
             }
             String start, end;
             if (b.toString().contains(":")) {
@@ -69,7 +71,6 @@ public class HudEditor extends Module {
                 brackets.setValue(brackets.getInitial());
             }
         });
-*/
     }
 
     public final String[] getBrackets() {

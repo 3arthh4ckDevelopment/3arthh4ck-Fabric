@@ -5,6 +5,7 @@
   "priority": 2147483645,
   "mixinPriority": 2147483645,
   "client": [
+    "MixinClientWorld",
     "MixinMinecraftClient",
     "MixinWorld",
     "block.MixinSlimeBlock",
@@ -32,6 +33,7 @@
     "network.server.IEntityVelocityUpdateS2CPacket",
     "network.server.IExplosionS2CPacket",
     "network.server.IPlayerPositionLookS2CPacket",
+    "render.MixinHeldItemRenderer",
     "render.MixinLightmapTextureManager",
     "render.MixinWorldRenderer",
     "util.ITimer",
@@ -39,8 +41,7 @@
     "util.MixinGameOptions",
     "util.MixinHoverEvent",
     "util.MixinKeyBinding",
-    "util.MixinText",
-    "MixinClientWorld"
+    "util.MixinText"
   ],
   "injectors": {
     "defaultRequire": 1,

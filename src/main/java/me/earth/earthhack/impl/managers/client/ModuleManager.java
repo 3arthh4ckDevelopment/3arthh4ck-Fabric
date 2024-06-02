@@ -9,11 +9,11 @@ import me.earth.earthhack.api.register.exception.CantUnregisterException;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.event.events.client.PostInitEvent;
 import me.earth.earthhack.impl.modules.Caches;
-import me.earth.earthhack.impl.modules.client.RenderTest;
 import me.earth.earthhack.impl.modules.client.accountspoof.AccountSpoof;
 import me.earth.earthhack.impl.modules.client.anticheat.AntiCheat;
 import me.earth.earthhack.impl.modules.client.autoconfig.AutoConfig;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
+import me.earth.earthhack.impl.modules.client.colors.Colors;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.modules.client.compatibility.Compatibility;
 import me.earth.earthhack.impl.modules.client.configs.ConfigModule;
@@ -42,6 +42,7 @@ import me.earth.earthhack.impl.modules.misc.antipackets.AntiPackets;
 import me.earth.earthhack.impl.modules.misc.antipotion.AntiPotion;
 import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
 import me.earth.earthhack.impl.modules.misc.chat.Chat;
+import me.earth.earthhack.impl.modules.misc.middleclick.MiddleClick;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
 import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
@@ -85,17 +86,13 @@ public class ModuleManager extends IterationRegister<Module>
     {
         Earthhack.getLogger().info("Initializing ModuleSorting.");
 
-        this.forceRegister(new RenderTest());
-
-
-
         /* ----- CLIENT ----- */
         this.forceRegister(new AccountSpoof());
         this.forceRegister(new AntiCheat());
         this.forceRegister(new AutoConfig());
         // this.forceRegister(new Capes());
         this.forceRegister(new ClickGui());
-        // this.forceRegister(new Colors());
+        this.forceRegister(new Colors());
         this.forceRegister(new Commands());
         this.forceRegister(new SettingsModule());
         this.forceRegister(new ConfigModule());
@@ -149,7 +146,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new ChorusControl());
         // this.forceRegister(new ExtraTab());
         // this.forceRegister(new Logger());
-        // this.forceRegister(new MCF());
+        this.forceRegister(new MiddleClick());
         // this.forceRegister(new MobOwner());
         // this.forceRegister(new NoAFK());
         // this.forceRegister(new NoHandShake());
