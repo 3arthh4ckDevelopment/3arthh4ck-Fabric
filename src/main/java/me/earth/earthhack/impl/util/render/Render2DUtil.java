@@ -13,6 +13,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
 
@@ -287,7 +288,10 @@ public class Render2DUtil implements Globals {
             itemStack.setCount(1);
         String count = TextUtil.numberFormatter(itemStack.getCount());
         context.drawItem(itemStack, x, y, zLevel);
-
+        context.getMatrices().push();
+        // DrawContext:509
+        context.getMatrices().translate(0,0,157);
         Managers.TEXT.drawStringWithShadow(context, count, x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
+        context.getMatrices().pop();
     }
 }

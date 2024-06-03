@@ -340,36 +340,36 @@ public class Surround extends ObbyModule
         Set<BlockPos> blocked = new HashSet<>();
         BlockPos playerPos = getPlayerPos();
         if (HoleUtil.isHole(playerPos, false)[0]
-            || center.getValue() && !setPosition
-            || extend.getValue() == 1
-            || !extendingWatch.passed(eDelay.getValue()))
+                || center.getValue() // && !setPosition
+                || extend.getValue() == 1
+                || !extendingWatch.passed(eDelay.getValue()))
         {
             blocked.add(playerPos);
         }
         else
         {
             List<BlockPos> unfiltered =
-                new ArrayList<>(PositionUtil.getBlockedPositions(getPlayer()))
-                    .stream()
-                    .sorted(Comparator.comparingDouble(pos ->
-                                                           BlockUtil.getDistanceSq(getPlayer(), pos)))
-                    .collect(Collectors.toList());
+                    new ArrayList<>(PositionUtil.getBlockedPositions(getPlayer()))
+                            .stream()
+                            .sorted(Comparator.comparingDouble(pos ->
+                                    BlockUtil.getDistanceSq(getPlayer(), pos)))
+                            .toList();
 
             List<BlockPos> filtered =
-                new ArrayList<>(unfiltered)
-                    .stream()
-                    .filter(pos ->
-                                mc.world
-                                    .getBlockState(pos)
-                                    .isReplaceable()
-                                    && mc.world
-                                    .getBlockState(pos.up())
-                                    .isReplaceable())
-                    .collect(Collectors.toList());
+                    new ArrayList<>(unfiltered)
+                            .stream()
+                            .filter(pos ->
+                                    mc.world
+                                            .getBlockState(pos)
+                                            .isReplaceable()
+                                            && mc.world
+                                            .getBlockState(pos.up())
+                                            .isReplaceable())
+                            .collect(Collectors.toList());
 
             if (extend.getValue() == 3
-                && filtered.size() == 2
-                && unfiltered.size() == 4)
+                    && filtered.size() == 2
+                    && unfiltered.size() == 4)
             {
                 // Prevents that a pos like this
                 // (x == block, o == air, i = player):
@@ -379,7 +379,7 @@ public class Surround extends ObbyModule
                 //                                   x i
                 //
                 if (unfiltered.get(0).equals(filtered.get(0))
-                    && unfiltered.get(3).equals(filtered.get(1)))
+                        && unfiltered.get(3).equals(filtered.get(1)))
                 {
                     filtered.clear();
                     filtered.add(playerPos);
@@ -387,7 +387,7 @@ public class Surround extends ObbyModule
             }
 
             if (extend.getValue() == 2 && filtered.size() > 2
-                || extend.getValue() == 3 && filtered.size() == 3)
+                    || extend.getValue() == 3 && filtered.size() == 3)
             {
                 // Prevents that a pos like this
                 // (x == block, o == air, i = player):
@@ -500,9 +500,9 @@ public class Surround extends ObbyModule
         Set<BlockPos> surrounding = new HashSet<>();
         for (BlockPos pos : blocked)
         {
-            for (Direction facing : Direction.HORIZONTAL)
+            for (Direction direction : Direction.HORIZONTAL)
             {
-                BlockPos offset = pos.offset(facing);
+                BlockPos offset = pos.offset(direction);
                 if (!blocked.contains(offset))
                 {
                     surrounding.add(offset);
@@ -531,19 +531,19 @@ public class Surround extends ObbyModule
                 for (PlayerEntity player : players)
                 {
                     if (player == null
-                        || (noSelfExtend.getValue() && player == mc.player)
-                        || PlayerUtil.isFakePlayer(player) // do we want this?
-                        || EntityUtil.isDead(player)
-                        || !BlockUtil.isBlocking(pos,
-                                                 player,
-                                                 blockingType.getValue()))
+                            || (noSelfExtend.getValue() && player == mc.player)
+                            || PlayerUtil.isFakePlayer(player) // do we want this?
+                            || EntityUtil.isDead(player)
+                            || !BlockUtil.isBlocking(pos,
+                            player,
+                            blockingType.getValue()))
                     {
                         continue;
                     }
 
-                    for (Direction facing : Direction.HORIZONTAL)
+                    for (Direction direction : Direction.HORIZONTAL)
                     {
-                        BlockPos offset = pos.offset(facing);
+                        BlockPos offset = pos.offset(direction);
                         if (blocked.contains(offset))
                         {
                             continue;
@@ -570,9 +570,9 @@ public class Surround extends ObbyModule
         if (noTrapBlock.getValue())
         {
             Set<BlockPos> trapBlocks =
-                surrounding.stream()
-                           .filter(pos -> isBlockingTrap(pos, players))
-                           .collect(Collectors.toSet());
+                    surrounding.stream()
+                            .filter(pos -> isBlockingTrap(pos, players))
+                            .collect(Collectors.toSet());
 
             if (!multiTrap.getValue() && trapBlocks.size() > 1)
             {
@@ -600,7 +600,7 @@ public class Surround extends ObbyModule
     public BlockPos getPlayerPos()
     {
         return deltaY.getValue() && Math.abs(getPlayer().getVelocity().getY()) > 0.1
-            ? new BlockPos(getPlayer().getBlockPos())
+            ? BlockPos.ofFloored(getPlayer().getPos())
             : PositionUtil.getPosition(getPlayer());
     }
 

@@ -17,7 +17,6 @@ import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -221,6 +220,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
             // if (!PingBypass.isConnected())
             // {
             Bus.EVENT_BUS.post(motionEvent);
+
             // }
         }
 
@@ -228,6 +228,42 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         {
             callbackInfo.cancel();
         }
+    }
+
+    /**
+    *    The original 3arthh4ck uses Redirect, but this may cause incompatibility with other cheats that also want to use redirect,
+    *    if the incompatibility becomes critical, then we will have to make a system of changing rotations/positions as in the old phobos,
+    *    that is, first remember the position/angle of the player, then before sync to set and then return that remembered after sync
+    */
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getX()D"))
+    private double getXRedirect(ClientPlayerEntity instance) {
+        return motionEvent.getX();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getY()D"))
+    private double getYRedirect(ClientPlayerEntity instance) {
+        return motionEvent.getY();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getZ()D"))
+    private double getZRedirect(ClientPlayerEntity instance) {
+        return motionEvent.getZ();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getYaw()F"))
+    private float getYawRedirect(ClientPlayerEntity instance) {
+        return motionEvent.getYaw();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getPitch()F"))
+    private float getPitchRedirect(ClientPlayerEntity instance) {
+        return motionEvent.getPitch();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z"))
+    private boolean isOnGroundRedirect(ClientPlayerEntity instance) {
+        return motionEvent.isOnGround();
     }
 
     @Inject(
@@ -274,65 +310,6 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
             }
         }
     }
-    @Redirect(
-            method = "sendMovementPackets",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/util/math/Vec3d;x:D"))
-    public double posXHook(Vec3d vector)
-    {
-        return motionEvent.getX();
-    }
-
-    // @Redirect(
-    //         method = "sendMovementPackets",
-    //         at = @At(
-    //                 value = "FIELD",
-    //                 target = "Lnet/minecraft/util/math/Vec3d;y:D"))
-    // public double minYHook(Vec3d vector)
-    // {
-    //     return motionEvent.getY();
-    // }
-
-    @Redirect(
-            method = "sendMovementPackets",
-            at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/util/math/Vec3d;z:D"))
-    public double posZHook(Vec3d vector)
-    {
-        return motionEvent.getZ();
-    }
-
-    // @Redirect(
-    //         method = "sendMovementPackets",
-    //         at = @At(
-    //                 value = "FIELD",
-    //                 target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastYaw:F"))
-    // public float rotationYawHook(ClientPlayerEntity entity)
-    // {
-    //     return motionEvent.getYaw();
-    // }
-
-    // @Redirect(
-    //         method = "sendMovementPackets",
-    //         at = @At(
-    //                 value = "FIELD",
-    //                 target = "Lnet/minecraft/client/network/ClientPlayerEntity;lastPitch:F"))
-    // public float rotationPitchHook(ClientPlayerEntity clientPlayerEntity)
-    // {
-    //     return motionEvent.getPitch();
-    // }
-
-    // @Redirect(
-    //         method = "sendMovementPackets",
-    //         at = @At(
-    //                 value = "FIELD",
-    //                 target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z"))
-    // public boolean onGroundHook(ClientPlayerEntity clientPlayerEntity)
-    // {
-    //     return motionEvent.isOnGround();
-    // }
 
     @Inject(
             method = "sendMovementPackets",
@@ -344,6 +321,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         MotionUpdateEvent event = new MotionUpdateEvent(Stage.POST, motionEvent);
         event.setCancelled(motionEvent.isCancelled());
         Bus.EVENT_BUS.postReversed(event, null);
+
         // }
     }
 

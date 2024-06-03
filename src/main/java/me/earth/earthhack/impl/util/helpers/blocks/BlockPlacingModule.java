@@ -41,6 +41,7 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -146,9 +147,7 @@ public abstract class BlockPlacingModule extends DisablingModule
                            float[] helpingRotations,
                            Vec3d hitVec)
     {
-        if (rotations == null && (rotate.getValue() == Rotate.Normal
-                || (blocksPlaced == 0
-                        && rotate.getValue() == Rotate.Packet)))
+        if (rotations == null && (rotate.getValue() == Rotate.Normal || (blocksPlaced == 0 && rotate.getValue() == Rotate.Packet)))
         {
             rotations = helpingRotations;
         }
@@ -254,8 +253,9 @@ public abstract class BlockPlacingModule extends DisablingModule
 
             if (!sneaking)
             {
-                NetworkUtil.send(new ClientCommandC2SPacket(mc.player,
-                        ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
+                // TODO: for some reason sneaking with a packets affects the camera, I have no idea yet
+                NetworkUtil.send(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
+
                 /*
                 PingBypass.sendToActualServer(
                     new CPacketEntityAction(
@@ -264,7 +264,9 @@ public abstract class BlockPlacingModule extends DisablingModule
                  */
             }
 
+            packets.forEach(NetworkUtil::send);
             // packets.forEach(PingBypass::sendToActualServer);
+
             timer.reset(delay.getValue());
 
             if (placeSwing.getValue() == PlaceSwing.Once)
@@ -274,8 +276,7 @@ public abstract class BlockPlacingModule extends DisablingModule
 
             if (!sneaking)
             {
-                NetworkUtil.send(new ClientCommandC2SPacket(mc.player,
-                        ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+                NetworkUtil.send(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
                 /*
                 PingBypass.sendToActualServer(
                     new CPacketEntityAction(

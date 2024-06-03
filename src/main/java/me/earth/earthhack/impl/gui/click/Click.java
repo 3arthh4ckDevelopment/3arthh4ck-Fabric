@@ -100,7 +100,12 @@ public class Click extends Screen {
             getFrames().add(hint);
 
             ModulesFrame pbFrame = new ModulesFrame("PingBypass", x, y + 200, 110, 16);
-            pbFrame.getComponents().add(new ModuleComponent(new SyncModule(), pbFrame.getPosX(), pbFrame.getPosY(), 0, pbFrame.getHeight() + 1, pbFrame.getWidth(), 14));
+
+            // java.lang.NoClassDefFoundError: me/earth/earthhack/pingbypass/modules/SyncModule
+            //	    at me.earth.earthhack.impl.modules.client.clickgui.ClickGui.lambda$new$7(ClickGui.java:152) ~[main/:?]
+            //
+            // pbFrame.getComponents().add(new ModuleComponent(new SyncModule(), pbFrame.getPosX(), pbFrame.getPosY(), 0, pbFrame.getHeight() + 1, pbFrame.getWidth(), 14));
+
             getFrames().add(pbFrame);
         }
 
