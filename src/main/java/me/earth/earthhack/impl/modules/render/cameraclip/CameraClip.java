@@ -11,15 +11,13 @@ import me.earth.earthhack.impl.util.client.SimpleData;
 /**
  * {@link MixinCamera}
  */
-public class CameraClip extends Module {
-
-    public final Setting<Boolean> extend =
-            register(new BooleanSetting("Extend", false));
-    public final Setting<Double> distance =
-            register(new NumberSetting<>("Distance", 10.0, 0.0, 50.0));
-
+public class CameraClip extends Module
+{
     public CameraClip() {
         super("CameraClip", Category.Render);
-        this.setData(new SimpleData(this, "Makes the camera clip through blocks in F5."));
+        register(new BooleanSetting("Extend", false));
+        register(new NumberSetting<>("Distance", 10.0, 0.0, 50.0));
+        this.setData(new SimpleData(this, "Makes the camera clip through " +
+                "blocks in F5."));
     }
 }
