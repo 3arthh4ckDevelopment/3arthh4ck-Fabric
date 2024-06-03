@@ -5,8 +5,6 @@ import me.earth.earthhack.api.module.data.DefaultData;
 public class ClickGuiData extends DefaultData<ClickGui> {
     public ClickGuiData(ClickGui module){
         super(module);
-        register(module.guiScale, "Sets the scale for the ClickGUI. This kinda works, if needed you can do" +
-                " +clickgui guiscale 1 and it's at the original setting");
         register(module.color, "Accent color for the ClickGUI.");
         register(module.catEars, "Draws very cute CatEars on the ClickGui.");
         register(module.blur, "Blurs the background of the ClickGui.\n" +
@@ -16,6 +14,7 @@ public class ClickGuiData extends DefaultData<ClickGui> {
         register(module.blurAmount, "Blur strength for Blur - Directional.");
         register(module.blurSize, "Size of the blur, for Blur - Directional.");
         register(module.scrollSpeed, "How fast the ClickGUI is scrolled through.");
+        register(module.scale, "Sets the scale for the ClickGUI");
         register(module.moduleBox, "Draws a thin outline to a modules settings.");
         register(module.description, "Whether or not the Description box should be drawn.");
         register(module.showBind, "Shows modules' bindings next to their names in the ClickGUI" +

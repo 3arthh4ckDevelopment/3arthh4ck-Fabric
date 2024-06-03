@@ -20,7 +20,6 @@ import me.earth.earthhack.impl.managers.client.ModuleManager;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
-import me.earth.earthhack.pingbypass.modules.SyncModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -83,10 +82,10 @@ public class Click extends Screen {
         for (Category moduleCategory : categories) {
             getFrames().add(new CategoryFrame(moduleCategory, moduleManager, x, y, 110, 16));
             if (x + 220 >= MinecraftClient.getInstance().getWindow().getScaledWidth()) {
-                x = CLICK_GUI.get().catEars.getValue() ? 14 * Math.round(CLICK_GUI.get().guiScale.getValue()) : 2;
-                y += CLICK_GUI.get().catEars.getValue() ? 32 * CLICK_GUI.get().guiScale.getValue() : 20;
+                x = CLICK_GUI.get().catEars.getValue() ? 14 : 2;
+                y += CLICK_GUI.get().catEars.getValue() ? 32  : 20;
             } else
-                x += (CLICK_GUI.get().catEars.getValue() ? 132 * CLICK_GUI.get().guiScale.getValue() : 112);
+                x += (CLICK_GUI.get().catEars.getValue() ? 132 : 112);
         }
 
         if (addDescriptionFrame) {
@@ -129,15 +128,17 @@ public class Click extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
+        float scale = CLICK_GUI.get().scale.getValue();
 
-        if (mc.world == null)
-        {
-            if (BACK.getValue())
-            {
+        context.getMatrices().scale(scale, scale, 1.0f);
+        context.drawTexture();
+
+        if (mc.world == null) {
+            System.out.println(scale);
+
+            if (BACK.getValue()) {
                 this.renderBackground(context, mouseX, mouseY, delta);
-            }
-            else
-            {
+            } else {
                 RenderSystem.disableCull();
                 // RenderSystem.disableFog();
                 Tessellator tessellator = Tessellator.getInstance();
@@ -145,9 +146,9 @@ public class Click extends Screen {
                 mc.getTextureManager().bindTexture(BLACK_PNG);
                 RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
                 bufferbuilder.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION_TEXTURE_COLOR);
-                bufferbuilder.vertex(0.0D, this.height, 0.0D).texture(0.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
-                bufferbuilder.vertex(this.width, this.height, 0.0D).texture((float)this.width / 32.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
-                bufferbuilder.vertex(this.width, 0.0D, 0.0D).texture((float)this.width / 32.0F, 0).color(64, 64, 64, 255).next();
+                bufferbuilder.vertex(0.0D, this.height, 0.0D).texture(0.0F, (float) this.height / 32.0F + (float) 0).color(64, 64, 64, 255).next();
+                bufferbuilder.vertex(this.width, this.height, 0.0D).texture((float) this.width / 32.0F, (float) this.height / 32.0F + (float) 0).color(64, 64, 64, 255).next();
+                bufferbuilder.vertex(this.width, 0.0D, 0.0D).texture((float) this.width / 32.0F, 0).color(64, 64, 64, 255).next();
                 bufferbuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0F, 0).color(64, 64, 64, 255).next();
                 GL11.glPushMatrix();
                 tessellator.draw();

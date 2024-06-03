@@ -32,7 +32,7 @@ public class ClickGui extends Module
                     .setComplexity(Complexity.Medium);
 
     /* ---------------- General -------------- */
-    public final Setting<Float> guiScale =
+    public final Setting<Float> scale =
             register(new NumberSetting<>("Scale", 1.0f, 0.6f, 1.4f));
     public final Setting<Boolean> simpleColors =
             register(new BooleanSetting("Simple-Color", true));
@@ -128,7 +128,7 @@ public class ClickGui extends Module
         this.setData(new ClickGuiData(this));
 
         new PageBuilder<>(this, pages)
-                .addPage(p -> p == Pages.General, guiScale, size)
+                .addPage(p -> p == Pages.General, scale, size)
                 .addPage(p -> p == Pages.Modules, styleBoxes, moduleBox)
                 .addPage(p -> p == Pages.Blur, blur, blurSize)
                 .addPage(p -> p == Pages.Colors, modulesColorsetting, textColorDescsetting)
@@ -172,7 +172,7 @@ public class ClickGui extends Module
         precision.setVisibility(false);
         searchWidth.setVisibility(false);
         new PageBuilder<>(this, pages)
-                .addPage(p -> p == Pages.General, guiScale, size)
+                .addPage(p -> p == Pages.General, scale, size)
                 .addPage(p -> p == Pages.Modules, styleBoxes, moduleBox)
                 .addPage(p -> p == Pages.Blur, blur, blurSize)
                 .addPage(p -> p == Pages.Colors, modulesColorsetting, textColorDescsetting)

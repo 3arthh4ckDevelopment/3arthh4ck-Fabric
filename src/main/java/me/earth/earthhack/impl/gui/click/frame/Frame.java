@@ -38,8 +38,8 @@ public class Frame {
         components.forEach(Component::init);
     }
 
-    public void moved(float posX,float posY) {
-        components.forEach(component -> component.moved(posX,posY));
+    public void moved(float posX, float posY) {
+        components.forEach(component -> component.moved(posX, posY));
     }
 
     public void drawScreen(DrawContext context, int mouseX, int mouseY, float partialTicks) {
@@ -47,31 +47,31 @@ public class Frame {
         if (isDragging()) {
             setPosX(mouseX + getLastPosX());
             setPosY(mouseY + getLastPosY());
-            getComponents().forEach(component -> component.moved(getPosX(),getPosY() + getScrollY()));
+            getComponents().forEach(component -> component.moved(getPosX(), getPosY() + getScrollY()));
         }
         if (getPosX() < 0) {
             setPosX(0);
-            getComponents().forEach(component -> component.moved(getPosX(),getPosY() + getScrollY()));
+            getComponents().forEach(component -> component.moved(getPosX(), getPosY() + getScrollY()));
         }
         if (getPosX() + getWidth() > scaledResolution.getScaledWidth()) {
             setPosX(scaledResolution.getScaledWidth() - getWidth());
-            getComponents().forEach(component -> component.moved(getPosX(),getPosY() + getScrollY()));
+            getComponents().forEach(component -> component.moved(getPosX(), getPosY() + getScrollY()));
         }
         if (getPosY() < 0) {
             setPosY(0);
-            getComponents().forEach(component -> component.moved(getPosX(),getPosY() + getScrollY()));
+            getComponents().forEach(component -> component.moved(getPosX(), getPosY() + getScrollY()));
         }
         if (getPosY() + getHeight() > scaledResolution.getScaledHeight()) {
             setPosY(scaledResolution.getScaledHeight() - getHeight());
-            getComponents().forEach(component -> component.moved(getPosX(),getPosY() + getScrollY()));
+            getComponents().forEach(component -> component.moved(getPosX(), getPosY() + getScrollY()));
         }
     }
 
-    public void charTyped(char character, int keyCode)  {
+    public void charTyped(char character, int keyCode) {
         if (isExtended()) getComponents().forEach(component -> component.charTyped(character, keyCode));
     }
 
-    public void keyPressed(int keyCode)  {
+    public void keyPressed(int keyCode) {
         if (isExtended()) getComponents().forEach(component -> component.keyPressed(keyCode));
     }
 
@@ -82,19 +82,19 @@ public class Frame {
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY(), getWidth(), getHeight());
         switch (mouseButton) {
-            case 0:
+            case 0 -> {
                 if (hovered) {
                     setDragging(true);
-                    setLastPosX((float) (getPosX() - mouseX * CLICK_GUI.get().guiScale.getValue()));
-                    setLastPosY((float) (getPosY() - mouseY * CLICK_GUI.get().guiScale.getValue()));
+                    setLastPosX((float) (getPosX() - mouseX));
+                    setLastPosY((float) (getPosY() - mouseY));
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if (hovered)
                     setExtended(!isExtended());
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 
@@ -116,15 +116,15 @@ public class Frame {
     }
 
     public float getWidth() {
-        return width * CLICK_GUI.get().guiScale.getValue();
+        return width;
     }
 
     public float getHeight() {
-        return height * CLICK_GUI.get().guiScale.getValue();
+        return height;
     }
 
     public float getPosX() {
-        return posX * CLICK_GUI.get().guiScale.getValue();
+        return posX;
     }
 
     public void setPosX(float posX) {
@@ -132,7 +132,7 @@ public class Frame {
     }
 
     public float getPosY() {
-        return posY * CLICK_GUI.get().guiScale.getValue();
+        return posY;
     }
 
     public void setPosY(float posY) {
