@@ -164,7 +164,7 @@ public enum SpeedMode implements Globals
 
                         module.boost = !module.boost;
                     } else {
-                        if ((mc.world.getBlockCollisions(null,
+                        if ((mc.world.getBlockCollisions(mc.player,
                                 mc.player
                                         .getBoundingBox()
                                         .offset(0.0, mc.player.getVelocity().getY(), 0.0)).iterator().hasNext() // this is shit, crashes the game for some reason
