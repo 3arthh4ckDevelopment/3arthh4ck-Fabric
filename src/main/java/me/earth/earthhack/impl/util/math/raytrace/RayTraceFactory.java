@@ -10,6 +10,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.*;
+import net.minecraft.util.shape.VoxelShape;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -110,7 +111,8 @@ public class RayTraceFactory implements Globals
                                double res)
     {
         Vec3d start = PositionUtil.getEyePos(from);
-        Box bb = state.getCollisionShape(access, on).getBoundingBox();
+        VoxelShape shape = state.getCollisionShape(access, on);
+
         if (res >= 1.0)
         {
             float[] r = rots(on, facing, from, access, state);
@@ -133,8 +135,10 @@ public class RayTraceFactory implements Globals
 
             return new Ray(result, r, on, facing, null).setLegit(true);
         }
-        else
+        else if(!shape.isEmpty())
         {
+            Box bb = shape.getBoundingBox();
+
             Vec3i dirVec = facing.getVector(); //TODO: check
             double dirX = dirVec.getX() < 0
                     ? bb.minX

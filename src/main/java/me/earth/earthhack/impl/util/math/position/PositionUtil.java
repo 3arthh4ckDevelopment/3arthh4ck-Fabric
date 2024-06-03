@@ -38,7 +38,7 @@ public class PositionUtil implements Globals
             y = Math.ceil(entity.getY());
         }
 
-        return new BlockPos((int) entity.getX(), (int) y, (int) entity.getZ());
+        return BlockPos.ofFloored(entity.getX(), y, entity.getZ());
     }
 
     public static Vec3d getEyePos()
@@ -82,10 +82,10 @@ public class PositionUtil implements Globals
             y = Math.ceil(bb.minY);
         }
 
-        positions.add(new BlockPos((int) bb.maxX, (int) y, (int) bb.maxZ));
-        positions.add(new BlockPos((int) bb.minX, (int) y, (int) bb.minZ));
-        positions.add(new BlockPos((int) bb.maxX, (int) y, (int) bb.minZ));
-        positions.add(new BlockPos((int) bb.minX, (int) y, (int) bb.maxZ));
+        positions.add(BlockPos.ofFloored(bb.maxX, y, bb.maxZ));
+        positions.add(BlockPos.ofFloored(bb.minX, y, bb.minZ));
+        positions.add(BlockPos.ofFloored(bb.maxX, y, bb.minZ));
+        positions.add(BlockPos.ofFloored(bb.minX, y, bb.maxZ));
 
         return positions;
     }
@@ -168,9 +168,9 @@ public class PositionUtil implements Globals
 
     public static BlockPos fromBB(Box bb)
     {
-        return new BlockPos((int) (bb.minX + bb.maxX) / 2,
-                (int)(bb.minY + bb.maxY) / 2,
-                (int) (bb.minZ + bb.maxZ) / 2);
+        return BlockPos.ofFloored((bb.minX + bb.maxX) / 2,
+                (bb.minY + bb.maxY) / 2,
+                 (bb.minZ + bb.maxZ) / 2);
     }
 
     public static boolean intersects(Box bb, BlockPos pos)
