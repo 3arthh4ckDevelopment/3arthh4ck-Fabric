@@ -131,10 +131,8 @@ public class Click extends Screen {
         float scale = CLICK_GUI.get().scale.getValue();
 
         context.getMatrices().scale(scale, scale, 1.0f);
-        context.drawTexture();
 
         if (mc.world == null) {
-            System.out.println(scale);
 
             if (BACK.getValue()) {
                 this.renderBackground(context, mouseX, mouseY, delta);
