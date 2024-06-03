@@ -5,10 +5,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.ducks.network.IClientPlayNetworkHandler;
 import me.earth.earthhack.impl.core.ducks.network.IPlayerInteractEntityC2S;
+import me.earth.earthhack.impl.core.mixins.network.INetworkState;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.NetworkState;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
@@ -22,12 +24,11 @@ import net.minecraft.util.math.Vec3d;
 @SuppressWarnings({"unused", "ConstantConditions"})
 public class PacketUtil implements Globals
 {
-    // public static Set<Class<? extends Packet<?>>> getAllPackets() // TODO: do what
+    // public static Set<Class<? extends Packet<?>>> getAllPackets()
     // {
-    //     // TODO TODOTODOTODOTODOTODOTODO
-    //     return ((IEnumConnectionState) a.HANDSHAKING)
-    //             .getStatesByClass()
-    //             .keySet();
+    //     return ((INetworkState) NetworkState.HANDSHAKING)
+    //            .getPacketHandlers()
+    //            .values();
     // }
 
     public static void handlePosLook(PlayerPositionLookS2CPacket packetIn,
