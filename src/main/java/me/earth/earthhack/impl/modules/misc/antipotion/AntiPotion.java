@@ -7,6 +7,7 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.registry.Registries;
 
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class AntiPotion extends Module
         super("AntiPotion", Category.Misc);
         AntiPotionData data = new AntiPotionData(this);
         this.setData(data);
-        for (StatusEffect effect : effects)
+        for (StatusEffect effect : Registries.STATUS_EFFECT.stream().toList())
         {
             boolean value = effect == StatusEffects.LEVITATION;
             String name = getPotionString(effect);
@@ -34,41 +35,4 @@ public class AntiPotion extends Module
     {
         return effect.getName().getString();
     }
-
-    private static final Set<StatusEffect> effects = Sets.newHashSet(
-            StatusEffects.SPEED,
-            StatusEffects.SLOWNESS,
-            StatusEffects.HASTE,
-            StatusEffects.MINING_FATIGUE,
-            StatusEffects.STRENGTH,
-            StatusEffects.INSTANT_HEALTH,
-            StatusEffects.INSTANT_DAMAGE,
-            StatusEffects.JUMP_BOOST,
-            StatusEffects.NAUSEA,
-            StatusEffects.REGENERATION,
-            StatusEffects.RESISTANCE,
-            StatusEffects.FIRE_RESISTANCE,
-            StatusEffects.WATER_BREATHING,
-            StatusEffects.INVISIBILITY,
-            StatusEffects.BLINDNESS,
-            StatusEffects.NIGHT_VISION,
-            StatusEffects.HUNGER,
-            StatusEffects.WEAKNESS,
-            StatusEffects.POISON,
-            StatusEffects.WITHER,
-            StatusEffects.HEALTH_BOOST,
-            StatusEffects.ABSORPTION,
-            StatusEffects.SATURATION,
-            StatusEffects.GLOWING,
-            StatusEffects.LEVITATION,
-            StatusEffects.LUCK,
-            StatusEffects.UNLUCK,
-            StatusEffects.SLOW_FALLING,
-            StatusEffects.CONDUIT_POWER,
-            StatusEffects.DOLPHINS_GRACE,
-            StatusEffects.BAD_OMEN,
-            StatusEffects.HERO_OF_THE_VILLAGE,
-            StatusEffects.DARKNESS
-    );
-
 }
