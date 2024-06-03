@@ -50,6 +50,7 @@
   },
   "mixins": [
     "network.INetworkState",
+    "network.server.MixinNetworkState",
     "world.MixinChunk"
   ]
 }
