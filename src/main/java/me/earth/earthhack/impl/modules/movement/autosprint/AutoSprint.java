@@ -18,16 +18,11 @@ public class AutoSprint extends Module
 {
     protected final Setting<SprintMode> mode =
             register(new EnumSetting<>("Mode", SprintMode.Rage));
-    protected final Setting<Boolean> faceDirection =
-            register(new BooleanSetting("RotationSync", false));
-
     public AutoSprint()
     {
         super("Sprint", Category.Movement);
         this.listeners.add(new LambdaListener<>(
                 UpdateEvent.class, e -> onTick()));
-        this.listeners.add(new LambdaListener<>(
-                MotionUpdateEvent.class, this::onMotion));
         this.setData(new AutoSprintData(this));
     }
 
@@ -48,12 +43,6 @@ public class AutoSprint extends Module
     public SprintMode getMode()
     {
         return mode.getValue();
-    }
-
-    public void onMotion(MotionUpdateEvent event) {
-        if (MovementUtil.isMoving()) {
-            event.setYaw(mc.player.getMovementDirection().asRotation());
-        }
     }
 
     public void onTick()
