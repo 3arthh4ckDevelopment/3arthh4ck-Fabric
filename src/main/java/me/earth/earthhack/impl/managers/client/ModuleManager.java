@@ -23,6 +23,7 @@ import me.earth.earthhack.impl.modules.client.editor.HudEditor;
 import me.earth.earthhack.impl.modules.client.management.Management;
 import me.earth.earthhack.impl.modules.client.media.Media;
 import me.earth.earthhack.impl.modules.client.notifications.Notifications;
+import me.earth.earthhack.impl.modules.client.pingbypass.PingBypassModule;
 import me.earth.earthhack.impl.modules.client.rpc.RPC;
 import me.earth.earthhack.impl.modules.client.safety.Safety;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
@@ -107,6 +108,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Notifications());
         this.forceRegister(new Compatibility());
         this.forceRegister(new Safety());
+        this.forceRegister(new PingBypassModule());
         // this.forceRegister(new ServerModule());
         // this.forceRegister(new TabModule());
         this.forceRegister(new Media());

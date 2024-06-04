@@ -284,14 +284,13 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawItem(DrawContext context, ItemStack itemStack, int x, int y, int zLevel) {
-        if (itemStack.getCount() <= 0)
-            itemStack.setCount(1);
         String count = TextUtil.numberFormatter(itemStack.getCount());
         context.drawItem(itemStack, x, y, zLevel);
         context.getMatrices().push();
         // DrawContext:509
         context.getMatrices().translate(0,0,157);
-        Managers.TEXT.drawStringWithShadow(context, count, x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
+        if (itemStack.getCount() > 0)
+            Managers.TEXT.drawStringWithShadow(context, count, x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
         context.getMatrices().pop();
     }
 }

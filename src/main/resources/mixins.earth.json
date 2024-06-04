@@ -49,8 +49,7 @@
     "maxShiftBy": 10
   },
   "mixins": [
-    "network.INetworkState",
-    "network.server.MixinNetworkState",
+    "network.MixinNetworkState",
     "world.MixinChunk"
   ]
 }

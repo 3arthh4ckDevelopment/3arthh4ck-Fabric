@@ -33,7 +33,10 @@ public class KeybindComponent extends SettingComponent<Bind, BindSetting> {
         else
             Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + 5, getFinishedY() + 1.5f, getFinishedX() + getWidth() - 5.5f, getFinishedY() + getHeight() - 1, 0.5f, hovered ? 0x66333333 : 0, 0xff000000);
 
-        drawStringWithShadow(isBinding() ? "Press a key..." : getBindSetting().getName() + ": " + Formatting.GRAY+ getBindSetting().getValue(), getFinishedX() + 6.5f, getFinishedY() + getHeight() - Managers.TEXT.getStringHeightI() - 1f, 0xFFFFFFFF);
+        drawStringWithShadow(isBinding()
+                ? "Press a key..."
+                : getBindSetting().getName() + ": " + Formatting.GRAY + getBindSetting().getValue(),
+                    getFinishedX() + 6.5f, getFinishedY() + getHeight() - Managers.TEXT.getStringHeightI() - 1f, 0xFFFFFFFF);
     }
 
     @Override

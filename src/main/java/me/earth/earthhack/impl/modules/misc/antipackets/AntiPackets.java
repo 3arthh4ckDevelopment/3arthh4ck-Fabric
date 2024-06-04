@@ -12,6 +12,8 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.gui.visibility.NumberPageBuilder;
 import me.earth.earthhack.impl.gui.visibility.Visibilities;
 import me.earth.earthhack.impl.modules.misc.antipackets.util.Page;
+import me.earth.earthhack.impl.util.network.PacketUtil;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -30,7 +32,6 @@ public class AntiPackets extends Module
     private final Setting<Boolean> unknown;
     private int settings;
 
-    @SuppressWarnings("unchecked")
     public AntiPackets()
     {
         super("AntiPackets", Category.Misc);
@@ -44,7 +45,7 @@ public class AntiPackets extends Module
         AntiPacketData data = new AntiPacketData(this);
         this.setData(data);
 
-        /*
+
         for (Class<? extends Packet<?>> clazz : PacketUtil.getAllPackets())
         {
             // we skip inner classes, we get them anyway with outer name
@@ -52,8 +53,8 @@ public class AntiPackets extends Module
             {
                 continue;
             }
-            String simpleName = MappingProvider.getClassMapping(clazz);
-            boolean side = simpleName.startsWith("S");
+            String simpleName = FabricLoader.getInstance().getMappingResolver().unmapClassName("yarn", clazz.getName());
+            boolean side = simpleName.endsWith("S2CPacket");
             getMap(side).put(clazz, new BooleanSetting(
                                         formatPacketName(simpleName),
                                         false));
@@ -62,7 +63,7 @@ public class AntiPackets extends Module
             {
                 if (inner.getSuperclass() == clazz)
                 {
-                    String sin = MappingProvider.simpleName(inner);
+                    String sin = FabricLoader.getInstance().getMappingResolver().unmapClassName("yarn", inner.getName());
                     BooleanSetting s = new BooleanSetting(
                                     formatPacketName(simpleName)
                                     + "-"
@@ -73,7 +74,7 @@ public class AntiPackets extends Module
                 }
             }
         }
-        */
+
         EnumSetting<Page> pageEnumSetting =
                 register(new EnumSetting<>("Page", Page.CPackets));
 
@@ -91,7 +92,7 @@ public class AntiPackets extends Module
         registerSettings(sortedS, data);
 
         Setting<Integer> sPacketPages =
-            NumberPageBuilder.autoPage(this, "SPackets", 8, sortedS)
+            NumberPageBuilder.autoPage(this, "S2CPackets", 8, sortedS)
                              .withConversion(Visibilities::andComposer)
                              .reapplyConversion()
                              .setPagePositionAfter("Page")
@@ -100,7 +101,7 @@ public class AntiPackets extends Module
                              .getPageSetting();
 
         Setting<Integer> cPacketPages =
-            NumberPageBuilder.autoPage(this, "CPackets", 8, sortedC)
+            NumberPageBuilder.autoPage(this, "C2SPackets", 8, sortedC)
                              .withConversion(Visibilities::andComposer)
                              .reapplyConversion()
                              .setPagePositionAfter("Page")
@@ -193,8 +194,7 @@ public class AntiPackets extends Module
     {
         if (name.endsWith("S2CPacket") || name.endsWith("C2SPacket"))
         {
-            // needs to be made but ill make it later I guess
-            return name.charAt(0) + name.substring(7);
+            return name.charAt(0) + name.substring(name.split("Packet")[0].length() - 3);
         }
 
         return name;
