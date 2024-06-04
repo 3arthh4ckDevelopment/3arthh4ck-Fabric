@@ -10,9 +10,11 @@ import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.events.network.PreMotionUpdateEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.compatibility.Compatibility;
+import me.earth.earthhack.impl.modules.misc.portals.Portals;
 import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -40,8 +42,8 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     @Unique
     private static final ModuleCache<XCarry> XCARRY =
             Caches.getModule(XCarry.class);
-    // private static final ModuleCache<Portals> PORTALS =
-    //         Caches.getModule(Portals.class);
+     private static final ModuleCache<Portals> PORTALS =
+             Caches.getModule(Portals.class);
     // private static final SettingCache<Boolean, BooleanSetting, Portals> CHAT =
     //         Caches.getSetting(Portals.class, BooleanSetting.class, "Chat", true);
     @Unique
@@ -309,6 +311,19 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
                 onGround = motionEvent.isInitialOnGround();
             }
         }
+    }
+
+    @Redirect(
+            method = "updateNausea",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"))
+    private Screen updateNauseaGetCurrentScreenProxy(MinecraftClient client) {
+        if (PORTALS.isEnabled())
+        {
+            return null;
+        }
+        return mc.currentScreen;
     }
 
     @Inject(

@@ -46,6 +46,7 @@ import me.earth.earthhack.impl.modules.misc.chat.Chat;
 import me.earth.earthhack.impl.modules.misc.middleclick.MiddleClick;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
+import me.earth.earthhack.impl.modules.misc.portals.Portals;
 import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
 import me.earth.earthhack.impl.modules.movement.antimove.NoMove;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
@@ -160,7 +161,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Nuker());
         // this.forceRegister(new Packets());
         this.forceRegister(new PingSpoof());
-        // this.forceRegister(new Portals());
+        this.forceRegister(new Portals());
         // this.forceRegister(new SettingSpoof());
         // this.forceRegister(new SkinBlink());
         // this.forceRegister(new Spammer());
