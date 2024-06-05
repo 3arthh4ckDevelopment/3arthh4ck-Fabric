@@ -19,12 +19,13 @@
     "gui.MixinChatHud",
     "gui.MixinChatHudLine",
     "gui.MixinInGameHud",
+    "gui.MixinPlayerListHud",
     "gui.MixinTitleScreen",
     "input.MixinKeyboard",
     "network.MixinClientConnection",
     "network.MixinClientPlayNetworkHandler",
     "network.client.ILoginHelloC2SPacket",
-    "network.client.IPlayerMoveC2S",
+    "network.client.IPlayerMoveC2SPacket",
     "network.client.MixinInteractAtHandler",
     "network.client.MixinPlayerActionC2S",
     "network.client.MixinPlayerInteractEntityC2S",
@@ -49,7 +50,11 @@
     "maxShiftBy": 10
   },
   "mixins": [
+    "item.IFoodComponent",
     "network.MixinNetworkState",
+    "network.client.IClientOptionsC2SPacket",
+    "network.client.IPlayerInteractBlockC2SPacket",
+    "util.IBlockHitResult",
     "world.MixinChunk"
   ]
 }

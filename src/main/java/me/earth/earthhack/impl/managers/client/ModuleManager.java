@@ -39,14 +39,27 @@ import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
 import me.earth.earthhack.impl.modules.combat.offhand.Offhand;
 import me.earth.earthhack.impl.modules.combat.surround.Surround;
 import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
+import me.earth.earthhack.impl.modules.misc.antiaim.AntiAim;
 import me.earth.earthhack.impl.modules.misc.antipackets.AntiPackets;
 import me.earth.earthhack.impl.modules.misc.antipotion.AntiPotion;
+import me.earth.earthhack.impl.modules.misc.autoeat.AutoEat;
 import me.earth.earthhack.impl.modules.misc.autolog.AutoLog;
+import me.earth.earthhack.impl.modules.misc.autoreconnect.AutoReconnect;
+import me.earth.earthhack.impl.modules.misc.autorespawn.AutoRespawn;
+import me.earth.earthhack.impl.modules.misc.buildheight.BuildHeight;
 import me.earth.earthhack.impl.modules.misc.chat.Chat;
+import me.earth.earthhack.impl.modules.misc.extratab.ExtraTab;
 import me.earth.earthhack.impl.modules.misc.middleclick.MiddleClick;
+import me.earth.earthhack.impl.modules.misc.mobowner.MobOwner;
+import me.earth.earthhack.impl.modules.misc.noafk.NoAFK;
+import me.earth.earthhack.impl.modules.misc.nointeract.NoInteract;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
+import me.earth.earthhack.impl.modules.misc.nosoundlag.NoSoundLag;
+import me.earth.earthhack.impl.modules.misc.packetdelay.PacketDelay;
 import me.earth.earthhack.impl.modules.misc.pingspoof.PingSpoof;
 import me.earth.earthhack.impl.modules.misc.portals.Portals;
+import me.earth.earthhack.impl.modules.misc.settingspoof.SettingSpoof;
+import me.earth.earthhack.impl.modules.misc.skinblink.SkinBlink;
 import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
 import me.earth.earthhack.impl.modules.movement.antimove.NoMove;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
@@ -73,6 +86,7 @@ import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import me.earth.earthhack.impl.modules.player.speedmine.Speedmine;
 import me.earth.earthhack.impl.modules.player.suicide.Suicide;
 import me.earth.earthhack.impl.modules.player.timer.Timer;
+import me.earth.earthhack.impl.modules.player.truedurability.TrueDurability;
 import me.earth.earthhack.impl.modules.player.xcarry.XCarry;
 import me.earth.earthhack.impl.modules.render.ambience.Ambience;
 import me.earth.earthhack.impl.modules.render.breakesp.BreakESP;
@@ -138,38 +152,36 @@ public class ModuleManager extends IterationRegister<Module>
 
         /* ------ MISC ------ */
         this.forceRegister(new Announcer());
-        // this.forceRegister(new AntiAim());
+        this.forceRegister(new AntiAim());
         this.forceRegister(new AntiPackets());
         this.forceRegister(new AntiPotion());
         // this.forceRegister(new AntiVanish());
-        // this.forceRegister(new AutoEat());
+        this.forceRegister(new AutoEat());
         this.forceRegister(new AutoLog());
-        // this.forceRegister(new AutoReconnect());
-        // this.forceRegister(new AutoRespawn());
-        // this.forceRegister(new BuildHeight());
+        this.forceRegister(new AutoReconnect());
+        this.forceRegister(new AutoRespawn());
+        this.forceRegister(new BuildHeight());
         this.forceRegister(new Chat());
-        // this.forceRegister(new ChorusControl());
-        // this.forceRegister(new ExtraTab());
+        this.forceRegister(new ExtraTab());
         // this.forceRegister(new Logger());
         this.forceRegister(new MiddleClick());
-        // this.forceRegister(new MobOwner());
-        // this.forceRegister(new NoAFK());
+        this.forceRegister(new MobOwner());
+        this.forceRegister(new NoAFK());
         // this.forceRegister(new NoHandShake());
-        // this.forceRegister(new NoInteract());
+        this.forceRegister(new NoInteract());
         this.forceRegister(new NoInterp());
-        // this.forceRegister(new NoSoundLag());
+        this.forceRegister(new NoSoundLag());
         // this.forceRegister(new Nuker());
         // this.forceRegister(new Packets());
         this.forceRegister(new PingSpoof());
         this.forceRegister(new Portals());
-        // this.forceRegister(new SettingSpoof());
-        // this.forceRegister(new SkinBlink());
+        this.forceRegister(new SettingSpoof());
+        this.forceRegister(new SkinBlink());
         // this.forceRegister(new Spammer());
         // this.forceRegister(new ToolTips());
         // this.forceRegister(new TpsSync());
         this.forceRegister(new Tracker());
-        // this.forceRegister(new TrueDurability());
-        // this.forceRegister(new PacketDelay());
+        this.forceRegister(new PacketDelay());
 
 
         // this.forceRegister(new Anchor());
@@ -228,6 +240,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Suicide());
         // this.forceRegister(new Swing());
         this.forceRegister(new Timer());
+        this.forceRegister(new TrueDurability()); // TODO
         this.forceRegister(new XCarry());
 
 

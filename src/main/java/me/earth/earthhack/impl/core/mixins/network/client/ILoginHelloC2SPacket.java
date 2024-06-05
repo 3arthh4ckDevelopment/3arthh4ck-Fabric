@@ -12,9 +12,9 @@ public interface ILoginHelloC2SPacket
 {
     @Mutable
     @Accessor(value = "name")
-    void setName(String name);
+    void earthhack$setName(String name);
 
     @Mutable
     @Accessor(value = "profileId")
-    void setUuid(UUID profileId);
+    void earthhack$setUuid(UUID profileId);
 }
