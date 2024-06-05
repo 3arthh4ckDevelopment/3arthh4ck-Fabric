@@ -19,7 +19,6 @@
     "gui.MixinChatHud",
     "gui.MixinChatHudLine",
     "gui.MixinInGameHud",
-    "gui.MixinPlayerListHud",
     "gui.MixinTitleScreen",
     "input.MixinKeyboard",
     "network.MixinClientConnection",
