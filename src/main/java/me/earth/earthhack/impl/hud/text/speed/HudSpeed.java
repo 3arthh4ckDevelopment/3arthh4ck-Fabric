@@ -18,12 +18,12 @@ public class HudSpeed extends HudElement {
     private final Setting<String> name =
             register(new StringSetting("CustomName", "Speed"));
 
-    private String speed = "";
+    private String text = "";
 
     protected void onRender(DrawContext context) {
-        double speedValue = MathUtil.round((blocksPerSecond.getValue() ? Managers.SPEED.getSpeed() * 0.621371 : Managers.SPEED.getSpeed()), 2);
-        speed = name.getValue() + " " + TextColor.GRAY + speedValue + (blocksPerSecond.getValue() ? "bps" : "km/h");
-        HudRenderUtil.renderText(context, speed, getX(), getY());
+        String speed = String.format("%.2f", (blocksPerSecond.getValue() ? Managers.SPEED.getSpeed() * 0.621371 : Managers.SPEED.getSpeed()));
+        text = name.getValue() + " " + TextColor.GRAY + speed + (blocksPerSecond.getValue() ? "bps" : "km/h");
+        HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
     public HudSpeed() {
@@ -32,7 +32,7 @@ public class HudSpeed extends HudElement {
 
     @Override
     public float getWidth() {
-        return Managers.TEXT.getStringWidth(speed.trim());
+        return Managers.TEXT.getStringWidth(text.trim());
     }
 
     @Override

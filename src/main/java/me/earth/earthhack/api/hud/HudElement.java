@@ -242,7 +242,7 @@ public abstract class HudElement extends SettingContainer
     }
 
     public float getX() {
-        return x.getValue();
+        return MathHelper.clamp(x.getValue(), 0, mc.getWindow().getScaledWidth() - width);
     }
 
     public void setX(float x) {
