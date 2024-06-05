@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl;
 
+import me.earth.earthhack.impl.core.Core;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
 import net.fabricmc.api.ClientModInitializer;
@@ -19,12 +20,13 @@ public class Earthhack implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        // Core CORE = new Core();
         startMS = System.currentTimeMillis();
         LOGGER.info("\n\n ------------------ Initializing 3arthh4ck-fabric. ------------------ \n");
+        new Core();
         Managers.load();
         LOGGER.info("Prefix is " + Commands.getPrefix());
         LOGGER.info("\n\n ------------------ 3arthh4ck-fabric initialized. ------------------ \n");
+
         NetworkState networkState = NetworkState.PLAY;
     }
 

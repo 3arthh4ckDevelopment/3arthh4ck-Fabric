@@ -86,7 +86,6 @@ public class Keyboard {
                 return 346;
         }
         try {
-            System.out.println("key.keyboard." + string + " Code: " + InputUtil.fromTranslationKey("key.keyboard." + string).getCode());
             return InputUtil.fromTranslationKey("key.keyboard." + string).getCode();
         } catch (NumberFormatException exception) {
             return -1;

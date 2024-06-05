@@ -6,7 +6,6 @@ accessible method net/minecraft/client/gui/screen/multiplayer/ConnectScreen <ini
 accessible class net/minecraft/client/MinecraftClient$LoadingContext
 accessible field net/minecraft/client/gui/screen/Screen drawables Ljava/util/List;
 
-
 # BlockBox (mutable bb)
 accessible field net/minecraft/util/math/BlockBox minX I
 accessible field net/minecraft/util/math/BlockBox minY I
@@ -22,10 +21,11 @@ accessible method net/minecraft/text/Style <init> (Lnet/minecraft/text/TextColor
 accessible method net/minecraft/client/gui/screen/ChatScreen setText (Ljava/lang/String;)V
 
 # Network
+accessible class net/minecraft/network/NetworkState$PacketHandlerInitializer
+accessible method net/minecraft/network/NetworkState$PacketHandler getPacketIdToPacketMap ()Lit/unimi/dsi/fastutil/ints/Int2ObjectMap;
 accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler
 accessible field net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket ATTACK Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler; # this is ugly
 accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractAtHandler
-
 
 # Entity fields (this is ugly, remove if possible)
 accessible field net/minecraft/entity/Entity yaw F
@@ -49,6 +49,3 @@ accessible field net/minecraft/client/Mouse leftButtonClicked Z
 accessible field net/minecraft/client/option/SimpleOption callbacks Lnet/minecraft/client/option/SimpleOption$Callbacks;
 accessible field net/minecraft/client/option/GameOptions enabledPlayerModelParts Ljava/util/Set;
 mutable field net/minecraft/client/option/SimpleOption callbacks Lnet/minecraft/client/option/SimpleOption$Callbacks;
-
-accessible class net/minecraft/network/NetworkState$PacketHandlerInitializer
-accessible method net/minecraft/network/NetworkState$PacketHandler getPacketIdToPacketMap ()Lit/unimi/dsi/fastutil/ints/Int2ObjectMap;

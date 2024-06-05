@@ -15,24 +15,24 @@ import java.io.File;
 
 /**
  * 3arthh4ck's Core.
- * I will port the transformers if they are found
- * to be necessary, as it's a pain with Fabric.
  */
 public class Core {
     /** Logger for the Core. */
     public static final Logger LOGGER = LogManager.getLogger("3arthh4ck-Core");
 
     /** Load the core */
-    public Core() {
-        init(getClass().getClassLoader());
+    public Core() { //TODO: initialize this earlier!
+        if (PluginManager.getInstance().getConfigs().values().isEmpty()) {
+            init();
+        } else {
+            throw new RuntimeException("3arthh4ck core is already initialized!");
+        }
     }
 
     /**
      * Initialize the Core.
-     * @param pluginClassLoader PluginClassLoader for loading Plugins.
      */
-    private void init(ClassLoader pluginClassLoader)
-    {
+    private void init() {
         LOGGER.info("Found Environment: " + FabricLoader.getInstance().getEnvironmentType());
         Bus.EVENT_BUS.subscribe(Scheduler.getInstance());
 
@@ -44,7 +44,7 @@ public class Core {
         if (!plugins.exists())
             plugins.mkdir();
 
-        PluginManager.getInstance().createPluginConfigs(pluginClassLoader);
+        PluginManager.getInstance().createPluginConfigs(getClass().getClassLoader());
 
         MixinBootstrap.init();
         MixinEnvironment.getEnvironment(MixinEnvironment.Phase.DEFAULT)

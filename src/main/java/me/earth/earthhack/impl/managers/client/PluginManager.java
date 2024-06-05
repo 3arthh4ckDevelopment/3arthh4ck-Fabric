@@ -6,12 +6,11 @@ import me.earth.earthhack.api.plugin.PluginConfig;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.Core;
 import me.earth.earthhack.impl.managers.client.exception.BadPluginException;
-import me.earth.earthhack.impl.util.misc.ReflectionUtil;
+import net.fabricmc.loader.impl.launch.FabricLauncherBase;
 
 import java.io.File;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
-import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +41,7 @@ public class PluginManager
     }
 
     /**
-     * Used by {@link Core#init(ClassLoader)}.
+     * Used by {@link Core#Core()}.
      * Scans the "earthhack/plugins" and the "mods" folders for Plugins.
      * If it can find jarFiles whose Manifest contain a
      * "3arthh4ckConfig" the jar will be added to the classPath
@@ -52,14 +51,7 @@ public class PluginManager
      *
      * @param pluginClassLoader the classLoader to load Plugins with.
      */
-    public void createPluginConfigs(ClassLoader pluginClassLoader)
-    {
-        if (!(pluginClassLoader instanceof URLClassLoader))
-        {
-            throw new IllegalArgumentException("PluginClassLoader was not" +
-                    " an URLClassLoader, but: "
-                    + pluginClassLoader.getClass().getName());
-        }
+    public void createPluginConfigs(ClassLoader pluginClassLoader) {
 
         this.classLoader = pluginClassLoader;
         Core.LOGGER.info("PluginManager: Scanning for PluginConfigs.");
@@ -133,8 +125,8 @@ public class PluginManager
                     + config.getMainClass());
             try
             {
-                Class<?> clazz = Class.forName(config.getMainClass());
-                Constructor<?> constructor = clazz.getConstructor();
+                Class<?> loadedClass = classLoader.loadClass(config.getMainClass());
+                Constructor<?> constructor = loadedClass.getConstructor();
                 constructor.setAccessible(true);
                 Plugin plugin = (Plugin) constructor.newInstance();
                 plugins.put(config, plugin);
@@ -163,8 +155,8 @@ public class PluginManager
                 throw new BadPluginException(jarFile.getName() + ": Manifest doesn't provide a 3arthh4ckConfig!");
             }
 
-            // ._.
-            ReflectionUtil.addToClassPath((URLClassLoader) pluginClassLoader, file);
+            // >:D
+            FabricLauncherBase.getLauncher().addToClassPath(file.toPath());
 
             PluginConfig config = Jsonable.GSON.fromJson(
                     new InputStreamReader(
