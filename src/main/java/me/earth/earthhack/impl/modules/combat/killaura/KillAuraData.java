@@ -28,7 +28,6 @@ final class KillAuraData extends EntityTypeData<KillAura>
         register(module.stopSprint, "Stops sprinting when attacking.");
         register(module.stopShield, "Hold rightclick to block.");
         register(module.whileEating, "Allows you to hit while eating.");
-        register(module.render, "Whether or not to render something on the targeted player.");
         register(module.stay, "Keeps rotations. " +
                 "Recommended when using Soft or Rotation-Ticks.");
         register(module.rotationTicks, "Ticks to stay rotated " +
@@ -62,7 +61,7 @@ final class KillAuraData extends EntityTypeData<KillAura>
         register(module.ridingTeleports,
                 "Allows teleports when riding an Entity.");
         register(module.efficient, "Very smart.");
-        register(module.cancelEntityEquip, "Cancels SPacketEntityEquipment.");
+        register(module.cancelEntityEquip, "Cancels EntityEquipmentUpdateS2CPacket.");
         register(module.tpInfo,
                 "Displays ArrayList info even when not attacking.");
     }

@@ -19,16 +19,13 @@ public class Earthhack implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        //Core CORE = new Core();
+        // Core CORE = new Core();
         startMS = System.currentTimeMillis();
         LOGGER.info("\n\n ------------------ Initializing 3arthh4ck-fabric. ------------------ \n");
         Managers.load();
         LOGGER.info("Prefix is " + Commands.getPrefix());
         LOGGER.info("\n\n ------------------ 3arthh4ck-fabric initialized. ------------------ \n");
-
         NetworkState networkState = NetworkState.PLAY;
-
-
     }
 
     public static Logger getLogger() {

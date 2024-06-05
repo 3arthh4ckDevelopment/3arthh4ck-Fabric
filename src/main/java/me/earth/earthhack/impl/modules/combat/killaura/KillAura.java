@@ -7,7 +7,6 @@ import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.modules.combat.killaura.util.AuraRender;
 import me.earth.earthhack.impl.modules.combat.killaura.util.AuraSwitch;
 import me.earth.earthhack.impl.modules.combat.killaura.util.AuraTarget;
 import me.earth.earthhack.impl.modules.combat.killaura.util.AuraTeleport;
@@ -66,12 +65,6 @@ public class KillAura extends EntityTypeModule
         register(new BooleanSetting("AutoBlock", true));
     protected final Setting<Boolean> whileEating =
         register(new BooleanSetting("While-Eating", true));
-    protected final Setting<Boolean> render =
-            register(new BooleanSetting("Render", false));
-    protected final Setting<AuraRender> renderMode =
-            register(new EnumSetting<>("Render-Mode", AuraRender.None));
-    protected final Setting<Color> renderColor =
-            register(new ColorSetting("Color", new Color(255, 255, 255, 255)));
     protected final Setting<Boolean> stay =
         register(new BooleanSetting("Stay", false));
     protected final Setting<Float> soft =
@@ -139,10 +132,10 @@ public class KillAura extends EntityTypeModule
     public KillAura()
     {
         super("KillAura", Category.Combat);
-        // this.listeners.add(new ListenerMotion(this));
-        // this.listeners.add(new ListenerRiding(this));
-        // this.listeners.add(new ListenerGameLoop(this));
-        // this.listeners.add(new ListenerEntityEquipment(this));
+        this.listeners.add(new ListenerMotion(this));
+        this.listeners.add(new ListenerRiding(this));
+        this.listeners.add(new ListenerGameLoop(this));
+        this.listeners.add(new ListenerEntityEquipment(this));
         this.setData(new KillAuraData(this));
     }
 

@@ -28,8 +28,8 @@ final class ListenerLoginStart extends ModuleListener<AccountSpoof, PacketEvent.
             ChatUtil.sendMessageScheduled(TextColor.RED + "Bad UUID for AccountSpoof: " + e.getMessage(), module.getName());
             uuid = UUID.randomUUID();
         }
-        loginAccessor.setName(module.accountName.getValue());
-        loginAccessor.setUuid(uuid);
+        loginAccessor.earthhack$setName(module.accountName.getValue());
+        loginAccessor.earthhack$setUuid(uuid);
     }
 
 }

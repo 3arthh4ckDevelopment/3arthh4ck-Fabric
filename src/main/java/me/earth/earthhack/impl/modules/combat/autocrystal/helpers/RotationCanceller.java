@@ -2,7 +2,7 @@ package me.earth.earthhack.impl.modules.combat.autocrystal.helpers;
 
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.mixins.network.client.IPlayerMoveC2S;
+import me.earth.earthhack.impl.core.mixins.network.client.IPlayerMoveC2SPacket;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
@@ -88,7 +88,7 @@ public class RotationCanceller implements Globals
         float pitch = Managers.ROTATION.getServerPitch();
         boolean onGround = last.isOnGround();
 
-        IPlayerMoveC2S accessor = (IPlayerMoveC2S) last;
+        IPlayerMoveC2SPacket accessor = (IPlayerMoveC2SPacket) last;
         float[] r = function.apply(x, y, z, yaw, pitch);
         if (r[0] - yaw == 0.0 || r[1] - pitch == 0.0)
         {

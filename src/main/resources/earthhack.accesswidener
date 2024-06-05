@@ -47,6 +47,7 @@ accessible field net/minecraft/client/Mouse leftButtonClicked Z
 
 # GameOptions
 accessible field net/minecraft/client/option/SimpleOption callbacks Lnet/minecraft/client/option/SimpleOption$Callbacks;
+accessible field net/minecraft/client/option/GameOptions enabledPlayerModelParts Ljava/util/Set;
 mutable field net/minecraft/client/option/SimpleOption callbacks Lnet/minecraft/client/option/SimpleOption$Callbacks;
 
 accessible class net/minecraft/network/NetworkState$PacketHandlerInitializer

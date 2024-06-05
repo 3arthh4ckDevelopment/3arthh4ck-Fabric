@@ -3,10 +3,12 @@ package me.earth.earthhack.impl.util.network;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.ducks.network.IClientPlayNetworkHandler;
 import me.earth.earthhack.impl.core.ducks.network.IPlayerInteractEntityC2S;
-import me.earth.earthhack.impl.core.mixins.network.INetworkState;
+import me.earth.earthhack.impl.core.ducks.network.INetworkState;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.modules.combat.autocrystal.util.EmptySet;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -21,15 +23,21 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Set;
+
 @SuppressWarnings({"unused", "ConstantConditions"})
 public class PacketUtil implements Globals
 {
-    // public static Set<Class<? extends Packet<?>>> getAllPackets()
-    // {
-    //     return ((INetworkState) NetworkState.HANDSHAKING)
-    //            .getPacketHandlers()
-    //            .values();
-    // }
+    public static Set<Class<? extends Packet<?>>> getAllPackets()
+    {
+        // TODO: fix this, it is chinese as hell right now
+        try {
+            return INetworkState.class.cast(NetworkState.class).earthhack$getPackets();
+        } catch (ClassCastException ex) {
+            Earthhack.getLogger().error("Failed to cast NetworkState to INetworkState!");
+        }
+        return new EmptySet<>();
+    }
 
     public static void handlePosLook(PlayerPositionLookS2CPacket packetIn,
                                      Entity entity,

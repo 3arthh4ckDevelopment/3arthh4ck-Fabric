@@ -1,7 +1,7 @@
 package me.earth.earthhack.impl.modules.movement.nofall;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.mixins.network.client.IPlayerMoveC2S;
+import me.earth.earthhack.impl.core.mixins.network.client.IPlayerMoveC2SPacket;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.PlayerMoveC2SPacketListener;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -47,13 +47,13 @@ final class ListenerPlayerPackets extends PlayerMoveC2SPacketListener
         {
             case Packet -> {
                 if (mc.player.fallDistance > 3.0F) {
-                    ((IPlayerMoveC2S) packet).setOnGround(true);
+                    ((IPlayerMoveC2SPacket) packet).setOnGround(true);
                     return;
                 }
             }
             case Anti -> {
                 if (mc.player.fallDistance > 3.0F) {
-                    ((IPlayerMoveC2S) packet).setY(
+                    ((IPlayerMoveC2SPacket) packet).setY(
                             mc.player.getY() + 0.10000000149011612);
                     return;
                 }
@@ -63,7 +63,7 @@ final class ListenerPlayerPackets extends PlayerMoveC2SPacketListener
                     mc.player.onGround = true;
                     mc.player.getAbilities().flying = true;
                     mc.player.getAbilities().allowFlying = true;
-                    ((IPlayerMoveC2S) packet).setOnGround(false);
+                    ((IPlayerMoveC2SPacket) packet).setOnGround(false);
                     mc.player.velocityModified = true;
                     mc.player.getAbilities().flying = false;
                     mc.player.jump();

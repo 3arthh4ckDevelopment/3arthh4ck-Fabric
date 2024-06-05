@@ -210,8 +210,8 @@ public class Offhand extends Module
                         || mc.player.getOffHandStack().getItem() ==
                                                         Items.TOTEM_OF_UNDYING))
             {
-                if (/*Mouse.isDown(1) TODO
-                        && */(OffhandMode.TOTEM.equals(mode)
+                if (mc.options.useKey.isPressed()
+                        && (OffhandMode.TOTEM.equals(mode)
                             || swordGapCrystal.getValue() && isCrystal)
                         && mc.currentScreen == null)
                 {
@@ -220,7 +220,7 @@ public class Offhand extends Module
                     swordGappedWithCrystal = isCrystal;
                 }
                 else if (swordGapped
-                            // TODO && !Mouse.isDown(1)
+                            && !mc.options.useKey.isPressed()
                             && OffhandMode.GAPPLE.equals(mode))
                 {
                     if (swordGappedWithCrystal)
@@ -262,7 +262,7 @@ public class Offhand extends Module
                                      .getItem() == Items.TOTEM_OF_UNDYING)
                     {
                         mc.interactionManager.clickSlot(
-                                0, tSlot, 0, SlotActionType.QUICK_MOVE, mc.player); // probably not correct TODO
+                                0, tSlot, 0, SlotActionType.QUICK_MOVE, mc.player);
                     }
                 });
 
