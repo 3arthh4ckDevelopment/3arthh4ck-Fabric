@@ -1,9 +1,9 @@
 package me.earth.earthhack.impl.core.mixins.network;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import me.earth.earthhack.impl.core.ducks.network.INetworkState;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.NetworkState;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.network.packet.Packet;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -43,7 +43,7 @@ public abstract class MixinNetworkState implements INetworkState {
 
         packetMap.forEach((id, packetClass) -> {
             PACKETS.add(packetClass);
-            System.out.println("  ID: " + id + ", Packet: " + packetClass.getName());
+            //System.out.println("  ID: " + id + ", Packet: " + packetClass.getName());
         });
     }
 

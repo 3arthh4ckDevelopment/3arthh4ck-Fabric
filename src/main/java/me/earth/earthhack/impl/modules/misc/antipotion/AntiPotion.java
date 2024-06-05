@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.modules.misc.antipotion;
 
-import com.google.common.collect.Sets;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.setting.Setting;
@@ -8,8 +7,6 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.registry.Registries;
-
-import java.util.Set;
 
 public class AntiPotion extends Module
 {

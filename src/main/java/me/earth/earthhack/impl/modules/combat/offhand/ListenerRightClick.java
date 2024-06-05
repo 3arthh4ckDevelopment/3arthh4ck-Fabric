@@ -5,7 +5,6 @@ import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 
 final class ListenerRightClick
         extends ModuleListener<Offhand, ClickBlockEvent.Right>

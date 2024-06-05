@@ -4,7 +4,6 @@ import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
-import me.earth.earthhack.impl.modules.client.customfont.mode.FontStyle;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.nanovg.NVGColor;

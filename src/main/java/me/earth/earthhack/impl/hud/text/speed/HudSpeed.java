@@ -6,7 +6,6 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.StringSetting;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.render.hud.HudRenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
