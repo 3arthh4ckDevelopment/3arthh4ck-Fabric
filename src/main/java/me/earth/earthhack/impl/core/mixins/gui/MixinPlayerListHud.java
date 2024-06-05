@@ -47,19 +47,19 @@ public abstract class MixinPlayerListHud {
     @Unique private int maxPingOffset;
     @Shadow @Final private static Comparator<PlayerListEntry> ENTRY_ORDERING;
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Redirect(
-            method = "collectPlayerEntries()Ljava/util/List;",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/util/stream/Stream;limit(J)Ljava/util/stream/Stream;",
-                    remap = false))
-    public Stream<PlayerListEntry> collectPlayerEntriesHook(Stream instance, long l)
-    {
-        // I have a feeling this won't work...
-        return instance.sorted(ENTRY_ORDERING).limit(EXTRA_TAB.returnIfPresent(e ->
-                Math.min(e.getSize((int) l), instance.toList().size()), l).longValue());
-    }
+    // @SuppressWarnings({"unchecked", "rawtypes"})
+    // @Redirect(
+    //         method = "collectPlayerEntries()Ljava/util/List;",
+    //         at = @At(
+    //                 value = "INVOKE",
+    //                 target = "Ljava/util/stream/Stream;limit(J)Ljava/util/stream/Stream;",
+    //                 remap = false))
+    // public Stream<PlayerListEntry> collectPlayerEntriesHook(Stream instance, long l)
+    // {
+    //     // I have a feeling this won't work...
+    //     return instance.sorted(ENTRY_ORDERING).limit(EXTRA_TAB.returnIfPresent(e ->
+    //             Math.min(e.getSize((int) l), 80), l).longValue());
+    // }
 
     @Inject(method = "render", at = @At("HEAD"))
     private void renderPlayerlistHeadHook(DrawContext context,
