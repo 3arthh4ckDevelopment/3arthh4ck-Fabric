@@ -27,6 +27,8 @@ public class HudEditor extends Module {
             register(new EnumSetting<>("Rainbow", HudRainbow.None));
     public final Setting<Color> color =
             register(new ColorSetting("Color", Color.WHITE));
+    public final Setting<Boolean> matchColor =
+            register(new BooleanSetting("MatchColors", false));
     public final Setting<Boolean> shadow =
             register(new BooleanSetting("Shadow", false));
     public final Setting<TextColor> bracketsColor =

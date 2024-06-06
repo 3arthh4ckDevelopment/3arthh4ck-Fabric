@@ -35,7 +35,7 @@ public class Armor extends HudElement {
                         context.getMatrices().scale(1.0f, 1.0f, 1.0f);
                         context.getMatrices().pop();
                 }
-                Render2DUtil.drawItem(context, stack, (int) x, (int) getY(), getZ());
+                Render2DUtil.drawItem(context, stack, (int) x, (int) getY(), true);
                 x += 18;
             }
         }

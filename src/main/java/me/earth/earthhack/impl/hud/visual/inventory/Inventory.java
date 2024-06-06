@@ -44,7 +44,7 @@ public class Inventory extends HudElement {
             int iY = y + (i / 9) * (18);
             ItemStack itemStack = items.get(i + 9);
             if (!itemStack.isEmpty())
-                Render2DUtil.drawItem(context, itemStack, iX, iY, getZ());
+                Render2DUtil.drawItem(context, itemStack, iX, iY, true);
         }
 
         if (xCarry) {
@@ -52,7 +52,7 @@ public class Inventory extends HudElement {
                 int iX = x + ((i + 4) % 9) * (18);
                 ItemStack itemStack = mc.player.getInventory().getStack(i);
                 if (!itemStack.isEmpty())
-                    Render2DUtil.drawItem(context, itemStack, iX, y, getZ());
+                    Render2DUtil.drawItem(context, itemStack, iX, y, true);
             }
         }
     }

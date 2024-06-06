@@ -2,10 +2,14 @@ package me.earth.earthhack.impl.util.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.TextUtil;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
+import me.earth.earthhack.impl.modules.Caches;
+import me.earth.earthhack.impl.modules.client.customfont.FontMod;
+import me.earth.earthhack.impl.modules.client.editor.HudEditor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.network.PlayerListEntry;
@@ -29,6 +33,9 @@ public class Render2DUtil implements Globals {
     public static int getScreenHeight() {
         return mc.getWindow().getHeight();
     }
+    private static final ModuleCache<HudEditor> HUD_EDITOR =
+            Caches.getModule(HudEditor.class);
+
 
     public static void drawBlurryRect(MatrixStack matrix, float x, float y, float x1, float y1, int intensity, float size) {
         drawRect(
@@ -282,14 +289,43 @@ public class Render2DUtil implements Globals {
         InventoryScreen.drawEntity(context, x, y, x, y, playerScale, 0.0625F, mc.player.yaw, mc.player.pitch, player); //TODO: fix
     }
 
+    @Deprecated
     public static void drawItem(DrawContext context, ItemStack itemStack, int x, int y, int zLevel) {
+        if (itemStack.getCount() <= 0)
+            itemStack.setCount(1);
         String count = TextUtil.numberFormatter(itemStack.getCount());
+
         context.drawItem(itemStack, x, y, zLevel);
-        context.getMatrices().push();
-        // DrawContext:509
-        context.getMatrices().translate(0,0,157);
-        if (itemStack.getCount() > 0)
-            Managers.TEXT.drawStringWithShadow(context, count, x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
-        context.getMatrices().pop();
+
+        if (!Caches.getModule(FontMod.class).isEnabled()) {
+            Managers.TEXT.drawStringWithShadow(context, count,
+                    x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
+        } else {
+            context.drawItemInSlot(mc.textRenderer, itemStack, x, y);
+        }
+    }
+    // ^^^ screw you whoever made this instead of the old way (below), this is shit !!!
+
+    public static void drawItem(DrawContext context, ItemStack stack, int x, int y, boolean amount)
+    {
+        context.drawItem(stack, x, y, 1);
+
+        if (amount) {
+            String count = String.valueOf(stack.getCount());
+            if (Caches.getModule(FontMod.class).isEnabled()
+                    && stack.getCount() > 1)
+            {
+                Managers.TEXT.drawString(context, count,
+                        x + 19 - 2 - Managers.TEXT.getStringWidth(count), y + 9,
+                        HUD_EDITOR.get().matchColor.getValue()
+                                ? HUD_EDITOR.get().color.getValue().getRGB()
+                                : 0xffffffff,
+                        true);
+            }
+            else
+            {
+                context.drawItemInSlot(mc.textRenderer, stack, x, y);
+            }
+        }
     }
 }

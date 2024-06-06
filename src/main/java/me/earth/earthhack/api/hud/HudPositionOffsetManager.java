@@ -24,11 +24,9 @@ public class HudPositionOffsetManager extends SubscriberImpl {
             if (e.getScreen() instanceof ChatScreen && screen == null) {
                 screen = e.getScreen();
                 HudPositionOffsetManager.setEndY(HudPositionOffsetManager.getEndY() - 12);
-                System.out.println("Chat opened");
             } else if (screen != null) {
                 screen = null;
                 HudPositionOffsetManager.setEndY(HudPositionOffsetManager.getEndY() + 12);
-                System.out.println("Chat closed");
             }
         }));
     }

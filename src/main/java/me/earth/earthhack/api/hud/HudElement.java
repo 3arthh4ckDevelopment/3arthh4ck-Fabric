@@ -238,15 +238,15 @@ public abstract class HudElement extends SettingContainer
     }
 
     public String surroundWithBrackets(String text) {
-        return HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[0] + HudRenderUtil.getBracketsTextColor() + text + HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[1] + TextColor.WHITE;
+        return " " + HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[0] + HudRenderUtil.getBracketsTextColor() + text + HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[1] + TextColor.WHITE;
     }
 
     public float getX() {
-        return MathHelper.clamp(x.getValue(), 0, mc.getWindow().getScaledWidth() - width);
+        return MathHelper.clamp(x.getValue(), 0, mc.getWindow().getScaledWidth() - (width + 2));
     }
 
     public void setX(float x) {
-        this.x.setValue(MathHelper.clamp(x, 0, mc.getWindow().getScaledWidth() - width));
+        this.x.setValue(MathHelper.clamp(x, 0, mc.getWindow().getScaledWidth() - (width + 2)));
     }
 
     public float getY() {
