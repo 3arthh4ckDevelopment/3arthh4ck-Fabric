@@ -1,8 +1,10 @@
 package me.earth.earthhack.impl.core.mixins.entity.living.player;
 
 import me.earth.earthhack.api.cache.ModuleCache;
+import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.event.events.Stage;
+import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.impl.core.ducks.entity.IClientPlayerEntity;
 import me.earth.earthhack.impl.event.events.misc.UpdateEvent;
 import me.earth.earthhack.impl.event.events.movement.BlockPushEvent;
@@ -42,10 +44,12 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     @Unique
     private static final ModuleCache<XCarry> XCARRY =
             Caches.getModule(XCarry.class);
-     private static final ModuleCache<Portals> PORTALS =
-             Caches.getModule(Portals.class);
-    // private static final SettingCache<Boolean, BooleanSetting, Portals> CHAT =
-    //         Caches.getSetting(Portals.class, BooleanSetting.class, "Chat", true);
+    @Unique
+    private static final ModuleCache<Portals> PORTALS =
+            Caches.getModule(Portals.class);
+    @Unique
+    private static final SettingCache<Boolean, BooleanSetting, Portals> CHAT =
+            Caches.getSetting(Portals.class, BooleanSetting.class, "Chat", true);
     @Unique
     private static final ModuleCache<Compatibility> ROTATION_BYPASS =
             Caches.getModule(Compatibility.class);
@@ -238,32 +242,56 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     *    that is, first remember the position/angle of the player, then before sync to set and then return that remembered after sync
     */
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getX()D"))
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;getX()D"))
     private double getXRedirect(ClientPlayerEntity instance) {
         return motionEvent.getX();
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getY()D"))
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;getY()D"))
     private double getYRedirect(ClientPlayerEntity instance) {
         return motionEvent.getY();
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getZ()D"))
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;getZ()D"))
     private double getZRedirect(ClientPlayerEntity instance) {
         return motionEvent.getZ();
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getYaw()F"))
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;getYaw()F"))
     private float getYawRedirect(ClientPlayerEntity instance) {
         return motionEvent.getYaw();
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getPitch()F"))
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;getPitch()F"))
     private float getPitchRedirect(ClientPlayerEntity instance) {
         return motionEvent.getPitch();
     }
 
-    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z"))
+    @Redirect(
+            method = "sendMovementPackets",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z"))
     private boolean isOnGroundRedirect(ClientPlayerEntity instance) {
         return motionEvent.isOnGround();
     }
@@ -313,17 +341,30 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         }
     }
 
+    // @Redirect(
+    //         method = "updateNausea",
+    //         at = @At(
+    //                 value = "FIELD",
+    //                 target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"))
+    // private Screen updateNauseaGetCurrentScreenProxy(MinecraftClient client) {
+    //     if (PORTALS.isEnabled() && CHAT.getValue())
+    //     {
+    //         return null;
+    //     }
+    //     return client.currentScreen;
+    // }
+
     @Redirect(
             method = "updateNausea",
             at = @At(
-                    value = "FIELD",
-                    target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"))
-    private Screen updateNauseaGetCurrentScreenProxy(MinecraftClient client) {
-        if (PORTALS.isEnabled())
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/Screen;shouldPause()Z"))
+    public boolean shouldPauseHook(Screen instance) {
+        if (PORTALS.isEnabled() && CHAT.getValue())
         {
-            return null;
+            return true;
         }
-        return mc.currentScreen;
+        return instance.shouldPause();
     }
 
     @Inject(

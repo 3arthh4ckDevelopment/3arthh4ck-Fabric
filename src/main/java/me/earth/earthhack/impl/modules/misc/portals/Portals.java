@@ -13,6 +13,9 @@ public class Portals extends Module {
 
     public Portals() {
         super("Portals", Category.Misc);
+        this.listeners.add(new ListenerTeleport(this));
+        register(new BooleanSetting("Chat", true));
+        this.setData(new PortalsData(this));
     }
 
     @Override
