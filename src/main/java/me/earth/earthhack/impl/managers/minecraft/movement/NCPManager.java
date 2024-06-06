@@ -9,7 +9,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 
@@ -205,15 +205,15 @@ public class NCPManager extends SubscriberImpl implements Globals
         if (endedSneak)
         {
             endedSneak = false;
-            mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(
-                    PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, mc.player.getBlockPos(), null));
+            mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(
+                    mc.player, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
         }
 
         if (endedSprint)
         {
             endedSprint = false;
-            mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(
-                    PlayerActionC2SPacket.Action.START_DESTROY_BLOCK, mc.player.getBlockPos(), null));
+            mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(
+                    mc.player, ClientCommandC2SPacket.Mode.START_SPRINTING));
         }
     }
 
