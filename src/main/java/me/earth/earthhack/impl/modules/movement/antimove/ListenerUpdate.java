@@ -30,7 +30,8 @@ final class ListenerUpdate extends ModuleListener<NoMove, UpdateEvent>
         {
             if (!mc.player.noClip
                     && mc.player.getY() <= module.height.getValue()
-                    && !PACKET_FLY.isEnabled())
+                    && !PACKET_FLY.isEnabled()
+                    && mc.player.getAbilities().flying)
             {
                 final BlockHitResult trace = mc.world.raycast(
                         new RaycastContext(mc.player.getPos(),

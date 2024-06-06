@@ -147,7 +147,7 @@ public class CalculationMotion extends AbstractCalculation<CrystalDataMotion>
         Entity crystal = dataMotion.getCrystal();
         if (module.existed.getValue() != 0
                 && System.currentTimeMillis()
-                    - ((IEntity) crystal).getTimeStamp()
+                    - ((IEntity) crystal).earthhack$getTimeStamp()
                         + (module.pingExisted.getValue()
                             ? ServerUtil.getPingNoPingSpoof() / 2.0
                             : 0)

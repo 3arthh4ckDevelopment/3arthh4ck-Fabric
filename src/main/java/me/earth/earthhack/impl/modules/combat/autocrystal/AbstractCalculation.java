@@ -553,7 +553,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                     Swing.Packet.swing(Hand.MAIN_HAND);
                 }
                 if (module.pseudoSetDead.getValue()) {
-                    ((IEntity) entity).setPseudoDead(true);
+                    ((IEntity) entity).earthhack$setPseudoDead(true);
                 } else if (module.setDead.getValue()) {
                     Managers.SET_DEAD.setDead(entity);
                 }

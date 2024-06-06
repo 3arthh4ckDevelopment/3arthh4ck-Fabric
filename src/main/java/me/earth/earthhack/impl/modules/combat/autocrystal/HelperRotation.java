@@ -439,7 +439,7 @@ public class HelperRotation implements Globals
 
             if (module.pseudoSetDead.getValue())
             {
-                ((IEntity) entity).setPseudoDead(true);
+                ((IEntity) entity).earthhack$setPseudoDead(true);
             }
 
             if (module.setDead.getValue())

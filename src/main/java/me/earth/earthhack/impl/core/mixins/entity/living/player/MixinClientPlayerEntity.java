@@ -128,11 +128,11 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         this.sendMovementPackets();
     }
 
-    // @Override
-    // public boolean isNoInterping()
-    // {
-    //     return false;
-    // }
+    @Override
+    public boolean earthhack$isNoInterping()
+    {
+        return false;
+    }
 
     @Shadow
     protected abstract void sendMovementPackets();

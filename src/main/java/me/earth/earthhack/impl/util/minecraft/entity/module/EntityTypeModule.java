@@ -48,7 +48,7 @@ public class EntityTypeModule extends Module
             return false;
         }
 
-        return switch (((IEntity) entity).getType()) {
+        return switch (((IEntity) entity).earthhack$getType()) {
             case Animal -> animals.getValue();
             case Monster -> monsters.getValue();
             case Player -> players.getValue();

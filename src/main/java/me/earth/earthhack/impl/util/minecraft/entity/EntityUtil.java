@@ -28,7 +28,7 @@ public class EntityUtil implements Globals
     public static boolean isDead(Entity entity)
     {
         return !entity.isAlive()
-                || ((IEntity) entity).isPseudoDead()
+                || ((IEntity) entity).earthhack$isPseudoDead()
                 || entity instanceof LivingEntity
                 && ((LivingEntity) entity).getHealth() <= 0.0f;
     }

@@ -14,7 +14,7 @@ public class NoMove extends Module
     protected final Setting<StaticMode> mode =
             register(new EnumSetting<>("Mode", StaticMode.Stop));
     protected final Setting<Float> height    =
-            register(new NumberSetting<>("Height", 4.0f, 0.0f, 256.0f));
+            register(new NumberSetting<>("Height", 4.0f, -64.0f, 256.0f));
     protected final Setting<Boolean> timer    =
             register(new BooleanSetting("Timer", false));
 
@@ -31,6 +31,8 @@ public class NoMove extends Module
                 - Stop : Stops all movement while this module is enabled. Can be used to lag you back up when you fall.
                 - NoVoid : stops all movement if there's void underneath you.
                 - Roof : used to tp you up 120 blocks on certain servers.""");
+        data.register(height, "At which height to stop movement when using Mode - NoVoid." +
+                " Keep in mind that 1.12 servers have the void at Y level 0 and 1.17+ has it at Y level -64.");
         this.setData(data);
     }
 

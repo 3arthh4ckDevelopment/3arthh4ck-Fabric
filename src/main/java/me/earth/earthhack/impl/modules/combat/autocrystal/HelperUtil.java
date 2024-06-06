@@ -30,7 +30,7 @@ public class HelperUtil implements Globals
     {
         if (module.existed.getValue() != 0
                 && System.currentTimeMillis()
-                - ((IEntity) crystal).getTimeStamp()
+                - ((IEntity) crystal).earthhack$getTimeStamp()
                 + (module.pingExisted.getValue()
                 ? ServerUtil.getPingNoPingSpoof() / 2.0
                 : 0)
@@ -92,7 +92,7 @@ public class HelperUtil implements Globals
             {
                 if (module.pseudoSetDead.getValue())
                 {
-                    ((IEntity) entity).setPseudoDead(true);
+                    ((IEntity) entity).earthhack$setPseudoDead(true);
                 }
                 else
                 {

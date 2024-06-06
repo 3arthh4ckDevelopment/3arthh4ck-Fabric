@@ -49,7 +49,7 @@ final class ListenerTick extends ModuleListener<NoSlowDown, TickEvent>
                            ClientCommandC2SPacket.Mode.STOP_SPRINTING));
             }
 
-            if (((IEntity) mc.player).inWeb()
+            if (((IEntity) mc.player).earthhack$inWeb()
                     && !mc.player.isOnGround()
                     && module.useTimerWeb.getValue())
             {

@@ -15,7 +15,7 @@ final class ListenerMove extends ModuleListener<NoSlowDown, MoveEvent>
     @Override
     public void invoke(MoveEvent event)
     {
-        if (Managers.NCP.passed(250) && ((IEntity) mc.player).inWeb())
+        if (Managers.NCP.passed(250) && ((IEntity) mc.player).earthhack$inWeb())
         {
             if (mc.player.isOnGround())
             {

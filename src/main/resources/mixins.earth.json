@@ -49,6 +49,7 @@
     "maxShiftBy": 10
   },
   "mixins": [
+    "entity.MixinEndCrystalEntity",
     "item.IFoodComponent",
     "network.MixinNetworkState",
     "network.client.IClientOptionsC2SPacket",

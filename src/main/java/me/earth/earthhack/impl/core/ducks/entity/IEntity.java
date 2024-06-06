@@ -12,58 +12,58 @@ public interface IEntity extends Dummy
     /**
      * @return the isInWeb field.
      */
-    boolean inWeb();
+    boolean earthhack$inWeb();
 
     /**
      * @return the EntityType of this Entity.
      */
-    EntityType getType();
+    EntityType earthhack$getType();
 
     /**
      * @return time since this Entity has been set dead.
      */
-    long getDeathTime();
+    long earthhack$getDeathTime();
 
     /**
      * Alternative to !{@link net.minecraft.entity.Entity#isAlive()}.
      *
      * @return <tt>true</tt> if this Entity is Pseudo Dead.
      */
-    boolean isPseudoDead();
+    boolean earthhack$isPseudoDead();
 
     /**
-     * Makes {@link IEntity#isPseudoDead()} return the given value.
+     * Makes {@link IEntity#earthhack$isPseudoDead()} return the given value.
      *
      * @param pseudoDead the pseudoDeadState
      */
-    void setPseudoDead(boolean pseudoDead);
+    void earthhack$setPseudoDead(boolean pseudoDead);
 
     /**
      * @return the StopWatch used to Un-PseudoDead
      *         an Entity if it hasn't died after a time.
      */
-    StopWatch getPseudoTime();
+    StopWatch earthhack$getPseudoTime();
 
     /**
      * @return the {@link System#currentTimeMillis()}
      *         this Entity has been created on.
      */
-    long getTimeStamp();
+    long earthhack$getTimeStamp();
 
     @Override
-    default boolean isDummy()
+    default boolean earthhack$isDummy()
     {
         return false;
     }
 
-    void setDummy(boolean dummy);
+    void earthhack$setDummy(boolean dummy);
 
-    long getOldServerPosX();
+    long earthhack$getOldServerPosX();
 
-    long getOldServerPosY();
+    long earthhack$getOldServerPosY();
 
-    long getOldServerPosZ();
+    long earthhack$getOldServerPosZ();
 
-    void setOldServerPos(long x, long y, long z);
+    void earthhack$setOldServerPos(long x, long y, long z);
 
 }

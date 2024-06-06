@@ -13,7 +13,9 @@ public interface IEntityNoInterp {
 
     void earthhack$setNoInterpZ(double z);
 
-    int earthhack$getPosIncrements();
+    default int earthhack$getPosIncrements() {
+         return 1;
+    }
 
     void earthhack$setPosIncrements(int posIncrements);
 

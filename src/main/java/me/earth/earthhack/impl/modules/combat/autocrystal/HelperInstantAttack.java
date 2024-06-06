@@ -113,7 +113,7 @@ public class HelperInstantAttack implements Globals
                 Entity entity = mc.world.getEntityById(packet.getId());
                 if (entity != null)
                 {
-                    ((IEntity) entity).setPseudoDead(true);
+                    ((IEntity) entity).earthhack$setPseudoDead(true);
                 }
             });
 

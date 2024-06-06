@@ -7,6 +7,8 @@ import me.earth.earthhack.impl.core.ducks.entity.IEntityRemoteAttack;
 import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.core.mixins.entity.MixinEntity;
 import me.earth.earthhack.impl.event.events.misc.DeathEvent;
+import me.earth.earthhack.impl.event.events.movement.LiquidJumpEvent;
+import me.earth.earthhack.impl.event.events.render.SuffocationEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
@@ -16,6 +18,7 @@ import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import me.earth.earthhack.impl.modules.render.norender.NoRender;
 import me.earth.earthhack.impl.util.minecraft.ICachedDamage;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
+import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
@@ -33,7 +36,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -279,6 +284,34 @@ public abstract class MixinLivingEntity extends MixinEntity
                 : EnchantmentUtil.getEnchantmentModifierDamage(
                 this.getArmorItems(), source);
     }
+
+    @Inject(
+        method = "isInsideWall",
+        at = @At(value="HEAD"),
+        cancellable = true)
+    public void isEntityInsideOpaqueBlockHook(
+            CallbackInfoReturnable<Boolean> info)
+    {
+        SuffocationEvent event = new SuffocationEvent();
+        Bus.EVENT_BUS.post(event);
+
+        if (event.isCancelled())
+        {
+            info.cancel();
+        }
+    }
+
+    @ModifyVariable(
+            method = "spawnConsumptionEffects",
+            at = @At("HEAD"),
+            ordinal = 0,
+            argsOnly = true)
+    public int updateItemUse(int eatingParticlesAmount) {
+        if (NO_RENDER.isEnabled() && NO_RENDER.get().noEatingParticles())
+            return 0;
+        else return eatingParticlesAmount;
+    }
+
 
     /**
      * Refactored from MixinClientPlayerEntity to here because this doesn't work from these correctly

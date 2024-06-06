@@ -1,13 +1,16 @@
 package me.earth.earthhack.impl.core.mixins.entity.living.player;
 
+import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.impl.core.ducks.entity.IPlayerEntity;
 import me.earth.earthhack.impl.core.mixins.entity.living.MixinLivingEntity;
+import me.earth.earthhack.impl.event.events.render.SuffocationEvent;
 import me.earth.earthhack.impl.util.minecraft.MotionTracker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class MixinPlayerEntity extends MixinLivingEntity implements IPlayerEntity {
@@ -23,16 +26,11 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity implements IPl
         throw new IllegalStateException("onUpdate was not shadowed!");
     }
 
-    @Shadow
-    public PlayerInventory inventory;
-    @Unique
-    private MotionTracker motionTracker;
-    @Unique
-    private MotionTracker breakMotionTracker;
-    @Unique
-    private MotionTracker blockMotionTracker;
-    @Unique
-    private int ticksWithoutMotionUpdate;
+    @Shadow @Final public PlayerInventory inventory;
+    @Unique private MotionTracker motionTracker;
+    @Unique private MotionTracker breakMotionTracker;
+    @Unique private MotionTracker blockMotionTracker;
+    @Unique private int ticksWithoutMotionUpdate;
 
     @Override
     public void earthhack$setMotionTracker(MotionTracker motionTracker) {
@@ -73,5 +71,4 @@ public abstract class MixinPlayerEntity extends MixinLivingEntity implements IPl
     public void earthhack$setTicksWithoutMotionUpdate(int ticksWithoutMotionUpdate) {
         this.ticksWithoutMotionUpdate = ticksWithoutMotionUpdate;
     }
-
 }
