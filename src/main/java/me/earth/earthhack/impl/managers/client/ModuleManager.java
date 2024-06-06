@@ -66,6 +66,7 @@ import me.earth.earthhack.impl.modules.movement.antimove.NoMove;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.blocklag.BlockLag;
 import me.earth.earthhack.impl.modules.movement.fastswim.FastSwim;
+import me.earth.earthhack.impl.modules.movement.jesus.Jesus;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
 import me.earth.earthhack.impl.modules.movement.nofall.NoFall;
 import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
@@ -200,7 +201,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new HighJump());
         // this.forceRegister(new ReverseStep());
         // this.forceRegister(new IceSpeed());
-        // this.forceRegister(new Jesus());
+        this.forceRegister(new Jesus());
         this.forceRegister(new LongJump());
         this.forceRegister(new NoFall());
         this.forceRegister(new NoMove());
