@@ -241,6 +241,10 @@ public abstract class HudElement extends SettingContainer
         return " " + HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[0] + HudRenderUtil.getBracketsTextColor() + text + HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[1] + TextColor.WHITE;
     }
 
+    public String surroundWithBrackets(String text, boolean space) {
+        return !space ? HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[0] + HudRenderUtil.getBracketsTextColor() + text + HudRenderUtil.getBracketsColor() + HudRenderUtil.getBrackets()[1] + TextColor.WHITE : surroundWithBrackets(text);
+    }
+
     public float getX() {
         return MathHelper.clamp(x.getValue(), 0, mc.getWindow().getScaledWidth() - (width + 2));
     }

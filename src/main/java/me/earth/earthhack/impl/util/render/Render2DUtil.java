@@ -316,7 +316,7 @@ public class Render2DUtil implements Globals {
                     && stack.getCount() > 1)
             {
                 Managers.TEXT.drawString(context, count,
-                        x + 19 - 2 - Managers.TEXT.getStringWidth(count), y + 9,
+                        x + 18 - 2 - Managers.TEXT.getStringWidth(count), y + 8,
                         HUD_EDITOR.get().matchColor.getValue()
                                 ? HUD_EDITOR.get().color.getValue().getRGB()
                                 : 0xffffffff,

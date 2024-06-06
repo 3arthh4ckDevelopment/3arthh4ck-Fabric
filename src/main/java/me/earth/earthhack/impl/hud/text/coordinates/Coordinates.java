@@ -39,8 +39,8 @@ public class Coordinates extends HudElement {
 
         if (dimension.getValue())
             coords = getDimension() == -1
-                    ? String.format(Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + "%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + "%s", x, surroundWithBrackets(String.valueOf(x * 8)), y, z, surroundWithBrackets(String.valueOf(z * 8)))
-                    : (getDimension() == 0 ? String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + "%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + "%s", x, surroundWithBrackets(String.valueOf(x / 8)), y, z, surroundWithBrackets(String.valueOf(z / 8))) : overworld);
+                    ? String.format(Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + "%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "7%s " + Formatting.FORMATTING_CODE_PREFIX + "f" + "%s", x, surroundWithBrackets(String.valueOf(x * 8), false), y, z, surroundWithBrackets(String.valueOf(z * 8)), false)
+                    : (getDimension() == 0 ? String.format(Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + "%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s" + Formatting.FORMATTING_CODE_PREFIX + "8, " + Formatting.FORMATTING_CODE_PREFIX + "f%s " + Formatting.FORMATTING_CODE_PREFIX + "7" + "%s", x, surroundWithBrackets(String.valueOf(x / 8), false), y, z, surroundWithBrackets(String.valueOf(z / 8)), false) : overworld);
         else
             coords = overworld;
 
