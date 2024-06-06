@@ -38,6 +38,7 @@ import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
 import me.earth.earthhack.impl.modules.combat.offhand.Offhand;
 import me.earth.earthhack.impl.modules.combat.surround.Surround;
+import me.earth.earthhack.impl.modules.combat.webaura.WebAura;
 import me.earth.earthhack.impl.modules.misc.announcer.Announcer;
 import me.earth.earthhack.impl.modules.misc.antiaim.AntiAim;
 import me.earth.earthhack.impl.modules.misc.antipackets.AntiPackets;
@@ -149,7 +150,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new PistonAura());
         this.forceRegister(new Surround());
         // this.forceRegister(new SelfTrap());
-        // this.forceRegister(new WebAura());
+        this.forceRegister(new WebAura());
 
         /* ------ MISC ------ */
         this.forceRegister(new Announcer());
