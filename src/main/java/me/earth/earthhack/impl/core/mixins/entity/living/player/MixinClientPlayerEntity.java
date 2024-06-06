@@ -341,19 +341,6 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
         }
     }
 
-    // @Redirect(
-    //         method = "updateNausea",
-    //         at = @At(
-    //                 value = "FIELD",
-    //                 target = "Lnet/minecraft/client/MinecraftClient;currentScreen:Lnet/minecraft/client/gui/screen/Screen;"))
-    // private Screen updateNauseaGetCurrentScreenProxy(MinecraftClient client) {
-    //     if (PORTALS.isEnabled() && CHAT.getValue())
-    //     {
-    //         return null;
-    //     }
-    //     return client.currentScreen;
-    // }
-
     @Redirect(
             method = "updateNausea",
             at = @At(
