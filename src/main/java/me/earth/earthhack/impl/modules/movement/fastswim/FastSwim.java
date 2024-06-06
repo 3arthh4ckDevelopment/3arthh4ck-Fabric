@@ -37,6 +37,7 @@ public class FastSwim extends Module
     {
         super("FastSwim", Category.Movement);
         this.listeners.add(new ListenerMove(this));
+        this.listeners.add(new ListenerSetback(this));
         this.setData(new FastSwimData(this));
     }
 

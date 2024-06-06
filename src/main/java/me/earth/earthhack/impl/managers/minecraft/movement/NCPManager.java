@@ -11,14 +11,14 @@ import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInputC2SPacket;
-import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Manages the legitimacy of windowClicks against NCP.
  * Also manages the time that passed since the last
- * LagBack via {@link EntityPositionS2CPacket}.
+ * LagBack via {@link PlayerPositionLookS2CPacket}.
  */
 @SuppressWarnings("ConstantConditions")
 public class NCPManager extends SubscriberImpl implements Globals
@@ -34,13 +34,13 @@ public class NCPManager extends SubscriberImpl implements Globals
     public NCPManager()
     {
         this.listeners.add(
-                new EventListener<PacketEvent.Receive<EntityPositionS2CPacket>>
+                new EventListener<PacketEvent.Receive<PlayerPositionLookS2CPacket>>
                         (PacketEvent.Receive.class,
                                 Integer.MAX_VALUE,
-                                EntityPositionS2CPacket.class)
+                                PlayerPositionLookS2CPacket.class)
                 {
                     @Override
-                    public void invoke(PacketEvent.Receive<EntityPositionS2CPacket> event)
+                    public void invoke(PacketEvent.Receive<PlayerPositionLookS2CPacket> event)
                     {
                         lagTimer.set(System.currentTimeMillis());
                     }
@@ -169,7 +169,7 @@ public class NCPManager extends SubscriberImpl implements Globals
 
     /**
      * Returns <tt>true</tt> if more time than the given delay in
-     * milliseconds passed since the last {@link EntityPositionS2CPacket}
+     * milliseconds passed since the last {@link PlayerPositionLookS2CPacket}
      * arrived at our client.
      *
      * @param ms the delay in ms to check.
