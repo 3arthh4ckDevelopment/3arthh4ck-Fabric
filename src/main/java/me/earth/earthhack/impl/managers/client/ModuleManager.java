@@ -98,6 +98,7 @@ import me.earth.earthhack.impl.modules.render.ambience.Ambience;
 import me.earth.earthhack.impl.modules.render.breakesp.BreakESP;
 import me.earth.earthhack.impl.modules.render.cameraclip.CameraClip;
 import me.earth.earthhack.impl.modules.render.fullbright.Fullbright;
+import me.earth.earthhack.impl.modules.render.heaven.Heaven;
 import me.earth.earthhack.impl.modules.render.holeesp.HoleESP;
 import me.earth.earthhack.impl.modules.render.logoutspots.LogoutSpots;
 import me.earth.earthhack.impl.modules.render.norender.NoRender;
@@ -283,6 +284,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new ItemChams());
         this.forceRegister(new Ambience());
         // this.forceRegister(new ViewModel());
+        this.forceRegister(new Heaven());
 
         Bus.EVENT_BUS.post(new PostInitEvent());
     }
