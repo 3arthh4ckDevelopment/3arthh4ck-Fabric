@@ -11,7 +11,7 @@ import net.minecraft.item.Items;
 public class Totem extends HudElement {
 
     protected void onRender(DrawContext context) {
-        Render2DUtil.drawItem(context, new ItemStack(Items.TOTEM_OF_UNDYING, InventoryUtil.getCount(Items.TOTEM_OF_UNDYING)), (int) getX(), (int) getY(), true);
+        Render2DUtil.drawItem(context, new ItemStack(Items.TOTEM_OF_UNDYING, InventoryUtil.getCount(Items.TOTEM_OF_UNDYING)), (int) getX(), (int) getY(), true, true);
     }
 
     public Totem() {

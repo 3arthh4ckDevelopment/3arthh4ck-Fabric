@@ -10,10 +10,10 @@ import net.minecraft.client.gui.DrawContext;
 public class Model extends HudElement {
 
     private final Setting<Integer> modelScale =
-            register(new NumberSetting<>("ModelScale", 40, 1, 100));
+            register(new NumberSetting<>("ModelScale", 40, 10, 100));
 
     protected void onRender(DrawContext context) {
-        Render2DUtil.drawPlayer(context, mc.player, modelScale.getValue(), (int) (getX() + getWidth() / 2), (int) (getY() + getHeight()));
+        Render2DUtil.drawPlayer(context, mc.player, modelScale.getValue(), (int) getX(), (int) getY(), (int) getWidth(), (int) getHeight());
     }
 
     public Model() {

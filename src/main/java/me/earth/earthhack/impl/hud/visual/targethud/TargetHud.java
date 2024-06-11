@@ -200,7 +200,7 @@ public class TargetHud extends HudElement {
                 }
 
                 Render2DUtil.progressBar(context.getMatrices(), x + 7, x - 7 + (hp / 36.0F * (Math.max(nameWidth, 58))), endY - 5.0f, 5, 0x77ff0000);
-                Render2DUtil.drawPlayer(context, closestPlayer, 8, (int) (x + (Math.max(nameWidth, 58)) / 2), (int) (endY - 15.0f));
+                Render2DUtil.drawPlayer(context, closestPlayer, 8, (int) x, (int) (endY - 15.0f), Math.max(nameWidth, 58), (int) endY);
                 break;
 
             case Mode4:

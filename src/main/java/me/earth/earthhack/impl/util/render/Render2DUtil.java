@@ -285,46 +285,34 @@ public class Render2DUtil implements Globals {
         }
     }
 
-    public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y) {
-        InventoryScreen.drawEntity(context, x, y, x, y, playerScale, 0.0625F, mc.player.yaw, mc.player.pitch, player); //TODO: fix
+    public static void drawPlayer(DrawContext context, PlayerEntity player, int playerScale, int x, int y, int width, int height) {
+        InventoryScreen.drawEntity(context, x, y, x + width, y + height, Math.max(10, playerScale - 10), 0, (float) mc.mouse.getX(), (float) mc.mouse.getY(), player);
     }
 
-    @Deprecated
-    public static void drawItem(DrawContext context, ItemStack itemStack, int x, int y, int zLevel) {
-        if (itemStack.getCount() <= 0)
+    public static void drawItem(DrawContext context, ItemStack itemStack, int x, int y, boolean amount) {
+        drawItem(context, itemStack, x, y, amount, false);
+    }
+
+    public static void drawItem(DrawContext context, ItemStack itemStack, int x, int y, boolean amount, boolean countUnstackable) {
+        int itemCount = itemStack.getCount();
+        if (itemCount <= 0) {
             itemStack.setCount(1);
-        String count = TextUtil.numberFormatter(itemStack.getCount());
-
-        context.drawItem(itemStack, x, y, zLevel);
-
-        if (!Caches.getModule(FontMod.class).isEnabled()) {
-            Managers.TEXT.drawStringWithShadow(context, count,
-                    x + 18 - Managers.TEXT.getStringWidth(count), y + 9, 0xffffff);
-        } else {
-            context.drawItemInSlot(mc.textRenderer, itemStack, x, y);
         }
-    }
-    // ^^^ screw you whoever made this instead of the old way (below), this is shit !!!
-
-    public static void drawItem(DrawContext context, ItemStack stack, int x, int y, boolean amount)
-    {
-        context.drawItem(stack, x, y, 1);
+        context.drawItem(itemStack, x, y);
 
         if (amount) {
-            String count = String.valueOf(stack.getCount());
-            if (Caches.getModule(FontMod.class).isEnabled()
-                    && stack.getCount() > 1)
-            {
-                Managers.TEXT.drawString(context, count,
-                        x + 18 - 2 - Managers.TEXT.getStringWidth(count), y + 8,
-                        HUD_EDITOR.get().matchColor.getValue()
-                                ? HUD_EDITOR.get().color.getValue().getRGB()
-                                : 0xffffffff,
-                        true);
-            }
-            else
-            {
-                context.drawItemInSlot(mc.textRenderer, stack, x, y);
+            if (itemStack.isStackable() || countUnstackable) {
+                if (Caches.getModule(FontMod.class).isEnabled()) {
+                    String count = TextUtil.numberFormatter(itemCount);
+                    Managers.TEXT.drawString(context, count,
+                            x + 18 - 2 - Managers.TEXT.getStringWidth(count), y + 8,
+                            HUD_EDITOR.get().matchColor.getValue()
+                                    ? HUD_EDITOR.get().color.getValue().getRGB()
+                                    : 0xffffffff,
+                            true);
+                } else {
+                    context.drawItemInSlot(mc.textRenderer, itemStack, x, y);
+                }
             }
         }
     }

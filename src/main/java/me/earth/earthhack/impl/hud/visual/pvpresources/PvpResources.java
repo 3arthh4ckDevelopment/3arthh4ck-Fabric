@@ -107,7 +107,7 @@ public class PvpResources extends HudElement {
         int itemCount = mc.player.getInventory().main .stream() .filter(itemStack -> itemStack.getItem() == item).mapToInt(ItemStack::getCount).sum();
         if (mc.player.getOffHandStack().getItem().equals(item))
             itemCount += mc.player.getOffHandStack().getCount();
-        Render2DUtil.drawItem(context, new ItemStack(item, itemCount), x, y, true);
+        Render2DUtil.drawItem(context, new ItemStack(item, itemCount), x, y, true, true);
     }
 
     public PvpResources() {
