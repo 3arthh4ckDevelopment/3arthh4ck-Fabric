@@ -94,6 +94,7 @@ import me.earth.earthhack.impl.modules.player.fastplace.FastPlace;
 import me.earth.earthhack.impl.modules.player.freecam.Freecam;
 import me.earth.earthhack.impl.modules.player.noglitchblocks.NoGlitchBlocks;
 import me.earth.earthhack.impl.modules.player.nohunger.NoHunger;
+import me.earth.earthhack.impl.modules.player.norotate.NoRotate;
 import me.earth.earthhack.impl.modules.player.scaffold.Scaffold;
 import me.earth.earthhack.impl.modules.player.spectate.Spectate;
 import me.earth.earthhack.impl.modules.player.speedmine.Speedmine;
@@ -244,7 +245,7 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new NCPTweaks());
         this.forceRegister(new NoGlitchBlocks());
         this.forceRegister(new NoHunger());
-        // this.forceRegister(new NoRotate());
+        this.forceRegister(new NoRotate());
         // this.forceRegister(new PhaseTrace());
         // this.forceRegister(new Reach());
         // this.forceRegister(new Replenish());
