@@ -5,6 +5,7 @@ import me.earth.earthhack.impl.core.ducks.entity.IEntity;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -81,6 +82,16 @@ public class EntityUtil implements Globals
         return getClosestEnemy(mc.player.getPos(), list);
     }
 
+    public static PlayerEntity getClosestClientEnemy(List<AbstractClientPlayerEntity> players)
+    {
+        return getClosestClientEnemy(mc.player.getPos(), players);
+    }
+
+    private static PlayerEntity getClosestClientEnemy(Vec3d pos, List<AbstractClientPlayerEntity> players)
+    {
+        return getClosestClientEnemy(pos.x, pos.y, pos.z, players);
+    }
+
     /**
      * Convenience method, calls
      * {@link EntityUtil#getClosestEnemy(double, double, double, List)}
@@ -117,6 +128,33 @@ public class EntityUtil implements Globals
                                                double y,
                                                double z,
                                                List<PlayerEntity> players)
+    {
+        PlayerEntity closest = null;
+        double distance = Float.MAX_VALUE;
+
+        for (PlayerEntity player : players)
+        {
+            if (player != null
+                    && !isDead(player)
+                    && !player.equals(mc.player)
+                    && !Managers.FRIENDS.contains(player))
+            {
+                double dist = player.squaredDistanceTo(x, y, z);
+                if (dist < distance)
+                {
+                    closest = player;
+                    distance = dist;
+                }
+            }
+        }
+
+        return closest;
+    }
+
+    public static PlayerEntity getClosestClientEnemy(double x,
+                                               double y,
+                                               double z,
+                                               List<AbstractClientPlayerEntity> players)
     {
         PlayerEntity closest = null;
         double distance = Float.MAX_VALUE;
