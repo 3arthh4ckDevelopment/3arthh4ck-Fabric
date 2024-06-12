@@ -34,6 +34,8 @@ public class DescriptionFrame extends Frame
             return;
         }
 
+        context.getMatrices().push();
+        context.getMatrices().translate(0, 0, 150);
         super.drawScreen(context, mouseX, mouseY, partialTicks);
         if (CLICK_GUI.get().catEars.getValue()) {
             CategoryFrame.catEarsRender(context, getPosX(), getPosY(), getWidth());
@@ -54,6 +56,7 @@ public class DescriptionFrame extends Frame
             Managers.TEXT.drawStringWithShadow(context, string, (int) (this.getPosX() + 3), (int) y, CLICK_GUI.get().getTextColorDesc().getRGB());
             y += Managers.TEXT.getStringHeightI() + 1;
         }
+        context.getMatrices().pop();
     }
 
     @Override

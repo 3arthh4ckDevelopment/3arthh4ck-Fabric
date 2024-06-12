@@ -183,12 +183,28 @@ public class HudEditorGui extends Screen
         }
         clicked.sort(Comparator.comparing(HudElement::getZ));
 
-        if (!clicked.isEmpty()) {
-            clicked.get(0).guiMouseClicked(mouseX, mouseY, mouseButton);
-        } else if (!isDragging) {
-            selecting = true;
-            mouseClickedX = mouseX;
-            mouseClickedY = mouseY;
+        boolean clickedFrame = false;
+        for (HudCategoryFrame frame : getFrames()) {
+            if (GuiUtil.isHovered(frame, mouseX, mouseY)) {
+                clickedFrame = true;
+                break;
+            }
+            for (Component component : frame.getComponents()) {
+                if (GuiUtil.isHovered(component.getFinishedX(), component.getFinishedY(), component.getWidth(), component.getHeight(), mouseX, mouseY)) {
+                    clickedFrame = true;
+                    break;
+                }
+            }
+        }
+
+        if (!clickedFrame) {
+            if (!clicked.isEmpty()) {
+                clicked.get(0).guiMouseClicked(mouseX, mouseY, mouseButton);
+            } else if (!isDragging) {
+                selecting = true;
+                mouseClickedX = mouseX;
+                mouseClickedY = mouseY;
+            }
         }
         getFrames().forEach(frame -> frame.mouseClicked(mouseX, mouseY, mouseButton));
         return super.mouseClicked(mouseX, mouseY, mouseButton);

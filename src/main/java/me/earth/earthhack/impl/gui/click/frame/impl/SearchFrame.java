@@ -50,6 +50,8 @@ public class SearchFrame extends Frame implements Globals {
         else if (isListening)
             text += getIdleSign();
 
+        context.getMatrices().push();
+        context.getMatrices().translate(0, 0, 151);
         if (CLICK_GUI.get().search.getValue() == ClickGui.SearchStyle.Box) {
             if (CLICK_GUI.get().catEars.getValue()) {
                 CategoryFrame.catEarsRender(context, getPosX(), getPosY(), getWidth());
@@ -65,6 +67,7 @@ public class SearchFrame extends Frame implements Globals {
             Render2DUtil.roundedRect(context.getMatrices(), getPosX(), getPosY(), getPosX() + getWidth(), getPosY() + getHeight(), 4.0f, 0xff232323);
             drawStringWithShadow(context, text, getPosX() + 10, getPosY() + getHeight() / 2 - Managers.TEXT.getStringHeightI() / 2.0f, getState() ? 0xFFFFFFFF : 0xFFAAAAAA);
         }
+        context.getMatrices().pop();
     }
 
     @Override

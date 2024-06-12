@@ -39,7 +39,6 @@ public class HudElementComponent extends Component {
 
         if (!getElement().getSettings().isEmpty()) {
             for (Setting<?> setting : getElement().getSettings()) {
-                float before = offY;
                 if (setting instanceof BooleanSetting && !setting.getName().equalsIgnoreCase("enabled")) {
                     getComponents().add(new BooleanComponent((BooleanSetting) setting, getFinishedX(), getFinishedY(), 0, offY, getWidth(), 14));
                     offY += 14;
@@ -83,7 +82,7 @@ public class HudElementComponent extends Component {
     @Override
     public void drawScreen(DrawContext context, int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(context, mouseX, mouseY, partialTicks);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
+        boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
 
         if (hovered)
             Render2DUtil.drawRect(context.getMatrices(), getFinishedX() + 1, getFinishedY() + 0.5f, getFinishedX() + getWidth() - 1, getFinishedY() + getHeight() - 0.5f, 0x66333333);
@@ -105,10 +104,14 @@ public class HudElementComponent extends Component {
                 Render2DUtil.drawRect(context.getMatrices(), getFinishedX() + 1.0f, getFinishedY() + getHeight() + getComponentsSize(), getFinishedX() + getWidth() - 1.f, getFinishedY() + getHeight() + getComponentsSize() + 2, hovered ? getClickGui().get().color.getValue().brighter().getRGB() : getClickGui().get().color.getValue().getRGB());
                 Render2DUtil.drawRect(context.getMatrices(), getFinishedX() + getWidth() - 3.f, getFinishedY() + getHeight() - 0.5f, getFinishedX() + getWidth() - 1.f, getFinishedY() + getHeight() + getComponentsSize(), hovered ? getClickGui().get().color.getValue().brighter().getRGB() : getClickGui().get().color.getValue().getRGB());
             }
-            Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + 3.0f, getFinishedY() + getHeight() - 0.5f, getFinishedX() + getWidth() - 3.f, getFinishedY() + getHeight() + getComponentsSize() + 0.5f, 0.5f, 0, WHITE.getValue() ? 0xffffffff :  0xff000000);
-
+            if (getClickGui().get().moduleBox.getValue() == ClickGui.ModuleBox.Old)
+                Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + 3.0f, getFinishedY() + getHeight() - 0.5f, getFinishedX() + getWidth() - 3.f, getFinishedY() + getHeight() + getComponentsSize() + 0.5f, 0.5f, 0, 0xff000000);
+            else if (getClickGui().get().moduleBox.getValue() == ClickGui.ModuleBox.New)
+                Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + 3.0f, getFinishedY() + getHeight() - 0.5f, getFinishedX() + getWidth() - 2.5f, getFinishedY() + getHeight() + getComponentsSize(), 0.5f, 0, 0xff000000);
         }
-        Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + 1, getFinishedY() + 0.5f, getFinishedX() + 1 + getWidth() - 2, getFinishedY() - 0.5f + getHeight() + (isExtended() ? (getComponentsSize() + 3.0f) : 0), 0.5f, 0, 0xff000000);
+        if (getClickGui().get().getBoxes())
+            Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + 1, getFinishedY() + 0.5f, getFinishedX() + 1 + getWidth() - 2, getFinishedY() - 0.5f + getHeight() + (isExtended() ? (getComponentsSize() + 3.0f) : 0), 0.5f, 0, 0xff000000);
+
         updatePositions();
     }
 
