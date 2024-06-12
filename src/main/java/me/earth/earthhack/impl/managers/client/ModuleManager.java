@@ -69,6 +69,7 @@ import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
 import me.earth.earthhack.impl.modules.movement.antimove.NoMove;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.blocklag.BlockLag;
+import me.earth.earthhack.impl.modules.movement.boatfly.BoatFly;
 import me.earth.earthhack.impl.modules.movement.fastswim.FastSwim;
 import me.earth.earthhack.impl.modules.movement.jesus.Jesus;
 import me.earth.earthhack.impl.modules.movement.longjump.LongJump;
@@ -198,7 +199,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new AutoSprint());
         // this.forceRegister(new Avoid());
         this.forceRegister(new BlockLag());
-        // this.forceRegister(new BoatFly());
+        this.forceRegister(new BoatFly());
         // this.forceRegister(new Clip());
         // this.forceRegister(new ElytraFlight());
         // this.forceRegister(new EntityControl());
