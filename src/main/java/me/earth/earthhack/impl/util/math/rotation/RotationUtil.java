@@ -7,6 +7,7 @@ import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.player.freecam.Freecam;
 import me.earth.earthhack.impl.util.math.BBUtil;
 import me.earth.earthhack.impl.util.math.MathUtil;
+import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
 import me.earth.earthhack.impl.util.render.Interpolation;
 import net.minecraft.block.Block;
@@ -438,6 +439,22 @@ public class RotationUtil implements Globals
     {
         return MathHelper.floor(
                 (getRotationPlayer().getHeadYaw() * 4.0F / 360.0F) + 0.5D) & 3;
+    }
+
+    public static float[] getLegitRotations(Vec3d vec) {
+        Vec3d eyesPos = PositionUtil.getEyePos();
+        double diffX = vec.x - eyesPos.x;
+        double diffY = vec.y - eyesPos.y;
+        double diffZ = vec.z - eyesPos.z;
+        double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
+
+        float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90F;
+        float pitch = (float) -Math.toDegrees(Math.atan2(diffY, diffXZ));
+
+        return new float[] {
+                mc.player.yaw + MathHelper.wrapDegrees(yaw - mc.player.yaw),
+                mc.player.pitch + MathHelper.wrapDegrees(pitch - mc.player.pitch)
+        };
     }
 
 }
