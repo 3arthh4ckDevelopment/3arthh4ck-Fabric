@@ -9,9 +9,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShapes;
 import org.joml.Vector3f;
 
 /**
@@ -22,7 +24,7 @@ import org.joml.Vector3f;
 public class PositionManager extends SubscriberImpl implements Globals
 {
     private static final boolean SET_SELF = Boolean.parseBoolean(
-            System.getProperty("set.mc.player.serverPos", "true"));
+            System.getProperty("set.mc.player.serverPos", "false"));
 
     private boolean blocking;
 
@@ -193,13 +195,13 @@ public class PositionManager extends SubscriberImpl implements Globals
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean canEntityBeSeen(Entity entity)
     {
-       // return mc.world.raycastBlock(
-       //         new Vec3d(last_x, last_y + mc.player.getEyeHeight(entity.getPose()), last_z),
-       //         new Vec3d(entity.getX(), entity.getY() + entity.getEyeHeight(entity.getPose()), entity.getZ()),
-       //         null,
-       //         entity.getCollisionShape(),
-       //         false) == null;
-        return false;
+        return mc.world.raycastBlock(
+                new Vec3d(last_x, last_y + mc.player.getEyeHeight(entity.getPose()), last_z),
+                new Vec3d(entity.getX(), entity.getY() + entity.getEyeHeight(entity.getPose()), entity.getZ()),
+                entity.getBlockPos(),
+                VoxelShapes.cuboid(entity.getVisibilityBoundingBox()),
+                mc.world.getBlockState(entity.getBlockPos())).getType() == BlockHitResult.Type.ENTITY;
+        // probably wrong ... don't care about it that much though
     }
 
     public void set(double x, double y, double z)
