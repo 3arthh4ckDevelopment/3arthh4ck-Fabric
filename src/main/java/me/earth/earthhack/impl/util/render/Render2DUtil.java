@@ -294,6 +294,7 @@ public class Render2DUtil implements Globals {
     }
 
     public static void drawItem(DrawContext context, ItemStack itemStack, int x, int y, boolean amount, boolean countUnstackable) {
+        if (itemStack == null) return;
         int itemCount = itemStack.getCount();
         if (itemCount <= 0) {
             itemStack.setCount(1);
@@ -302,17 +303,16 @@ public class Render2DUtil implements Globals {
 
         if (amount) {
             if (itemStack.isStackable() || countUnstackable) {
-                if (Caches.getModule(FontMod.class).isEnabled()) {
-                    String count = TextUtil.numberFormatter(itemCount);
-                    Managers.TEXT.drawString(context, count,
-                            x + 18 - 2 - Managers.TEXT.getStringWidth(count), y + 8,
-                            HUD_EDITOR.get().matchColor.getValue()
-                                    ? HUD_EDITOR.get().color.getValue().getRGB()
-                                    : 0xffffffff,
-                            true);
-                } else {
-                    context.drawItemInSlot(mc.textRenderer, itemStack, x, y);
-                }
+                context.getMatrices().push();
+                context.getMatrices().translate(0.0F, 0.0F, 200.0F);
+                String count = TextUtil.numberFormatter(itemCount);
+                Managers.TEXT.drawString(context, count,
+                        x + 17 - Managers.TEXT.getStringWidth(count), y + 9,
+                        HUD_EDITOR.get().matchColor.getValue()
+                                ? HUD_EDITOR.get().color.getValue().getRGB()
+                                : 0xffffffff,
+                        true);
+                context.getMatrices().pop();
             }
         }
     }
