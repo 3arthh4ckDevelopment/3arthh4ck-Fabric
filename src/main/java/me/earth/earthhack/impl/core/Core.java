@@ -22,11 +22,7 @@ public class Core {
 
     /** Load the core */
     public Core() { //TODO: initialize this earlier!
-        if (PluginManager.getInstance().getConfigs().values().isEmpty()) {
-            init();
-        } else {
-            throw new RuntimeException("3arthh4ck core is already initialized!");
-        }
+        init();
     }
 
     /**

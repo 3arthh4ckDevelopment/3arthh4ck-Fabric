@@ -29,6 +29,7 @@ import me.earth.earthhack.impl.modules.client.safety.Safety;
 import me.earth.earthhack.impl.modules.client.settings.SettingsModule;
 import me.earth.earthhack.impl.modules.combat.antisurround.AntiSurround;
 import me.earth.earthhack.impl.modules.combat.antitrap.AntiTrap;
+import me.earth.earthhack.impl.modules.combat.anvilaura.AnvilAura;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
 import me.earth.earthhack.impl.modules.combat.bedbomb.BedBomb;
@@ -148,7 +149,7 @@ public class ModuleManager extends IterationRegister<Module>
         /* ----- COMBAT ----- */
         this.forceRegister(new AntiSurround());
         this.forceRegister(new AntiTrap());
-        // this.forceRegister(new AnvilAura());
+        this.forceRegister(new AnvilAura());
         // this.forceRegister(new AutoArmor());
         this.forceRegister(new AutoCrystal());
         this.forceRegister(new AutoTrap());

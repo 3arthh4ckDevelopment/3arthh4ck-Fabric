@@ -53,7 +53,7 @@ public class AntiPackets extends Module
             {
                 continue;
             }
-            String simpleName = FabricLoader.getInstance().getMappingResolver().unmapClassName("yarn", clazz.getName());
+            String simpleName = FabricLoader.getInstance().getMappingResolver().unmapClassName("intermediate", clazz.getName());
             boolean side = simpleName.endsWith("S2CPacket");
             getMap(side).put(clazz, new BooleanSetting(
                                         formatPacketName(simpleName),
@@ -63,7 +63,7 @@ public class AntiPackets extends Module
             {
                 if (inner.getSuperclass() == clazz)
                 {
-                    String sin = FabricLoader.getInstance().getMappingResolver().unmapClassName("yarn", inner.getName());
+                    String sin = FabricLoader.getInstance().getMappingResolver().unmapClassName("intermediate", inner.getName());
                     BooleanSetting s = new BooleanSetting(
                                     formatPacketName(simpleName)
                                     + "-"

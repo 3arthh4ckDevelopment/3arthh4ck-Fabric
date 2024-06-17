@@ -28,7 +28,6 @@ public class PluginManager
 
     private final Map<PluginConfig, Plugin> plugins = new HashMap<>();
     private final Map<String, PluginConfig> configs = new HashMap<>();
-    private final PluginRemapper remapper = new PluginRemapper();
     private ClassLoader classLoader;
 
     /** Private Ctr since this is a Singleton. */
@@ -42,7 +41,7 @@ public class PluginManager
 
     /**
      * Used by {@link Core#Core()}.
-     * Scans the "earthhack/plugins" and the "mods" folders for Plugins.
+     * Scans the "earthhack/plugins" folders for Plugins.
      * If it can find jarFiles whose Manifest contain a
      * "3arthh4ckConfig" the jar will be added to the classPath
      * and a {@link PluginConfig} will be created. If the PluginConfig
@@ -56,37 +55,16 @@ public class PluginManager
         this.classLoader = pluginClassLoader;
         Core.LOGGER.info("PluginManager: Scanning for PluginConfigs.");
 
-        File d = new File(PATH);
-        Map<String, File> remap = scanPlugins(d.listFiles(), pluginClassLoader);
-        remap.keySet().removeAll(configs.keySet());
-
-        try
-        {
-            File[] remappedPlugins = remapper.remap(remap.values());
-            scanPlugins(remappedPlugins, pluginClassLoader);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        loadPlugins(new File(PATH).listFiles());
     }
 
-    private Map<String, File> scanPlugins(File[] files,
-                                          ClassLoader pluginClassLoader)
-    {
-        Map<String, File> remap = new HashMap<>();
-
-        try
-        {
-            for (File file : Objects.requireNonNull(files))
-            {
-                if (file.getName().endsWith(".jar"))
-                {
-                    Core.LOGGER.info("PluginManager: Scanning "
-                            + file.getName());
-                    try
-                    {
-                        scanJarFile(file, pluginClassLoader);
+    private void loadPlugins(File[] files) {
+        try {
+            for (File file : Objects.requireNonNull(files)) {
+                if (file.getName().endsWith(".jar")) {
+                    Core.LOGGER.info("PluginManager: Scanning " + file.getName());
+                    try {
+                        scanJarFile(file);
                     }
                     catch (Exception e)
                     {
@@ -95,24 +73,18 @@ public class PluginManager
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
-
-        return remap;
     }
 
     /**
      * Called by {@link 3arthh4ck}.
      * Instantiates all found Plugins.
      */
-    public void instantiatePlugins()
-    {
-        for (PluginConfig config : configs.values())
-        {
-            if (plugins.containsKey(config))
-            {
+    public void instantiatePlugins() {
+        for (PluginConfig config : configs.values()) {
+            if (plugins.containsKey(config)) {
                 Earthhack.getLogger().error("Can't register Plugin "
                         + config.getName()
                         + ", a plugin with that name is already registered.");
@@ -123,16 +95,14 @@ public class PluginManager
                     + config.getName()
                     + ", MainClass: "
                     + config.getMainClass());
-            try
-            {
+            try {
                 Class<?> loadedClass = classLoader.loadClass(config.getMainClass());
                 Constructor<?> constructor = loadedClass.getConstructor();
                 constructor.setAccessible(true);
                 Plugin plugin = (Plugin) constructor.newInstance();
                 plugins.put(config, plugin);
             }
-            catch (Throwable e)
-            {
+            catch (Throwable e) {
                 Earthhack.getLogger().error("Error instantiating : "
                         + config.getName() + ", caused by:");
 
@@ -141,10 +111,7 @@ public class PluginManager
         }
     }
 
-    private void scanJarFile(File file,
-                             ClassLoader pluginClassLoader)
-            throws Exception
-    {
+    private void scanJarFile(File file) throws Exception {
         try (JarFile jarFile = new JarFile(file)) {
 
             Manifest manifest = jarFile.getManifest();
@@ -161,7 +128,7 @@ public class PluginManager
             PluginConfig config = Jsonable.GSON.fromJson(
                     new InputStreamReader(
                             Objects.requireNonNull(
-                                    pluginClassLoader.getResourceAsStream(configName))),
+                                    this.classLoader.getResourceAsStream(configName))),
                     PluginConfig.class);
 
             if (config == null) {
@@ -194,11 +161,6 @@ public class PluginManager
     public Map<PluginConfig, Plugin> getPlugins()
     {
         return plugins;
-    }
-
-    public ClassLoader getPluginClassLoader()
-    {
-        return classLoader;
     }
 
 }

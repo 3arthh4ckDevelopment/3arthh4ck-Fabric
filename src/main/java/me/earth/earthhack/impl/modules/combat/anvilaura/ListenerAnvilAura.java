@@ -20,6 +20,7 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.SpecialBlocks;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import me.earth.earthhack.impl.util.network.PacketUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.block.BlockState;
@@ -98,7 +99,7 @@ final class ListenerAnvilAura extends ObbyListener<AnvilAura>
         }
 
         Set<AnvilResult> results = AnvilResult.create(mc.world.getPlayers(),
-                                                      (List<Entity>) mc.world.getEntities(),
+                                CollectionUtil.asList(mc.world.getEntities()),
                                                       module.yHeight.getValue(),
                                                       module.range.getValue());
         switch (mode) {
@@ -376,7 +377,7 @@ final class ListenerAnvilAura extends ObbyListener<AnvilAura>
             PathFinder.findPath(
                     path,
                     module.range.getValue(),
-                    (List<Entity>) mc.world.getEntities(),
+                    CollectionUtil.asList(mc.world.getEntities()),
                     module.smartRay.getValue(),
                     HELPER,
                     Blocks.OBSIDIAN.getDefaultState(),
@@ -539,7 +540,7 @@ final class ListenerAnvilAura extends ObbyListener<AnvilAura>
             PathFinder.findPath(
                     path,
                     module.range.getValue(),
-                    (List<Entity>) mc.world.getEntities(),
+                    CollectionUtil.asList(mc.world.getEntities()),
                     module.smartRay.getValue(),
                     HELPER,
                     Blocks.OBSIDIAN.getDefaultState(),

@@ -41,6 +41,20 @@ public class CollectionUtil
     }
 
     /**
+     * Converts an Iterator/Iterable to a List.
+     * @param iterable the Iterable to convert.
+     * @return a new List containing all the elements of a given Iterable.
+     * @param <T> the type of element the list will hold.
+     */
+    public static <T> List<T> asList(Iterable<T> iterable)
+    {
+        // Kind of goofy but I don't care
+        List<T> result = new ArrayList<>();
+        iterable.forEach(result::add);
+        return result;
+    }
+
+    /**
      * Splits the list into multiple ArrayLists.
      * After an element tested true for a given predicate
      * it will be added to the split list and not be tested again.

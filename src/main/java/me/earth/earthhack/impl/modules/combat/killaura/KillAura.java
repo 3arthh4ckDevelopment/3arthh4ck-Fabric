@@ -190,7 +190,7 @@ public class KillAura extends EntityTypeModule
                 || mc.player.squaredDistanceTo(entity) > MathUtil.square(targetRange.getValue())
                 || EntityUtil.isDead(entity)
                 || entity.equals(mc.player)
-                || !entity.equals(mc.player.getVehicle())
+                || entity.equals(mc.player.getVehicle())
                 || entity instanceof PlayerEntity
                 && Managers.FRIENDS.contains((PlayerEntity) entity)
                 || !passengers.getValue()
