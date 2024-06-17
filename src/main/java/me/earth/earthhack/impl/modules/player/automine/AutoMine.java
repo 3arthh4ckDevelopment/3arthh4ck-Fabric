@@ -20,6 +20,7 @@ import me.earth.earthhack.impl.util.math.RayTraceUtil;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -32,7 +33,6 @@ import net.minecraft.util.math.Direction;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -271,11 +271,11 @@ public class AutoMine extends BlockAddingModule implements IAutomine
                                                  placeTrace.getValue(),
                                                  breakTrace.getValue())
                 && BlockUtil.canPlaceCrystal(pos, true, newV.getValue(),
-                            (List<Entity>) mc.world.getEntities(), newVEntities.getValue(), 0);
+                            CollectionUtil.asList(mc.world.getEntities()), newVEntities.getValue(), 0);
         }
 
         return BlockUtil.canPlaceCrystal(pos, true, newV.getValue(),
-                            (List<Entity>) mc.world.getEntities(), newVEntities.getValue(), 0);
+                            CollectionUtil.asList(mc.world.getEntities()), newVEntities.getValue(), 0);
     }
 
     @Override
@@ -409,7 +409,7 @@ public class AutoMine extends BlockAddingModule implements IAutomine
             && BlockUtil.checkBoost(
                 pos, true, newV.getValue(),
                 checkEntities.getValue()
-                    ? (List<Entity>) mc.world.getEntities()
+                    ? CollectionUtil.asList(mc.world.getEntities())
                     : Collections.emptyList(),
                 newVEntities.getValue(), 0L)
             && BlockUtil.isCrystalPosInRange(

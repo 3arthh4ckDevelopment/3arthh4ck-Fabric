@@ -307,9 +307,10 @@ final class ListenerUpdate extends ModuleListener<AutoMine, UpdateEvent>
                     return;
                 }
 
-                List<Entity> entities = ((List<Entity>) mc
-                    .world
-                    .getEntities())
+                List<Entity> entities = new ArrayList<>();
+                mc.world.getEntities().forEach(entities::add);
+
+                entities = entities
                     .stream()
                     .filter(Objects::nonNull)
                     .filter(e -> !(e instanceof ItemEntity)) // we ignore items

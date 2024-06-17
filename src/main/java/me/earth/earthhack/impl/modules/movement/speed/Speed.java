@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.modules.movement.step.Step;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.shape.VoxelShape;
 
@@ -145,8 +146,8 @@ public class Speed extends Module
     {
         boolean stepping = false;
         List<VoxelShape> collisions =
-                (List<VoxelShape>) mc.world.getBlockCollisions(mc.player,
-                        mc.player.getBoundingBox().expand(0.1, 0.0, 0.1));
+                CollectionUtil.asList(mc.world.getBlockCollisions(mc.player,
+                        mc.player.getBoundingBox().expand(0.1, 0.0, 0.1)));
         if (STEP.isEnabled() && !collisions.isEmpty())
         {
             stepping = true;
