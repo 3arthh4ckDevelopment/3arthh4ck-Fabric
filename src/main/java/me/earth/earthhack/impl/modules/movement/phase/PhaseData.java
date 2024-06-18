@@ -7,10 +7,11 @@ final class PhaseData extends DefaultData<Phase>
     public PhaseData(Phase module)
     {
         super(module);
-        register(module.mode, "-Sand use doors/heads/sand to phase." +
-                "\n-Climb goes down" +
-                "\n-Packet uses packets to phase" +
-                "\n-Normal just plain phase.");
+        register(module.mode, """
+                - Sand : Use doors/heads/sand to phase.
+                - Climb : Goes down.
+                - Packet : Uses packets to phase.
+                - Normal : Just plain phase.""");
         register(module.autoClip, "Tries to get you into " +
                 "a block when you enable this module.");
         register(module.blocks, "Modifier for the AutoClip.");

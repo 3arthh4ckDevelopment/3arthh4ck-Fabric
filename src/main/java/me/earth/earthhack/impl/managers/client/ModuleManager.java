@@ -35,6 +35,7 @@ import me.earth.earthhack.impl.modules.combat.autotrap.AutoTrap;
 import me.earth.earthhack.impl.modules.combat.bedbomb.BedBomb;
 import me.earth.earthhack.impl.modules.combat.bowkill.BowKiller;
 import me.earth.earthhack.impl.modules.combat.bowspam.BowSpam;
+import me.earth.earthhack.impl.modules.combat.cevbreaker.CrystalBomber;
 import me.earth.earthhack.impl.modules.combat.criticals.Criticals;
 import me.earth.earthhack.impl.modules.combat.holefiller.HoleFiller;
 import me.earth.earthhack.impl.modules.combat.killaura.KillAura;
@@ -83,6 +84,7 @@ import me.earth.earthhack.impl.modules.movement.nofall.NoFall;
 import me.earth.earthhack.impl.modules.movement.noslowdown.NoSlowDown;
 import me.earth.earthhack.impl.modules.movement.packetfly.PacketFly;
 import me.earth.earthhack.impl.modules.movement.phase.Phase;
+import me.earth.earthhack.impl.modules.movement.reversestep.ReverseStep;
 import me.earth.earthhack.impl.modules.movement.speed.Speed;
 import me.earth.earthhack.impl.modules.movement.stairs.Stairs;
 import me.earth.earthhack.impl.modules.movement.step.Step;
@@ -154,12 +156,10 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new AutoCrystal());
         this.forceRegister(new AutoTrap());
         this.forceRegister(new BedBomb());
-        // this.forceRegister(new BedBombRewrite());
         this.forceRegister(new BowSpam());
-        // this.forceRegister(new Blocker());
         this.forceRegister(new BowKiller());
         this.forceRegister(new Criticals());
-        // this.forceRegister(new CrystalBomber());
+        this.forceRegister(new CrystalBomber());
         this.forceRegister(new HoleFiller());
         this.forceRegister(new KillAura());
         this.forceRegister(new Offhand());
@@ -216,7 +216,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new FastSwim());
         this.forceRegister(new Flight());
         // this.forceRegister(new HighJump());
-        // this.forceRegister(new ReverseStep());
+        this.forceRegister(new ReverseStep());
         // this.forceRegister(new IceSpeed());
         this.forceRegister(new Jesus());
         this.forceRegister(new LongJump());
@@ -260,7 +260,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Suicide());
         // this.forceRegister(new Swing());
         this.forceRegister(new Timer());
-        this.forceRegister(new TrueDurability()); // TODO
+        this.forceRegister(new TrueDurability()); // <--- TODO
         this.forceRegister(new XCarry());
 
 
@@ -279,11 +279,9 @@ public class ModuleManager extends IterationRegister<Module>
         // this.forceRegister(new Search());
         // this.forceRegister(new Skeleton());
         this.forceRegister(new BreakESP());
-
-        this.forceRegister(new CameraClip());
         // this.forceRegister(new Sounds());
         // this.forceRegister(new Tracers());
-        // this.forceRegister(new CameraClip());
+        this.forceRegister(new CameraClip());
         // this.forceRegister(new XRay());
         // this.forceRegister(new CrystalChams());
         // this.forceRegister(new Trails());
