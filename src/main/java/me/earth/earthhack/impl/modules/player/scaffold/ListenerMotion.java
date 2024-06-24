@@ -176,7 +176,7 @@ final class ListenerMotion extends ModuleListener<Scaffold, MotionUpdateEvent>
 
                 if (jump && !sneak && !MovementUtil.isMoving())
                 {
-                    ((IMinecraftClient) mc).earthhack$setRightClickDelay(3);
+                    ((IMinecraftClient) mc).setRightClickDelay(3);
                     mc.player.jump();
                     if (module.towerTimer.passed(1500))
                     {

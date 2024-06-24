@@ -80,28 +80,28 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
 
     @Override
     @Accessor(value = "itemUseCooldown")
-    public abstract int earthhack$getRightClickDelay();
+    public abstract int getRightClickDelay();
 
     @Override
     @Accessor(value = "itemUseCooldown")
-    public abstract void earthhack$setRightClickDelay(int delay);
+    public abstract void setRightClickDelay(int delay);
 
     @Override
     @Accessor(value = "renderTickCounter")
-    public abstract RenderTickCounter earthhack$getTimer();
+    public abstract RenderTickCounter getTimer();
 
 
     @Override
-    public int earthhack$getGameLoop() {
+    public int getGameLoop() {
         return gameLoop;
     }
 
     @Override
     @Accessor(value = "fpsCounter")
-    public abstract int earthhack$getFpsCounter();
+    public abstract int getFpsCounter();
 
     @Override
-    public boolean earthhack$isRunning() {
+    public boolean isRunning() {
         return isEarthhackRunning;
     }
 

@@ -13,29 +13,29 @@ public interface IMinecraftClient
      *
      * @return mc.rightClickDelayTimer.
      */
-    int earthhack$getRightClickDelay();
+    int getRightClickDelay();
 
     /**
      * Accessor for mc.rightClickDelayTimer.
      *
      * @param delay the value to set the timer to.
      */
-    void earthhack$setRightClickDelay(int delay);
+    void setRightClickDelay(int delay);
 
     /**
      * Accesses Minecraft's timer.
      *
      * @return minecraft's timer.
      */
-    RenderTickCounter earthhack$getTimer();
+    RenderTickCounter getTimer();
 
     /** @return the current gameloop, will be incremented every gameloop. */
-    int earthhack$getGameLoop();
+    int getGameLoop();
 
-    int earthhack$getFpsCounter();
+    int getFpsCounter();
 
     /** @return <tt>true</tt> if 3arthh4ck is running. */
-    boolean earthhack$isRunning();
+    boolean isRunning();
 
 
     /** @return Minecraft's DataFixer (as MetadataSerializer's replacement). */

@@ -99,7 +99,7 @@ public class Interpolation implements Globals
 
     public static double interpolateLastTickPos(double pos, double lastPos)
     {
-        return lastPos + (pos - lastPos) * ((IMinecraftClient) mc).earthhack$getTimer().tickDelta;
+        return lastPos + (pos - lastPos) * ((IMinecraftClient) mc).getTimer().tickDelta;
     }
 
     public static Box interpolatePos(BlockPos pos, float height)
