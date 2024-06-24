@@ -4,7 +4,7 @@ import me.earth.earthhack.api.setting.settings.ListSetting;
 import me.earth.earthhack.api.util.interfaces.Nameable;
 import me.earth.earthhack.impl.gui.click.component.SettingComponent;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.render.RenderUtil;
+import me.earth.earthhack.impl.util.render.Render2DUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Formatting;
 
@@ -33,7 +33,7 @@ public class ListComponent<M extends Nameable> extends SettingComponent<M, ListS
     @Override
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
         if (hovered) {
             int index = getListSetting().getValues().indexOf(getListSetting().getValue());
             if (index == -1)

@@ -31,7 +31,7 @@ public class FakeCrystalRender implements Globals
                                                 crystal.getBoundingBox(),
                                                 e -> true))
                 {
-                    crystal.setBodyYaw(entity.getBodyYaw()); // = entity.innerRotation;
+                    crystal.yaw = entity.yaw;
                     break;
                 }
             }
@@ -49,7 +49,7 @@ public class FakeCrystalRender implements Globals
             if (fake.getBoundingBox()
                     .intersects(crystal.getBoundingBox()))
             {
-                crystal.setBodyYaw(fake.getBodyYaw());
+                crystal.yaw = fake.yaw;
                 itr.remove();
             }
         }
@@ -76,12 +76,12 @@ public class FakeCrystalRender implements Globals
         }
     }
 
-    public void render(float delta)
+    public void render(float partialTicks)
     {
         EntityRenderDispatcher manager = mc.getEntityRenderDispatcher();
         for (EndCrystalEntity crystal : crystals)
         {
-            manager.render(crystal, 0, 0, 0, crystal.getYaw(), delta, null, null, 15);
+            // manager.render(crystal, crystal.getX(), crystal.getY(), crystal.getZ(), crystal.getYaw(), partialTicks, matrices, vertices, false);
         }
     }
 

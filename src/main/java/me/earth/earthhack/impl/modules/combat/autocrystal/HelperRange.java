@@ -9,7 +9,6 @@ import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
 
 public class HelperRange implements Globals {
     private final AutoCrystal module;
@@ -117,23 +116,24 @@ public class HelperRange implements Globals {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean isCrystalInBreakTrace(
-        double crystalX, double crystalY, double crystalZ,
-        double breakerX, double breakerY, double breakerZ)
+    public boolean isCrystalInBreakTrace(double crystalX,
+                                         double crystalY,
+                                         double crystalZ,
+                                         double breakerX,
+                                         double breakerY,
+                                         double breakerZ)
     {
-        RaycastContext raycastContext = new RaycastContext(
-                new Vec3d(breakerX, breakerY
-                        + RotationUtil.getRotationPlayer().getEyeHeight(RotationUtil.getRotationPlayer().getPose()), breakerZ),
-                new Vec3d(crystalX, crystalY + 1.7, crystalZ),
-                RaycastContext.ShapeType.OUTLINE, // or RaycastContext.ShapeType.COLLIDER, depending on your needs
-                RaycastContext.FluidHandling.NONE, // or RaycastContext.FluidHandling.ANY, depending on your needs
-                mc.player
-        );
+        BlockPos crystalPos = BlockPos.ofFloored(crystalX, crystalY, crystalZ);
 
         return DistanceUtil.distanceSq(crystalX, crystalY, crystalZ,
                                        breakerX, breakerY, breakerZ)
                 < MathUtil.square(module.breakTrace.getValue())
-            || mc.world.raycast(raycastContext) == null;
+            || mc.world.raycastBlock(
+            new Vec3d(breakerX, breakerY
+                + RotationUtil.getRotationPlayer().getEyeHeight(RotationUtil.getRotationPlayer().getPose()), breakerZ),
+            new Vec3d(crystalX, crystalY + 1.7, crystalZ),
+            crystalPos,
+            mc.world.getBlockState(crystalPos).getRaycastShape(mc.world, crystalPos),
+            mc.world.getBlockState(crystalPos)) == null; // probably retarded
     }
-
 }

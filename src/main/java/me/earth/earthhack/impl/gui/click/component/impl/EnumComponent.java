@@ -4,7 +4,7 @@ import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.util.EnumHelper;
 import me.earth.earthhack.impl.gui.click.component.SettingComponent;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.render.RenderUtil;
+import me.earth.earthhack.impl.util.render.Render2DUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Formatting;
 
@@ -31,7 +31,7 @@ public class EnumComponent<E extends Enum<E>> extends SettingComponent<E, EnumSe
     @SuppressWarnings("unchecked")
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
         if (hovered) {
             if (mouseButton == 0) {
                 getEnumSetting().setValue((E) EnumHelper.next(getEnumSetting().getValue()));

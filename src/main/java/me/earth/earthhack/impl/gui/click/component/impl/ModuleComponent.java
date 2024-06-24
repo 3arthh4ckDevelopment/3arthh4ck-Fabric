@@ -13,7 +13,6 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.modules.client.configs.ConfigHelperModule;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import me.earth.earthhack.impl.util.render.RenderUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
 
@@ -114,7 +113,7 @@ public class ModuleComponent extends Component {
             setHeight(height);
         }
 
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
         if (hovered)
             Render2DUtil.drawRect(context.getMatrices(), getFinishedX() + 1, getFinishedY() + 0.5f, getFinishedX() + getWidth() - 1, getFinishedY() + getHeight() - 0.5f, getClickGui().get().getModuleHover().brighter().getRGB());
         if (getModule().isEnabled()) {
@@ -190,18 +189,16 @@ public class ModuleComponent extends Component {
     @Override
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
         if (hovered) {
             switch (mouseButton) {
-                case 0:
-                    getModule().toggle();
-                    break;
-                case 1:
+                case 0 -> getModule().toggle();
+                case 1 -> {
                     if (!getComponents().isEmpty())
                         setExtended(!isExtended());
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
         }
         if (isExtended()) {

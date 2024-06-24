@@ -17,6 +17,7 @@ import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.IBlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -153,8 +154,10 @@ public class CrystalHelper implements Globals {
                 AUTOCRYSTAL.get().rotationHelper.swing(hand, false);
             }
 
-            mc.player.networkHandler.sendPacket(
-                new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false), 0));
+            NetworkUtil.sendSequenced(seq ->
+                new PlayerInteractBlockC2SPacket(hand,
+                        new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false),
+                        seq));
 
             if (AUTOCRYSTAL.get().placeSwing.getValue() == SwingTime.Post)
             {

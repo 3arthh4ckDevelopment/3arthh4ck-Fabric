@@ -13,6 +13,7 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -72,7 +73,7 @@ public class HelperSequential extends SubscriberImpl implements Globals {
             Vec3d cPos = crystalPos;
             if (module.endSequenceOnExplosion.getValue()
                 && e.getPacket().getCategory() == SoundCategory.BLOCKS
-                && e.getPacket().getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE
+                && e.getPacket().getSound() == Registries.SOUND_EVENT.getEntry(SoundEvents.ENTITY_GENERIC_EXPLODE)
                 && cPos != null
                 && cPos.squaredDistanceTo(e.getPacket().getX(), e.getPacket().getY(), e.getPacket().getZ()) < 144) {
                 setExpecting(null);

@@ -3,6 +3,7 @@ package me.earth.earthhack.impl.modules.combat.autocrystal;
 import me.earth.earthhack.api.cache.SettingCache;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.core.mixins.util.IBlockHitResult;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.safety.Safety;
@@ -27,6 +28,10 @@ import net.minecraft.util.math.Direction;
 
 import java.util.*;
 
+/**
+ * Helper class for Obsidian placements.
+ * Used for BasePlace position calculations.
+ */
 public class HelperObby implements Globals
 {
     private static final SettingCache<Float, NumberSetting<Float>, Safety> MD =
@@ -147,7 +152,7 @@ public class HelperObby implements Globals
 
                     BlockState state = mc.world.getBlockState(offset);
                     if (state.isReplaceable()
-                            && !state.isLiquid())
+                            && state.getFluidState().isEmpty())
                     {
                         continue;
                     }
@@ -168,9 +173,11 @@ public class HelperObby implements Globals
                     }
 
                     if (module.inside.getValue()
-                            && state.isLiquid())
+                            && !state.getFluidState().isEmpty())
                     {
-                        ray.getResult().getSide().equals(ray.getResult().getSide().getOpposite());
+                        ((IBlockHitResult) ray.getResult())
+                                .earthhack$setDirection(ray.getResult().getSide().getOpposite());
+
                         ray = new Ray(ray.getResult(),
                                       ray.getRotations(),
                                       ray.getPos().offset(ray.getFacing()),

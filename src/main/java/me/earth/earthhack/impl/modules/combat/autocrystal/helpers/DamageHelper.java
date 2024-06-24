@@ -7,12 +7,11 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.MotionTracker;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.BlockView;
 
 public class DamageHelper implements Globals
 {
@@ -74,7 +73,7 @@ public class DamageHelper implements Globals
     public float getDamage(Entity crystal, LivingEntity base)
     {
         return getDamage(crystal.getX(), crystal.getY(), crystal.getZ(), base,
-                mc.world, bExtrapolation.getValue(),
+                         mc.world, bExtrapolation.getValue(),
                          module.avgBreakExtra.getValue(), false, false,
                          terrainCalc.getValue());
     }
@@ -104,7 +103,7 @@ public class DamageHelper implements Globals
 
     // Obby place damage for ourselves //
     public float getObbyDamage(BlockPos pos,
-                               WorldAccess world)
+                               BlockView world)
     {
         if (module.isSuicideModule())
         {
@@ -120,7 +119,7 @@ public class DamageHelper implements Globals
     //  Obby place damage for other entities  //
     public float getObbyDamage(BlockPos pos,
                                LivingEntity base,
-                               WorldAccess world)
+                               BlockView world)
     {
         return getDamage(pos, base, world, pExtrapolation.getValue(),
                          module.avgPlaceDamage.getValue(), false,
@@ -129,7 +128,7 @@ public class DamageHelper implements Globals
 
     // Takes a BlockPos, for placing only //
     private float getDamage(BlockPos pos, LivingEntity base,
-                            WorldAccess world, int ticks, boolean avg,
+                            BlockView world, int ticks, boolean avg,
                             boolean self, boolean terrain)
     {
         return getDamage(pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f,
@@ -138,7 +137,7 @@ public class DamageHelper implements Globals
 
     // Where it all comes together //
     private float getDamage(double x, double y, double z, LivingEntity base,
-                            WorldAccess world, int ticks, boolean avg,
+                            BlockView world, int ticks, boolean avg,
                             boolean self, boolean place, boolean terrain)
     {
         MotionTracker tracker;
@@ -149,12 +148,12 @@ public class DamageHelper implements Globals
                 : positionHelper.getBreakTrackerFromEntity(base)) == null
             || !tracker.active) {
             return DamageUtil.calculate(x, y, z, base.getBoundingBox(),
-                                        base, (ClientWorld) world, terrain);
+                                        base, world, terrain);
         }
 
         float dmg = DamageUtil.calculate(x, y, z,
                                          tracker.getBoundingBox(),
-                                         base, (ClientWorld) world, terrain);
+                                         base, world, terrain);
         if (avg) {
             double extraWeight = place
                 ? module.placeExtraWeight.getValue()
@@ -165,7 +164,7 @@ public class DamageHelper implements Globals
 
             float normDmg = DamageUtil.calculate(x, y, z,
                                                  base.getBoundingBox(),
-                                                 base, (ClientWorld) world, terrain);
+                                                 base, world, terrain);
             return (float) ((normDmg * normWeight + dmg * extraWeight) / 2.0);
         }
 

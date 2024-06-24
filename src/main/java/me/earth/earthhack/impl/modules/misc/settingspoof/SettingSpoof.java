@@ -142,11 +142,11 @@ public class SettingSpoof extends Module
                 : modelPartsIn;
     }
 
-    public Arm getHandSide(Arm enumHandSideIn)
+    public Arm getHandSide(Arm HandSideIn)
     {
         return spoofHand.getValue()
                 ? hand.getValue().getHandSide()
-                : enumHandSideIn;
+                : HandSideIn;
     }
 
 }

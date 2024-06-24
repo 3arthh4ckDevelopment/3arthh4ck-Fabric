@@ -18,7 +18,6 @@ import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.network.packet.s2c.play.ExperienceOrbSpawnS2CPacket;
 import net.minecraft.util.Hand;
 
 import java.util.List;
@@ -41,18 +40,18 @@ public class IDHelper extends SubscriberImpl implements Globals
     public IDHelper(Setting<Boolean> basePlaceOnly)
     {
         this.basePlaceOnly = basePlaceOnly;
+        // this.listeners.add(new ReceiveListener<>(SPacketSpawnObject.class,
+        //     event -> checkID(event.getPacket().getId())));
+        // this.listeners.add(new ReceiveListener<>(SPacketSpawnExperienceOrb.class,
+        //     event -> checkID(event.getPacket().getEntityID())));
+        // this.listeners.add(new ReceiveListener<>(SPacketSpawnPlayer.class,
+        //     event -> checkID(event.getPacket().getEntityID())));
+        // this.listeners.add(new ReceiveListener<>(SPacketSpawnGlobalEntity.class,
+        //     event -> checkID(event.getPacket().getEntityId())));
         this.listeners.add(new ReceiveListener<>(EntitySpawnS2CPacket.class,
             event -> checkID(event.getPacket().getId())));
-        this.listeners.add(new ReceiveListener<>(ExperienceOrbSpawnS2CPacket.class,
-            event -> checkID(event.getPacket().getId())));
-        //this.listeners.add(new ReceiveListener<>(PlayerSpawnS2CPacket.class,
-        //    event -> checkID(event.getPacket().getId())));
-        // this.listeners.add(new ReceiveListener<>(SPacketSpawnGlobalEntity.class,
-        //     event -> checkID(event.getPacket().getId())));
-        // this.listeners.add(new ReceiveListener<>(SPacketSpawnPainting.class,
-        //     event -> checkID(event.getPacket().getId()())));
-        // this.listeners.add(new ReceiveListener<>(MobSpawn.class,
-        //     event -> checkID(event.getPacket().getId())));
+        // this.listeners.add(new ReceiveListener<>(SPacketSpawnMob.class,
+        //     event -> checkID(event.getPacket().getEntityID())));
     }
 
     public int getHighestID()

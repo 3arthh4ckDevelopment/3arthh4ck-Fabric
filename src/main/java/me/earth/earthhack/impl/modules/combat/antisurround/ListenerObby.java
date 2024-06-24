@@ -4,7 +4,6 @@ import me.earth.earthhack.api.event.bus.api.EventBus;
 import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.modules.combat.autocrystal.HelperLiquids;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.MineSlots;
 import me.earth.earthhack.impl.util.helpers.blocks.ObbyListener;
 import me.earth.earthhack.impl.util.helpers.blocks.modes.Rotate;
@@ -21,6 +20,7 @@ import me.earth.earthhack.impl.util.minecraft.blocks.mine.MineUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.IBlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.network.PacketUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -128,7 +128,7 @@ final class ListenerObby extends ObbyListener<AntiSurround>
             && module.persistent.getValue()
             && !module.holdingCheck())
         {
-            MineSlots mine = HelperLiquids.getSlots(module.onGround.getValue());
+            MineSlots mine = MineUtil.getSlots(module.onGround.getValue());
             if (mine.getBlockSlot() == -1
                 || mine.getToolSlot() == -1
                 || mine.getDamage() < module.minMine.getValue()
@@ -349,7 +349,7 @@ final class ListenerObby extends ObbyListener<AntiSurround>
     protected int getSlot()
     {
         module.obbySlot = InventoryUtil.findHotbarBlock(Blocks.OBSIDIAN);
-        MineSlots slots = HelperLiquids.getSlots(module.onGround.getValue());
+        MineSlots slots = MineUtil.getSlots(module.onGround.getValue());
         if (slots.getDamage() < module.minMine.getValue()
                 && !(module.isAnvil = module.anvilCheck(slots))
             || slots.getToolSlot() == -1
@@ -459,10 +459,10 @@ final class ListenerObby extends ObbyListener<AntiSurround>
             {
                 module.crystalSwitchBackSlot = crystalSlot;
                 module.cooldownBypass.getValue().switchTo(crystalSlot);
-                mc.player.networkHandler.sendPacket(
+                NetworkUtil.sendSequenced(seq ->
                         new PlayerInteractBlockC2SPacket(
                                 h, new BlockHitResult(finalPos.toCenterPos(), finalResult.getSide(), finalPos, false),
-                                0
+                                seq
                         ));
                 // mc.player.networkHandler.sendPacket(
                 //     new PlayerInteractBlockC2SPacket(

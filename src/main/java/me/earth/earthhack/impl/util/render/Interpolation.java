@@ -6,10 +6,10 @@ import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.core.ducks.entity.IEntityNoInterp;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
+import me.earth.earthhack.impl.util.render.mutables.MutableBB;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -124,7 +124,7 @@ public class Interpolation implements Globals
                 bb.maxZ - mc.gameRenderer.getCamera().getPos().z);
     }
 
-    public static void interpolateMutable(BlockBox bb)
+    public static void interpolateMutable(MutableBB bb)
     {
         bb.minX = (int) (bb.minX - mc.gameRenderer.getCamera().getPos().x);
         bb.minY = (int) (bb.minY - mc.gameRenderer.getCamera().getPos().y);

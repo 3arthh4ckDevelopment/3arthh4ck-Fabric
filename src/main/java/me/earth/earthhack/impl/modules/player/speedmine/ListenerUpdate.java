@@ -181,13 +181,13 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                     if (module.placeCrystal.getValue() && AUTOCRYSTAL.isEnabled() && p != null && BlockUtil.canPlaceCrystal(p,false,false)) {
                         final BlockHitResult result = new BlockHitResult(new Vec3d(0.5, 1.0, 0.5).add(p.toCenterPos()), Direction.UP, p, false);
 
-                        if (mc.player.getOffHandStack() != ItemStack.EMPTY && mc.player.getOffHandStack().getItem() == Items.END_CRYSTAL) {
-                            final PlayerInteractBlockC2SPacket place =
-                                    new PlayerInteractBlockC2SPacket(Hand.OFF_HAND, new BlockHitResult(result.getPos(), result.getSide(), p, false), 0);
+                        if (mc.player.getOffHandStack() != ItemStack.EMPTY && mc.player.getOffHandStack().getItem() == Items.END_CRYSTAL) {;
                             final HandSwingC2SPacket animation =
                                     new HandSwingC2SPacket(Hand.OFF_HAND);
                             InventoryUtil.syncItem();
-                            mc.player.networkHandler.sendPacket(place);
+
+                            NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(Hand.OFF_HAND, result, seq));
+
                             if (AUTOCRYSTAL.isPresent()) {
                                 AUTOCRYSTAL.get().placed.put(p.up(), new CrystalTimeStamp(Float.MAX_VALUE, false));
                                 AUTOCRYSTAL.get().bombPos = p.up();

@@ -32,22 +32,20 @@ import me.earth.earthhack.impl.util.minecraft.CooldownBypass;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
-import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.impl.util.thread.SafeRunnable;
 import me.earth.earthhack.impl.util.thread.ThreadUtil;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -56,6 +54,20 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// TODO: with newVerEntities we can actually mine a block,
+//  place on top of it, break the crystal after we broke the block,
+//  that way we can place the crystal where the block was immediately
+//  since the first crystal blew up the item that drops
+// TODO: If we can be the last person to spawn any entity on the last tick
+//  and first persons to spawn a crystal on the next server tick,
+//  our crystal will be the first to spawn
+//  next tick, while the other will be the last to spawn last tick,
+//  so the last spawned crystal will have the highest id probably.
+//  Which would allow for a really good id prediction of the next tick.
+//  Only worth if we have really low ms and we can receive packets between
+//  the ticks and the world doesn't have many players.
+// TODO: more mine stuff!
+// TODO: SmartRange for OBBY!!!
 public class AutoCrystal extends Module
 {
     public static final PositionHistoryHelper POSITION_HISTORY =
@@ -113,7 +125,7 @@ public class AutoCrystal extends Module
             register(new BooleanSetting("1.13+", false))
                     .setComplexity(Complexity.Medium);
     protected final Setting<Boolean> newVerEntities =
-            register(new BooleanSetting("UnderEntities", false))
+            register(new BooleanSetting("1.13-Entities", false))
                     .setComplexity(Complexity.Medium);
     public final Setting<SwingTime> placeSwing =
             register(new EnumSetting<>("PlaceSwing", SwingTime.Post))
@@ -948,6 +960,7 @@ public class AutoCrystal extends Module
             new AtomicInteger();
 
     /* ---------------- Timers -------------- */
+
     protected final DiscreteTimer placeTimer =
             new GuardTimer(1000, 5).reset(placeDelay.getValue());
     protected final DiscreteTimer breakTimer =
@@ -1074,7 +1087,7 @@ public class AutoCrystal extends Module
         super(name, category);
         Bus.EVENT_BUS.subscribe(idHelper);
         this.listeners.add(new ListenerBlockChange(this));
-        this.listeners.add(new ListenerBlockMulti(this));
+        // this.listeners.add(new ListenerBlockMulti(this)); // <- SPacketMultiBlockChange isn't a thing in modern versions
         this.listeners.add(new ListenerDestroyEntities(this));
         this.listeners.add(new ListenerExplosion(this));
         this.listeners.add(new ListenerGameLoop(this));
@@ -1165,14 +1178,17 @@ public class AutoCrystal extends Module
                 if (switching) {
                     return TextColor.GREEN + "Switching";
                 }
-                return t == null ? null : t.getName().getString();
+                return t == null
+                        ? null
+                        : t.getName().copy().formatted(Formatting.RESET).getString();
+                // prevents player name from being colored in arraylist
             }
             case Info -> {
                 return t == null
                         ? null
                         : t.getName()
                         + ", "
-                        + Objects.requireNonNull(damageInfo);
+                        + damageInfo;
             }
             default -> {
                 return null;
@@ -1181,7 +1197,7 @@ public class AutoCrystal extends Module
     }
 
     public void setRenderPos(BlockPos pos, float damage) {
-        setRenderPos(pos, MathUtil.round(damage, 1) + "");
+        setRenderPos(pos, String.valueOf(MathUtil.round(damage, 1)));
     }
 
     public void setRenderPos(BlockPos pos, String text) {
@@ -1220,7 +1236,6 @@ public class AutoCrystal extends Module
     public void setTarget(PlayerEntity target) {
         this.targetTimer.reset();
         this.target = target;
-        ChatUtil.sendMessage("Currently targeting " + target.getName().getString() + "!", target.getName().getString());
     }
 
     /**
@@ -1277,15 +1292,14 @@ public class AutoCrystal extends Module
     public float getMinDamage()
     {
         int bind = holdFacePlaceKey.getValue().getKey();
-        if (bind == Bind.none().getKey())
-            bind = 0;
+        if (bind == Bind.none().getKey()) bind = 0;
 
         // We could also check if we are mining webs with our sword.
         return holdFacePlace.getValue()
                 && mc.currentScreen == null
-                && InputUtil.isKeyPressed(mc.getWindow().getHandle(), bind)
+                && mc.mouse.leftButtonClicked
                 && (!(mc.player.getMainHandStack().getItem() instanceof PickaxeItem)
-                || pickAxeHold.getValue())
+                    || pickAxeHold.getValue())
                 || dangerFacePlace.getValue()
                 && !Managers.SAFETY.isSafe()
                 ? minFaceDmg.getValue()
@@ -1416,7 +1430,8 @@ public class AutoCrystal extends Module
 
     public boolean isNotCheckingRotations() {
         return noPacketFlyRotationChecks.getValue()
-                && PACKET_FLY.isEnabled();
+                // && (PingBypass.PACKET_SERVICE.isPacketFlying()
+                || PACKET_FLY.isEnabled();
     }
 
     /**
@@ -1464,7 +1479,8 @@ public class AutoCrystal extends Module
         double x = player.getX();
         double y = player.getY() + (placeRangeEyes.getValue() ? player.getEyeHeight(player.getPose()) : 0);
         double z = player.getZ();
-        double distance = placeRangeCenter.getValue() ? pos.getSquaredDistanceFromCenter(x, y, z) : pos.getSquaredDistance(x, y, z);
+        double distance = placeRangeCenter.getValue() ? pos.getSquaredDistanceFromCenter(x, y, z)
+                : pos.getSquaredDistance(x, y, z);
         return distance >= MathUtil.square(placeRange.getValue());
     }
 

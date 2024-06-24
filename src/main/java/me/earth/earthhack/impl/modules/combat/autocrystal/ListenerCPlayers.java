@@ -1,15 +1,19 @@
 package me.earth.earthhack.impl.modules.combat.autocrystal;
 
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
-import me.earth.earthhack.impl.event.listeners.PlayerMoveC2SPacketListener;
+import me.earth.earthhack.impl.event.listeners.CPacketPlayerListener;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotationThread;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
-final class ListenerCPlayers extends PlayerMoveC2SPacketListener
+final class ListenerCPlayers extends CPacketPlayerListener
 {
     private final AutoCrystal module;
 
+    /**
+     * Manages the RotationCanceller when MultiThreading.
+     * @param module an AutoCrystal instance.
+     */
     public ListenerCPlayers(AutoCrystal module)
     {
         this.module = module;

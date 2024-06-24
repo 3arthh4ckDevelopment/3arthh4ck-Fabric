@@ -14,6 +14,9 @@ public final class PluginConfig
     @SerializedName("mixinConfig")
     private String mixinConfig;
 
+    @SerializedName("accessWidener")
+    private String accessWidener;
+
     public String getName()
     {
         return name;
@@ -27,6 +30,11 @@ public final class PluginConfig
     public String getMixinConfig()
     {
         return mixinConfig;
+    }
+
+    public String getAccessWidener()
+    {
+        return accessWidener;
     }
 
     @Override

@@ -1,15 +1,15 @@
 package me.earth.earthhack.impl.modules.combat.autocrystal.util;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.UUID;
 
 public class ShieldPlayer extends PlayerEntity {
     public ShieldPlayer(World worldIn) {
-        super(worldIn, MinecraftClient.getInstance().player.getBlockPos(), 180,  new GameProfile(UUID.randomUUID(), "Shield"));
+        super(worldIn, BlockPos.ORIGIN, 0.0f, new GameProfile(UUID.randomUUID(), "Shield"));
     }
 
     @Override

@@ -8,7 +8,6 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.render.TextRenderer;
 import me.earth.earthhack.impl.modules.Caches;
-import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.modules.client.editor.HudEditor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -302,7 +301,7 @@ public class Render2DUtil implements Globals {
         context.drawItem(itemStack, x, y);
 
         if (amount) {
-            if (itemStack.isStackable() || countUnstackable) {
+            if (itemStack.isStackable() || countUnstackable || itemStack.getCount() > 1) {
                 context.getMatrices().push();
                 context.getMatrices().translate(0.0F, 0.0F, 200.0F);
                 String count = TextUtil.numberFormatter(itemCount);
@@ -315,5 +314,12 @@ public class Render2DUtil implements Globals {
                 context.getMatrices().pop();
             }
         }
+    }
+
+    public static boolean mouseWithinBounds(double mouseX, double mouseY, double x, double y, double width, double height) {
+        return (mouseX >= x
+                && mouseX <= (x + width))
+                && (mouseY >= y
+                && mouseY <= (y + height));
     }
 }

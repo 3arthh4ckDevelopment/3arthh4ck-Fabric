@@ -1,12 +1,15 @@
 package me.earth.earthhack.impl.modules.combat.autocrystal.helpers;
 
+import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.core.mixins.network.client.IPlayerMoveC2SPacket;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.RotationFunction;
+import me.earth.earthhack.impl.modules.movement.packetfly.PacketFly;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.network.PacketUtil;
@@ -14,8 +17,8 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 
 public class RotationCanceller implements Globals
 {
-    // private static final ModuleCache<PacketFly> PACKETFLY =
-    //         Caches.getModule(PacketFly.class);
+    private static final ModuleCache<PacketFly> PACKETFLY =
+            Caches.getModule(PacketFly.class);
 
     private final StopWatch timer = new StopWatch();
     private final Setting<Integer> maxCancel;
@@ -51,7 +54,7 @@ public class RotationCanceller implements Globals
     public synchronized void onPacket(
             PacketEvent.Send<? extends PlayerMoveC2SPacket> event)
     {
-        if (event.isCancelled() /*|| PACKETFLY.isEnabled()*/)
+        if (event.isCancelled() || PACKETFLY.isEnabled())
         {
             return;
         }

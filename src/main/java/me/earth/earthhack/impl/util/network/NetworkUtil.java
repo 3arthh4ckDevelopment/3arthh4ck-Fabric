@@ -2,12 +2,16 @@ package me.earth.earthhack.impl.util.network;
 
 import me.earth.earthhack.api.event.bus.instance.Bus;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.core.ducks.IClientWorld;
 import me.earth.earthhack.impl.core.ducks.network.IClientConnection;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.PendingUpdateManager;
+import net.minecraft.client.network.SequencedPacketCreator;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.listener.ServerPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 
 public class NetworkUtil implements Globals
@@ -25,6 +29,32 @@ public class NetworkUtil implements Globals
         {
             connection.sendPacket(packet);
         }
+    }
+
+    /**
+     * Sends the given Packet safely and generates a Sequence for it (Packet won't be sent
+     * if {@link MinecraftClient#getNetworkHandler()} or {@link net.minecraft.client.world.ClientWorld} is <tt>null</tt>).
+     *
+     * @param creator the packet (with a Sequence parameter) to send.
+     */
+    public static void sendSequenced(SequencedPacketCreator creator) {
+        if (mc.world == null) return;
+
+        PendingUpdateManager manager = ((IClientWorld) mc.world)
+                .earthhack$getPendingUpdateManager().incrementSequence();
+
+        try
+        {
+            int sequence = manager.getSequence();
+            Packet<ServerPlayPacketListener> packet = creator.predict(sequence);
+            send(packet);
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace();
+        }
+
+        if (manager != null) manager.close();
     }
 
     /**

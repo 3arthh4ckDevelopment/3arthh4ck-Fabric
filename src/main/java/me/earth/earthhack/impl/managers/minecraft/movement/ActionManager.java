@@ -18,21 +18,13 @@ public class ActionManager extends SubscriberImpl {
                     @Override
                     public void invoke(PacketEvent.Post<ClientCommandC2SPacket> event)
                     {
-                        switch (event.getPacket().getMode())
-                        {
-                            case START_SPRINTING:
-                                sprinting = true;
-                                break;
-                            case STOP_SPRINTING:
-                                sprinting = false;
-                                break;
-                            case PRESS_SHIFT_KEY:
-                                sneaking = true;
-                                break;
-                            case RELEASE_SHIFT_KEY:
-                                sneaking = false;
-                                break;
-                            default:
+                        switch (event.getPacket().getMode()) {
+                            case START_SPRINTING -> sprinting = true;
+                            case STOP_SPRINTING -> sprinting = false;
+                            case PRESS_SHIFT_KEY -> sneaking = true;
+                            case RELEASE_SHIFT_KEY -> sneaking = false;
+                            default -> {
+                            }
                         }
                     }
                 });

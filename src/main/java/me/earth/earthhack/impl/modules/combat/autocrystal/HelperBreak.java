@@ -100,7 +100,7 @@ public class HelperBreak extends AbstractBreakHelper<CrystalData>
         boolean killing = false;
         for (PlayerEntity player : players)
         {
-            if (player.squaredDistanceTo(crystal) > 144)
+            if (player.squaredDistanceTo(crystal) > 144) // 12
             {
                 continue;
             }

@@ -24,13 +24,17 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.SpecialBlocks;
 import me.earth.earthhack.impl.util.minecraft.blocks.mine.MineUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.*;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
+import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
+import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -445,8 +449,10 @@ public class CrystalBomber extends Module {
                 new Vec3d(mc.player.getX(), mc.player.getY() + mc.player.getEyeHeight(mc.player.getPose()), mc.player.getZ()),
                 new Vec3d(pos.getX() + .5, pos.getY() - .5d, pos.getZ() + .5), pos, null, mc.world.getBlockState(pos));
         Direction facing = (result == null || result.getSide() == null) ? Direction.UP : result.getSide();
-        mc.player.networkHandler.sendPacket(new PlayerInteractBlockC2SPacket(hand,
-                new BlockHitResult(new Vec3d(0,0,0), facing, pos, false), 0));
+        NetworkUtil.sendSequenced(seq ->
+                new PlayerInteractBlockC2SPacket(hand,
+                    new BlockHitResult(new Vec3d(0,0,0), facing, pos, false),
+                        seq));
         
         if (swing) {
             mc.player.networkHandler.sendPacket(new HandSwingC2SPacket(exactHand ? hand : Hand.MAIN_HAND));

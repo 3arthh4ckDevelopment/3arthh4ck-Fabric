@@ -21,6 +21,7 @@ import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.SpecialBlocks;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BedBlockEntity;
@@ -552,14 +553,17 @@ public class BedBomb extends Module
                 if (mc.player.getOffHandStack().getItem().getDefaultStack().isIn(ItemTags.BEDS)) {
                     bedSlot = -2;
                 } else {
-                    if (craft.getValue() && !shouldCraft && EntityUtil.getClosestClientEnemy(mc.world.getPlayers()) != null) {
+                    if (craft.getValue() && !shouldCraft
+                            && EntityUtil.getClosestClientEnemy(
+                                    CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class)) != null)
+                    {
                         doBedCraft();
                     }
                     return;
                 }
             }
 
-            target = EntityUtil.getClosestClientEnemy(mc.world.getPlayers());
+            target = EntityUtil.getClosestClientEnemy(CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class));
             if (target != null && target.squaredDistanceTo(mc.player) < 49) {
                 //Silly
                 BlockPos targetPos = new BlockPos(new Vec3i((int) target.getX(), (int) target.getY(), (int) target.getZ()));
@@ -846,7 +850,7 @@ public class BedBomb extends Module
             if (!tables.isEmpty() && !(mc.currentScreen instanceof CraftingScreen)) {
                 BlockPos target = tables.get(0);
                 mc.getNetworkHandler().sendPacket(new PlayerInputC2SPacket(mc.player.sidewaysSpeed, mc.player.forwardSpeed, false, false));
-                //BlockUtil.rightClickBlock(target, tableRange.getValue(), rotate.getValue() && !place.getValue(), EnumHand.MAIN_HAND, yaw, pitch, shouldRotate, true);
+                //BlockUtil.rightClickBlock(target, tableRange.getValue(), rotate.getValue() && !place.getValue(), Hand.MAIN_HAND, yaw, pitch, shouldRotate, true);
                 if (mc.player.squaredDistanceTo(target.getX(), target.getY(), target.getZ()) > MathUtil.square(breakRange.getValue())) return;
                 //mc.getNetworkHandler().sendPacket(new PlayerInputC2SPacket(mc.player.sidewaysSpeed, mc.player.forwardSpeed, false, false));
                 Vec3d hitVec = new Vec3d(target.getX(), target.getY(), target.getZ()); // .add(0.5, 0.5, 0.5);

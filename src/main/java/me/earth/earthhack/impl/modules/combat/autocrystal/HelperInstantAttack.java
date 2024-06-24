@@ -15,6 +15,10 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.util.Hand;
 
+/**
+ * Manages AutoCrystal - Instant.
+ * For usage, see {@link ListenerSpawnObject}.
+ */
 public class HelperInstantAttack implements Globals
 {
     public static void attack(AutoCrystal module,
@@ -75,7 +79,7 @@ public class HelperInstantAttack implements Globals
             if (w.getSlot() != -1)
             {
                 module.antiWeaknessBypass.getValue().switchBack(
-                        lastSlot, w.getSlot());
+                    lastSlot, w.getSlot());
             }
         };
 
@@ -89,7 +93,7 @@ public class HelperInstantAttack implements Globals
         }
 
         module.breakTimer.reset(slow ? module.slowBreakDelay.getValue()
-                : module.breakDelay.getValue());
+                                     : module.breakDelay.getValue());
 
         event.addPostEvent(() ->
         {
@@ -103,7 +107,7 @@ public class HelperInstantAttack implements Globals
         if (module.simulateExplosion.getValue())
         {
             HelperUtil.simulateExplosion(
-                    module, packet.getX(), packet.getY(), packet.getZ());
+                module, packet.getX(), packet.getY(), packet.getZ());
         }
 
         if (module.pseudoSetDead.getValue())
@@ -126,20 +130,20 @@ public class HelperInstantAttack implements Globals
             mc.execute(() ->
             {
                 Entity entity = mc.world.getEntityById(packet.getId());
-                if (entity instanceof EndCrystalEntity)
+                if (entity instanceof EndCrystalEntity crystal)
                 {
-                    module.crystalRender.onSpawn((EndCrystalEntity) entity);
+                    module.crystalRender.onSpawn(crystal);
                 }
 
                 if (!event.isCancelled())
                 {
                     return;
                 }
-                // TODO:
-                // EntityTracker.updateServerPosition(entityIn,
-                //         packet.getX(),
-                //         packet.getY(),
-                //         packet.getZ());
+
+                // ((IClientWorld) mc.world).earthhack$getEntityManager().updateEntityPosition(entityIn,
+                //                                    packet.getX(),
+                // TODO: Do this stuff at some point  packet.getY(),
+                //                                    packet.getZ());
                 Managers.SET_DEAD.setDead(entityIn);
             });
         }

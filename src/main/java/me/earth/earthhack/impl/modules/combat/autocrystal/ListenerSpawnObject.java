@@ -26,6 +26,14 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+/**
+ * Listens for EntitySpawnS2CPackets.
+ * Handles SimulatePlace in AutoCrystal.
+ *
+ * Also handles the Instant setting in AutoCrystal, since the EntitySpawnS2CPacket is
+ * received by the client once the entity we've placed (the Crystal) actually exists
+ * on the server and can be attacked.
+ */
 final class ListenerSpawnObject extends
         ModuleListener<AutoCrystal, PacketEvent.Receive<EntitySpawnS2CPacket>>
 {
@@ -285,14 +293,14 @@ final class ListenerSpawnObject extends
     private float getSelfDamage(Entity entity)
     {
         float damage = module.damageHelper.getDamage(entity);
-        if (damage > EntityUtil.getHealth(RotationUtil.getRotationPlayer()) - 1.0f
+        if (damage > EntityUtil.getHealth(mc.player) - 1.0f
                 || damage > DMG.getValue())
         {
             Managers.SAFETY.setSafe(false);
         }
 
         return damage > module.maxSelfBreak.getValue()
-                || damage > EntityUtil.getHealth(RotationUtil.getRotationPlayer()) - 1.0f
+                || damage > EntityUtil.getHealth(mc.player) - 1.0f
                 && !module.suicide.getValue()
                     ? -1.0f
                     : damage;

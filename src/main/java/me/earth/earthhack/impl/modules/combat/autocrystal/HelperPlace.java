@@ -27,7 +27,6 @@ import me.earth.earthhack.impl.util.minecraft.MotionTracker;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.ncp.Visible;
-import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,6 +37,9 @@ import net.minecraft.util.math.Vec3d;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Helper class for crystal placements.
+ */
 public class HelperPlace implements Globals
 {
     private static final SettingCache<Float, NumberSetting<Float>, Safety> MD =
@@ -67,14 +69,12 @@ public class HelperPlace implements Globals
 
         if (target == null && module.targetMode.getValue() != Target.Damage)
         {
-            ChatUtil.sendMessage("Target is null, returning data with only MinDamage!");
             return data;
         }
 
         data.setTarget(target);
         evaluate(data, general, friends, entities, blackList, maxY);
         data.addAllCorrespondingData();
-        ChatUtil.sendMessage("All params met, returning full Data: " + data);
         return data;
     }
 
@@ -285,7 +285,7 @@ public class HelperPlace implements Globals
             placeData.setHighestSelfDamage(selfDamage);
         }
 
-        if (selfDamage > EntityUtil.getHealth(RotationUtil.getRotationPlayer()) - 1.0)
+        if (selfDamage > EntityUtil.getHealth(mc.player) - 1.0)
         {
             if (!data.usesObby() && !data.isLiquid())
             {
@@ -360,7 +360,11 @@ public class HelperPlace implements Globals
                         Blocks.OBSIDIAN.getDefaultState(),
                         module.traceWidth.getValue());
 
-                if (!mc.world.getBlockState(ray.getResult().getBlockPos()).isOpaque()) // todo check
+                //noinspection deprecation
+                if (!mc.world.getBlockState(ray.getResult().getBlockPos())
+                             .getBlock()
+                             .isShapeFullCube(mc.world.getBlockState(
+                                 ray.getResult().getBlockPos()), mc.world, ray.getResult().getBlockPos()))
                 {
                     return false;
                 }
@@ -381,7 +385,7 @@ public class HelperPlace implements Globals
     {
         if (placeCheck(pos, maxY)
                 || (data.getTarget() != null
-                        && data.getTarget().squaredDistanceTo(pos.toCenterPos())
+                        && data.getTarget().squaredDistanceTo(new Vec3d(pos.getX(), pos.getY(), pos.getZ()))
                                 > MathUtil.square(module.range.getValue())))
         {
             return;
@@ -484,7 +488,7 @@ public class HelperPlace implements Globals
                         new Vec3d(pos.getX() + 0.5f,
                                   pos.getY() + 1 + 1.7,
                                   pos.getZ() + 0.5f),
-                        RotationUtil.getRotationPlayer());
+                        mc.player);
         }
 
         return false;
@@ -517,7 +521,7 @@ public class HelperPlace implements Globals
     {
         BlockPos pos = positionData.getPos();
         if (data.getTarget() == null
-                && player.squaredDistanceTo(pos.toCenterPos())
+                && player.squaredDistanceTo(pos.getX(), pos.getY(), pos.getZ())
                 > MathUtil.square(module.range.getValue()))
         {
             return false;

@@ -9,7 +9,7 @@ public enum Attack
 {
     /** Always attacks crystals */
     Always(() -> true, () -> true),
-    /** Only attacks if we hold Endcrystals */
+    /** Only attacks if we hold End Crystals */
     Crystal(() -> InventoryUtil.isHolding(Items.END_CRYSTAL),
             () -> InventoryUtil.isHolding(Items.END_CRYSTAL)),
     /** Similar to Crystal but always run the calc */

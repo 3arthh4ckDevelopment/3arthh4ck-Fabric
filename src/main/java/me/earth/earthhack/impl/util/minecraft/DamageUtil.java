@@ -8,7 +8,6 @@ import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.CobwebBlock;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -24,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.explosion.Explosion;
 
 public class DamageUtil implements Globals
@@ -187,7 +187,7 @@ public class DamageUtil implements Globals
 
     public static float calculate(Entity crystal,
                                   LivingEntity player,
-                                  ClientWorld world)
+                                  BlockView world)
     {
         return calculate(
             crystal.getX(),
@@ -228,11 +228,11 @@ public class DamageUtil implements Globals
     /**
      * Convenience method, calls
      * {@link DamageUtil#calculate(double, double, double,
-     * Box, LivingEntity, ClientWorld, boolean)}
+     * Box, LivingEntity, BlockView, boolean)}
      */
     public static float calculate(BlockPos p,
                                   LivingEntity base,
-                                  ClientWorld world)
+                                  BlockView world)
     {
         return calculate(p.getX() + 0.5f, p.getY() + 1, p.getZ() + 0.5f,
                          base.getBoundingBox(), base, world, false);
@@ -294,7 +294,7 @@ public class DamageUtil implements Globals
                                   double z,
                                   Box bb,
                                   LivingEntity base,
-                                  ClientWorld world,
+                                  BlockView world,
                                   boolean terrainCalc)
     {
         return calculate(x, y, z, bb, base, world, terrainCalc, false);
@@ -305,7 +305,7 @@ public class DamageUtil implements Globals
                                   double z,
                                   Box bb,
                                   LivingEntity base,
-                                  ClientWorld world,
+                                  BlockView world,
                                   boolean terrainCalc,
                                   boolean anvils)
     {
@@ -323,7 +323,7 @@ public class DamageUtil implements Globals
                                   double z,
                                   Box bb,
                                   LivingEntity base,
-                                  ClientWorld world,
+                                  BlockView world,
                                   boolean terrainCalc,
                                   boolean anvils,
                                   float power)
@@ -418,7 +418,7 @@ public class DamageUtil implements Globals
      */
     public static float getBlockDensity(Vec3d vec,
                                         Box bb,
-                                        ClientWorld world,
+                                        BlockView world,
                                         boolean ignoreWebs,
                                         boolean ignoreBeds,
                                         boolean terrainCalc,
@@ -477,7 +477,7 @@ public class DamageUtil implements Globals
 
     /**
      * Calls {@link RayTracer#
-     * trace(World, ClientWorld, Vec3d, Vec3d, boolean, boolean, boolean)}
+     * trace(World, BlockView, Vec3d, Vec3d, boolean, boolean, boolean)}
      *
      * @param start same as the original param.
      * @param end same as the original param.
@@ -491,7 +491,7 @@ public class DamageUtil implements Globals
     @SuppressWarnings("deprecation")
     public static BlockHitResult rayTraceBlocks(Vec3d start,
                                      Vec3d end,
-                                     ClientWorld world,
+                                     BlockView world,
                                      boolean stopOnLiquid,
                                      boolean ignoreNoBox,
                                      boolean lastUncollidableBlock,

@@ -20,10 +20,8 @@ public class HelperEntityBlocksPlace {
             if (tracker != null && tracker.active) {
                 return switch (module.blockExtraMode.getValue()) {
                     case Extrapolated -> tracker.getBoundingBox().intersects(bb);
-                    case Pessimistic -> tracker.getBoundingBox().intersects(bb)
-                            || entity.getBoundingBox().intersects(bb);
-                    default -> tracker.getBoundingBox().intersects(bb)
-                            && entity.getBoundingBox().intersects(bb);
+                    case Pessimistic -> tracker.getBoundingBox().intersects(bb) || entity.getBoundingBox().intersects(bb);
+                    default -> tracker.getBoundingBox().intersects(bb) && entity.getBoundingBox().intersects(bb);
                 };
             }
         }

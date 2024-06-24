@@ -10,15 +10,18 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotateMode;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotationThread;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.RotationFunction;
+import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
-import me.earth.earthhack.impl.util.text.ChatUtil;
+import me.earth.earthhack.impl.util.minecraft.MouseFilter;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 final class ListenerMotion extends
         ModuleListener<AutoCrystal, MotionUpdateEvent>
 {
-    // private final MouseFilter pitchMouseFilter = new MouseFilter();
-    // private final MouseFilter yawMouseFilter = new MouseFilter();
+    private final MouseFilter pitchMouseFilter = new MouseFilter();
+    private final MouseFilter yawMouseFilter = new MouseFilter();
 
     public ListenerMotion(AutoCrystal module) {
         super(module, MotionUpdateEvent.class, 1500);
@@ -41,8 +44,8 @@ final class ListenerMotion extends
                     || Managers.POSITION.getY() != event.getY()
                     || Managers.POSITION.getZ() != event.getZ())) {
                 CalculationMotion calc = new CalculationMotion(module,
-                        Managers.ENTITIES.getEntities(),
-                        Managers.ENTITIES.getPlayers()); // hmm? TODO
+                        CollectionUtil.asList(mc.world.getEntities()),
+                        CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class));
                 module.threadHelper.start(calc, false);
             } else {
                 if (module.motionThread.getValue()
@@ -80,12 +83,10 @@ final class ListenerMotion extends
                         event.getPitch());
 
                 if (module.rotateMode.getValue() == RotateMode.Smooth) {
-                    // TODO TODO TODO TODO
-                    // final float yaw = (yawMouseFilter.smooth(rotations[0] + MathUtil.getRandomInRange(-1.0f, 5.0f), module.smoothSpeed.getValue()));
-                    // final float pitch = (pitchMouseFilter.smooth(rotations[1] + MathUtil.getRandomInRange(-1.20f, 3.50f), module.smoothSpeed.getValue()));
-                    // event.setYaw(yaw);
-                    // event.setPitch(pitch);
-                    ChatUtil.sendMessage("smooth rotations are not implemented", null);
+                    final float yaw = (yawMouseFilter.smooth(rotations[0] + MathUtil.getRandomInRange(-1.0f, 5.0f), module.smoothSpeed.getValue()));
+                    final float pitch = (pitchMouseFilter.smooth(rotations[1] + MathUtil.getRandomInRange(-1.20f, 3.50f), module.smoothSpeed.getValue()));
+                    event.setYaw(yaw);
+                    event.setPitch(pitch);
                 } else {
                     event.setYaw(rotations[0]);
                     event.setPitch(rotations[1]);

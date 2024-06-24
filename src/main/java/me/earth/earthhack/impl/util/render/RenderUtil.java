@@ -43,7 +43,7 @@ public class RenderUtil implements Globals {
     public final static FloatBuffer modelView = BufferUtils.createFloatBuffer(16);
     public final static FloatBuffer projection = BufferUtils.createFloatBuffer(16);
 
-    // private static final Frustum FRUSTUM = new Frustum(null);
+    public static Frustum FRUSTUM;
 
     static
     {
@@ -294,9 +294,16 @@ public class RenderUtil implements Globals {
         RenderSystem.enableCull();
     }
 
-    public static boolean mouseWithinBounds(double mouseX, double mouseY, double x, double y, double width, double height)
+    public static boolean isInFrustum(Box bb)
     {
-        return (mouseX >= x && mouseX <= (x + width)) && (mouseY >= y && mouseY <= (y + height));
+        Entity renderEntity = getEntity();
+        if (renderEntity == null)
+        {
+            return false;
+        }
+
+        Interpolation.setFrustum(FRUSTUM, renderEntity);
+        return FRUSTUM.isVisible(bb);
     }
 
 }

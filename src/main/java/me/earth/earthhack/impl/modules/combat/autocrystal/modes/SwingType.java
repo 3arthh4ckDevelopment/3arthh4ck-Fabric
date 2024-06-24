@@ -31,9 +31,9 @@ public enum SwingType
 
     public static final String DESCRIPTION =
             """
-                    - None : Will not swing clientsided.
-                    - Swings : With your MainHand.
-                    - OffHand : Will swing with your Offhand.""";
+                    - None : will not swing clientsided.
+                    - MainHand : Swings with your MainHand.
+                    - OffHand : will swing with your Offhand.""";
 
 
     public abstract Hand getHand();

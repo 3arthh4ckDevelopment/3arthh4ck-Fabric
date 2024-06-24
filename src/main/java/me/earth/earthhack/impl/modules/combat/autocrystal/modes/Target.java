@@ -52,29 +52,29 @@ public enum Target implements Globals
         }
     },
     Enemy
-            {
-                @Override
-                public PlayerEntity getTarget(List<PlayerEntity> players,
-                                              List<PlayerEntity> enemies,
-                                              double maxRange)
-                {
-                    PlayerEntity closest = null;
-                    double distance = Float.MAX_VALUE;
-                    for (PlayerEntity player : enemies) {
-                        if (player != null
-                                && !player.isDead()
-                                && !player.equals(mc.player)) {
-                            double dist = player.squaredDistanceTo(mc.player.getX(), mc.player.getY(), mc.player.getZ());
-                            if (dist < distance)
-                            {
-                                closest = player;
-                                distance = dist;
-                            }
-                        }
+    {
+        @Override
+        public PlayerEntity getTarget(List<PlayerEntity> players,
+                                      List<PlayerEntity> enemies,
+                                      double maxRange)
+        {
+            PlayerEntity closest = null;
+            double distance = Float.MAX_VALUE;
+            for (PlayerEntity player : enemies) {
+                if (player != null
+                        && player.isAlive()
+                        && !player.equals(mc.player)) {
+                    double dist = player.squaredDistanceTo(mc.player.getX(), mc.player.getY(), mc.player.getZ());
+                    if (dist < distance)
+                    {
+                        closest = player;
+                        distance = dist;
                     }
-                    return closest;
                 }
-            },
+            }
+            return closest;
+        }
+    },
     Damage
     {
         @Override
@@ -138,10 +138,11 @@ public enum Target implements Globals
         return closest;
     }
 
-    public static final String DESCRIPTION = """
-            - Closest : Will target the closest Enemy.
-            - FOV : Will target the player you are looking at (by Angle).
-            - Angle : Similar to FOV but will also target players outside your FOV.
-            - Damage : Calculates Damages for all Players in Range and takes the best one (intensive).
-            """;
+    public static final String DESCRIPTION =
+            """
+                    - Closest, will target the closest Enemy.
+                    - FOV, will target the player you are looking at (by Angle).
+                    - Angle, similar to FOV but will also target players outside your FOV.
+                    - Damage, Calculates Damages for all Players in Range and takes the best one (intensive).""";
+
 }

@@ -1,26 +1,23 @@
 package me.earth.earthhack.impl.modules.combat.autocrystal;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.modules.combat.autocrystal.util.MineSlots;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.PlaceData;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.PositionData;
 import me.earth.earthhack.impl.util.math.MathUtil;
-import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
-import me.earth.earthhack.impl.util.minecraft.blocks.mine.MineUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.BlockView;
 
 import java.util.List;
 
+/**
+ * Helper class for AutoCrystal calculations regarding liquids.
+ */
 public class HelperLiquids implements Globals
 {
     private final AutoCrystal module;
@@ -50,7 +47,7 @@ public class HelperLiquids implements Globals
 
     public Direction getAbsorbFacing(BlockPos pos,
                                       List<Entity> entities,
-                                      WorldAccess access,
+                                      BlockView access,
                                       double placeRange)
     {
         for (Direction facing : Direction.values())
@@ -95,38 +92,4 @@ public class HelperLiquids implements Globals
 
         return null;
     }
-
-    // TODO: make this utility method somewhere else, MineUtil maybe
-    public static MineSlots getSlots(boolean onGroundCheck)
-    {
-        int bestBlock = -1;
-        int bestTool  = -1;
-        float maxSpeed = 0.0f;
-        for (int i = 8; i > -1; i--)
-        {
-            ItemStack stack = mc.player.getInventory().getStack(i);
-            if (stack.getItem() instanceof BlockItem)
-            {
-                Block block = ((BlockItem) stack.getItem()).getBlock();
-                int tool = MineUtil.findBestTool(BlockPos.ORIGIN,
-                                                 block.getDefaultState());
-                float damage = MineUtil.getDamage(
-                        block.getDefaultState(),
-                        mc.player.getInventory().getStack(tool),
-                        BlockPos.ORIGIN,
-                        !onGroundCheck
-                            || RotationUtil.getRotationPlayer().isOnGround());
-
-                if (damage > maxSpeed)
-                {
-                    bestBlock = i;
-                    bestTool  = tool;
-                    maxSpeed  = damage;
-                }
-            }
-        }
-
-        return new MineSlots(bestBlock, bestTool, maxSpeed);
-    }
-
 }

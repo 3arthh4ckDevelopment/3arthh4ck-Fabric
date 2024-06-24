@@ -6,14 +6,13 @@ import me.earth.earthhack.api.plugin.PluginConfig;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.core.Core;
 import me.earth.earthhack.impl.managers.client.exception.BadPluginException;
+import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
 
 import java.io.File;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -26,8 +25,7 @@ public class PluginManager
     private static final PluginManager INSTANCE = new PluginManager();
     private static final String PATH = "earthhack/plugins";
 
-    private final Map<PluginConfig, Plugin> plugins = new HashMap<>();
-    private final Map<String, PluginConfig> configs = new HashMap<>();
+    private final Map<PluginConfig, Plugin> pluginMap = new HashMap<>();
     private ClassLoader classLoader;
 
     /** Private Ctr since this is a Singleton. */
@@ -40,11 +38,11 @@ public class PluginManager
     }
 
     /**
-     * Used by {@link Core#Core()}.
+     * Used by {@link Core}.
      * Scans the "earthhack/plugins" folders for Plugins.
      * If it can find jarFiles whose Manifest contain a
      * "3arthh4ckConfig" the jar will be added to the classPath
-     * and a {@link PluginConfig} will be created. If the PluginConfig
+     * and a {@link PluginConfig} will be created. If the PluginJson
      * contains a "mixinConfig" entry that MixinConfig will be added by
      * the CoreMod.
      *
@@ -86,29 +84,26 @@ public class PluginManager
      * Instantiates all found Plugins.
      */
     public void instantiatePlugins() {
-        for (PluginConfig config : configs.values()) {
-            if (plugins.containsKey(config)) {
+        for (PluginConfig pluginConfig : pluginMap.keySet()) {
+            if (pluginMap.get(pluginConfig) != null) {
                 Earthhack.getLogger().error("Can't register Plugin "
-                        + config.getName()
+                        + pluginConfig.getName()
                         + ", a plugin with that name is already registered.");
                 continue;
             }
 
             Earthhack.getLogger().info("Instantiating: "
-                    + config.getName()
+                    + pluginConfig.getName()
                     + ", MainClass: "
-                    + config.getMainClass());
+                    + pluginConfig.getMainClass());
             try {
-                Class<?> loadedClass = classLoader.loadClass(config.getMainClass());
+                Class<?> loadedClass = classLoader.loadClass(pluginConfig.getMainClass());
                 Constructor<?> constructor = loadedClass.getConstructor();
                 constructor.setAccessible(true);
-                Plugin plugin = (Plugin) constructor.newInstance();
-                plugins.put(config, plugin);
-            }
-            catch (Throwable e) {
-                Earthhack.getLogger().error("Error instantiating : "
-                        + config.getName() + ", caused by:");
-
+                pluginMap.put(pluginConfig, (Plugin) constructor.newInstance());
+            } catch (Throwable e) {
+                Earthhack.getLogger().error("Error instantiating: "
+                        + pluginConfig.getName() + ", caused by:");
                 e.printStackTrace();
             }
         }
@@ -146,24 +141,34 @@ public class PluginManager
                     + ", Mixins: "
                     + config.getMixinConfig());
 
-            configs.put(configName, config);
+            String gameVersion = FabricLoaderImpl.INSTANCE.getGameProvider().getNormalizedGameVersion();
+            String pluginVersion = attributes.getValue("Fabric-Minecraft-Version");
+
+            if (!pluginVersion.equals(gameVersion)) {
+                Core.LOGGER.warn("Plugin "
+                        + config.getName()
+                        + " is for Minecraft version "
+                        + pluginVersion
+                        + " but you're using "
+                        + gameVersion);
+            }
+
+            pluginMap.put(config, null);
         }
     }
 
     /**
-     * @return a map of all found PluginConfigs.
+     * @return a Set of all found {@link PluginConfig}
      */
-    public Map<String, PluginConfig> getConfigs()
-    {
-        return configs;
+    public Set<PluginConfig> getPluginConfigs() {
+        return pluginMap.keySet();
     }
 
     /**
-     * @return a Map of all found Plugins with their names as keys.
+     * @return a Set of all the instances of the loaded {@link Plugin}
      */
-    public Map<PluginConfig, Plugin> getPlugins()
-    {
-        return plugins;
+    public Set<Plugin> getPlugins() {
+        return new HashSet<>(pluginMap.values());
     }
 
 }

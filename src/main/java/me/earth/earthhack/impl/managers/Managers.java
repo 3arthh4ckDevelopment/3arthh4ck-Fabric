@@ -80,7 +80,7 @@ public class Managers {
 
         Earthhack.getLogger().info("Loading Plugins");
         PluginManager.getInstance().instantiatePlugins();
-        for (Plugin plugin : PluginManager.getInstance().getPlugins().values())
+        for (Plugin plugin : PluginManager.getInstance().getPlugins())
             plugin.load();
         for (Module m : Managers.MODULES.getRegistered())
             PluginsCategory.getInstance().addPluginModule(m);

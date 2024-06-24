@@ -5,7 +5,6 @@ import me.earth.earthhack.impl.gui.click.component.SettingComponent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import me.earth.earthhack.impl.util.render.RenderUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
@@ -27,7 +26,7 @@ public class NumberComponent extends SettingComponent<Number, NumberSetting<Numb
     @Override
     public void drawScreen(DrawContext context, int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(context, mouseX, mouseY, partialTicks);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
         drawStringWithShadow(getLabel() + ": " + Formatting.GRAY + getNumberSetting().getValue(), getFinishedX() + 5, getFinishedY() + getHeight() / 2 - (Managers.TEXT.getStringHeightI() >> 1), 0xFFFFFFFF);
         float length = MathHelper.floor(((getNumberSetting().getValue()).floatValue() - getNumberSetting().getMin().floatValue()) / (getNumberSetting().getMax().floatValue() - getNumberSetting().getMin().floatValue()) * (getWidth() - 10));
         if (getClickGui().get().getBoxes())
@@ -43,7 +42,7 @@ public class NumberComponent extends SettingComponent<Number, NumberSetting<Numb
     @Override
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX(), getFinishedY(), getWidth(), getHeight());
         if (hovered && mouseButton == 0)
             setSliding(true);
     }

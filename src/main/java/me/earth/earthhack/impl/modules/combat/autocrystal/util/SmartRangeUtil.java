@@ -15,9 +15,9 @@ public class SmartRangeUtil {
     public static boolean isInSmartRange(
         double crystalX, double crystalY, double crystalZ,
         Entity entity, double rangeSq, int smartTicks) {
-        double x = entity.getX() + entity.getVelocity().x * smartTicks;
-        double y = entity.getY() + entity.getVelocity().y * smartTicks;
-        double z = entity.getZ() + entity.getVelocity().z * smartTicks;
+        double x = entity.getX() + entity.getVelocity().getX() * smartTicks;
+        double y = entity.getY() + entity.getVelocity().getY() * smartTicks;
+        double z = entity.getZ() + entity.getVelocity().getZ() * smartTicks;
 
         return DistanceUtil.distanceSq(crystalX, crystalY, crystalZ, x, y, z)
             < rangeSq;

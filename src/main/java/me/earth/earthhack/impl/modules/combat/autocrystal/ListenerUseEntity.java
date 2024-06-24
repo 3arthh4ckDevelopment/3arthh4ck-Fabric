@@ -20,11 +20,10 @@ final class ListenerUseEntity
     @Override
     public void invoke(PacketEvent.Post<PlayerInteractEntityC2SPacket> event)
     {
-        Entity entity = ((IPlayerInteractEntityC2S) event.getPacket())
-                                                  .getAttackedEntity();
+        Entity entity = ((IPlayerInteractEntityC2S) event.getPacket()).getAttackedEntity();
         if (entity == null)
         {
-            entity = mc.world.getEntityById(((IPlayerInteractEntityC2S) event.getPacket()).getEntityID()); // todo : serverworld???????
+            entity = mc.world.getEntityById(((IPlayerInteractEntityC2S) event.getPacket()).getEntityID());
             if (entity == null)
             {
                 return;

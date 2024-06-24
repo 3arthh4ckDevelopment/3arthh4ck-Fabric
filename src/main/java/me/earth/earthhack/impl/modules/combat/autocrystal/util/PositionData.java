@@ -8,7 +8,6 @@ import me.earth.earthhack.impl.util.math.path.BasePath;
 import me.earth.earthhack.impl.util.math.path.BlockingEntity;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -16,6 +15,8 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
@@ -251,7 +252,7 @@ public class PositionData extends BasePath
         BlockState upState = mc.world.getBlockState(up);
         if (upState.getBlock() != Blocks.AIR)
         {
-            if (checkLiquid(upState.getBlock(), water, lava))
+            if (checkLiquid(upState.getFluidState().getFluid(), water, lava))
             {
                 data.liquid = true;
             }
@@ -266,7 +267,7 @@ public class PositionData extends BasePath
                 && (upUpState = mc.world.getBlockState(up.up()))
                                         .getBlock() != Blocks.AIR)
         {
-            if (checkLiquid(upUpState.getBlock(), water, lava))
+            if (checkLiquid(upUpState.getFluidState().getFluid(), water, lava))
             {
                 data.liquid = true;
             }
@@ -277,7 +278,8 @@ public class PositionData extends BasePath
         }
 
         boolean checkLavaItems = lavaItems
-                && upState.getBlock() == Blocks.LAVA;
+                && (upState.getFluidState().isOf(Fluids.LAVA)
+                    || upState.getFluidState().isOf(Fluids.FLOWING_LAVA));
         if (checkEntities(
                 data, up, entities, deathTime, false, false, checkLavaItems)
             || !newVerEntities && checkEntities(data, up.up(),
@@ -319,7 +321,7 @@ public class PositionData extends BasePath
         for (Entity entity : entities)
         {
             if (entity == null
-                || spawning /* && !entity.preventEntitySpawning */
+                || spawning // && !entity.preventEntitySpawning
                 || dead && EntityUtil.isDead(entity)
                 || !data.module.bbBlockingHelper.blocksBlock(bb, entity))
             {
@@ -345,8 +347,8 @@ public class PositionData extends BasePath
                         }
                         else
                         {
-                            // No need to Fallback since it will die soon,
-                            // but we can't place yet
+                            // No need to Fallback since it will die soon
+                            //  but we can't place yet
                             return true;
                         }
                     }
@@ -366,11 +368,12 @@ public class PositionData extends BasePath
         return false;
     }
 
-    private static boolean checkLiquid(Block block, boolean water, boolean lava)
+    private static boolean checkLiquid(Fluid fluid, boolean water, boolean lava)
     {
-        // check flowing? Dk if 1.13+ has this
-        return water && (block == Blocks.WATER)
-                || lava && (block == Blocks.LAVA);
+        return water && (fluid == Fluids.WATER
+                            || fluid == Fluids.FLOWING_WATER)
+                || lava && (fluid == Fluids.LAVA
+                            || fluid == Fluids.FLOWING_LAVA);
     }
 
     public boolean isRaytraceBypass() {

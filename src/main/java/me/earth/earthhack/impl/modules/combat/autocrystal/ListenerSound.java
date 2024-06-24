@@ -7,6 +7,11 @@ final class ListenerSound extends SoundObserver
 {
     private final AutoCrystal module;
 
+    /**
+     * Constructs a new SoundObserver.
+     * Used by AutoCrystal for SoundThread and SoundRemove settings.
+     * @param module an AutoCrystal instance.
+     **/
     public ListenerSound(AutoCrystal module)
     {
         super(module.soundRemove::getValue);
@@ -17,7 +22,6 @@ final class ListenerSound extends SoundObserver
     public void onChange(PlaySoundS2CPacket value)
     {
         // TODO: check that sound is in range!
-
         if (module.soundThread.getValue())
         {
             module.threadHelper.startThread();

@@ -10,6 +10,7 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotationThread;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
@@ -23,6 +24,10 @@ final class ListenerEntity extends EntityS2CPacketListener
 {
     private final AutoCrystal module;
 
+    /**
+     * Creates a calculation if EntityThread is enabled.
+     * @param module an instance of AutoCrystal.
+     */
     public ListenerEntity(AutoCrystal module)
     {
         this.module = module;
@@ -115,7 +120,7 @@ final class ListenerEntity extends EntityS2CPacketListener
                 }
 
                 PlayerEntity target = module.targetMode.getValue().getTarget(
-                                                 Managers.ENTITIES.getPlayers(), // mc.world.getPlayers()
+                                                 CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class),
                                                  enemies,
                                                  module.targetRange.getValue());
 
@@ -154,9 +159,9 @@ final class ListenerEntity extends EntityS2CPacketListener
             }
         }
 
-        if (entity instanceof PlayerEntity)
+        if (entity instanceof PlayerEntity player)
         {
-            return (PlayerEntity) entity;
+            return player;
         }
 
         return null;

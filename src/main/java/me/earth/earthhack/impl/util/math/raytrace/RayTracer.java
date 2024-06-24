@@ -170,7 +170,7 @@ public class RayTracer implements Globals
     }
 
     /**
-     * Calls {@link RayTracer#trace(World, ClientWorld, Vec3d,
+     * Calls {@link RayTracer#trace(World, BlockView, Vec3d,
      * Vec3d, boolean, boolean, boolean, BiPredicate)} for no Predicate.
      */
     public static BlockHitResult trace(World world,
@@ -192,7 +192,7 @@ public class RayTracer implements Globals
     }
 
     /**
-     * Calls {@link RayTracer#trace(World, ClientWorld, Vec3d, Vec3d,
+     * Calls {@link RayTracer#trace(World, BlockView, Vec3d, Vec3d,
      * boolean, boolean, boolean, BiPredicate)} for the world as access.
      */
     public static BlockHitResult trace(World world,
@@ -229,7 +229,7 @@ public class RayTracer implements Globals
      * {@link World#raycastBlock(Vec3d, Vec3d, BlockPos, VoxelShape, BlockState)}.
      */
     public static BlockHitResult trace(World world,
-                                       ClientWorld access,
+                                       BlockView access,
                                        Vec3d start,
                                        Vec3d end,
                                        boolean stopOnLiquid,
@@ -250,7 +250,7 @@ public class RayTracer implements Globals
     }
 
     public static BlockHitResult traceTri(World world,
-                                          ClientWorld access,
+                                          BlockView access,
                                           Vec3d start,
                                           Vec3d end,
                                           boolean stopOnLiquid,
@@ -270,7 +270,7 @@ public class RayTracer implements Globals
     }
 
     public static BlockHitResult traceTri(World world,
-                                          ClientWorld access,
+                                          BlockView access,
                                           Vec3d start,
                                           Vec3d end,
                                           boolean stopOnLiquid,
@@ -292,7 +292,7 @@ public class RayTracer implements Globals
     }
 
     public static BlockHitResult traceTri(World world,
-                                          ClientWorld access,
+                                          BlockView access,
                                           Vec3d start,
                                           Vec3d end,
                                           boolean stopOnLiquid,
@@ -440,11 +440,11 @@ public class RayTracer implements Globals
                         zOff = -1.0E-4D;
                     }
 
-                    Direction enumfacing;
+                    Direction direction;
 
                     if (xOff < yOff && xOff < zOff)
                     {
-                        enumfacing = feX > fsX
+                        direction = feX > fsX
                                 ? Direction.WEST
                                 : Direction.EAST;
 
@@ -454,7 +454,7 @@ public class RayTracer implements Globals
                     }
                     else if (yOff < zOff)
                     {
-                        enumfacing = feY > fsY
+                        direction = feY > fsY
                                 ? Direction.DOWN
                                 : Direction.UP;
 
@@ -464,7 +464,7 @@ public class RayTracer implements Globals
                     }
                     else
                     {
-                        enumfacing = feZ > fsZ
+                        direction = feZ > fsZ
                                 ? Direction.NORTH
                                 : Direction.SOUTH;
 
@@ -474,11 +474,11 @@ public class RayTracer implements Globals
                     }
 
                     fsX = MathHelper.floor(start.x)
-                            - (enumfacing == Direction.EAST ? 1 : 0);
+                            - (direction == Direction.EAST ? 1 : 0);
                     fsY = MathHelper.floor(start.y)
-                            - (enumfacing == Direction.UP ? 1 : 0);
+                            - (direction == Direction.UP ? 1 : 0);
                     fsZ = MathHelper.floor(start.z)
-                            - (enumfacing == Direction.SOUTH ? 1 : 0);
+                            - (direction == Direction.SOUTH ? 1 : 0);
 
                     pos = new BlockPos(fsX, fsY, fsZ);
                     BlockState state1 = access.getBlockState(pos);
@@ -491,9 +491,9 @@ public class RayTracer implements Globals
                     {
                         if ((state1.isSolidBlock(world, pos)
                                 || collideCheck != null
-                                && collideCheck.test(block1, pos, enumfacing))
+                                && collideCheck.test(block1, pos, direction))
                             && (blockChecker == null
-                                || blockChecker.test(block1, pos, enumfacing)))
+                                || blockChecker.test(block1, pos, direction)))
                         {
                             BlockHitResult Ray1 =
                                     crt.collisionRayTrace(
@@ -507,7 +507,7 @@ public class RayTracer implements Globals
                         else
                         {
                             result = new BlockHitResult(start,
-                                                        enumfacing,
+                                                        direction,
                                                         pos,
                                               false);
                         }

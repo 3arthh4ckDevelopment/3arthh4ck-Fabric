@@ -4,8 +4,10 @@ import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.event.bus.api.EventBus;
 import me.earth.earthhack.impl.event.listeners.ReceiveListener;
 import me.earth.earthhack.impl.util.math.StopWatch;
+import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +31,9 @@ public class Confirmer extends SubscriberImpl
         this.listeners.add(new ReceiveListener<>(EntitySpawnS2CPacket.class, e ->
         {
             EntitySpawnS2CPacket p = e.getPacket();
+            ChatUtil.sendMessage(String.format("Confirmer received serverbound EntitySpawn: {%s, pos(%s, %s, %s)}",
+                    p.getEntityData(), p.getX(), p.getY(), p.getZ()));
+
             if (p.getEntityData() == 51)
             {
                 confirmPlace(p.getX(), p.getY(), p.getZ());
@@ -39,16 +44,16 @@ public class Confirmer extends SubscriberImpl
         {
             PlaySoundS2CPacket p = e.getPacket();
             if (p.getCategory() == SoundCategory.BLOCKS
-                && p.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE)
+                && p.getSound() == Registries.SOUND_EVENT.getEntry(SoundEvents.ENTITY_GENERIC_EXPLODE))
             {
                 confirmBreak(p.getX(), p.getY(), p.getZ());
             }
         }));
     }
 
-    public void setPos(BlockPos pos, boolean newVer, int placeTime)
+    public void setPos(BlockPos pos, boolean oldVer, int placeTime)
     {
-        this.newVer = newVer;
+        this.newVer = oldVer;
 
         if (pos == null)
         {
@@ -61,7 +66,7 @@ public class Confirmer extends SubscriberImpl
                                                pos.getY() + 1,
                                                pos.getZ() + 0.5f);
             this.current = crystalPos;
-            this.bb = createBB(crystalPos, newVer);
+            this.bb = createBB(crystalPos, oldVer);
             this.valid = true;
             this.placeConfirmed = false;
             this.breakConfirmed = false;
@@ -140,21 +145,21 @@ public class Confirmer extends SubscriberImpl
         return breakConfirmed && valid;
     }
 
-    private Box createBB(BlockPos crystalPos, boolean newVer)
+    private Box createBB(BlockPos crystalPos, boolean oldVer)
     {
         return createBB(crystalPos.getX() + 0.5f,
                         crystalPos.getY(),
                         crystalPos.getZ() + 0.5f,
-                        newVer);
+                        oldVer);
     }
 
-    private Box createBB(double x, double y, double z, boolean newVer)
+    private Box createBB(double x, double y, double z, boolean oldVer)
     {
         return new Box(x - 1,
                                  y,
                                  z - 1,
                                  x + 1,
-                                 y + (newVer ? 1 : 2),
+                                 y + (oldVer ? 2 : 1),
                                  z + 1);
     }
 

@@ -9,8 +9,8 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.AutoCrystal;
 import me.earth.earthhack.impl.modules.combat.autocrystal.Calculation;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotationThread;
-import me.earth.earthhack.impl.util.client.ModuleUtil;
 import me.earth.earthhack.impl.util.math.StopWatch;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -71,15 +71,10 @@ public class ThreadHelper implements Globals
             return;
         }
 
-        List<Entity> entityList = new ArrayList<>();
-        // TODO: TOO HACKYYYY
-        for (Entity entity : mc.world.getEntities()){
-            entityList.add(entity);
-        }
-
         if (mc.isOnThread())
         {
-            startThread(new ArrayList<>(entityList),
+            // this "cast" to List<> might be very slow, needs testing
+            startThread(new ArrayList<>(CollectionUtil.asList(mc.world.getEntities())),
                         new ArrayList<>(mc.world.getPlayers()),
                         blackList);
         }
@@ -102,15 +97,9 @@ public class ThreadHelper implements Globals
             return;
         }
 
-        List<Entity> entityList = new ArrayList<Entity>();
-        for (Entity entity : mc.world.getEntities())
-        {
-            entityList.add(entity); // todo hacky, fix this!!!
-        }
-
         if (mc.isOnThread())
         {
-            startThread(new ArrayList<>(entityList),
+            startThread(new ArrayList<>(CollectionUtil.asList(mc.world.getEntities())),
                     new ArrayList<>(mc.world.getPlayers()),
                     breakOnly,
                     noBreak,
@@ -149,13 +138,11 @@ public class ThreadHelper implements Globals
     {
         if (multiThread)
         {
-            ModuleUtil.sendMessageWithAquaModule(module, "Starting new CalculationThread", "threadCalc");
             Managers.THREAD.submitRunnable(calculation);
             threadTimer.reset();
         }
         else
         {
-            ModuleUtil.sendMessageWithAquaModule(module, "Running single-threaded calculation", "calc");
             threadTimer.reset();
             calculation.run();
         }

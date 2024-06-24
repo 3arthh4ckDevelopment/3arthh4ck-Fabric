@@ -17,8 +17,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.potion.Potion;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;

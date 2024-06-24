@@ -10,7 +10,6 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import me.earth.earthhack.impl.util.render.RenderUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 
@@ -63,7 +62,7 @@ public class ModulesFrame extends Frame {
         super.mouseScrolled(mouseX, mouseY, scrollAmount);
         if (isExtended()) {
             final float scrollMaxHeight = mc.getWindow().getScaledHeight();
-            if (RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1) && getScrollCurrentHeight() > scrollMaxHeight) {
+            if (Render2DUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1) && getScrollCurrentHeight() > scrollMaxHeight) {
                 final float scrollSpeed =(CLICK_GUI.get().scrollSpeed.getValue() >> 2);
                 if (scrollAmount < 0) {
                     if (getScrollY() - scrollSpeed < -(getScrollCurrentHeight() - Math.min(getScrollCurrentHeight(), scrollMaxHeight)))
@@ -80,7 +79,7 @@ public class ModulesFrame extends Frame {
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         final float scrollMaxHeight = MinecraftClient.getInstance().getWindow().getScaledHeight() - getHeight();
-        if (isExtended() && RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1))
+        if (isExtended() && Render2DUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY() + getHeight(), getWidth(), (Math.min(getScrollCurrentHeight(), scrollMaxHeight)) + 1))
             getComponents().forEach(component -> component.mouseClicked(mouseX, mouseY, mouseButton));
     }
 

@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
+import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import me.earth.earthhack.impl.util.thread.ThreadUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
@@ -37,7 +38,7 @@ public class ServerTimeHelper extends SubscriberImpl implements Globals
     private final Setting<ACRotate> rotate;
     private final Setting<SwingTime> placeSwing;
     private final Setting<Boolean> antiFeetPlace;
-    private final Setting<Boolean> newVersion;
+    private final Setting<Boolean> oldVersion;
     private final Setting<Integer> buffer;
 
     static
@@ -49,28 +50,29 @@ public class ServerTimeHelper extends SubscriberImpl implements Globals
                             Setting<ACRotate> rotate,
                             Setting<SwingTime> placeSwing,
                             Setting<Boolean> antiFeetPlace,
-                            Setting<Boolean> newVersion,
+                            Setting<Boolean> oldVersion,
                             Setting<Integer> buffer)
     {
         this.module = module;
         this.rotate = rotate;
         this.placeSwing = placeSwing;
         this.antiFeetPlace = antiFeetPlace;
-        this.newVersion = newVersion;
+        this.oldVersion = oldVersion;
         this.buffer = buffer;
     }
 
     public void onUseEntity(PlayerInteractEntityC2SPacket packet, Entity crystal)
     {
-        // You can also check out ICPacketUseEntity to access the entity better
+        // You can also check out IPlayerInteractEntityC2SPacket to access the entity better
         PlayerEntity closest;
-        if (((IPlayerInteractEntityC2S) packet).getAction().equals(PlayerInteractEntityC2SPacket.ATTACK)
+        if (((IPlayerInteractEntityC2S) packet).getAction() == PlayerInteractEntityC2SPacket.ATTACK
                 && antiFeetPlace.getValue()
                 && (rotate.getValue() == ACRotate.None || rotate.getValue() == ACRotate.Break)
                 && crystal instanceof EndCrystalEntity
                 && (closest = EntityUtil.getClosestEnemy()) != null
-                && BlockUtil.isSemiSafe(closest, true, newVersion.getValue())
-                && BlockUtil.isAtFeet(Managers.ENTITIES.getPlayers(), crystal.getBlockPos().down(), true, newVersion.getValue()))
+                && BlockUtil.isSemiSafe(closest, true, oldVersion.getValue())
+                && BlockUtil.isAtFeet(CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class),
+                                        crystal.getBlockPos().down(), true, oldVersion.getValue()))
         {
             int intoTick = Managers.TICK.getTickTimeAdjusted();
             int sleep = Managers.TICK.getServerTickLengthMS() + Managers.TICK.getSpawnTime() + buffer.getValue() - intoTick;
@@ -94,7 +96,9 @@ public class ServerTimeHelper extends SubscriberImpl implements Globals
                     Swing.Client.swing(hand);
                 }
                 mc.player.networkHandler.sendPacket(
-                        new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false), 0));
+                        new PlayerInteractBlockC2SPacket(
+                                hand,
+                                new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false), 0));
                 module.sequentialHelper.setExpecting(pos);
 
                 if (time == SwingTime.Post)

@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.modules.combat.autocrystal;
 
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import net.minecraft.util.math.BlockPos;
 
 final class ListenerTick extends ModuleListener<AutoCrystal, TickEvent>
 {
@@ -28,21 +29,20 @@ final class ListenerTick extends ModuleListener<AutoCrystal, TickEvent>
             }
 
             module.weaknessHelper.updateWeakness();
-            // render();
+            render();
         }
     }
-    // TODO:
 
-    // private void render()
-    // {
-    //     BlockPos pos;
-    //     if (module.render.getValue()
-    //         && PingBypass.isConnected()
-    //         && (pos = module.getRenderPos()) != null)
-    //     {
-    //         PingBypass.sendPacket(new S2CRenderPacket(
-    //             pos, module.outLine.getValue(), module.boxColor.getValue()));
-    //     }
-    // }
+    private void render()
+    {
+        BlockPos pos;
+        if (module.render.getValue()
+            // && PingBypass.isConnected()
+            && (pos = module.getRenderPos()) != null)
+        {
+            // PingBypass.sendPacket(new S2CRenderPacket(
+            //     pos, module.outLine.getValue(), module.boxColor.getValue()));
+        }
+    }
 
 }

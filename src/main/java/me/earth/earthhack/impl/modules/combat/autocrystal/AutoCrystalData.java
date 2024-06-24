@@ -47,12 +47,13 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
             "the MaxSelfPlace value, but only if they can kill an Enemy.");
         register(module.newVer,
             "Takes 1.13+ Mechanics (1 high spaces into account).");
-        register(module.newVerEntities, "Allows this module to attempt" +
-                " placing crystals under entities. This works on Crystalpvp.cc.");
+        register(module.newVerEntities, "This is actually not a 1.13+ " +
+            "mechanic, but Crystalpvp.cc allows you to place crystals " +
+            "underneath Entities.");
         register(module.placeSwing, """
-                - None : won't swing when placing.
-                - Pre : will swing before you place a crystal.
-                - Post : will swing after you placed a crystal (Vanilla).""");
+                - None : Won't swing when placing.
+                - Pre : Will swing before you place a crystal.
+                - Post : Will swing after you placed a crystal (Vanilla).""");
         register(module.smartTrace, "Only for really strict RayTrace Servers." +
                 " Has to make complicated Calculations.");
         register(module.fallbackTrace, "Will place upwards if it has to.");
@@ -124,9 +125,9 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
         register(module.manualDelay,
             "Delay for Breaking manually placed crystals.");
         register(module.breakSwing, """
-                -None won't swing when attacking crystals (Some servers flag that).
-                -Pre will swing before you attack a crystal.
-                -Post will swing after (Vanilla).""");
+                - None : Won't swing when attacking crystals (Some servers flag that).
+                - Pre : Will swing before you attack a crystal.
+                - Post : Will swing after (Vanilla).""");
 
         register(module.rotate, """
                 -None, no Rotations.
@@ -255,6 +256,7 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
         register(module.fade, "Fade the rendering box when a new position gets selected.");
         register(module.fadeComp, "Makes Fade compatible with Zoom and Slide.");
         register(module.fadeTime, "Time to render the Fade ESP for.");
+
         register(module.renderDamage, "Renders the Damage a position deals.");
 
         register(module.setDead, "Removes Crystals after it attacked them." +
@@ -313,15 +315,15 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
             " position the difference in Damage dealt is taken into account." +
             " This settings determines how much that difference factors in.");
         register(module.obbySwing, """
-                - Always : Swings for every block placed.
-                - Never : Never swings for obsidian.
-                - Once : Swings once no matter how many blocks placed.""");
+                -Always, Swings for every block placed.
+                -Never, never swings for obsidian.
+                -Once swings once no matter how many blocks placed.""");
         register(module.obbyFallback, "Uses the Fallback crystal if an " +
             "obsidian position is blocked.");
         register(module.obbyRotate, """
-                - None : won't rotate for obsidian.
-                - Normal : normally rotates, only viable with 1 HelpingBlock.
-                - Packet : will send packets to rotate, can lag you back.""");
+                -None, won't rotate for obsidian.
+                -Normal, normally rotates, only viable with 1 HelpingBlock.
+                -Packet, will send packets to rotate, can lag you back.""");
 
         register(module.interact, "Allows Obsidian to interact with water.");
         register(module.inside,
@@ -459,7 +461,8 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
                 - Predict : Will predict when to start the calculation, so its done by the time we can rotate.
                 - Cancel : Cancels packets you send to spoof them once the calculation is finished.
                 - Wait : Kinda defeats the purpose of MultiThreading. Will make Minecraft wait until the calculation is finished.""");
-        register(module.partial, "Development Setting for Predict.");
+        register(module.partial, "Development Setting for Predict. " +
+                "Checks if the current Minecraft rendering Tick Delta is higher than this value.");
         register(module.maxCancel, "Packets cancelled by " +
             "RotationThread - Cancel will be send after this time in ms if " +
             "they haven't been spoofed.");

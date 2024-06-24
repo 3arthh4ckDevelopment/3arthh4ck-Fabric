@@ -11,7 +11,6 @@ import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.misc.ModulesRating;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import me.earth.earthhack.impl.util.render.RenderUtil;
 import me.earth.earthhack.pingbypass.input.Keyboard;
 import net.minecraft.client.gui.DrawContext;
 
@@ -72,7 +71,7 @@ public class SearchFrame extends Frame implements Globals {
 
     @Override
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX() + 2, getPosY() + (CLICK_GUI.get().search.getValue() == ClickGui.SearchStyle.Box ? Managers.TEXT.getStringHeightI() : 0), getWidth(), getHeight());
+        boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getPosX() + 2, getPosY() + (CLICK_GUI.get().search.getValue() == ClickGui.SearchStyle.Box ? Managers.TEXT.getStringHeightI() : 0), getWidth(), getHeight());
         if (hovered && mouseButton == 0) {
             toggle();
             if (isListening)

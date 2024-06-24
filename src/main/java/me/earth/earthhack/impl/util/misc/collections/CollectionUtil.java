@@ -54,6 +54,19 @@ public class CollectionUtil
         return result;
     }
 
+    public static <T extends E, E> List<E> convertElements(Collection<T> origin, Class<? extends E> newType)
+    {
+        // Kind of goofy but I don't care.... (again)
+        List<E> result = new ArrayList<>();
+
+        for (T t : origin) {
+            if (t.getClass().isAssignableFrom(newType)) {
+                result.add(t);
+            }
+        }
+        return result;
+    }
+
     /**
      * Splits the list into multiple ArrayLists.
      * After an element tested true for a given predicate

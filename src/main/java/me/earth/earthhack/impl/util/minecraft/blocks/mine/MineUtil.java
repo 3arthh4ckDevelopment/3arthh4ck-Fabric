@@ -1,12 +1,15 @@
 package me.earth.earthhack.impl.util.minecraft.blocks.mine;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.modules.combat.autocrystal.util.MineSlots;
+import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
@@ -171,4 +174,35 @@ public class MineUtil implements Globals
                 && !state.isLiquid();
     }
 
+    public static MineSlots getSlots(boolean onGroundCheck)
+    {
+        int bestBlock = -1;
+        int bestTool  = -1;
+        float maxSpeed = 0.0f;
+        for (int i = 8; i > -1; i--)
+        {
+            ItemStack stack = mc.player.getInventory().getStack(i);
+            if (stack.getItem() instanceof BlockItem item)
+            {
+                Block block = item.getBlock();
+                int tool = MineUtil.findBestTool(BlockPos.ORIGIN,
+                        block.getDefaultState());
+                float damage = MineUtil.getDamage(
+                        block.getDefaultState(),
+                        mc.player.getInventory().getStack(tool),
+                        BlockPos.ORIGIN,
+                        !onGroundCheck
+                                || RotationUtil.getRotationPlayer().onGround);
+
+                if (damage > maxSpeed)
+                {
+                    bestBlock = i;
+                    bestTool  = tool;
+                    maxSpeed  = damage;
+                }
+            }
+        }
+
+        return new MineSlots(bestBlock, bestTool, maxSpeed);
+    }
 }

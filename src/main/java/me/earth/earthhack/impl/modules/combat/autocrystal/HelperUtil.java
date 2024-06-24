@@ -18,7 +18,6 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
-
 public class HelperUtil implements Globals
 {
     public static BreakValidity isValid(AutoCrystal module, Entity crystal)
@@ -26,35 +25,36 @@ public class HelperUtil implements Globals
         return isValid(module, crystal, false);
     }
 
+    // TODO: make sure that we use the correct lastPos everywhere!
     public static BreakValidity isValid(AutoCrystal module, Entity crystal, boolean lastPos)
     {
         if (module.existed.getValue() != 0
                 && System.currentTimeMillis()
-                - ((IEntity) crystal).earthhack$getTimeStamp()
-                + (module.pingExisted.getValue()
-                ? ServerUtil.getPingNoPingSpoof() / 2.0
-                : 0)
-                < module.existed.getValue())
+                    - ((IEntity) crystal).earthhack$getTimeStamp()
+                        + (module.pingExisted.getValue()
+                            ? ServerUtil.getPingNoPingSpoof() / 2.0
+                            : 0)
+                        < module.existed.getValue())
         {
             return BreakValidity.INVALID;
         }
 
         if (lastPos && !module.rangeHelper.isCrystalInRangeOfLastPosition(crystal)
-                || !lastPos && !module.rangeHelper.isCrystalInRange(crystal))
+            || !lastPos && !module.rangeHelper.isCrystalInRange(crystal))
         {
             return BreakValidity.INVALID;
         }
 
         if (lastPos && Managers.POSITION.getDistanceSq(crystal)
-                >= MathUtil.square(module.breakTrace.getValue())
-                || !lastPos && RotationUtil.getRotationPlayer().squaredDistanceTo(crystal)
-                >= MathUtil.square(module.breakTrace.getValue()))
+            >= MathUtil.square(module.breakTrace.getValue())
+            || !lastPos && RotationUtil.getRotationPlayer().squaredDistanceTo(crystal)
+            >= MathUtil.square(module.breakTrace.getValue()))
         {
             if (lastPos && !Managers.POSITION.canEntityBeSeen(crystal)
-                    || !lastPos && !RayTraceUtil.canBeSeen(
+                || !lastPos && !RayTraceUtil.canBeSeen(
                     new Vec3d(crystal.getX(),
-                            crystal.getY() + 1.7,
-                            crystal.getZ()),
+                              crystal.getY() + 1.7,
+                              crystal.getZ()),
                     RotationUtil.getRotationPlayer()))
             {
                 return BreakValidity.INVALID;
@@ -65,11 +65,11 @@ public class HelperUtil implements Globals
         if (module.rotate.getValue().noRotate(ACRotate.Break)
                 || module.isNotCheckingRotations()
                 || (RotationUtil.isLegit(crystal, crystal)
-                && AutoCrystal.POSITION_HISTORY
-                .arePreviousRotationsLegit(crystal,
-                        module.rotationTicks
-                                .getValue(),
-                        true)))
+                    && AutoCrystal.POSITION_HISTORY
+                             .arePreviousRotationsLegit(crystal,
+                                                        module.rotationTicks
+                                                              .getValue(),
+                                                        true)))
         {
             return BreakValidity.VALID;
         }
@@ -115,10 +115,10 @@ public class HelperUtil implements Globals
         for (PlayerEntity player : players)
         {
             if (player == null
-                    || player.equals(mc.player)
-                    || player.equals(RotationUtil.getRotationPlayer())
-                    || EntityUtil.isDead(player)
-                    || Managers.FRIENDS.contains(player))
+                || player.equals(mc.player)
+                || player.equals(RotationUtil.getRotationPlayer())
+                || EntityUtil.isDead(player)
+                || Managers.FRIENDS.contains(player))
             {
                 continue;
             }

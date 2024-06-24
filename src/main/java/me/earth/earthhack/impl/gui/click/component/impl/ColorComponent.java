@@ -7,7 +7,6 @@ import me.earth.earthhack.impl.gui.click.component.SettingComponent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import me.earth.earthhack.impl.util.render.RenderUtil;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
@@ -233,14 +232,14 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
 
             if (getColorSetting() != Managers.COLOR.getColorSetting()) {
 
-                final boolean hoveredSync = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + 16, 12, 12);
+                final boolean hoveredSync = Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + 16, 12, 12);
                 drawStringWithShadow("Sync", colorPickerLeft, alphaSliderBottom + 17, getColorSetting().isSync() ? 0xFFFFFFFF : 0xFFAAAAAA);
                 Render2DUtil.drawBorderedRect(context.getMatrices(), hueSliderRight - 12, alphaSliderBottom + 16, hueSliderRight, alphaSliderBottom + 28, 0.5f, getColorSetting().isSync() ? (hoveredSync ? getClickGui().get().getModulesColor().brighter().getRGB() : getClickGui().get().getModulesColor().getRGB()) : (hoveredSync ? 0x66333333 : 0), 0xff000000);
                 if (getColorSetting().isSync())
                     Render2DUtil.drawCheckMark(context.getMatrices(), hueSliderRight - 6, alphaSliderBottom + 16, 10, 0xFFFFFFFF);
             }
 
-            final boolean hoveredRainbow = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), 12, 12);
+            final boolean hoveredRainbow = Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), 12, 12);
             drawStringWithShadow("Rainbow", colorPickerLeft, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 17 : 31), getColorSetting().isRainbow() ? 0xFFFFFFFF : 0xFFAAAAAA);
             Render2DUtil.drawBorderedRect(context.getMatrices(), hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), hueSliderRight, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 28 : 42), 0.5f, getColorSetting().isRainbow() ? (hoveredRainbow ? getClickGui().get().getModulesColor().brighter().getRGB() : getClickGui().get().getModulesColor().getRGB()) : (hoveredRainbow ? 0x66333333 : 0), 0xff000000);
             if (getColorSetting().isRainbow()) {
@@ -251,14 +250,14 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
                 final float lengthBrightness = MathHelper.floor((getColorSetting().getRainbowBrightness() / 100.f) * smallWidth);
                 final float offset = alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 17 : 31);
 
-                final boolean hoveredStatic = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, 12, 12);
+                final boolean hoveredStatic = Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, 12, 12);
                 drawStringWithShadow("Static", colorPickerLeft, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 17 : 31) + 14, getColorSetting().isStaticRainbow() ? 0xFFFFFFFF : 0xFFAAAAAA);
                 Render2DUtil.drawBorderedRect(context.getMatrices(), hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, hueSliderRight, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 28 : 42) + 14, 0.5f, getColorSetting().isStaticRainbow() ? (hoveredStatic ? getClickGui().get().getModulesColor().brighter().getRGB() : getClickGui().get().getModulesColor().getRGB()) : (hoveredStatic ? 0x66333333 : 0), 0xff000000);
                 if (getColorSetting().isStaticRainbow())
                     Render2DUtil.drawCheckMark(context.getMatrices(), hueSliderRight - 6, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, 10, 0xFFFFFFFF);
-                final boolean hoveredSpeed = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 28, smallWidth, 12.f);
-                final boolean hoveredSaturation = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 42, smallWidth, 12.f);
-                final boolean hoveredBrightness = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 56, smallWidth, 12.f);
+                final boolean hoveredSpeed = Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 28, smallWidth, 12.f);
+                final boolean hoveredSaturation = Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 42, smallWidth, 12.f);
+                final boolean hoveredBrightness = Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 56, smallWidth, 12.f);
                 drawStringWithShadow("Speed: " + Formatting.GRAY + getColorSetting().getRainbowSpeed(), colorPickerLeft, offset + 28, 0xFFFFFFFF);
                 drawStringWithShadow("Saturation: " + Formatting.GRAY + getColorSetting().getRainbowSaturation(), colorPickerLeft, offset + 42, 0xFFFFFFFF);
                 drawStringWithShadow("Brightness: " + Formatting.GRAY + getColorSetting().getRainbowBrightness(), colorPickerLeft, offset + 56, 0xFFFFFFFF);
@@ -295,7 +294,7 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if (mouseButton == 0) {
-            final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + getWidth() - 20, getFinishedY() + 4, 15, 7);
+            final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + getWidth() - 20, getFinishedY() + 4, 15, 7);
             if (isColorExtended()) {
                 final float expandedX = getFinishedX() + 1;
                 final float expandedY = getFinishedY() + 14;
@@ -311,16 +310,16 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
                 final float hueSliderLeft = colorPickerRight + 2;
                 final float hueSliderRight = hueSliderLeft + 4;
 
-                final boolean hoveredCopy = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, alphaSliderBottom + 2, ((getWidth() - 16) / 2), 12);
-                final boolean hoveredPaste = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - ((getWidth() - 16) / 2), alphaSliderBottom + 2, ((getWidth() - 16) / 2), 12);
-                final boolean hoveredSync = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + 16, 12, 12);
-                final boolean hoveredRainbow = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), 12, 12);
+                final boolean hoveredCopy = Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, alphaSliderBottom + 2, ((getWidth() - 16) / 2), 12);
+                final boolean hoveredPaste = Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - ((getWidth() - 16) / 2), alphaSliderBottom + 2, ((getWidth() - 16) / 2), 12);
+                final boolean hoveredSync = Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + 16, 12, 12);
+                final boolean hoveredRainbow = Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30), 12, 12);
                 final float smallWidth = hueSliderRight - colorPickerLeft;
                 final float offset = alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 17 : 31);
-                final boolean hoveredStatic = RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, 12, 12);
-                final boolean hoveredSpeed = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 28, smallWidth, 12.f);
-                final boolean hoveredSaturation = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 42, smallWidth, 12.f);
-                final boolean hoveredBrightness = RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 56, smallWidth, 12.f);
+                final boolean hoveredStatic = Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderRight - 12, alphaSliderBottom + (getColorSetting() == Managers.COLOR.getColorSetting() ? 16 : 30) + 14, 12, 12);
+                final boolean hoveredSpeed = Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 28, smallWidth, 12.f);
+                final boolean hoveredSaturation = Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 42, smallWidth, 12.f);
+                final boolean hoveredBrightness = Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, offset + 56, smallWidth, 12.f);
 
                 if (hoveredRainbow) {
                     getColorSetting().setRainbow(!getColorSetting().isRainbow());
@@ -353,15 +352,15 @@ public class ColorComponent extends SettingComponent<Color, ColorSetting> {
                 if (!getColorSetting().isSync()) {
                     if (!(getColorSetting().isRainbow() && !getColorSetting().isStaticRainbow())) {
                         if (!hoveredRainbow && !hoveredSync) {
-                            if (RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, colorPickerTop - (((getColorSetting() == Managers.COLOR.getColorSetting()) ? 16 : 32) + (getColorSetting().isRainbow() ? 56 : 0)), (getWidth() - 20), (getHeight() - 36)))
+                            if (Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, colorPickerTop - (((getColorSetting() == Managers.COLOR.getColorSetting()) ? 16 : 32) + (getColorSetting().isRainbow() ? 56 : 0)), (getWidth() - 20), (getHeight() - 36)))
                                 colorSelectorDragging = true;
 
-                            if (RenderUtil.mouseWithinBounds(mouseX, mouseY, hueSliderLeft, colorPickerTop - (((getColorSetting() == Managers.COLOR.getColorSetting()) ? 16 : 32) + (getColorSetting().isRainbow() ? 56 : 0)), 4, (getHeight() - 36)))
+                            if (Render2DUtil.mouseWithinBounds(mouseX, mouseY, hueSliderLeft, colorPickerTop - (((getColorSetting() == Managers.COLOR.getColorSetting()) ? 16 : 32) + (getColorSetting().isRainbow() ? 56 : 0)), 4, (getHeight() - 36)))
                                 hueSelectorDragging = true;
                         }
                     }
                 }
-                if (!hoveredRainbow && !hoveredSync && RenderUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, alphaSliderTop, (getWidth() - 20), 4))
+                if (!hoveredRainbow && !hoveredSync && Render2DUtil.mouseWithinBounds(mouseX, mouseY, colorPickerLeft, alphaSliderTop, (getWidth() - 20), 4))
                     alphaSelectorDragging = true;
 
                 if (getColorSetting().isRainbow()) {

@@ -5,7 +5,6 @@ import me.earth.earthhack.api.util.bind.Bind;
 import me.earth.earthhack.impl.gui.click.component.SettingComponent;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
-import me.earth.earthhack.impl.util.render.RenderUtil;
 import me.earth.earthhack.pingbypass.input.Keyboard;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Formatting;
@@ -27,7 +26,7 @@ public class KeybindComponent extends SettingComponent<Bind, BindSetting> {
     @Override
     public void drawScreen(DrawContext context, int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(context, mouseX, mouseY, partialTicks);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
         if (getClickGui().get().getBoxes())
             Render2DUtil.drawBorderedRect(context.getMatrices(), getFinishedX() + 4.5f, getFinishedY() + 1.0f, getFinishedX() + getWidth() - 4.5f, getFinishedY() + getHeight() - 0.5f, 0.5f, hovered ? 0x66333333 : 0, 0xff000000);
         else
@@ -52,7 +51,7 @@ public class KeybindComponent extends SettingComponent<Bind, BindSetting> {
     @Override
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getFinishedX() + 5, getFinishedY() + 1, getWidth() - 10, getHeight() - 2);
         if (hovered && mouseButton == 0)
             setBinding(!isBinding());
     }

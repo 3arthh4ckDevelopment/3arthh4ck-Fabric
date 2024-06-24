@@ -10,7 +10,6 @@ import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.combat.antisurround.util.AntiSurroundFunction;
-import me.earth.earthhack.impl.modules.combat.autocrystal.HelperLiquids;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.MineSlots;
 import me.earth.earthhack.impl.modules.player.noglitchblocks.NoGlitchBlocks;
 import me.earth.earthhack.impl.util.client.ModuleUtil;
@@ -26,6 +25,7 @@ import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
+import me.earth.earthhack.impl.util.minecraft.blocks.mine.MineUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.blocks.states.IBlockStateHelper;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
@@ -320,7 +320,7 @@ public class AntiSurround extends ObbyListenerModule<ListenerObby>
                                 List<Entity> entities,
                                 AntiSurroundFunction function)
     {
-        MineSlots slots = HelperLiquids.getSlots(onGround.getValue());
+        MineSlots slots = MineUtil.getSlots(onGround.getValue());
         if (slots.getDamage() < minMine.getValue()
                     && !(isAnvil = anvilCheck(slots))
                 || slots.getToolSlot() == -1

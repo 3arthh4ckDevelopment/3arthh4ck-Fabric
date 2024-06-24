@@ -4,6 +4,10 @@ import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 
+/**
+ * Creates a new Calculation Thread after Entities have been destroyed.
+ * See AutoCrystal - MultiThread - DestroyThread.
+ */
 final class ListenerDestroyEntities extends
         ModuleListener<AutoCrystal, PacketEvent.Receive<EntitiesDestroyS2CPacket>>
 {

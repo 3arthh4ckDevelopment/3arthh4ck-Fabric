@@ -5,7 +5,7 @@ import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.events.network.WorldClientEvent;
-import me.earth.earthhack.impl.event.listeners.CPacketPlayerPostListener;
+import me.earth.earthhack.impl.event.listeners.PlayerMoveC2SPacketPostListener;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
@@ -27,7 +27,7 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
     public PositionHistoryHelper()
     {
         this.packets = new ConcurrentLinkedDeque<>();
-        this.listeners.addAll(new CPacketPlayerPostListener()
+        this.listeners.addAll(new PlayerMoveC2SPacketPostListener()
         {
             @Override
             protected void onPacket
@@ -58,8 +58,7 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
             }
         }.getListeners());
 
-        this.listeners.add(new EventListener<>
-                (WorldClientEvent.Load.class)
+        this.listeners.add(new EventListener<>(WorldClientEvent.Load.class)
         {
             @Override
             public void invoke(WorldClientEvent.Load event)
@@ -133,7 +132,7 @@ public class PositionHistoryHelper extends SubscriberImpl implements Globals
                                        entity,
                                        entity);
         return result != null
-                && entity.equals(result.getEntity());
+                && result.getEntity().equals(entity);
     }
 
     public static final class RotationHistory

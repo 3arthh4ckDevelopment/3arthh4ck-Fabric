@@ -5,7 +5,7 @@ import me.earth.earthhack.impl.gui.click.component.Component;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.clickgui.ClickGui;
-import me.earth.earthhack.impl.util.render.RenderUtil;
+import me.earth.earthhack.impl.util.render.Render2DUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
@@ -80,21 +80,21 @@ public class Frame {
     }
 
     public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
-        final boolean hovered = RenderUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY(), getWidth(), getHeight());
+        final boolean hovered = Render2DUtil.mouseWithinBounds(mouseX, mouseY, getPosX(), getPosY(), getWidth(), getHeight());
         switch (mouseButton) {
-            case 0:
+            case 0 -> {
                 if (hovered) {
                     setDragging(true);
                     setLastPosX((float) (getPosX() - mouseX * CLICK_GUI.get().guiScale.getValue()));
                     setLastPosY((float) (getPosY() - mouseY * CLICK_GUI.get().guiScale.getValue()));
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if (hovered)
                     setExtended(!isExtended());
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 

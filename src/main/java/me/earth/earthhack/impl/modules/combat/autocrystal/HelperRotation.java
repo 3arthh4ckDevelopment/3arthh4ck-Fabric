@@ -28,6 +28,7 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.misc.MutableWrapper;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.network.PacketUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.block.Blocks;
@@ -45,6 +46,10 @@ import net.minecraft.util.math.Vec3d;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO: make the resetting better!
+
+/**
+ * Helper class for Rotations.
+ */
 public class HelperRotation implements Globals
 {
     private static final AtomicInteger ID = new AtomicInteger();
@@ -73,7 +78,7 @@ public class HelperRotation implements Globals
             boolean breaking = false;
             float[] rotations = null;
             if (hasPlaced.get()
-                || RotationUtil.getRotationPlayer().squaredDistanceTo(pos.toCenterPos()) > 64
+                || RotationUtil.getRotationPlayer().squaredDistanceTo(new Vec3d(pos.getX(), pos.getY(), pos.getZ())) > 64
                     && pos.getSquaredDistance(x, y, z) > 64
                 || (module.autoSwitch.getValue() != AutoSwitch.Always
                     && !module.switching
@@ -303,14 +308,14 @@ public class HelperRotation implements Globals
                 }
 
                 ray = new BlockHitResult(
-                        new Vec3d(0.5, 1.0, 0.5).add(pos.toCenterPos()), Direction.UP, pos, false);
+                        new Vec3d(0.5, 1.0, 0.5), Direction.UP, pos, false);
             }
             else if (module.fallbackTrace.getValue()
                 && mc.world.getBlockState(ray.getBlockPos().offset(ray.getSide()))
                            .isSolid())
             {
                 ray = new BlockHitResult(
-                        new Vec3d(0.5, 1.0, 0.5).add(pos.toCenterPos()), Direction.UP, pos, false);
+                        new Vec3d(0.5, 1.0, 0.5), Direction.UP, pos, false);
             }
 
             module.switching = false;
@@ -344,10 +349,10 @@ public class HelperRotation implements Globals
                     swing(finalHand, false);
                 }
 
-                mc.player.networkHandler.sendPacket(
-                    new PlayerInteractBlockC2SPacket(finalHand,
-                            new BlockHitResult(new Vec3d(f[0], f[1], f[2]).add(pos.toCenterPos()),
-                                    finalRay.getSide(), pos, false), 0));
+                NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(finalHand,
+                        new BlockHitResult(new Vec3d(f[0], f[1], f[2]), finalRay.getSide(),
+                                finalRay.getBlockPos(), false), seq));
+
                 module.sequentialHelper.setExpecting(pos);
 
                 if (finalNoGodded)
@@ -495,18 +500,18 @@ public class HelperRotation implements Globals
                     {
                         Managers.ROTATION.setBlocking(true);
                         float[] r = ray.getRotations();
-                        //PingBypass.sendToActualServer(
-                        PacketUtil.rotation(r[0], r[1], mc.player.isOnGround()); //);
-
+                        NetworkUtil.send(
+                           PacketUtil.rotation(r[0], r[1], mc.player.onGround));
                         Managers.ROTATION.setBlocking(false);
                     }
 
                     float[] f = RayTraceUtil.hitVecToPlaceVec(
                             ray.getPos(), ray.getResult().getPos());
 
-                    mc.player.networkHandler.sendPacket(
-                            new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(ray.getVector(),
-                                    ray.getFacing(), ray.getPos(), false), 0));
+                    NetworkUtil.sendSequenced(seq ->
+                            new PlayerInteractBlockC2SPacket(hand,
+                                    new BlockHitResult(new Vec3d(f[0], f[1], f[2]),
+                                            ray.getFacing(), ray.getResult().getBlockPos(), false), seq));
 
                     if (module.setState.getValue() && preSlot == -1)
                     {
@@ -574,7 +579,7 @@ public class HelperRotation implements Globals
                 Ray ray = positions[i];
                 BlockPos pos = ray.getPos().offset(ray.getFacing());
                 PacketUtil.startDigging(pos, ray.getFacing().getOpposite());
-                PacketUtil.stopDigging(pos, ray.getFacing().getOpposite());
+                PacketUtil.stopDigging( pos, ray.getFacing().getOpposite());
                 Swing.Packet.swing(Hand.MAIN_HAND);
             }
 

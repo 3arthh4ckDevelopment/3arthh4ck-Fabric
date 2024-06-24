@@ -30,7 +30,7 @@ final class ListenerTryUseItem
             // InventoryUtil.switchTo(mc.player.getInventory().currentItem + 1);
             // InventoryUtil.switchTo(slot);
             NetworkUtil.send(new UpdateSelectedSlotC2SPacket(mc.player.getInventory().selectedSlot));
-            // NetworkUtil.send(new CPacketPlayerDigging(CPacketPlayerDigging.Action.DROP_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN)); // ????????
+            // NetworkUtil.send(new CPacketPlayerDigging(CPacketPlayerDigging.Action.DROP_ITEM, BlockPos.ORIGIN, Direction.DOWN)); // ????????
         }
     }
 

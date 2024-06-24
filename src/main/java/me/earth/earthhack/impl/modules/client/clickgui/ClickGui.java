@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.modules.client.clickgui;
 
-import me.earth.earthhack.api.event.bus.EventListener;
 import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.module.util.PluginsCategory;
@@ -124,8 +123,6 @@ public class ClickGui extends Module
     {
         super("ClickGui", Category.Client);
         setBind(Bind.fromKey(GLFW.GLFW_KEY_RIGHT_SHIFT));
-        this.listeners.add(new ListenerScreen(this));
-        this.setData(new ClickGuiData(this));
 
         new PageBuilder<>(this, pages)
                 .addPage(p -> p == Pages.General, guiScale, size)
@@ -136,16 +133,30 @@ public class ClickGui extends Module
                 .addPage(p -> p == Pages.Search, search, searchWidth)
                 .addPage(p -> p == Pages.CatEars, catEars, catEarsSetting)
                 .register(Visibilities.VISIBILITY_MANAGER);
+        setupGui();
+    }
 
-        this.listeners.add(new EventListener<>(CrosshairEvent.class)
-        {
-            @Override
-            public void invoke(CrosshairEvent event)
-            {
-                event.setCancelled(true);
-            }
-        });
+    public ClickGui(String name) // for PB-Gui and Config-Gui
+    {
+        super(name, Category.Client);
+        search.setVisibility(false);
+        aliases.setVisibility(false);
+        precision.setVisibility(false);
+        searchWidth.setVisibility(false);
 
+        new PageBuilder<>(this, pages)
+                .addPage(p -> p == Pages.General, guiScale, size)
+                .addPage(p -> p == Pages.Modules, styleBoxes, moduleBox)
+                .addPage(p -> p == Pages.Blur, blur, blurSize)
+                .addPage(p -> p == Pages.Colors, modulesColorsetting, textColorDescsetting)
+                .addPage(p -> p == Pages.Description, description, descNameValue)
+                .addPage(p -> p == Pages.CatEars, catEars, catEarsSetting)
+                .register(Visibilities.VISIBILITY_MANAGER);
+        setupGui();
+    }
+
+    private void setupGui() {
+        this.listeners.add(new LambdaListener<>(CrosshairEvent.class, event -> event.setCancelled(true)));
         this.listeners.add(new LambdaListener<>(TickEvent.class, e -> {
             if (!(mc.currentScreen instanceof ChatScreen)) {
                 disable();
@@ -160,35 +171,19 @@ public class ClickGui extends Module
                 mc.setScreen(gui);
             }
         }));
-    }
 
-    public ClickGui(String name) // for PB-Gui and Config-Gui
-    {
-        super(name, Category.Client);
-        this.listeners.add(new ListenerScreen(this));
         this.setData(new ClickGuiData(this));
-        search.setVisibility(false);
-        aliases.setVisibility(false);
-        precision.setVisibility(false);
-        searchWidth.setVisibility(false);
-        new PageBuilder<>(this, pages)
-                .addPage(p -> p == Pages.General, guiScale, size)
-                .addPage(p -> p == Pages.Modules, styleBoxes, moduleBox)
-                .addPage(p -> p == Pages.Blur, blur, blurSize)
-                .addPage(p -> p == Pages.Colors, modulesColorsetting, textColorDescsetting)
-                .addPage(p -> p == Pages.Description, description, descNameValue)
-                .addPage(p -> p == Pages.CatEars, catEars, catEarsSetting)
-                .register(Visibilities.VISIBILITY_MANAGER);
     }
 
     @Override
     protected void onEnable()
     {
-        super.onEnable();
         /*
         if (blur.getValue() == BlurStyle.Gaussian && OpenGlHelper.shadersSupported)
                 mc.entityRenderer(new Identifier("minecraft", "shaders/post/blur.json"));
-         */
+        if(module.blur.getValue() != ClickGui.BlurStyle.Gaussian && OpenGlHelper.areShadersSupported())
+           mc.entityRenderer.stopUseShader();
+        */
     }
 
     protected Click newClick() {
@@ -198,17 +193,10 @@ public class ClickGui extends Module
     @Override
     protected void onDisable()
     {
-        if (!fromEvent)
-        {
-            mc.setScreen(screen);
-        }
-
         /*
         if (OpenGlHelper.shadersSupported)
             mc.entityRenderer.stopUseShader();
          */
-
-        fromEvent = false;
     }
 
     public boolean getBoxes() {
