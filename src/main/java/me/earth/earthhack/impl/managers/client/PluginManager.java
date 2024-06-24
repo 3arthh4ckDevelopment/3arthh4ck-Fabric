@@ -54,8 +54,11 @@ public class PluginManager
 
         this.classLoader = pluginClassLoader;
         Core.LOGGER.info("PluginManager: Scanning for PluginConfigs.");
-
-        loadPlugins(new File(PATH).listFiles());
+        
+        File[] folder = new File(PATH).listFiles();
+        if (folder != null) {
+            loadPlugins(folder);
+        }
     }
 
     private void loadPlugins(File[] files) {

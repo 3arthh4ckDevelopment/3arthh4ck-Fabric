@@ -79,6 +79,23 @@ public class NVGRenderer implements Globals {
         }
     }
 
+    public void reInit() {
+        if (context != 0 && init) {
+            init = false;
+            NanoVGGL3.nvgDelete(context);
+            context = 0;
+            id = -1;
+            destroyBuffer();
+            initialize();
+        }
+    }
+    
+    public boolean isInitialized() {
+        return init;
+    }
+    
+    // ----------------- Drawing -----------------
+
     private void textSized(String text, float x, float y, float size, Color color) {
         NanoVG.nvgBeginPath(context);
 
@@ -311,16 +328,6 @@ public class NVGRenderer implements Globals {
         glBindVertexArray(vertexArray);
         glBindBuffer(GL15.GL_ARRAY_BUFFER, arrayBuffer);
         glBindTexture(GL_TEXTURE_2D, textureBinding);
-    }
-
-    public void reInit(FontMod fontModule) {
-        this.init = false;
-        fontModule.disable();
-        fontModule.enable();
-    }
-
-    public boolean isInitialized() {
-        return init;
     }
 
 }

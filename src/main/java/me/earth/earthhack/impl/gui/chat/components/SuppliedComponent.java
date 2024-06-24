@@ -41,7 +41,7 @@ public class SuppliedComponent extends AbstractTextComponent
     @Override
     public TextContent getContent()
     {
-        return (TextContent) Text.empty().append(supplier.get());
+        return Text.of(supplier.get()).getContent();
     }
 
     @Override

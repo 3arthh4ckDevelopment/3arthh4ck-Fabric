@@ -22,7 +22,7 @@ public abstract class AbstractTextComponent extends MutableText
         @Override
         public TextContent getContent()
         {
-            return (TextContent) Text.of(EMPTY.toString());
+            return Text.of(EMPTY.toString()).getContent();
         }
 
         @Override

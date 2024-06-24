@@ -29,6 +29,7 @@ import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FontMod extends Module {
 
@@ -56,18 +57,22 @@ public class FontMod extends Module {
         });
 
         fontName.addObserver(event -> {
-           if (!event.getValue().isEmpty() && isEnabled()) {
-               TextRenderer.FONTS.reInit(this);
-           }
+            if (!event.getValue().isEmpty()) {
+                if (!getAllFonts().contains(event.getValue().toLowerCase() + ".ttf")) {
+                    ChatUtil.sendMessage("Font not found, loading fallback!", getName());
+                    disable();
+                } else {
+                    TextRenderer.FONTS.reInit();
+                }
+            }
         });
-
 
         this.setData(new FontData(this));
     }
 
     public byte[] getSelectedFont() {
-        try {
-            return new FileInputStream(getOSFontPath() + FileSystems.getDefault().getSeparator() + fontName.getValue() + ".ttf").readAllBytes();
+        try (FileInputStream fileInputStream = new FileInputStream(getOSFontPath() + FileSystems.getDefault().getSeparator() + fontName.getValue().toLowerCase() + ".ttf")) {
+            return fileInputStream.readAllBytes();
         } catch (IOException e) {
             ChatUtil.sendMessage("Font not found, loading fallback!", getName());
             try {
@@ -81,7 +86,7 @@ public class FontMod extends Module {
     private String getOSFontPath() {
         String os = System.getProperty("os.name").toLowerCase();
 
-        if (os.contains("windows")) {
+        if (os.contains("win")) {
             return "C:\\Windows\\Fonts";
         }
         else if (os.contains("darwin")) {
@@ -94,12 +99,12 @@ public class FontMod extends Module {
         return "none";
     }
 
-    private List<File> getAllFonts() {
+    private List<String> getAllFonts() {
         String path = getOSFontPath();
         if (!path.equals("none")) {
             File[] files = new File(path).listFiles();
             if (files != null)
-                return Arrays.stream(files).toList();
+                return Arrays.stream(files).map(File::getName).filter(name -> name.contains(".ttf")).toList();
         }
         return new ArrayList<>();
     }
@@ -108,14 +113,12 @@ public class FontMod extends Module {
         MutableText component =
                 Text.empty().append("Available Fonts: ");
         // component.setWrap(true);
+        
+        List<String> fonts = getAllFonts().stream().map(x -> x.replace(".ttf", "")).collect(Collectors.toList());
 
-        List<String> fonts = getAllFonts().stream().map(File::getName).filter(name -> name.contains(".ttf")).toList();
-
-        for (int i = 0; i < fonts.size(); i++)
-        {
+        for (int i = 0; i < fonts.size(); i++) {
             String font = fonts.get(i);
-            if (font != null)
-            {
+            if (font != null) {
                 int finalI = i;
                 component.append(
                         new SuppliedComponent(() ->
