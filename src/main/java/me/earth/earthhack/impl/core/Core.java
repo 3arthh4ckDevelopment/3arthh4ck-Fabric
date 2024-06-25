@@ -64,7 +64,7 @@ public final class Core implements PreLaunchEntrypoint {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream(config.getAccessWidener()), StandardCharsets.UTF_8));
                     accessWidenerReader.read(reader, FabricLauncherBase.getLauncher().getTargetNamespace());
                 } catch (Exception e) {
-                    throw new RuntimeException("Failed to read AccessWidener file from plugin " + config.getName(), e);
+                    LOGGER.error("Failed to read AccessWidener from plugin: " + config.getName(), e);
                 }
             }
 

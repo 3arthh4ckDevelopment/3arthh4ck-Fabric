@@ -65,11 +65,11 @@ public class PluginManager
                 if (file.getName().endsWith(".jar")) {
                     Core.LOGGER.info("PluginManager: Scanning " + file.getName());
                     try {
-                        scanJarFile(file);
+                        loadJarFile(file);
                     }
                     catch (Exception e)
                     {
-                        e.printStackTrace();
+                        Core.LOGGER.error("Error loading Plugin: " + file.getName() + ", caused by: " + e.getMessage());
                     }
                 }
             }
@@ -109,7 +109,7 @@ public class PluginManager
         }
     }
 
-    private void scanJarFile(File file) throws Exception {
+    private void loadJarFile(File file) throws Exception {
         try (JarFile jarFile = new JarFile(file)) {
 
             Manifest manifest = jarFile.getManifest();
@@ -118,6 +118,11 @@ public class PluginManager
 
             if (configName == null) {
                 throw new BadPluginException(jarFile.getName() + ": Manifest doesn't provide a 3arthh4ckConfig!");
+            }
+
+            String pluginVersion = attributes.getValue("Fabric-Minecraft-Version");
+            if (pluginVersion == null) {
+                throw new BadPluginException(jarFile.getName() + ": Manifest doesn't provide a Fabric-Minecraft-Version!");
             }
 
             // >:D
@@ -142,8 +147,6 @@ public class PluginManager
                     + config.getMixinConfig());
 
             String gameVersion = FabricLoaderImpl.INSTANCE.getGameProvider().getNormalizedGameVersion();
-            String pluginVersion = attributes.getValue("Fabric-Minecraft-Version");
-
             if (!pluginVersion.equals(gameVersion)) {
                 Core.LOGGER.warn("Plugin "
                         + config.getName()
