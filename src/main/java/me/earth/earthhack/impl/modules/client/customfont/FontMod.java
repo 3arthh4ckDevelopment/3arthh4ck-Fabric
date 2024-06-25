@@ -37,8 +37,8 @@ public class FontMod extends Module {
             register(new StringSetting("Font", "Verdana"));
     public final Setting<Float> fontSize =
             register(new NumberSetting<>("Size", 9.0f, 4.0f, 12.0f));
-    public final Setting<FontStyle> fontStyle = // TODO: This!
-            register(new EnumSetting<>("FontStyle", FontStyle.Plain));
+//    public final Setting<FontStyle> fontStyle = // TODO: This!
+//            register(new EnumSetting<>("FontStyle", FontStyle.Plain));
     public final Setting<Float> shadowOffset =
             register(new NumberSetting<>("ShadowOffset", 0.6f, 0.2f, 1.0f));
     public final Setting<Boolean> blurShadow =
@@ -60,10 +60,8 @@ public class FontMod extends Module {
             if (!event.getValue().isEmpty()) {
                 if (!getAllFonts().contains(event.getValue().toLowerCase() + ".ttf")) {
                     ChatUtil.sendMessage("Font not found, loading fallback!", getName());
-                    disable();
-                } else {
-                    TextRenderer.FONTS.reInit();
                 }
+                TextRenderer.FONTS.reInit();
             }
         });
 
@@ -93,28 +91,41 @@ public class FontMod extends Module {
             return "/Library/Fonts/";
         }
         else if (os.contains("linux")) {
-            return "/usr/share/fonts/truetype";
-            // TODO: maybe get this from /etc/fonts/fonts.conf since this might not be the location?
+            return System.getProperty("user.home") + "/.local/share/fonts";
         }
         return "none";
     }
 
     private List<String> getAllFonts() {
         String path = getOSFontPath();
+        List<String> fonts = new ArrayList<>();
         if (!path.equals("none")) {
-            File[] files = new File(path).listFiles();
-            if (files != null)
-                return Arrays.stream(files).map(File::getName).filter(name -> name.contains(".ttf")).toList();
+            File directory = new File(path);
+            fonts = getFontsInDirectory(directory);
         }
-        return new ArrayList<>();
+        return fonts;
+    }
+
+    private List<String> getFontsInDirectory(File directory) {
+        List<String> fonts = new ArrayList<>();
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    fonts.addAll(getFontsInDirectory(file));
+                } else if (file.getName().endsWith(".ttf")) {
+                    fonts.add(file.getName());
+                }
+            }
+        }
+        return fonts;
     }
 
     public void sendFonts() {
         MutableText component =
                 Text.empty().append("Available Fonts: ");
-        // component.setWrap(true);
         
-        List<String> fonts = getAllFonts().stream().map(x -> x.replace(".ttf", "")).collect(Collectors.toList());
+        List<String> fonts = getAllFonts().stream().map(x -> x.replace(".ttf", "")).toList();
 
         for (int i = 0; i < fonts.size(); i++) {
             String font = fonts.get(i);
