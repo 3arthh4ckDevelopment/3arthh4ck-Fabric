@@ -164,12 +164,14 @@ public abstract class HudElement extends SettingContainer
             setWidth(getWidth());
             setHeight(getHeight());
 
+            context.getMatrices().push();
             context.getMatrices().scale(getScale(), getScale(), getScale());
             if (width != 0 && height != 0) {
                 Render2DUtil.drawBorderedRect(context.getMatrices(), getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0.7f, 0x00000000, 0xaa000000);
             }
             onRender(context);
             context.getMatrices().scale(1, 1, 1);
+            context.getMatrices().pop();
         }
     }
 
@@ -182,9 +184,11 @@ public abstract class HudElement extends SettingContainer
             setWidth(getWidth());
             setHeight(getHeight());
 
+            context.getMatrices().push();
             context.getMatrices().scale(getScale(), getScale(), getScale());
             onRender(context);
             context.getMatrices().scale(1, 1, 1);
+            context.getMatrices().pop();
         }
     }
 
@@ -192,9 +196,12 @@ public abstract class HudElement extends SettingContainer
         if (dragging) {
             setX(mouseX - draggingX);
             setY(mouseY - draggingY);
+
+            context.getMatrices().push();
             context.getMatrices().scale(getScale(), getScale(), getScale());
             Render2DUtil.drawRect(context.getMatrices(), getX(), getY(), getX() + getWidth(), getY() + getHeight(),  new Color(51, 204, 255, 130).getRGB(), -100);
             context.getMatrices().scale(1, 1, 1);
+            context.getMatrices().pop();
         }
     }
 
