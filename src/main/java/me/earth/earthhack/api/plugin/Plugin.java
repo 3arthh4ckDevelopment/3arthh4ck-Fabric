@@ -25,5 +25,5 @@ public interface Plugin
      * reference any of the Plugin's mixins or
      * modified fields & methods by the AccessWidener.
      */
-    void loadRuntime();
+    default void loadRuntime() {}
 }
