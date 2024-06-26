@@ -16,15 +16,13 @@ final class ListenerTick extends ModuleListener<Colors, TickEvent> {
 
     @Override
     public void invoke(TickEvent event) {
-        Managers.MODULES.getRegistered().forEach(module1 -> module1.getSettings().stream().
-                filter(setting -> setting instanceof ColorSetting &&
-                        ((ColorSetting) setting).isSync()).
-                forEach(setting -> ((ColorSetting) setting).setValueAlpha(Managers.COLOR.getColorSetting().getValue())));
-        Managers.MODULES.getRegistered().forEach(module1 -> module1.getSettings().stream().
-                filter(setting -> setting instanceof ColorSetting &&
-                        ((ColorSetting) setting).isRainbow() && !((ColorSetting) setting).isSync()).
-                forEach(setting ->
-                        ((ColorSetting) setting).setValueAlpha(((ColorSetting) setting).isStaticRainbow() ? new Color(ColorUtil.staticRainbow(0, ((ColorSetting) setting).getStaticColor())) : ColorUtil.getRainbow((int) Math.max(((ColorSetting) setting).getRainbowSpeed() * 30.f, 30.f), 0, ((ColorSetting) setting).getRainbowSaturation() / 100.f, ((ColorSetting) setting).getRainbowBrightness() / 100.f))));
+        for (ColorSetting setting : Colors.cSettings) {
+            if (setting.isSync()) {
+                setting.setValueAlpha(Managers.COLOR.getColorSetting().getValue());
+            } else if (setting.isRainbow()) { // sync setting is already false
+                setting.setValueAlpha(setting.isStaticRainbow() ? new Color(ColorUtil.staticRainbow(0, setting.getStaticColor())) : ColorUtil.getRainbow((int) Math.max(setting.getRainbowSpeed() * 30.f, 30.f), 0, setting.getRainbowSaturation() / 100.f, setting.getRainbowBrightness() / 100.f));
+            }
+        }
     }
 
 }

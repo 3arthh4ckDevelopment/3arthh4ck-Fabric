@@ -7,7 +7,6 @@ import me.earth.earthhack.api.register.IterationRegister;
 import me.earth.earthhack.api.register.Registrable;
 import me.earth.earthhack.api.register.exception.CantUnregisterException;
 import me.earth.earthhack.impl.Earthhack;
-import me.earth.earthhack.impl.event.events.client.PostInitEvent;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.accountspoof.AccountSpoof;
 import me.earth.earthhack.impl.modules.client.anticheat.AntiCheat;
@@ -296,8 +295,6 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new Ambience());
         // this.forceRegister(new ViewModel());
         this.forceRegister(new Heaven());
-
-        Bus.EVENT_BUS.post(new PostInitEvent());
     }
 
     public void load()

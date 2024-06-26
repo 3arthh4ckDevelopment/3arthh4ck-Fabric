@@ -19,14 +19,14 @@ public class HudRenderUtil implements Globals {
     }
 
     public static String getBracketsColor() {
-        if (!(HUD_EDITOR.get().bracketsColor.getValue() == TextColor.None))
+        if (HUD_EDITOR.get().bracketsColor.getValue() != TextColor.None)
             return HUD_EDITOR.get().bracketsColor.getValue().getColor();
         else
             return TextColor.GRAY;
     }
 
     public static String getBracketsTextColor() {
-        if (!(HUD_EDITOR.get().insideText.getValue() == TextColor.None))
+        if (HUD_EDITOR.get().insideText.getValue() != TextColor.None)
             return HUD_EDITOR.get().insideText.getValue().getColor();
         else
             return TextColor.GRAY;
@@ -42,10 +42,11 @@ public class HudRenderUtil implements Globals {
     }
 
     private static int textColor(float y) {
-        return HUD_EDITOR.get().colorMode.getValue() == HudRainbow.None
-                ? HUD_EDITOR.get().color.getValue().getRGB()
-                : (HUD_EDITOR.get().colorMode.getValue() == HudRainbow.Static
-                ? (ColorUtil.staticRainbow((y + 1) * 0.89f, HUD_EDITOR.get().color.getValue()))
-                : 0xffffffff);
+        if (HUD_EDITOR.get().colorMode.getValue() == HudRainbow.None) {
+            return HUD_EDITOR.get().color.getValue().getRGB();
+        } else if (HUD_EDITOR.get().colorMode.getValue() == HudRainbow.Static) {
+            return ColorUtil.staticRainbow((y + 1) * 0.89f, HUD_EDITOR.get().color.getValue());
+        }
+        return 0xffffffff;
     }
 }
