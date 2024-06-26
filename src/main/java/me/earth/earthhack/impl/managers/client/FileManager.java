@@ -24,10 +24,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FileManager
 {
     public static final File EARTHHACK_ROOT = FabricLoader.getInstance().getGameDir().resolve("earthhack").toFile();
-    private static final File IMAGES = new File(EARTHHACK_ROOT + "/earthhack/images");
-    private static final File MODELS = new File(EARTHHACK_ROOT + "/earthhack/models");
-    private static final File SHADERS = new File(EARTHHACK_ROOT + "/earthhack/shaders");
-    private static final File MODULES = new File(EARTHHACK_ROOT + "/earthhack/modules");
+    private static final File PLUGINS = new File(EARTHHACK_ROOT + "/plugins");
+    private static final File UTIL = new File(EARTHHACK_ROOT + "/util");
+    private static final File IMAGES = new File(EARTHHACK_ROOT + "/images");
+    private static final File SHADERS = new File(EARTHHACK_ROOT + "/shaders");
+    private static final File MODULES = new File(EARTHHACK_ROOT + "/modules");
 
 
     private final Map<String, GifImage> gifs = new ConcurrentHashMap<>();
@@ -47,17 +48,21 @@ public class FileManager
     public void init()
     {
         if (!EARTHHACK_ROOT.exists()) {
+            System.out.println("Creating earthhack root directory");
             EARTHHACK_ROOT.mkdir();
+        }
+
+        if (!PLUGINS.exists()) {
+            PLUGINS.mkdir();
+        }
+
+        if (!UTIL.exists()) {
+            UTIL.mkdir();
         }
 
         if (!IMAGES.exists())
         {
             IMAGES.mkdir();
-        }
-
-        if (!MODELS.exists())
-        {
-            MODELS.mkdir();
         }
 
         if (!SHADERS.exists())

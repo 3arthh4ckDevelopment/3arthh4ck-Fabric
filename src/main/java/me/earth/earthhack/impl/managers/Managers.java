@@ -5,6 +5,7 @@ import me.earth.earthhack.api.module.Module;
 import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.plugin.Plugin;
 import me.earth.earthhack.impl.Earthhack;
+import me.earth.earthhack.impl.event.events.client.PostInitEvent;
 import me.earth.earthhack.impl.managers.chat.ChatManager;
 import me.earth.earthhack.impl.managers.chat.CommandManager;
 import me.earth.earthhack.impl.managers.chat.WrapManager;
@@ -109,6 +110,8 @@ public class Managers {
         Earthhack.getLogger().info("Initializing Modules");
         MODULES.load();
         ELEMENTS.load();
+
+        Bus.EVENT_BUS.post(new PostInitEvent());
     }
 
     public static void subscribe(Object...subscribers)
