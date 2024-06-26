@@ -456,11 +456,10 @@ public class InventoryUtil implements Globals
      */ // TODO: ensure that this is used everywhere where needed
     public static ItemStack get(int slot)
     {
-        // for now since I honestly don't know how to go about this.
-        // if (slot == -2)
-        // {
-        //     return mc.player.getInventory().getStack(slot);
-        // }
+         if (slot == -2)
+         {
+             return mc.player.getOffHandStack();
+         }
         return mc.player.getInventory().getStack(slot);
     }
 

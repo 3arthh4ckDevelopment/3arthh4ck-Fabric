@@ -24,11 +24,14 @@ import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.network.PacketUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.item.*;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
 
 import java.util.*;
@@ -316,7 +319,7 @@ public class Offhand extends Module
 
     private void switchToItem(Item item)
     {
-        ItemStack drag = mc.player.getInventory().getStack(-1);
+        ItemStack drag = mc.player.currentScreenHandler.getCursorStack();
         Item dragItem  = drag.getItem();
         Item offhandItem = mc.player.getOffHandStack().getItem();
         if (offhandItem != item)
