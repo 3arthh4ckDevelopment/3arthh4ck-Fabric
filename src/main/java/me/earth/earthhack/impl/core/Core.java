@@ -5,7 +5,6 @@ import me.earth.earthhack.api.plugin.PluginConfig;
 import me.earth.earthhack.impl.managers.client.FileManager;
 import me.earth.earthhack.impl.managers.client.PluginManager;
 import me.earth.earthhack.impl.managers.thread.scheduler.Scheduler;
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
@@ -16,7 +15,6 @@ import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mixins;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
@@ -30,17 +28,10 @@ public final class Core implements PreLaunchEntrypoint {
     /** Load the core */
     @Override
     public void onPreLaunch() {
-        LOGGER.info("Found Environment: " + FabricLoader.getInstance().getEnvironmentType());
         Bus.EVENT_BUS.subscribe(Scheduler.getInstance());
         ClassLoader classLoader = FabricLauncherBase.getLauncher().getTargetClassLoader();
 
-        File util = new File(FileManager.EARTHHACK_ROOT + "/util");
-        if (!util.exists())
-            util.mkdir();
-
-        File plugins = new File(FileManager.EARTHHACK_ROOT + "/plugins");
-        if (!plugins.exists())
-            plugins.mkdir();
+        new FileManager();
 
         PluginManager.getInstance().createPluginConfigs(classLoader);
 
