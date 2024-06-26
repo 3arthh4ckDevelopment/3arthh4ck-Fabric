@@ -6,33 +6,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PluginsCategory {
+    private static final PluginsCategory INSTANCE = new PluginsCategory();
 
     private final Category pluginCategory = new Category("Plugins", 6);
-
-    public Category getCategory() {
-        return pluginCategory;
-    }
+    private final Map<Module, Category> pluginModulesMap = new HashMap<>();
 
     public Category[] getCategories() {
-        Category[] c = new Category[Category.values().length + 1];
-        System.arraycopy(Category.values(), 0, c, 0, Category.values().length);
-        c[Category.values().length] = getCategory();
-        return c;
+        Category[] categories = new Category[Category.values().length + 1];
+        System.arraycopy(Category.values(), 0, categories, 0, Category.values().length);
+        categories[Category.values().length] = getCategory();
+        return categories;
     }
 
-    private final Map<Module, Category> pluginModulesMap = new HashMap<>();
+    public static PluginsCategory getInstance() {
+        return INSTANCE;
+    }
 
     public void addPluginModule(Module module) {
         pluginModulesMap.put(module, module.getCategory());
     }
 
-    public Map<Module, Category> getPluginsModuleList() {
-        return pluginModulesMap;
+    public Category getCategory() {
+        return pluginCategory;
     }
 
-    private final static PluginsCategory INSTANCE = new PluginsCategory();
-
-    public static PluginsCategory getInstance() {
-        return INSTANCE;
+    public Map<Module, Category> getPluginsModuleList() {
+        return pluginModulesMap;
     }
 }

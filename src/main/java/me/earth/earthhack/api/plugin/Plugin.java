@@ -13,8 +13,17 @@ package me.earth.earthhack.api.plugin;
 public interface Plugin
 {
     /**
-     * Loads this Plugin.
+     * This method is called at the start of the game.
+     * When this method is called, the Plugin can use
+     * mixins and/or fields & methods modified by the AccessWidener.
      */
     void load();
 
+    /**
+     * Loads this Plugin during runtime.
+     * When this method is called, the Plugin CANNOT
+     * reference any of the Plugin's mixins or
+     * modified fields & methods by the AccessWidener.
+     */
+    void loadRuntime();
 }
