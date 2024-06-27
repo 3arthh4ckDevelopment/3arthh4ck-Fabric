@@ -106,7 +106,7 @@ public class FontMod extends Module {
         } else if (os.contains("linux")) {
             paths.add(System.getProperty("user.home") + "/.local/share/fonts");
             paths.add("/usr/share/fonts");
-            paths.add("/usr/share/fonts/TTF"); // Added TTF directory
+            paths.add("/usr/share/fonts/TTF");
             paths.add("/usr/local/share/fonts");
         }
         return paths;
