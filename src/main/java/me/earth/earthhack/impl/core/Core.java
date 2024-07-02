@@ -24,16 +24,15 @@ import java.nio.charset.StandardCharsets;
 public final class Core implements PreLaunchEntrypoint {
     /** Logger for the Core. */
     public static final Logger LOGGER = LogManager.getLogger("3arthh4ck-Core");
+    public static final ClassLoader CLASS_LOADER = FabricLauncherBase.getLauncher().getTargetClassLoader();
 
     /** Load the core */
     @Override
     public void onPreLaunch() {
         Bus.EVENT_BUS.subscribe(Scheduler.getInstance());
-        ClassLoader classLoader = FabricLauncherBase.getLauncher().getTargetClassLoader();
-
         new FileManager();
 
-        PluginManager.getInstance().createPluginConfigs(classLoader);
+        PluginManager.getInstance().createPluginConfigs();
 
         MixinEnvironment.getEnvironment(MixinEnvironment.Phase.DEFAULT)
                 .setSide(MixinEnvironment.Side.CLIENT);
@@ -47,12 +46,11 @@ public final class Core implements PreLaunchEntrypoint {
         AccessWidenerReader accessWidenerReader = new AccessWidenerReader(FabricLoaderImpl.INSTANCE.getAccessWidener());
 
         for (PluginConfig config : PluginManager.getInstance().getPluginConfigs()) {
-
             if (config.getAccessWidener() != null) {
                 LOGGER.info("Adding " + config.getName() + "'s AccessWidener: " + config.getAccessWidener());
 
                 try  {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(classLoader.getResourceAsStream(config.getAccessWidener()), StandardCharsets.UTF_8));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(CLASS_LOADER.getResourceAsStream(config.getAccessWidener()), StandardCharsets.UTF_8));
                     accessWidenerReader.read(reader, FabricLauncherBase.getLauncher().getTargetNamespace());
                 } catch (Exception e) {
                     LOGGER.error("Failed to read AccessWidener from plugin: " + config.getName(), e);

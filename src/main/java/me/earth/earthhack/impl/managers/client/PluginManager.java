@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.core.Core;
 import me.earth.earthhack.impl.managers.client.exception.BadPluginException;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.InputStreamReader;
@@ -26,7 +27,7 @@ public class PluginManager
     private static final String PATH = "earthhack/plugins";
 
     private final Map<PluginConfig, Plugin> pluginMap = new HashMap<>();
-    private ClassLoader classLoader;
+    private ClassLoader classLoader = Core.CLASS_LOADER;
 
     /** Private Ctr since this is a Singleton. */
     private PluginManager() { }
@@ -45,12 +46,8 @@ public class PluginManager
      * and a {@link PluginConfig} will be created. If the PluginJson
      * contains a "mixinConfig" entry that MixinConfig will be added by
      * the CoreMod.
-     *
-     * @param pluginClassLoader the classLoader to load Plugins with.
      */
-    public void createPluginConfigs(ClassLoader pluginClassLoader) {
-
-        this.classLoader = pluginClassLoader;
+    public void createPluginConfigs() {
         Core.LOGGER.info("PluginManager: Scanning for PluginConfigs.");
         
         File[] folder = new File(PATH).listFiles();
@@ -59,7 +56,7 @@ public class PluginManager
         }
     }
 
-    private void loadPlugins(File[] files) {
+    public void loadPlugins(File[] files) {
         try {
             for (File file : Objects.requireNonNull(files)) {
                 if (file.getName().endsWith(".jar")) {
@@ -67,9 +64,9 @@ public class PluginManager
                     try {
                         loadJarFile(file);
                     }
-                    catch (Exception e)
-                    {
-                        Core.LOGGER.error("Error loading Plugin: " + file.getName() + ", caused by: " + e.getMessage());
+                    catch (Exception e) {
+                        Core.LOGGER.error("Error loading Plugin: " + file.getName() + ", caused by:");
+                        e.printStackTrace();
                     }
                 }
             }

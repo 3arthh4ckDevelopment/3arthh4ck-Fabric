@@ -37,8 +37,6 @@ public abstract class Module extends SettingContainer
     protected final List<Listener<?>> listeners = new ArrayList<>();
     private final AtomicBoolean enableCheck = new AtomicBoolean();
     private final AtomicBoolean inOnEnable  = new AtomicBoolean();
-    boolean registered;
-
 
     private final Setting<String> name;
     private final Setting<Bind> bind =
@@ -260,15 +258,6 @@ public abstract class Module extends SettingContainer
         /* Implemented by the module */
     }
 
-    public boolean isRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(boolean value) {
-        registered = value;
-    }
-
-
     /**
      *
      * @return the listeners the module is using.
@@ -286,16 +275,15 @@ public abstract class Module extends SettingContainer
         return this.name.getInitial().hashCode();
     }
 
-    // TODO: this is shit!!!!
     @Override
     public boolean equals(Object o)
     {
         if (o == this) {
             return true;
         }
-        else if (o instanceof Module) {
+        else if (o instanceof Module module) {
             String name = this.name.getInitial();
-            return name != null && name.equals(((Module) o).name.getInitial()) && this.getClass() == o.getClass();
+            return name != null && name.equals(module.name.getInitial()) && this.getClass() == o.getClass() && this.category == module.category;
         }
 
         return false;

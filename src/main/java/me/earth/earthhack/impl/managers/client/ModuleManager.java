@@ -6,6 +6,7 @@ import me.earth.earthhack.api.module.util.Category;
 import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.register.IterationRegister;
 import me.earth.earthhack.api.register.Registrable;
+import me.earth.earthhack.api.register.exception.AlreadyRegisteredException;
 import me.earth.earthhack.api.register.exception.CantUnregisterException;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.modules.Caches;
@@ -311,21 +312,21 @@ public class ModuleManager extends IterationRegister<Module>
     public void unregister(Module module) throws CantUnregisterException
     {
         super.unregister(module);
-        module.setRegistered(false);
         Bus.EVENT_BUS.unsubscribe(module);
     }
 
     @Override
-    public void register(Module module) {
+    public void register(Module module) throws AlreadyRegisteredException {
         try {
             super.register(module);
             PluginsCategory.getInstance().addPluginModule(module);
         } catch (Exception e) {
             Earthhack.getLogger().warn("Failed to register module: " + module.getName());
+            throw e;
         }
     }
 
-    public void register(Module module, boolean isPlugin) {
+    public void register(Module module, boolean isPlugin) throws AlreadyRegisteredException {
         try {
             super.register(module);
             if (isPlugin) {
@@ -333,13 +334,13 @@ public class ModuleManager extends IterationRegister<Module>
             }
         } catch (Exception e) {
             Earthhack.getLogger().warn("Failed to register module: " + module.getName());
+            throw e;
         }
     }
 
     protected void forceRegister(Module module)
     {
         registered.add(module);
-        module.setRegistered(true);
         if (module instanceof Registrable)
         {
             ((Registrable) module).onRegister();
