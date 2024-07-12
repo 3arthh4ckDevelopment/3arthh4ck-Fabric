@@ -10,8 +10,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.Set;
 import java.util.TreeSet;
 
+//TODO: make a little simple script/algorithm to calculate the SPHERE size given the radius
+
 /**
- * Caches a Sphere of radius 100 and indices required
+ * Caches a Sphere of radius 45 and indices required
  * to get Sub-Spheres with smaller radii. The sphere is
  * sorted by distance to the middle.
  *

@@ -1,7 +1,9 @@
 package me.earth.earthhack.impl;
 
 import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.managers.thread.GlobalExecutor;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
+import me.earth.earthhack.impl.util.math.geocache.Sphere;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.network.NetworkState;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +19,7 @@ public class Earthhack implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         startMS = System.currentTimeMillis();
+        GlobalExecutor.EXECUTOR.submit(() -> Sphere.cacheSphere(LOGGER));
         LOGGER.info("\n\n ------------------ Initializing 3arthh4ck-fabric. ------------------ \n");
         Managers.load();
         LOGGER.info("Prefix is " + Commands.getPrefix());

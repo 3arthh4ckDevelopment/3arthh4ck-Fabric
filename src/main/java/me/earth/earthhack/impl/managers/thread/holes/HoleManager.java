@@ -5,6 +5,7 @@ import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.events.network.WorldClientEvent;
+import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.blocks.HoleUtil;
 import net.minecraft.client.MinecraftClient;
@@ -65,15 +66,7 @@ public class HoleManager extends SubscriberImpl implements Globals, IHoleManager
 
     public HoleManager()
     {
-        this.listeners.add(
-            new EventListener<>(TickEvent.class)
-            {
-                @Override
-                public void invoke(TickEvent event)
-                {
-                    runTick();
-                }
-            });
+        this.listeners.add(new LambdaListener<>(TickEvent.class, event -> runTick()));
         this.listeners.add(
             new EventListener<>(
                               WorldClientEvent.Load.class)

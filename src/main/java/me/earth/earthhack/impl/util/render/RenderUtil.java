@@ -152,19 +152,10 @@ public class RenderUtil implements Globals {
         endRender();
     }
 
-    public static void renderBox(MatrixStack matrix, Box bb, Color color, Color outLineColor, float lineWidth)
-    {
-        startRender();
-        RenderSystem.lineWidth(lineWidth);
-        drawOutline(matrix, bb, lineWidth, outLineColor);
-        RenderSystem.lineWidth(1.0f);
-        endRender();
-        startRender();
-        drawBox(matrix, bb, color);
-        endRender();
-    }
-
-    public static void renderBox(MatrixStack matrix, BlockPos pos, Color color, float height)
+    public static void renderBox(MatrixStack matrix,
+                                 BlockPos pos,
+                                 Color color,
+                                 float height)
     {
         Box bb = Interpolation.interpolatePos(pos, height);
         startRender();
@@ -174,6 +165,33 @@ public class RenderUtil implements Globals {
         startRender();
         drawBox(matrix, bb, boxColor);
         endRender();
+    }
+
+    public static void renderBox(MatrixStack matrix, BlockPos pos,
+                                 Color color,
+                                 float height,
+                                 int boxAlpha)
+    {
+        Box bb = Interpolation.interpolatePos(pos, height);
+        startRender();
+        drawOutline(matrix, bb, 1.5f, color);
+        endRender();
+        Color boxColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), boxAlpha);
+        startRender();
+        drawBox(matrix, bb, boxColor);
+        endRender();
+    }
+
+    public static void renderBox(MatrixStack matrix,
+                                 Box bb,
+                                 Color color,
+                                 Color outLineColor,
+                                 float lineWidth)
+    {
+        RenderSystem.lineWidth(lineWidth);
+        drawOutline(matrix, bb, lineWidth, outLineColor);
+        RenderSystem.lineWidth(1.0f);
+        drawBox(matrix, bb, color);
     }
 
     public static void drawOutline(MatrixStack matrix, Box bb, float lineWidth, Color color)
@@ -186,8 +204,7 @@ public class RenderUtil implements Globals {
 
     public static void fillBox(MatrixStack matrix, Box bb, int color)
     {
-        if (bb != null)
-        {
+        if (bb != null) {
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferBuilder = tessellator.getBuffer();
             Matrix4f posMatrix = matrix.peek().getPositionMatrix();

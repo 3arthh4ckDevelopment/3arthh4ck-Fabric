@@ -17,7 +17,7 @@ public abstract class MixinChunk implements IChunk
     @Unique private int holeVersion;
 
     @Override
-    public void earthhack$setCompilingHoles(boolean compilingHoles)
+    public void setCompilingHoles(boolean compilingHoles)
     {
         this.compilingHoles = compilingHoles;
         if (!compilingHoles)
@@ -27,9 +27,9 @@ public abstract class MixinChunk implements IChunk
     }
 
     @Override
-    public void earthhack$addHoleTask(Runnable task)
+    public void addHoleTask(Runnable task)
     {
-        if (earthhack$isCompilingHoles())
+        if (isCompilingHoles())
         {
             postHoleCompilationTasks.add(task);
         }
@@ -40,13 +40,13 @@ public abstract class MixinChunk implements IChunk
     }
 
     @Override
-    public int earthhack$getHoleVersion()
+    public int getHoleVersion()
     {
         return holeVersion;
     }
 
     @Override
-    public void earthhack$setHoleVersion(int version)
+    public void setHoleVersion(int version)
     {
         this.holeVersion = version;
     }
