@@ -121,16 +121,6 @@ public class RayTraceUtil implements Globals
                     entity
             ));
 
-            //BlockHitResult result = mc.world.raycast(
-            // PositionUtil.getEyePos(entity),
-            // new Vec3d(
-            //    pos.getX() + 0.5 + facing.getVector().getX() * 1.0 / 2.0,
-            //    pos.getY() + 0.5 + facing.getVector().getY() * 1.0 / 2.0,
-            //    pos.getZ() + 0.5 + facing.getVector().getZ() * 1.0 / 2.0),
-            // false,
-            // true,
-            // false);
-
             if (result != null
                     && result.getType() == BlockHitResult.Type.BLOCK
                     && result.getBlockPos().equals(pos))

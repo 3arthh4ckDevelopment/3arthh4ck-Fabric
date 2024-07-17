@@ -50,19 +50,24 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
         register(module.newVerEntities, "This is actually not a 1.13+ " +
             "mechanic, but Crystalpvp.cc allows you to place crystals " +
             "underneath Entities.");
-        register(module.placeSwing, """
-                - None : Won't swing when placing.
-                - Pre : Will swing before you place a crystal.
-                - Post : Will swing after you placed a crystal (Vanilla).""");
+        register(module.placeSwing, "-None, won't swing when placing.\n" +
+            "-Pre, will swing before you place a crystal.\n" +
+            "-Post, will swing after you placed a crystal (Vanilla).");
+        register(module.pingSyncStrength, "How much PingSync should sync placing and breaking" +
+                "crystals in percentage. For example, At 10%, " +
+                "the PingSync end delay should be around 7ms if you play " +
+                "with 65ms ping. This delay will adapt to your ping, " +
+                "so you shouldn't have to tweak delays depending on " +
+                "your ping.");
         register(module.smartTrace, "Only for really strict RayTrace Servers." +
                 " Has to make complicated Calculations.");
         register(module.fallbackTrace, "Will place upwards if it has to.");
         register(module.simulatePlace, "Will spawn FakeCrystals, which live" +
             " for this amount of ticks. A value of 0 means this is Off.");
-        register(module.attackMode, """
-                - Always : Always attacks crystals.
-                - Crystal : Only attacks when you are holding a crystal.
-                - Calc : Similar to Crystal, but will show an ESP when you aren't holding a crystal.""");
+        register(module.attackMode, "-Always, Always attacks crystals.\n" +
+            "-Crystal, Only attacks when you are holding a crystal.\n" +
+            "-Calc, Similar to Crystal, but will show an ESP " +
+            "when you aren't holding a crystal.");
 
         register(module.rayTraceBypass,
                  "Checks if you are eligible for a RayTraceBypass.");
@@ -83,8 +88,6 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
             " Damage the SlowBreakDelay will be applied instead of the normal" +
             " BreakDelay.");
         register(module.slowBreakDelay, "Delay for less damaging crystals.");
-        register(module.inhibit, "Attacks Crystals only once and prevents" +
-                " unnecessary attacks.");
         register(module.instant, "Attacks Crystals in the moment they spawn." +
             " The Future equivalent is probably 'Await'.");
         register(module.asyncCalc, "For Instant: Normally Instant only" +
@@ -124,16 +127,13 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
             " (This can kill you).");
         register(module.manualDelay,
             "Delay for Breaking manually placed crystals.");
-        register(module.breakSwing, """
-                - None : Won't swing when attacking crystals (Some servers flag that).
-                - Pre : Will swing before you attack a crystal.
-                - Post : Will swing after (Vanilla).""");
+        register(module.breakSwing, "-None won't swing when attacking" +
+            " crystals (Some servers flag that).\n-Pre will swing before you" +
+            " attack a crystal.\n-Post will swing after (Vanilla).");
 
-        register(module.rotate, """
-                -None, no Rotations.
-                -Break, only rotates to break crystals.
-                -Place, only rotates to place crystals
-                -All, rotates for both Placing and Breaking.""");
+        register(module.rotate, "-None, no Rotations.\n-Break, only rotate" +
+            "s to break crystals.\n-Place, only rotates to place crystals\n" +
+            "-All, rotates for both Placing and Breaking.");
         register(module.rotateMode, "-Normal, Normal Rotations.\n-Smooth, Smooth Rotation.");
         register(module.endRotations, "Ends rotations after this time.");
         register(module.angle, "If your angle to a Crystal is bigger than" +
@@ -229,10 +229,9 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
         register(module.fallBackDmg,
             "Maximum damage a Fallback crystal is allowed to deal to us.");
 
-        register(module.autoSwitch, """
-                - None : Will never AutoSwitch.
-                - Bind : Uses the SwitchBind to AutoSwitch if possible.
-                - Always : Always switches to Crystals if a good position is found.""");
+        register(module.autoSwitch, "-None, will never AutoSwitch.\n-Bind," +
+            " uses the SwitchBind to AutoSwitch if possible.\n-Always, always" +
+            " switches to Crystals if a good position is found.");
         register(module.mainHand, "Will use your MainHand.");
         register(module.switchBind, "The SwitchBind for AutoSwitch - Bind.");
         register(module.switchBack, "Switches back to the last Item" +
@@ -314,16 +313,14 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
         register(module.maxDmgDiff, "When evaluating the best Obsidian " +
             " position the difference in Damage dealt is taken into account." +
             " This settings determines how much that difference factors in.");
-        register(module.obbySwing, """
-                -Always, Swings for every block placed.
-                -Never, never swings for obsidian.
-                -Once swings once no matter how many blocks placed.""");
+        register(module.obbySwing, "-Always, Swings for every block placed.\n" +
+            "-Never, never swings for obsidian.\n-Once swings once no matter " +
+            "how many blocks placed.");
         register(module.obbyFallback, "Uses the Fallback crystal if an " +
             "obsidian position is blocked.");
-        register(module.obbyRotate, """
-                -None, won't rotate for obsidian.
-                -Normal, normally rotates, only viable with 1 HelpingBlock.
-                -Packet, will send packets to rotate, can lag you back.""");
+        register(module.obbyRotate, "-None, won't rotate for obsidian.\n" +
+            "-Normal, normally rotates, only viable with 1 HelpingBlock.\n" +
+            "-Packet, will send packets to rotate, can lag you back.");
 
         register(module.interact, "Allows Obsidian to interact with water.");
         register(module.inside,
@@ -410,6 +407,22 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
             " Surround. This setting leaves a crystal there until the next " +
             "DamageSync period.");
 
+        register(module.pingSync, "Attempts to sync your ping with placing/breaking crystals. Theoretically, " +
+                "this can optimize your crystal placement to be maximal for your ping." +
+                " As of now, this is experimental.");
+        register(module.pingSyncStrength, "This sets the strength of PingSync applied to calculations.");
+        register(module.pingSyncRemoval, "How much we should be removing from break delay on PingSync" +
+                " calculations. This setting is kinda sensitive, and shouldn't" +
+                " be tweaked too much.");
+        register(module.absolutePingSync, "This is when PingSync calculates delay with" +
+                " preset values. When this is not enabled," +
+                " PingSync uses user-specified values.");
+        register(module.ignorePingBypass, "When enabled, PingSync won't be applied" +
+                " when playing on a PingBypass connection.");
+        register(module.ignorePingspoof, "Normally, PingSync will apply your 'end' ping," +
+                " which also has PingSpoof applied. When this is enabled, PingSync will" +
+                " calculate delays with your real ping.");
+
         register(module.extrapol, "Predicts where the targeted player " +
             "will be in x ticks. In development!!!");
         register(module.bExtrapol, "Same as Extrapolation but for the damage" +
@@ -419,10 +432,11 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
             + " if the entity blocks a crystal placement. In development!!!");
         register(module.doubleExtraCheck, "Turn on if you dont entirely trust"
             + " the BlockExtrapolation, will add a normal blocking check.");
-        register(module.blockExtraMode, """
-                - Extrapolated : Checks if the predicted position will block the placement of a crystal.
-                - Pessimistic : Checks if one of the current or extrapolated positions block.
-                - Optimistic : Checks that both the extrapolated and current position block the placement.""");
+        register(module.blockExtraMode, "-Extrapolated: checks if the" +
+            " predicted position will block the placement of a crystal.\n" +
+            "-Pessimistic: checks if one of the current or extrapolated" +
+            " positions block.\n-Optimistic: checks that both the" +
+            " extrapolated and current position block the placement.");
         register(module.selfExtrapolation,
                  "If you want to predict your own position.");
 
@@ -440,10 +454,9 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
         register(module.godAntiTotem, "Combines the ID-Prediction" +
             " with AntiTotem. This can theoretically make any ones AutoTotem" +
             " fail. This settings is not bound to the ID-Predict setting.");
-        register(module.godSwing, """
-                - Always : Swings for every Attack-Packet sent.
-                - Never : Never swings (Server might flag).
-                - Once : Only swings once, no matter how many attack packets.""");
+        register(module.godSwing, "-Always, Swings for every Attack-Packet " +
+            "sent.\n-Never, never swings (Server might flag).\n-Once only " +
+            "swings once, no matter how many attack packets.");
         register(module.preCalc, "Runs a fast calculation only limited to a " +
             "few blocks. This can speed up and lighten the load the " +
             "calculation has on the CPU, but might make you miss out on " +
@@ -456,13 +469,14 @@ public class AutoCrystalData extends DefaultData<AutoCrystal>
         register(module.multiThread, "By running the AutoCrystal calculation " +
             "on a different Thread (parallel to Minecraft) it will not hold " +
             "up rendering, causing FPS to increase.");
-        register(module.rotationThread, """
-                Rotations with MultiThreading are difficult to implement. But its possible:
-                - Predict : Will predict when to start the calculation, so its done by the time we can rotate.
-                - Cancel : Cancels packets you send to spoof them once the calculation is finished.
-                - Wait : Kinda defeats the purpose of MultiThreading. Will make Minecraft wait until the calculation is finished.""");
-        register(module.partial, "Development Setting for Predict. " +
-                "Checks if the current Minecraft rendering Tick Delta is higher than this value.");
+        register(module.rotationThread, "Rotations with MultiThreading are " +
+            "difficult to implement. But its possible:\n-Predict, will " +
+            "predict when to start the calculation, so its done by the time " +
+            "we can rotate.\n-Cancel, cancels packets you send to spoof them " +
+            "once the calculation is finished.\n-Wait, kinda defeats the" +
+            " purpose of MultiThreading. Will make Minecraft wait until the " +
+            "calculation is finished.");
+        register(module.partial, "Development Setting for Predict.");
         register(module.maxCancel, "Packets cancelled by " +
             "RotationThread - Cancel will be send after this time in ms if " +
             "they haven't been spoofed.");

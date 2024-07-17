@@ -44,7 +44,7 @@ public class ServerTickManager extends SubscriberImpl implements Globals
             @Override
             public void invoke(WorldClientEvent event)
             {
-                if (event.getClient().isClient) // ?? probably not correct
+                if (event.getClient().isClient)
                 {
                     reset();
                 }

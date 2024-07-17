@@ -1,6 +1,7 @@
 package me.earth.earthhack.impl.util.math.position;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
@@ -21,8 +22,8 @@ public class PositionUtil implements Globals
 {
     public static BlockPos getPosition()
     {
-       return getPosition(mc.player); // for now
-       // TODO: return getPosition(RotationUtil.getRotationPlayer());
+       //return getPosition(mc.player); // for now
+       return getPosition(RotationUtil.getRotationPlayer());
     }
 
     public static BlockPos getPosition(Entity entity)
@@ -92,9 +93,9 @@ public class PositionUtil implements Globals
 
     public static boolean isBoxColliding()
     {
-        return mc.world.getEntityCollisions(mc.player,
+        return !mc.world.getEntityCollisions(mc.player,
                 mc.player.getBoundingBox()
-                        .offset(0.0, 0.21, 0.0)).size() > 0;
+                        .offset(0.0, 0.21, 0.0)).isEmpty();
     }
 
     public static Entity getPositionEntity()

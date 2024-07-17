@@ -120,7 +120,7 @@ final class ListenerEntity extends EntityS2CPacketListener
                 }
 
                 PlayerEntity target = module.targetMode.getValue().getTarget(
-                                                 CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class),
+                                                 CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class), //TODO: entity manager
                                                  enemies,
                                                  module.targetRange.getValue());
 

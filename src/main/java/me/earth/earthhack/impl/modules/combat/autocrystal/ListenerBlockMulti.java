@@ -6,6 +6,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import net.minecraft.network.packet.s2c.play.ExplosionS2CPacket;
 import net.minecraft.util.math.BlockPos;
 
+// no multiblockchange on 1.20!
 final class ListenerBlockMulti extends ModuleListener<AutoCrystal,
         PacketEvent.Receive<ExplosionS2CPacket>>
 {

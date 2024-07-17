@@ -94,7 +94,7 @@ public class SafetyRunnable implements Globals, SafeRunnable
         // If we are in a hole and no bedcheck is required
         // we can just stop it here and not do the big calc.
         Vec3d serverVec = Managers.POSITION.getVec();
-        BlockPos position = new BlockPos(new Vec3i((int) serverVec.getX(), (int) serverVec.getY(), (int) serverVec.getZ()));
+        BlockPos position = BlockPos.ofFloored(serverVec);
         // ensure that we are actually standing on the floor of the hole
         if (fullArmor && position.getY() == serverVec.y)
         {

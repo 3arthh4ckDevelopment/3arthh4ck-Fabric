@@ -50,31 +50,7 @@ public enum Target implements Globals
             PlayerEntity enemy = getByAngle(enemies, maxRange);
             return enemy == null ? getByAngle(players, maxRange) : enemy;
         }
-    },
-    Enemy
-    {
-        @Override
-        public PlayerEntity getTarget(List<PlayerEntity> players,
-                                      List<PlayerEntity> enemies,
-                                      double maxRange)
-        {
-            PlayerEntity closest = null;
-            double distance = Float.MAX_VALUE;
-            for (PlayerEntity player : enemies) {
-                if (player != null
-                        && player.isAlive()
-                        && !player.equals(mc.player)) {
-                    double dist = player.squaredDistanceTo(mc.player.getX(), mc.player.getY(), mc.player.getZ());
-                    if (dist < distance)
-                    {
-                        closest = player;
-                        distance = dist;
-                    }
-                }
-            }
-            return closest;
-        }
-    },
+    }, //TODO: rewrite enemy and test, then backport to 1.12.2
     Damage
     {
         @Override

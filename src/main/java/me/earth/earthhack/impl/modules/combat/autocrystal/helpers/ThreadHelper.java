@@ -71,19 +71,9 @@ public class ThreadHelper implements Globals
             return;
         }
 
-        if (mc.isOnThread())
-        {
-            // this "cast" to List<> might be very slow, needs testing
-            startThread(new ArrayList<>(CollectionUtil.asList(mc.world.getEntities())),
-                        new ArrayList<>(mc.world.getPlayers()),
-                        blackList);
-        }
-        else
-        {
-            startThread(Managers.ENTITIES.getEntities(),
-                        Managers.ENTITIES.getPlayers(),
-                        blackList);
-        }
+        startThread(Managers.ENTITIES.getEntities(!mc.isOnThread()),
+                    Managers.ENTITIES.getPlayers(!mc.isOnThread()),
+                    blackList);
     }
 
     public synchronized void startThread(boolean breakOnly, boolean noBreak, BlockPos...blackList)
@@ -97,23 +87,12 @@ public class ThreadHelper implements Globals
             return;
         }
 
-        if (mc.isOnThread())
-        {
-            startThread(new ArrayList<>(CollectionUtil.asList(mc.world.getEntities())),
-                    new ArrayList<>(mc.world.getPlayers()),
-                    breakOnly,
-                    noBreak,
-                    blackList);
-        }
-        else
-        {
-            startThread(Managers.ENTITIES.getEntities(),
-                    Managers.ENTITIES.getPlayers(),
-                    breakOnly,
-                    noBreak,
-                    blackList);
-        }
-    }
+        startThread(Managers.ENTITIES.getEntities(!mc.isOnThread()),
+                Managers.ENTITIES.getPlayers(!mc.isOnThread()),
+                breakOnly,
+                noBreak,
+                blackList);
+}
 
     private void startThread(List<Entity> entities,
                              List<PlayerEntity> players,

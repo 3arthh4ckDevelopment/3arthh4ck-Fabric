@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.modules.combat.autocrystal;
 
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,8 +33,7 @@ final class ListenerBlockChange extends ModuleListener<AutoCrystal,
                 {
                     if (mc.world != null
                         && mc.player != null
-                        && HelperUtil.validChange(packet.getPos(),
-                                                  CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class)))
+                        && HelperUtil.validChange(packet.getPos(), Managers.ENTITIES.getPlayers()))
                     {
                         module.threadHelper.startThread();
                     }

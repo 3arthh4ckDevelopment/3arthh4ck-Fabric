@@ -149,12 +149,12 @@ public class SetDeadManager extends SubscriberImpl implements Globals
         EntityTime time = killed.get(entity.getId());
         if (time instanceof CustomEntityTime)
         {
-            time.getEntity().kill();
+            time.getEntity().remove(Entity.RemovalReason.KILLED);
             time.reset();
         }
         else
         {
-            entity.kill();
+            entity.remove(Entity.RemovalReason.KILLED);
             killed.put(entity.getId(), new CustomEntityTime(entity, t));
         }
     }
@@ -183,7 +183,7 @@ public class SetDeadManager extends SubscriberImpl implements Globals
         {
             if (!entry.getValue().isValid())
             {
-                entry.getValue().getEntity().kill();
+                entry.getValue().getEntity().remove(Entity.RemovalReason.KILLED);
                 killed.remove(entry.getKey());
             }
             else if (entry.getValue().passed(DEATH_TIME.getValue()))
@@ -222,7 +222,7 @@ public class SetDeadManager extends SubscriberImpl implements Globals
     }
 
     /**
-     * Calls {@link Entity#kill()} for the given entity and
+     * Calls {@link Entity#remove(Entity.RemovalReason)} for the given entity and
      * adds it to the killed list. If the kill isn't confirmed
      * within the deathTime by {@link SetDeadManager#confirmKill(int)}
      * the entity will be added back to the world.
@@ -234,12 +234,12 @@ public class SetDeadManager extends SubscriberImpl implements Globals
         EntityTime time = killed.get(entity.getId());
         if (time != null)
         {
-            time.getEntity().kill();
+            time.getEntity().remove(Entity.RemovalReason.KILLED);
             time.reset();
         }
         else if (entity.isAlive())
         {
-            entity.kill();
+            entity.remove(Entity.RemovalReason.KILLED);
             killed.put(entity.getId(), new EntityTime(entity));
         }
     }
@@ -256,7 +256,7 @@ public class SetDeadManager extends SubscriberImpl implements Globals
         if (time != null)
         {
             time.setValid(false);
-            time.getEntity().kill();
+            time.getEntity().remove(Entity.RemovalReason.KILLED);
         }
     }
 

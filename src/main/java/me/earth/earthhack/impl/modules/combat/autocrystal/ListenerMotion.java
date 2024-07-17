@@ -44,8 +44,8 @@ final class ListenerMotion extends
                     || Managers.POSITION.getY() != event.getY()
                     || Managers.POSITION.getZ() != event.getZ())) {
                 CalculationMotion calc = new CalculationMotion(module,
-                        CollectionUtil.asList(mc.world.getEntities()),
-                        CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class));
+                        Managers.ENTITIES.getEntities(),
+                        Managers.ENTITIES.getPlayers());
                 module.threadHelper.start(calc, false);
             } else {
                 if (module.motionThread.getValue()

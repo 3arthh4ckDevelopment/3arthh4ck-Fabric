@@ -19,10 +19,10 @@ final class ListenerSpawnObject extends
     public void invoke(PacketEvent.Receive<EntitySpawnS2CPacket> event)
     {
         EntitySpawnS2CPacket p = event.getPacket();
-        if (/* p.getEntityType() == EntityType --> 51 (idk what 51 is, probably a crystal) && */false && mc.player != null)
+        if (p.getEntityData() == 51 && mc.player != null)
         {
             if (DamageUtil.calculate(
-                    new BlockPos((int) p.getX(), (int) p.getY(), (int) p.getZ()).down())
+                    BlockPos.ofFloored(p.getX(), p.getY(), p.getZ()).down())
                         > module.damage.getValue())
             {
                 module.setSafe(false);

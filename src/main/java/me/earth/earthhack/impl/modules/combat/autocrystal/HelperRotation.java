@@ -349,7 +349,7 @@ public class HelperRotation implements Globals
                     swing(finalHand, false);
                 }
 
-                NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(finalHand,
+                NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(finalHand, //TODO: check
                         new BlockHitResult(new Vec3d(f[0], f[1], f[2]), finalRay.getSide(),
                                 finalRay.getBlockPos(), false), seq));
 

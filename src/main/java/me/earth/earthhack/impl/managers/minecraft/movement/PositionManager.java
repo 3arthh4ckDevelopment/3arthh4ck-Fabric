@@ -201,7 +201,7 @@ public class PositionManager extends SubscriberImpl implements Globals
                 entity.getBlockPos(),
                 VoxelShapes.cuboid(entity.getVisibilityBoundingBox()),
                 mc.world.getBlockState(entity.getBlockPos())).getType() == BlockHitResult.Type.ENTITY;
-        // probably wrong ... don't care about it that much though
+        // probably wrong...
     }
 
     public void set(double x, double y, double z)

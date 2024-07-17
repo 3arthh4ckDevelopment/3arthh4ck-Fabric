@@ -15,6 +15,7 @@ import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.thread.ThreadUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
@@ -71,7 +72,7 @@ public class ServerTimeHelper extends SubscriberImpl implements Globals
                 && crystal instanceof EndCrystalEntity
                 && (closest = EntityUtil.getClosestEnemy()) != null
                 && BlockUtil.isSemiSafe(closest, true, oldVersion.getValue())
-                && BlockUtil.isAtFeet(CollectionUtil.convertElements(mc.world.getPlayers(), PlayerEntity.class),
+                && BlockUtil.isAtFeet(Managers.ENTITIES.getPlayers(),
                                         crystal.getBlockPos().down(), true, oldVersion.getValue()))
         {
             int intoTick = Managers.TICK.getTickTimeAdjusted();
@@ -95,10 +96,14 @@ public class ServerTimeHelper extends SubscriberImpl implements Globals
                     Swing.Packet.swing(hand);
                     Swing.Client.swing(hand);
                 }
-                mc.player.networkHandler.sendPacket(
-                        new PlayerInteractBlockC2SPacket(
-                                hand,
-                                new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false), 0));
+                /*//TODO: check, why not
+                1.12.2:
+                                mc.player.connection.sendPacket(
+                        new CPacketPlayerTryUseItemOnBlock(
+                                pos, ray.sideHit, hand, f[0], f[1], f[2]));
+                 */
+                NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(hand,
+                        new BlockHitResult(new Vec3d(f[0], f[1], f[2]), ray.getSide(), pos, false), seq));
                 module.sequentialHelper.setExpecting(pos);
 
                 if (time == SwingTime.Post)

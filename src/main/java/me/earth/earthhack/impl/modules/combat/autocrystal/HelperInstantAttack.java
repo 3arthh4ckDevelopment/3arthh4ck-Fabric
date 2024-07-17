@@ -143,7 +143,7 @@ public class HelperInstantAttack implements Globals
                 // ((IClientWorld) mc.world).earthhack$getEntityManager().updateEntityPosition(entityIn,
                 //                                    packet.getX(),
                 // TODO: Do this stuff at some point  packet.getY(),
-                //                                    packet.getZ());
+                //                                    packet.getZ()); //TODO: priority!!!
                 Managers.SET_DEAD.setDead(entityIn);
             });
         }

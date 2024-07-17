@@ -278,8 +278,7 @@ public class PositionData extends BasePath
         }
 
         boolean checkLavaItems = lavaItems
-                && (upState.getFluidState().isOf(Fluids.LAVA)
-                    || upState.getFluidState().isOf(Fluids.FLOWING_LAVA));
+                && upState.getFluidState().isOf(Fluids.LAVA);
         if (checkEntities(
                 data, up, entities, deathTime, false, false, checkLavaItems)
             || !newVerEntities && checkEntities(data, up.up(),

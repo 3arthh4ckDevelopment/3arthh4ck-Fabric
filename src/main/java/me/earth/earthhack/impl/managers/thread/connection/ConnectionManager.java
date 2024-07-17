@@ -38,8 +38,8 @@ public class ConnectionManager extends SubscriberImpl implements Globals
     {
         PlayerListS2CPacket packet = event.getPacket();
         if (mc.world == null
-                || packet.getActions().contains(ADD_PLAYER)
-                /* && packet.getActions().contains(PlayerListS2CPacket.Action.REMOVE_PLAYER) */)
+                || !packet.getActions().contains(ADD_PLAYER)
+                /* && SPacketPlayerListItem.Action.REMOVE_PLAYER != packet.getAction() */)
         {
             return;
         }
@@ -53,14 +53,22 @@ public class ConnectionManager extends SubscriberImpl implements Globals
                                 || data.profile().getId() != null)
                 .forEach(data ->
                 {
-                    // TODO!!!:
-
-                    // switch (packet.getActions())
-                    // {
-                    //     case ADD_PLAYER -> onAdd(data);
-                    //     /case REMOVE_PLAYER -> onRemove(data);
-                    //     default -> { /* Do nothing. */ }
-                    // }
+                    /*
+                    1.12.2:
+                    switch(packet.getAction())
+                    {
+                        case ADD_PLAYER:
+                            onAdd(data);
+                            break;
+                        case REMOVE_PLAYER:
+                            onRemove(data);
+                            break;
+                        default:
+                    }
+                     */
+                    if (packet.getActions().equals(ADD_PLAYER)) {
+                        onAdd(data);
+                    }
                 });
     }
 
@@ -99,7 +107,7 @@ public class ConnectionManager extends SubscriberImpl implements Globals
         }
     }
 
-    private void onRemove(PlayerListS2CPacket.Entry data) // AddPlayerData
+    private void onRemove(PlayerListS2CPacket.Entry data) //TODO: call the remove
     {
         if (Bus.EVENT_BUS.hasSubscribers(ConnectionEvent.Leave.class))
         {

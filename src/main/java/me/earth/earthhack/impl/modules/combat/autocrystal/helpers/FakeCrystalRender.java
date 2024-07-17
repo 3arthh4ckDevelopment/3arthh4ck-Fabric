@@ -76,7 +76,7 @@ public class FakeCrystalRender implements Globals
         }
     }
 
-    public void render(float partialTicks)
+    public void render(float partialTicks) //TODO: update
     {
         EntityRenderDispatcher manager = mc.getEntityRenderDispatcher();
         for (EndCrystalEntity crystal : crystals)

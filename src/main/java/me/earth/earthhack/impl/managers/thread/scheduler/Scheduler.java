@@ -11,7 +11,11 @@ import net.minecraft.client.MinecraftClient;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Scheduler extends SubscriberImpl implements Globals {
+/**
+ * Helps with scheduling Tasks.
+ */
+public class Scheduler extends SubscriberImpl implements Globals
+{
     private static final Scheduler INSTANCE = new Scheduler();
 
     private final Queue<Runnable> scheduled  = new LinkedList<>();

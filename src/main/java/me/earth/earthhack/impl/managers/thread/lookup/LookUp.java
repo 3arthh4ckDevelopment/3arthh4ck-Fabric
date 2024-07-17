@@ -4,7 +4,11 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class LookUp {
+/**
+ * Callback for a LoopUp of name, uuid or name history.
+ */
+public abstract class LookUp
+{
     protected String name;
     protected UUID uuid;
     protected Map<Date, String> names;

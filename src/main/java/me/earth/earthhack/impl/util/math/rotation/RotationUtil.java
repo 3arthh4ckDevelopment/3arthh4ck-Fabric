@@ -64,7 +64,7 @@ public class RotationUtil implements Globals
 
         if (facing != null)
         {
-            x += facing.getOffsetX() * ((bb.minX + bb.maxX) / 2.0); //TODO: check
+            x += facing.getOffsetX() * ((bb.minX + bb.maxX) / 2.0);
             y += facing.getOffsetY() * ((bb.minY + bb.maxY) / 2.0);
             z += facing.getOffsetZ() * ((bb.minZ + bb.maxZ) / 2.0);
         }
@@ -356,7 +356,7 @@ public class RotationUtil implements Globals
         Entity from = getRotationPlayer();
         Vec3d start = Managers.POSITION.getVec().add(0, from.getEyeHeight(from.getPose()), 0);
         Vec3d look = RotationUtil.getVec3d(yaw, pitch);
-        double d = from.squaredDistanceTo(pos.getX() + 0.5, //TODO: check
+        double d = from.squaredDistanceTo(pos.getX() + 0.5,
                                     pos.getY() + 0.5,
                                     pos.getZ() + 0.5) + 1;
 
