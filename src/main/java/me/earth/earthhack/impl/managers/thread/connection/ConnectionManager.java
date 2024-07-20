@@ -10,6 +10,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.thread.lookup.LookUp;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
 
 import java.util.UUID;
 
@@ -32,15 +33,26 @@ public class ConnectionManager extends SubscriberImpl implements Globals
                         onEvent(event);
                     }
                 });
+
+        this.listeners.add(
+                new EventListener<PacketEvent.Receive<PlayerRemoveS2CPacket>>(
+                        PacketEvent.Receive.class, PlayerRemoveS2CPacket.class)
+                {
+                    @Override
+                    public void invoke(PacketEvent.Receive<PlayerRemoveS2CPacket> event)
+                    {
+                        if (mc.world == null) {
+                            return;
+                        }
+
+                        onRemove(event.getPacket());
+                    }
+                });
     }
 
-    private void onEvent(PacketEvent.Receive<PlayerListS2CPacket> event)
-    {
+    private void onEvent(PacketEvent.Receive<PlayerListS2CPacket> event) {
         PlayerListS2CPacket packet = event.getPacket();
-        if (mc.world == null
-                || !packet.getActions().contains(ADD_PLAYER)
-                /* && SPacketPlayerListItem.Action.REMOVE_PLAYER != packet.getAction() */)
-        {
+        if (mc.world == null || !packet.getActions().contains(ADD_PLAYER)) {
             return;
         }
 
@@ -51,37 +63,16 @@ public class ConnectionManager extends SubscriberImpl implements Globals
                         data.profile().getName() != null
                                 && !data.profile().getName().isEmpty()
                                 || data.profile().getId() != null)
-                .forEach(data ->
-                {
-                    /*
-                    1.12.2:
-                    switch(packet.getAction())
-                    {
-                        case ADD_PLAYER:
-                            onAdd(data);
-                            break;
-                        case REMOVE_PLAYER:
-                            onRemove(data);
-                            break;
-                        default:
-                    }
-                     */
-                    if (packet.getActions().equals(ADD_PLAYER)) {
-                        onAdd(data);
-                    }
-                });
+                .forEach(this::onAdd);
     }
 
-    private void onAdd(PlayerListS2CPacket.Entry data)
-    {
-        if (Bus.EVENT_BUS.hasSubscribers(ConnectionEvent.Join.class))
-        {
+    private void onAdd(PlayerListS2CPacket.Entry data) {
+        if (Bus.EVENT_BUS.hasSubscribers(ConnectionEvent.Join.class)) {
             UUID uuid = data.profile().getId();
             String packetName = data.profile().getName();
             PlayerEntity player = mc.world.getPlayerByUuid(uuid);
 
-            if (packetName == null && player == null)
-            {
+            if (packetName == null && player == null) {
                 Managers.LOOK_UP.doLookUp(
                         new LookUp(LookUp.Type.NAME, uuid)
                         {
@@ -107,38 +98,36 @@ public class ConnectionManager extends SubscriberImpl implements Globals
         }
     }
 
-    private void onRemove(PlayerListS2CPacket.Entry data) //TODO: call the remove
-    {
-        if (Bus.EVENT_BUS.hasSubscribers(ConnectionEvent.Leave.class))
-        {
-            UUID uuid = data.profile().getId();
-            String packetName = data.profile().getName();
-            PlayerEntity player = mc.world.getPlayerByUuid(uuid);
+    private void onRemove(PlayerRemoveS2CPacket packet) {
+        if (Bus.EVENT_BUS.hasSubscribers(ConnectionEvent.Leave.class)) {
+            for (UUID uuid : packet.profileIds()) {
+                PlayerEntity player = mc.world.getPlayerByUuid(uuid);
+                String name = player != null ? player.getName().getString() : null;
 
-            if (packetName == null && player == null)
-            {
-                Managers.LOOK_UP.doLookUp(
-                        new LookUp(LookUp.Type.NAME, uuid)
-                        {
-                            @Override
-                            public void onSuccess()
+                if (name == null) {
+                    Managers.LOOK_UP.doLookUp(
+                            new LookUp(LookUp.Type.NAME, uuid)
                             {
-                                Bus.EVENT_BUS.post(new ConnectionEvent
-                                        .Leave(name, uuid, null));
-                            }
+                                @Override
+                                public void onSuccess()
+                                {
+                                    Bus.EVENT_BUS.post(new ConnectionEvent
+                                            .Leave(name, uuid, null));
+                                }
 
-                            @Override
-                            public void onFailure()
-                            {
-                                /* Don't post an event. */
-                            }
-                        });
+                                @Override
+                                public void onFailure()
+                                {
+                                    /* Don't post an event. */
+                                }
+                            });
 
-                return;
+                    return;
+                }
+
+                Bus.EVENT_BUS.post(
+                        new ConnectionEvent.Leave(name, uuid, player));
             }
-
-            Bus.EVENT_BUS.post(
-                    new ConnectionEvent.Leave(packetName, uuid, player));
         }
     }
 
