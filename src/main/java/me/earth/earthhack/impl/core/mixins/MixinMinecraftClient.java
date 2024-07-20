@@ -50,12 +50,9 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     @Unique
     private static final ModuleCache<AutoConfig> CONFIG =
             Caches.getModule(AutoConfig.class);
-
-
     @Unique
     private static final ModuleCache<Management> MANAGEMENT =
             Caches.getModule(Management.class);
-
     @Unique
     private static boolean isEarthhackRunning = true;
     @Unique
@@ -80,45 +77,34 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
 
     @Override
     @Accessor(value = "itemUseCooldown")
-    public abstract int getRightClickDelay();
+    public abstract int earthhack$getRightClickDelay();
 
     @Override
     @Accessor(value = "itemUseCooldown")
-    public abstract void setRightClickDelay(int delay);
+    public abstract void earthhack$setRightClickDelay(int delay);
 
     @Override
     @Accessor(value = "renderTickCounter")
-    public abstract RenderTickCounter getTimer();
+    public abstract RenderTickCounter earthhack$getTimer();
 
 
     @Override
-    public int getGameLoop() {
+    public int earthhack$getGameLoop() {
         return gameLoop;
     }
 
     @Override
     @Accessor(value = "fpsCounter")
-    public abstract int getFpsCounter();
+    public abstract int earthhack$getFpsCounter();
 
     @Override
-    public boolean isRunning() {
+    public boolean earthhack$isRunning() {
         return isEarthhackRunning;
     }
 
     @Override
     @Accessor(value = "dataFixer")
     public abstract DataFixer getDataFixer();
-
-    // @Inject(
-    //         method = "<init>",
-    //         at = @At(
-    //                 value = "INVOKE",
-    //                 target = "Lnet/minecraft/resource/ReloadableResourceManagerImpl;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V",
-    //                 ordinal = 0,
-    //                 shift = At.Shift.AFTER))
-    // public void preInitHook(RunArgs args, CallbackInfo ci) {
-    //     Earthhack.preInit();
-    // }
 
     @Inject(
         method = "stop",

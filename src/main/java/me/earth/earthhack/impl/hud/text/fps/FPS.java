@@ -23,7 +23,7 @@ public class FPS extends HudElement {
     private String text = name.getValue();
 
     protected void onRender(DrawContext context) {
-        text = name.getValue() + " " + TextColor.GRAY + (fastUpdate.getValue() ? ((IMinecraftClient) mc).getFpsCounter() : mc.getCurrentFps());
+        text = name.getValue() + " " + TextColor.GRAY + (fastUpdate.getValue() ? ((IMinecraftClient) mc).earthhack$getFpsCounter() : mc.getCurrentFps());
         HudRenderUtil.renderText(context, text, getX(), getY());
     }
 
