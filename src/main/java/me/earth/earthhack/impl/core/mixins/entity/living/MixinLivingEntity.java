@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
 import me.earth.earthhack.impl.modules.movement.autosprint.mode.SprintMode;
 import me.earth.earthhack.impl.modules.player.fasteat.FastEat;
 import me.earth.earthhack.impl.modules.player.spectate.Spectate;
+import me.earth.earthhack.impl.modules.player.swing.Swing;
 import me.earth.earthhack.impl.modules.render.norender.NoRender;
 import me.earth.earthhack.impl.util.minecraft.ICachedDamage;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
@@ -56,9 +57,9 @@ public abstract class MixinLivingEntity extends MixinEntity
     @Unique
     private static final ModuleCache<Spectate> SPECTATE =
             Caches.getModule(Spectate.class);
-
-    // private static final ModuleCache<Swing> SWING =
-    //         Caches.getModule(Swing.class);
+    @Unique
+    private static final ModuleCache<Swing> SWING =
+             Caches.getModule(Swing.class);
     @Unique
     private static final ModuleCache<NoRender> NO_RENDER =
             Caches.getModule(NoRender.class);
@@ -327,5 +328,13 @@ public abstract class MixinLivingEntity extends MixinEntity
         }
 
         return sprinting;
+    }
+
+    @Inject(method = "getHandSwingDuration", at = @At("HEAD"), cancellable = true)
+    public void getHandSwingDuration(CallbackInfoReturnable<Integer> cir) {
+        if (SWING.isEnabled()) {
+            cir.cancel();
+            cir.setReturnValue(SWING.get().swingSpeed.getValue());
+        }
     }
 }

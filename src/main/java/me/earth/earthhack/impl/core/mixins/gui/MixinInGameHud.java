@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.core.mixins.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.earth.earthhack.api.event.bus.instance.Bus;
+import me.earth.earthhack.impl.event.events.render.CrosshairEvent;
 import me.earth.earthhack.impl.event.events.render.Render2DEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -30,4 +31,15 @@ public abstract class MixinInGameHud {
         RenderSystem.enableDepthTest();
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
     }
+
+    @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
+    public void renderCrosshair(DrawContext context, CallbackInfo ci)
+    {
+        CrosshairEvent event = new CrosshairEvent();
+        Bus.EVENT_BUS.post(event);
+        if (event.isCancelled()) {
+            ci.cancel();
+        }
+    }
+
 }

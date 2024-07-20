@@ -75,6 +75,9 @@ public class Render2DUtil implements Globals {
         }
     }
 
+    public static void drawCircle(MatrixStack matrix, float x, float y, float radius, int color) {
+    }
+
     public static void drawQuarterCircle(MatrixStack matrix, float x, float y, float radius, int color, int position) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();

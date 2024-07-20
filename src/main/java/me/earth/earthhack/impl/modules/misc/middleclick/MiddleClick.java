@@ -23,6 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.hit.EntityHitResult;
 
 public class MiddleClick extends Module {
 
@@ -70,7 +71,7 @@ public class MiddleClick extends Module {
         if (mc.player != null && mc.world != null && mc.crosshairTarget != null) {
             switch (mc.crosshairTarget.getType()) {
                 case ENTITY:
-                    Entity entity = mc.targetedEntity;
+                    Entity entity = ((EntityHitResult) mc.crosshairTarget).getEntity();
                     if (entities.getValue() && entity instanceof PlayerEntity) {
                         if (Managers.FRIENDS.contains((PlayerEntity) entity))
                         {
@@ -95,7 +96,7 @@ public class MiddleClick extends Module {
                     }
                     break;
                 case MISS:
-                    if (air.getValue() && mc.targetedEntity == null) {
+                    if (air.getValue() && mc.crosshairTarget == null) {
                         if (InventoryUtil.findHotbarItem(Items.ENDER_PEARL) != -1) {
                             ChatUtil.sendMessage(Formatting.GREEN + "Throwing Ender Pearl....");
                             this.runnable = () ->

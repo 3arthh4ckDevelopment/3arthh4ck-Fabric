@@ -107,8 +107,11 @@ public class Management extends Module {
             ChatUtil.sendMessage("Clearing TotemPops...", getName());
             Managers.COMBAT.reset();
         });
-        this.pauseOnLeftFocus.addObserver(e ->
-            mc.options.pauseOnLostFocus = e.getValue());
+        this.pauseOnLeftFocus.addObserver(e -> {
+            if (mc != null) {
+                mc.options.pauseOnLostFocus = e.getValue();
+            }
+        });
 
         // long handle = MinecraftClient.getInstance().getWindow().getHandle();
 //
