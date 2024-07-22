@@ -258,7 +258,7 @@ public class RotationManager extends SubscriberImpl implements Globals
         float offset;
 
         double xDif = mc.player.getX() - mc.player.prevX;
-        double zDif = mc.player.getYaw() - mc.player.prevZ;
+        double zDif = mc.player.getY() - mc.player.prevZ;
 
         if (xDif * xDif + zDif * zDif > 0.0025000002f)
         {

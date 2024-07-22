@@ -135,7 +135,6 @@ public class Potions extends DynamicHudElement {
         oldVerColors();
 
         this.potionColor.addObserver(e -> {
-            System.out.println(potionColorMap.size());
             if (potionColor.getValue() != PotionColor.OldVersions) {
                 oldVerColors();
             } else if (potionColor.getValue() == PotionColor.OldVersions) {

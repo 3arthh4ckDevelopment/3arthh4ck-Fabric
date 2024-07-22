@@ -32,7 +32,7 @@ public class Scheduler extends SubscriberImpl implements Globals
                     @Override
                     public void invoke(GameLoopEvent event)
                     {
-                        gameLoop  = ((IMinecraftClient) mc).earthhack$getGameLoop(); // will NOT :fire: work
+                        gameLoop  = ((IMinecraftClient) mc).earthhack$getGameLoop();
 
                         executing = true;
                         CollectionUtil.emptyQueue(scheduled, Runnable::run);
