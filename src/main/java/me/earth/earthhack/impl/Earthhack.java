@@ -1,5 +1,6 @@
 package me.earth.earthhack.impl;
 
+import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.thread.GlobalExecutor;
 import me.earth.earthhack.impl.modules.client.commands.Commands;
@@ -8,6 +9,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.network.NetworkState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import static me.earth.earthhack.api.util.interfaces.Globals.mc;
 
 public class Earthhack implements ClientModInitializer {
 
@@ -30,5 +33,10 @@ public class Earthhack implements ClientModInitializer {
 
     public static Logger getLogger() {
         return LOGGER;
+    }
+
+    public static boolean isRunning()
+    {
+        return ((IMinecraftClient) mc).earthhack$isRunning();
     }
 }
