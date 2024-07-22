@@ -602,4 +602,8 @@ public class BlockUtil implements Globals
                                     .isReplaceable());
     }
 
+    public static Direction[] getHorizontal() {
+        return Direction.HORIZONTAL;
+    }
+
 }
