@@ -182,6 +182,13 @@ public class MathUtil {
         return Math.sqrt(x * x + z * z);
     }
 
+    public static double distance3D(Vec3d from, Vec3d to) {
+        double x = to.x - from.x;
+        double y = to.y - from.y;
+        double z = to.z - from.z;
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+
     /**
      * Gets the 2 facings that stand in a 90 degree angle
      * on the given facing. That means for NORTH or SOUTH

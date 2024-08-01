@@ -48,7 +48,7 @@ public class FileManager
     public void init()
     {
         if (!EARTHHACK_ROOT.exists()) {
-            System.out.println("Creating earthhack root directory");
+            Earthhack.getLogger().info("Creating earthhack root directory...");
             EARTHHACK_ROOT.mkdir();
         }
 

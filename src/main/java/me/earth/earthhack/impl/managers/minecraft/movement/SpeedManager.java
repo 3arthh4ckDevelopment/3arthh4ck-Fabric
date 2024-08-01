@@ -16,15 +16,14 @@ public class SpeedManager extends SubscriberImpl implements Globals
 
     public SpeedManager()
     {
-        this.listeners.add(new EventListener<TickEvent>(TickEvent.class)
+        this.listeners.add(new EventListener<>(TickEvent.class)
         {
             @Override
             public void invoke(TickEvent event)
             {
                 if (event.isSafe() && timer.passed(40))
                 {
-                    speed = MathUtil
-                             .distance2D(mc.player.getPos(), last);
+                    speed = MathUtil.distance3D(mc.player.getPos(), last);
                     last = mc.player.getPos();
                     timer.reset();
                 }

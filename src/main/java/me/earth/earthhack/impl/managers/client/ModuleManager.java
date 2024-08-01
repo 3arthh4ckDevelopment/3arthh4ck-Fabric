@@ -117,6 +117,7 @@ import me.earth.earthhack.impl.modules.render.blockhighlight.BlockHighlight;
 import me.earth.earthhack.impl.modules.render.breakesp.BreakESP;
 import me.earth.earthhack.impl.modules.render.cameraclip.CameraClip;
 import me.earth.earthhack.impl.modules.render.crosshair.CrossHair;
+import me.earth.earthhack.impl.modules.render.esp.ESP;
 import me.earth.earthhack.impl.modules.render.fullbright.Fullbright;
 import me.earth.earthhack.impl.modules.render.heaven.Heaven;
 import me.earth.earthhack.impl.modules.render.holeesp.HoleESP;
@@ -276,7 +277,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new BlockHighlight());
         // this.forceRegister(new BreadCrumbs());
         // this.forceRegister(new Chams());
-        // this.forceRegister(new ESP());
+        this.forceRegister(new ESP());
         this.forceRegister(new Fullbright());
         this.forceRegister(new HoleESP());
         // this.forceRegister(new LagOMeter());
