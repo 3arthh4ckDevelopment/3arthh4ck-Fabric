@@ -7,6 +7,7 @@ import me.earth.earthhack.impl.core.ducks.entity.IEntityNoInterp;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.util.render.mutables.MutableBB;
+import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -122,6 +123,21 @@ public class Interpolation implements Globals
                 bb.maxX - mc.gameRenderer.getCamera().getPos().x,
                 bb.maxY - mc.gameRenderer.getCamera().getPos().y,
                 bb.maxZ - mc.gameRenderer.getCamera().getPos().z);
+    }
+
+    public static Box interpolateAxis(BlockPos pos, Box bb) {
+        return interpolateAxis(pos.toCenterPos(), bb);
+    }
+
+    public static Box interpolateAxis(Vec3d pos, Box bb)
+    {
+        return new Box(
+                pos.getX() + bb.minX - getRenderPosX(),
+                pos.getY() + bb.minY - getRenderPosY(),
+                pos.getZ() + bb.minZ - getRenderPosZ(),
+                pos.getX() + bb.maxX - getRenderPosX(),
+                pos.getY() + bb.maxY - getRenderPosY(),
+                pos.getZ() + bb.maxZ - getRenderPosZ());
     }
 
     public static void interpolateMutable(MutableBB bb)

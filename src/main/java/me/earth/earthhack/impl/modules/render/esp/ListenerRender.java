@@ -97,7 +97,7 @@ public class ListenerRender extends ModuleListener<ESP, Render3DEvent> {
                 }
             } else if (entity instanceof ItemEntity item) {
                 if (module.items.getValue()) {
-                    bb = interpolateAxis(item.pos, new Box(-0.25, 0, -0.25, 0.25, 0.50, 0.25));
+                    bb = Interpolation.interpolateAxis(item.pos, new Box(-0.25, 0, -0.25, 0.25, 0.50, 0.25));
                     color = module.itemsColor.getValue();
                 }
             } else if (module.misc.getValue()) {
@@ -131,7 +131,7 @@ public class ListenerRender extends ModuleListener<ESP, Render3DEvent> {
             }
 
             Box bb = blockEntity.getCachedState().getCollisionShape(blockEntity.getWorld(), blockEntity.getPos()).getBoundingBox();
-            Box newBB = interpolateAxis(blockEntity.getPos(), bb);
+            Box newBB = Interpolation.interpolateAxis(blockEntity.getPos(), bb);
 
             if (blockEntity instanceof ChestBlockEntity chest) { // both normal and trapped chests
                 BlockState blockState = blockEntity.getCachedState();
@@ -142,7 +142,7 @@ public class ListenerRender extends ModuleListener<ESP, Render3DEvent> {
                     BlockEntity otherBlockEntity = chest.getWorld().getBlockEntity(otherPos);
                     if (otherBlockEntity instanceof ChestBlockEntity otherChest) {
                         Box otherBB = otherChest.getCachedState().getCollisionShape(otherChest.getWorld(), otherChest.getPos()).getBoundingBox();
-                        Box otherNewBB = interpolateAxis(otherChest.getPos(), otherBB);
+                        Box otherNewBB = Interpolation.interpolateAxis(otherChest.getPos(), otherBB);
                         newBB = newBB.union(otherNewBB);
                         skippedDoubleChests.add(otherChest.getPos());
                     }
@@ -162,19 +162,5 @@ public class ListenerRender extends ModuleListener<ESP, Render3DEvent> {
                     break;
             }
         }
-    }
-
-    public static Box interpolateAxis(BlockPos pos, Box bb) {
-        return interpolateAxis(pos.toCenterPos(), bb);
-    }
-
-    public static Box interpolateAxis(Vec3d pos, Box bb) {
-        return new Box(
-                pos.getX() + bb.minX - mc.gameRenderer.getCamera().getPos().x,
-                pos.getY() + bb.minY - mc.gameRenderer.getCamera().getPos().y,
-                pos.getZ() + bb.minZ - mc.gameRenderer.getCamera().getPos().z,
-                pos.getX() + bb.maxX - mc.gameRenderer.getCamera().getPos().x,
-                pos.getY() + bb.maxY - mc.gameRenderer.getCamera().getPos().y,
-                pos.getZ() + bb.maxZ - mc.gameRenderer.getCamera().getPos().z);
     }
 }
