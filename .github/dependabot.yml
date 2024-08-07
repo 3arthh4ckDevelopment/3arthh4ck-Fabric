@@ -9,10 +9,8 @@ updates:
       timezone: "Europe/Berlin"
     assignees:
       - "Ai2473"
-      - "nukiz"
     reviewers:
       - "Ai2473"
-      - "nukiz"
     commit-message:
       prefix: "gradle"
       include: "scope"
@@ -25,10 +23,8 @@ updates:
       timezone: "Europe/Berlin"
     assignees:
       - "Ai2473"
-      - "nukiz"
     reviewers:
       - "Ai2473"
-      - "nukiz"
     commit-message:
       prefix: "github-actions"
       include: "scope"
