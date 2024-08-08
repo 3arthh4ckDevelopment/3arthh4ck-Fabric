@@ -17,7 +17,7 @@ public interface Plugin
      * When this method is called, the Plugin can use
      * mixins and/or fields & methods modified by the AccessWidener.
      */
-    void load();
+    default void load() {}
 
     /**
      * Loads this Plugin during runtime.
