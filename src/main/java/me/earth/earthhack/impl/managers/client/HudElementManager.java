@@ -26,6 +26,7 @@ import me.earth.earthhack.impl.hud.text.speed.HudSpeed;
 import me.earth.earthhack.impl.hud.text.time.Time;
 import me.earth.earthhack.impl.hud.text.tps.Tps;
 import me.earth.earthhack.impl.hud.text.watermark.Watermark;
+import me.earth.earthhack.impl.hud.visual.ShulkerSpy;
 import me.earth.earthhack.impl.hud.visual.armor.Armor;
 import me.earth.earthhack.impl.hud.visual.compass.Compass;
 import me.earth.earthhack.impl.hud.visual.inventory.Inventory;
@@ -73,6 +74,7 @@ public class HudElementManager extends IterationRegister<HudElement> {
         this.forceRegister(new Degrees());
         this.forceRegister(new Inventory());
         this.forceRegister(new HudSpeed());
+        this.forceRegister(new ShulkerSpy());
 
         this.forceRegister(Potions.getInstance());
 

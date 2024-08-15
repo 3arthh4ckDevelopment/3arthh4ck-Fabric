@@ -72,6 +72,7 @@ import me.earth.earthhack.impl.modules.misc.portals.Portals;
 import me.earth.earthhack.impl.modules.misc.settingspoof.SettingSpoof;
 import me.earth.earthhack.impl.modules.misc.skinblink.SkinBlink;
 import me.earth.earthhack.impl.modules.misc.spammer.Spammer;
+import me.earth.earthhack.impl.modules.misc.tooltips.ToolTips;
 import me.earth.earthhack.impl.modules.misc.tracker.Tracker;
 import me.earth.earthhack.impl.modules.movement.antimove.NoMove;
 import me.earth.earthhack.impl.modules.movement.autosprint.AutoSprint;
@@ -208,7 +209,7 @@ public class ModuleManager extends IterationRegister<Module>
         this.forceRegister(new SettingSpoof());
         this.forceRegister(new SkinBlink());
         this.forceRegister(new Spammer());
-        // this.forceRegister(new ToolTips());
+        this.forceRegister(new ToolTips());
         // this.forceRegister(new TpsSync());
         this.forceRegister(new Tracker());
         this.forceRegister(new PacketDelay());

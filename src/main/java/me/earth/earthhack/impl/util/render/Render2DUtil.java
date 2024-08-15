@@ -17,6 +17,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import org.joml.Matrix4f;
 
 import java.awt.*;
@@ -301,12 +302,13 @@ public class Render2DUtil implements Globals {
         if (itemCount <= 0) {
             itemStack.setCount(1);
         }
+        context.getMatrices().push();
+        context.getMatrices().translate(0.0F, 0.0F, 200);
         context.drawItem(itemStack, x, y);
 
         if (amount) {
             if (itemStack.isStackable() || countUnstackable || itemStack.getCount() > 1) {
-                context.getMatrices().push();
-                context.getMatrices().translate(0.0F, 0.0F, 200.0F);
+                context.getMatrices().translate(0.0F, 0.0F, 201);
                 String count = TextUtil.numberFormatter(itemCount);
                 Managers.TEXT.drawString(context, count,
                         x + 17 - Managers.TEXT.getStringWidth(count), y + 9,
@@ -314,7 +316,18 @@ public class Render2DUtil implements Globals {
                                 ? HUD_EDITOR.get().color.getValue().getRGB()
                                 : 0xffffffff,
                         true);
-                context.getMatrices().pop();
+            }
+        }
+        context.getMatrices().pop();
+    }
+
+    public static void drawItemsInventory(DrawContext context, DefaultedList<ItemStack> items, int x, int y) {
+        for (int i = 0; i < items.size(); i++) {
+            int iX = x + (i % 9) * 18;
+            int iY = y + (i / 9) * 18;
+            ItemStack itemStack = items.get(i);
+            if (!itemStack.isEmpty()) {
+                Render2DUtil.drawItem(context, itemStack, iX, iY, true);
             }
         }
     }

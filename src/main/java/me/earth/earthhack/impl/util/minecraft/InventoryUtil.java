@@ -460,7 +460,7 @@ public class InventoryUtil implements Globals
          {
              return mc.player.getOffHandStack();
          }
-        return mc.player.getInventory().getStack(slot);
+         return mc.player.getInventory().getStack(slot);
     }
 
     public static PlayerInventory getInventory()
