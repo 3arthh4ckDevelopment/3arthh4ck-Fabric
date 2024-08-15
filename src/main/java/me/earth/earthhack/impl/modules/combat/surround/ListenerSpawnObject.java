@@ -12,6 +12,7 @@ import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.Swing;
 import me.earth.earthhack.impl.util.minecraft.blocks.BlockUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.network.PacketUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.block.Blocks;
@@ -161,16 +162,10 @@ final class ListenerSpawnObject extends
                 float[] f = RayTraceUtil.hitVecToPlaceVec(
                         entry.getKey(), result.getPos());
 
-                mc.player.networkHandler.sendPacket(
-                    new PlayerInteractBlockC2SPacket(
-                            InventoryUtil.getHand(slot),
-                            new BlockHitResult(
-                                    new Vec3d(f[0], f[1], f[2]),
-                                    entry.getValue(),
-                                    entry.getKey(),
-                                    false
-                            ),
-                        0));
+                NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(
+                        InventoryUtil.getHand(slot),
+                        new BlockHitResult(new Vec3d(f[0], f[1], f[2]), entry.getValue(), entry.getKey(), false),
+                        seq));
 
                 if (module.placeSwing.getValue() == PlaceSwing.Always)
                 {

@@ -206,11 +206,6 @@ final class ListenerAntiTrap extends ObbyListener<AntiTrap>
                 ? Hand.OFF_HAND
                 : Hand.MAIN_HAND;
 
-        PlayerInteractBlockC2SPacket place =
-            new PlayerInteractBlockC2SPacket(
-                    hand,
-                    module.result,
-                    0);
 
                 // module.pos,
                 // module.result.getSide(),
@@ -232,7 +227,10 @@ final class ListenerAntiTrap extends ObbyListener<AntiTrap>
                     mc.player.onGround));
         }
 
-        mc.player.networkHandler.sendPacket(place);
+        NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(
+                hand,
+                module.result,
+                seq));
         mc.player.networkHandler.sendPacket(swing);
 
         InventoryUtil.switchTo(lastSlot);

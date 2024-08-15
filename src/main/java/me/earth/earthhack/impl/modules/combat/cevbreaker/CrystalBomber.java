@@ -449,10 +449,10 @@ public class CrystalBomber extends Module {
                 new Vec3d(mc.player.getX(), mc.player.getY() + mc.player.getEyeHeight(mc.player.getPose()), mc.player.getZ()),
                 new Vec3d(pos.getX() + .5, pos.getY() - .5d, pos.getZ() + .5), pos, null, mc.world.getBlockState(pos));
         Direction facing = (result == null || result.getSide() == null) ? Direction.UP : result.getSide();
-        NetworkUtil.sendSequenced(seq ->
-                new PlayerInteractBlockC2SPacket(hand,
-                    new BlockHitResult(new Vec3d(0,0,0), facing, pos, false),
-                        seq));
+        NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(
+                hand,
+                new BlockHitResult(new Vec3d(0,0,0), facing, pos, false),
+                seq));
         
         if (swing) {
             mc.player.networkHandler.sendPacket(new HandSwingC2SPacket(exactHand ? hand : Hand.MAIN_HAND));
@@ -508,11 +508,10 @@ public class CrystalBomber extends Module {
                                 ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
             }
 
-            mc.player.networkHandler.sendPacket(
-                    new PlayerInteractBlockC2SPacket(
+            NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(
                             InventoryUtil.getHand(slot),
                             new BlockHitResult(new Vec3d(f[0], f[1], f[2]), facing, on, false),
-                            0));
+                            seq));
             mc.player.networkHandler.sendPacket(
                     new HandSwingC2SPacket(InventoryUtil.getHand(slot)));
 

@@ -175,8 +175,7 @@ public class PacketUtil implements Globals
                              float z)
     {
         BlockHitResult result = new BlockHitResult(new Vec3d(x, y, z), facing, on, false);
-        mc.getNetworkHandler().sendPacket(
-                new PlayerInteractBlockC2SPacket(hand, result, 0));
+        NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(hand, result, seq));
     }
 
     public static void teleport(int id)

@@ -198,12 +198,12 @@ final class ListenerUpdate extends ModuleListener<Speedmine, UpdateEvent>
                             if (crystalSlot != -1) {
                                 Locks.acquire(Locks.WINDOW_CLICK_LOCK, () -> {
                                     module.cooldownBypass.getValue().switchTo(crystalSlot);
-                                    final PlayerInteractBlockC2SPacket place =
-                                        new PlayerInteractBlockC2SPacket(Hand.MAIN_HAND, new BlockHitResult(result.getPos().add(p.toCenterPos()),
-                                                                         result.getSide(), p, false), 0);
                                     final HandSwingC2SPacket animation =
                                         new HandSwingC2SPacket(Hand.MAIN_HAND);
-                                    mc.player.networkHandler.sendPacket(place);
+                                    NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(
+                                            Hand.MAIN_HAND,
+                                            new BlockHitResult(result.getPos().add(p.toCenterPos()), result.getSide(), p, false),
+                                            seq));
                                     mc.player.networkHandler.sendPacket(animation);
                                     module.cooldownBypass.getValue().switchBack(lastSlot, crystalSlot);
                                 });

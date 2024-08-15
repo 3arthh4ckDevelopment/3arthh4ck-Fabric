@@ -159,9 +159,9 @@ public abstract class BlockPlacingModule extends DisablingModule
 
         float[] f = RayTraceUtil.hitVecToPlaceVec(on, hitVec);
         Hand hand = InventoryUtil.getHand(slot);
-        packets.add(new PlayerInteractBlockC2SPacket(hand,
+        packets.add(NetworkUtil.sendSequencedReturnTest(seq -> new PlayerInteractBlockC2SPacket(hand,
                 new BlockHitResult(new Vec3d(f[0], f[1], f[2]).add(on.toCenterPos()), facing, on, false),
-                0));
+                seq)));
         if (placeSwing.getValue() == PlaceSwing.Always)
         {
             packets.add(new HandSwingC2SPacket(InventoryUtil.getHand(slot)));

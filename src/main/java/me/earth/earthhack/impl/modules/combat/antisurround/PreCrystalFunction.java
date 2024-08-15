@@ -6,6 +6,7 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.util.MineSlots;
 import me.earth.earthhack.impl.util.math.RayTraceUtil;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -107,10 +108,10 @@ final class PreCrystalFunction implements AntiSurroundFunction, Globals
                 int lastSlot = mc.player.getInventory().selectedSlot;
                 module.cooldownBypass.getValue().switchTo(crystalSlot);
 
-                mc.player.networkHandler.sendPacket(
-                        new PlayerInteractBlockC2SPacket(h,
-                                new BlockHitResult(down.toCenterPos(), finalResult.getSide(), down, false),
-                                0));
+                NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(
+                        h,
+                        new BlockHitResult(down.toCenterPos(), finalResult.getSide(), down, false),
+                        seq));
                 // mc.player.networkHandler.sendPacket(
                 //     new CPacketPlayerTryUseItemOnBlock(
                 //         down, finalResult.sideHit, h, f[0], f[1], f[2]));

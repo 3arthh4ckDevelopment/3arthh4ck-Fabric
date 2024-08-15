@@ -22,6 +22,7 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.blocks.SpecialBlocks;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BedBlockEntity;
@@ -189,7 +190,7 @@ public class BedBomb extends Module
 
     public static void rightClickBlock(BlockPos pos, Vec3d vec, Hand hand, Direction direction, boolean packet) {
         if (packet) {
-            mc.getNetworkHandler().sendPacket(new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(vec, direction, pos, false), 0));
+            NetworkUtil.sendSequenced(seq -> new PlayerInteractBlockC2SPacket(hand, new BlockHitResult(vec, direction, pos, false), seq));
         } else {
             mc.interactionManager.interactBlock(mc.player, hand, new BlockHitResult(vec, direction, pos, false));
         }

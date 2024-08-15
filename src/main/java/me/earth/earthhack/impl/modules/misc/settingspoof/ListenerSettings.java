@@ -17,7 +17,7 @@ final class ListenerSettings extends
     @Override
     public void invoke(PacketEvent.Send<ClientOptionsC2SPacket> event)
     {
-        IClientOptionsC2SPacket p = IClientOptionsC2SPacket.class.cast(event.getPacket());
+        IClientOptionsC2SPacket p = IClientOptionsC2SPacket.class.cast(event.getPacket()); //TODO: fix this cast
 
         p.earthhack$setOptions(new SyncedClientOptions(
                 module.getLanguage(p.earthhack$getOptions().language()),

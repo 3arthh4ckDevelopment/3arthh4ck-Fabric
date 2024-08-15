@@ -254,10 +254,11 @@ final class ListenerMotion extends ModuleListener<Phase, MotionUpdateEvent>
                                 ? Hand.OFF_HAND
                                 : Hand.MAIN_HAND;
 
-                Packet<?> packet = new PlayerInteractBlockC2SPacket(
+                HitResult finalResult = result;
+                Packet<?> packet = NetworkUtil.sendSequencedReturnTest(seq -> new PlayerInteractBlockC2SPacket(
                         hand,
-                        new BlockHitResult(result.getPos(), Direction.UP, new BlockPos((int) result.getPos().getX(), (int) result.getPos().getY(), (int) result.getPos().getZ()), false),
-                        0);
+                        new BlockHitResult(finalResult.getPos(), Direction.UP, new BlockPos((int) finalResult.getPos().getX(), (int) finalResult.getPos().getY(), (int) finalResult.getPos().getZ()), false),
+                        seq));
 
                 NetworkUtil.sendPacketNoEvent(packet);
                 module.pos = new BlockPos((int) result.getPos().getX(), (int) result.getPos().getY(), (int) result.getPos().getZ());

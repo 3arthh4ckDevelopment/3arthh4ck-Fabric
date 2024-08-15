@@ -40,21 +40,28 @@ public class NetworkUtil implements Globals
     public static void sendSequenced(SequencedPacketCreator creator) {
         if (mc.world == null) return;
 
-        PendingUpdateManager manager = ((IClientWorld) mc.world)
-                .earthhack$getPendingUpdateManager().incrementSequence();
-
-        try
-        {
+        try (PendingUpdateManager manager = ((IClientWorld) mc.world).earthhack$getPendingUpdateManager().incrementSequence()) {
             int sequence = manager.getSequence();
-            Packet<ServerPlayPacketListener> packet = creator.predict(sequence);
-            send(packet);
-        }
-        catch (Throwable e)
-        {
+            send(creator.predict(sequence));
+        } catch (Throwable e) {
             e.printStackTrace();
         }
+    }
 
-        if (manager != null) manager.close();
+    /**
+     * Same as {@link #sendSequenced(SequencedPacketCreator)} but returns the packet.
+     * This probably won't work
+     */
+    public static Packet<?> sendSequencedReturnTest(SequencedPacketCreator creator) {
+        if (mc.world == null) throw new NullPointerException("World is null");
+
+        try (PendingUpdateManager manager = ((IClientWorld) mc.world).earthhack$getPendingUpdateManager().incrementSequence()) {
+            int sequence = manager.getSequence();
+            return creator.predict(sequence);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     /**
