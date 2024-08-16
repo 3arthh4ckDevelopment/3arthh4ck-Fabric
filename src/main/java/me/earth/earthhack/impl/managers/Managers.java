@@ -1,8 +1,6 @@
 package me.earth.earthhack.impl.managers;
 
 import me.earth.earthhack.api.event.bus.instance.Bus;
-import me.earth.earthhack.api.module.Module;
-import me.earth.earthhack.api.module.util.PluginsCategory;
 import me.earth.earthhack.api.plugin.Plugin;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.event.events.client.PostInitEvent;

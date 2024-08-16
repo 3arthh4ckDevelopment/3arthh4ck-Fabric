@@ -95,7 +95,7 @@ public class CommandManager extends SubscriberImpl
         commands.add(new SayCommand());
         // commands.add(new GameModeCommand());
         // commands.add(new JavaScriptCommand());
-        // commands.add(new KitCommand());
+        commands.add(new KitCommand());
         // commands.add(new Thirty2kCommand());
         commands.add(new BindCommand());
         // commands.add(new ResetCommand());

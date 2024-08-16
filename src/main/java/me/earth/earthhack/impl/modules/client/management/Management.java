@@ -108,7 +108,7 @@ public class Management extends Module {
             Managers.COMBAT.reset();
         });
         this.pauseOnLeftFocus.addObserver(e -> {
-            if (mc != null) {
+            if (mc != null && mc.options != null) {
                 mc.options.pauseOnLostFocus = e.getValue();
             }
         });

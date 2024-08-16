@@ -6,6 +6,9 @@ import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
+import me.earth.earthhack.impl.commands.KitCommand;
+import me.earth.earthhack.impl.managers.Managers;
+import me.earth.earthhack.impl.util.minecraft.shulker.ShulkerNBTUtil;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
@@ -35,24 +38,21 @@ public class Inventory extends HudElement {
                         getY() + 55.0f, 1.0f, boxColor.getValue().getRGB(), outlineColor.getValue().getRGB());
         }
 
-        renderItems(context, mc.player.getInventory().main, (int) getX(), (int) getY(), xCarry.getValue());
-    }
-
-    private void renderItems(DrawContext context, DefaultedList<ItemStack> items, int x, int y, boolean xCarry) {
-        for (int i = 0; i < items.size() - 9; i++) {
-            int iX = x + (i % 9) * (18);
-            int iY = y + (i / 9) * (18);
-            ItemStack itemStack = items.get(i + 9);
-            if (!itemStack.isEmpty())
-                Render2DUtil.drawItem(context, itemStack, iX, iY, true);
-        }
-
-        if (xCarry) {
-            for (int i = 1; i < 5; i++) {
-                int iX = x + ((i + 4) % 9) * (18);
-                ItemStack itemStack = mc.player.getInventory().getStack(i);
-                if (!itemStack.isEmpty())
-                    Render2DUtil.drawItem(context, itemStack, iX, y, true);
+        if (this.isGui() && mc.player.getInventory().main.stream().filter(x -> !x.isEmpty()).toList().isEmpty()) {
+            DefaultedList<ItemStack> items = ShulkerNBTUtil.getShulkerItemList(KitCommand.KIT);
+            if (items != null) {
+                Managers.TEXT.drawString(context, "Example Inventory", (int) getX(), (int) getY() - 5, 0xffffffff);
+                Render2DUtil.drawItemsInventory(context, items, (int) getX(), (int) getY());
+            }
+        } else {
+            Render2DUtil.drawItemsInventory(context, mc.player.getInventory().main, (int) getX(), (int) getY());
+            if (xCarry.getValue()) {
+                for (int i = 1; i < 5; i++) {
+                    int iX = (int) getX() + ((i + 4) % 9) * (18);
+                    ItemStack itemStack = mc.player.getInventory().getStack(i);
+                    if (!itemStack.isEmpty())
+                        Render2DUtil.drawItem(context, itemStack, iX, (int) getY(), true);
+                }
             }
         }
     }

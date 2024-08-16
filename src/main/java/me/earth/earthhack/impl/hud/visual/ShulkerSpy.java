@@ -5,6 +5,7 @@ import me.earth.earthhack.api.hud.HudElement;
 import me.earth.earthhack.api.setting.Setting;
 import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.ColorSetting;
+import me.earth.earthhack.impl.commands.KitCommand;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.LambdaListener;
 import me.earth.earthhack.impl.managers.Managers;
@@ -39,20 +40,27 @@ public class ShulkerSpy extends HudElement {
     protected void onRender(DrawContext context) {
         int y = (int) getY() + 10;
         int x = (int) getX();
-        for (Map.Entry<ShulkerItemsData, Integer> entry : itemsDataMap.entrySet()) {
-            ShulkerItemsData itemsData = entry.getKey();
-            String itemCount = (entry.getValue() != 1 ? " - x" + entry.getValue() : "");
+        if (this.isGui() && itemsDataMap.isEmpty()) {
+            ItemStack itemStack = KitCommand.KIT;
+            DefaultedList<ItemStack> items = ShulkerNBTUtil.getShulkerItemList(itemStack);
+            if (items != null) {
+                Managers.TEXT.drawString(context, "Example " + itemStack.getName().getString(), x, y - 10, 0xffffffff);
+                Render2DUtil.drawRect(context.getMatrices(), x, y - 10, x + 9 * 18, y, boxColor.getValue().brighter().getRGB());
+                Render2DUtil.drawBorderedRect(context.getMatrices(), x, y, x + 9 * 18, y + 55.0f, 0.5f, boxColor.getValue().getRGB(), Color.CYAN.getRGB());
+                Render2DUtil.drawItemsInventory(context, items, x, y);
+            }
+        } else {
+            for (Map.Entry<ShulkerItemsData, Integer> entry : itemsDataMap.entrySet()) {
+                ShulkerItemsData itemsData = entry.getKey();
+                String itemCount = (entry.getValue() != 1 ? " - x" + entry.getValue() : "");
 
-            context.getMatrices().push();
-            context.getMatrices().translate(0.0F, 0.0F, 200);
-            Managers.TEXT.drawString(context, itemsData.name() + itemCount, x, y - 10, 0xffffffff);
-            context.getMatrices().pop();
+                Managers.TEXT.drawString(context, itemsData.name() + itemCount, x, y - 10, 0xffffffff);
+                Render2DUtil.drawRect(context.getMatrices(), x, y - 10, x + 9 * 18, y, boxColor.getValue().brighter().getRGB());
+                Render2DUtil.drawBorderedRect(context.getMatrices(), x, y, x + 9 * 18, y + 55.0f, 0.5f, boxColor.getValue().getRGB(), itemsData.color());
 
-            Render2DUtil.drawRect(context.getMatrices(), x, y - 10, x + 9 * 18, y, boxColor.getValue().brighter().getRGB());
-            Render2DUtil.drawBorderedRect(context.getMatrices(), x, y, x + 9 * 18, y + 55.0f, 0.5f, boxColor.getValue().getRGB(), itemsData.color());
-
-            Render2DUtil.drawItemsInventory(context, itemsData.itemStackDefaultedList(), x, y);
-            y += 70;
+                Render2DUtil.drawItemsInventory(context, itemsData.itemStackDefaultedList(), x, y);
+                y += 70;
+            }
         }
     }
 
@@ -75,7 +83,7 @@ public class ShulkerSpy extends HudElement {
                     }
                 }
 
-                if (shulkerSpy.getValue() && entity instanceof PlayerEntity player) {
+                if (shulkerSpy.getValue() && entity instanceof PlayerEntity player) { // check offhand?
                     ItemStack stack = player.getInventory().getMainHandStack();
                     DefaultedList<ItemStack> items = ShulkerNBTUtil.getShulkerItemList(stack);
                     if (items != null) {
@@ -108,6 +116,9 @@ public class ShulkerSpy extends HudElement {
 
     @Override
     public float getHeight() {
+        if (this.isGui() && itemsDataMap.isEmpty()) {
+            return 55;
+        }
         return itemsDataMap.size() * 70;
     }
 }

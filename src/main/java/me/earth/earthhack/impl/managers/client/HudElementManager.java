@@ -5,6 +5,7 @@ import me.earth.earthhack.api.hud.HudCategory;
 import me.earth.earthhack.api.hud.HudElement;
 import me.earth.earthhack.api.register.IterationRegister;
 import me.earth.earthhack.api.register.Registrable;
+import me.earth.earthhack.api.register.exception.AlreadyRegisteredException;
 import me.earth.earthhack.api.register.exception.CantUnregisterException;
 import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.hud.text.arraylist.HudArrayList;
@@ -95,6 +96,16 @@ public class HudElementManager extends IterationRegister<HudElement> {
     {
         super.unregister(element);
         Bus.EVENT_BUS.unsubscribe(element);
+    }
+
+    @Override
+    public void register(HudElement element) throws AlreadyRegisteredException {
+        try {
+            super.register(element);
+        } catch (Exception e) {
+            Earthhack.getLogger().warn("Failed to register hud element: " + element.getName());
+            throw e;
+        }
     }
 
     private void forceRegister(HudElement element)

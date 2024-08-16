@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.commands;
 
 import me.earth.earthhack.api.command.Command;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.Earthhack;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,7 @@ public class DumpStackCommand extends Command implements Globals
         ChatUtil.sendMessage(stack.getName().getString(), getName());
         NbtCompound nbtTagCompound = new NbtCompound();
         stack.writeNbt(nbtTagCompound);
+        Earthhack.getLogger().info(nbtTagCompound.toString());
         ChatUtil.sendMessage(nbtTagCompound.toString(), getName());
     }
 

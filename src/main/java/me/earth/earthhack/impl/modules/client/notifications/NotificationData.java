@@ -14,7 +14,6 @@ final class NotificationData extends DefaultData<Notifications>
         register(module.totemAmountColor, "Color of the TotemPop Amount in the TotemPop Message.");
         register(module.totemColor, "Color of the TotemPop Message.");
         register(module.totemPlayerColor, "Color of the PlayerName the TotemPop Message.");
-        register(module.duration, "Hud notification duration.");
     }
 
     @Override
