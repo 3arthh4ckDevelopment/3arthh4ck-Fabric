@@ -96,7 +96,7 @@ public class CommandManager extends SubscriberImpl
         // commands.add(new GameModeCommand());
         // commands.add(new JavaScriptCommand());
         commands.add(new KitCommand());
-        // commands.add(new Thirty2kCommand());
+        commands.add(new Thirty2kCommand());
         commands.add(new BindCommand());
         // commands.add(new ResetCommand());
         // commands.add(new PbModuleCommand());
@@ -120,7 +120,7 @@ public class CommandManager extends SubscriberImpl
         // commands.add(new PacketCommandImpl());
         // commands.add(new PresetCommand());
         // commands.add(new BookCommand());
-        // commands.add(new ReloadResourceCommand());
+        commands.add(new ReloadResourceCommand());
         commands.add(new GcCommand());
 
         hidden.add(new HListSettingCommand());

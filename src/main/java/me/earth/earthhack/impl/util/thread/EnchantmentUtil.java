@@ -4,6 +4,8 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 
 import java.util.Map;
 
@@ -33,6 +35,25 @@ public class EnchantmentUtil
         }
 
         return modifier;
+    }
+
+    /**
+     * Enchants the given stack with the enchantment represented
+     * by the given enchantment, and the given level.
+     *
+     * @param stack the stack to enchant.
+     * @param enchantment the enchantment to add.
+     * @param level the level for the enchantment.
+     * @throws NullPointerException if no Enchantment for the id is found.
+     */
+    public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level)
+    {
+        NbtCompound nbt = new NbtCompound();
+        nbt.putInt("lvl", level);
+        nbt.putString("id", enchantment.getTranslationKey().replace("enchantment.minecraft.", "minecraft:"));
+        NbtList list = stack.getOrCreateNbt().getList("Enchantments", 10);
+        list.add(nbt);
+        stack.getOrCreateNbt().put("Enchantments", list);
     }
 
 }
