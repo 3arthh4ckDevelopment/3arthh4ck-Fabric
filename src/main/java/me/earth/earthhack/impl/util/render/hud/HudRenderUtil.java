@@ -10,6 +10,8 @@ import me.earth.earthhack.impl.util.render.ColorUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.DrawContext;
 
+import java.awt.*;
+
 public class HudRenderUtil implements Globals {
     private static final TextRenderer RENDERER = Managers.TEXT;
     private static final ModuleCache<HudEditor> HUD_EDITOR = Caches.getModule(HudEditor.class);
@@ -38,15 +40,19 @@ public class HudRenderUtil implements Globals {
 
     public static void renderText(DrawContext context, String text, float x, float y, float scale) {
         String colorCode = HUD_EDITOR.get().colorMode.getValue().getColor();
-        RENDERER.drawStringScaled(context, colorCode + text, x, y, textColor(y), true, scale);
+        RENDERER.drawStringScaled(context, colorCode + text, x, y, textColor(x, y), true, scale);
     }
 
-    private static int textColor(float y) {
+    private static int textColor(float x, float y) {
         if (HUD_EDITOR.get().colorMode.getValue() == HudRainbow.None) {
             return HUD_EDITOR.get().color.getValue().getRGB();
         } else if (HUD_EDITOR.get().colorMode.getValue() == HudRainbow.Static) {
             return ColorUtil.staticRainbow((y + 1) * 0.89f, HUD_EDITOR.get().color.getValue());
+        } else {
+            return Color.HSBtoRGB(
+                    Managers.COLOR.getHueByPosition(HUD_EDITOR.get().colorMode.getValue() == HudRainbow.Horizontal ? y : x),
+                    1.0f,
+                    1.0f);
         }
-        return 0xffffffff;
     }
 }

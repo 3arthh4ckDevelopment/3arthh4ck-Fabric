@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.util.render;
 
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.client.customfont.FontMod;
 import me.earth.earthhack.impl.util.text.ChatUtil;
@@ -167,6 +168,14 @@ public class NVGRenderer implements Globals {
                 case 'm' -> size -= 1;
                 case 'n' -> shadow = true;
                 case 'o' -> shadow = false;
+                case '+' -> {
+                    int value = Color.HSBtoRGB(Managers.COLOR.getHueByPosition(y), 1.0f, 1.0f);
+                    activeColor = convertRainbowColor(value);
+                }
+                case '-' -> {
+                    int value = Color.HSBtoRGB(Managers.COLOR.getHueByPosition(x), 1.0f, 1.0f);
+                    activeColor = convertRainbowColor(value);
+                }
                 default -> activeColor = color;
             }
             if (activeColor != color)
@@ -183,6 +192,17 @@ public class NVGRenderer implements Globals {
                 x += getWidth(s) + (s.endsWith(" ") ? getWidth("a") / 1.5f : 0);
             }
         }
+    }
+
+    private Color convertRainbowColor(int color) {
+        return new Color(
+                (color >> 16 & 0xFF) / 255.0f
+                        / (1),
+                (color >> 8 & 0xFF)  / 255.0f
+                        / (1),
+                (color & 0xFF)       / 255.0f
+                        / (1),
+                1);
     }
 
     public void drawRect(float x, float y, float x2, float y2, int color) {
