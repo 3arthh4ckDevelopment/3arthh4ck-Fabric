@@ -225,7 +225,7 @@ public class MotionUpdateEvent extends StageEvent implements Globals
             this.sneak = sneak;
         }
 
-        public Riding(Stage stage, MotionUpdateEvent.Riding event)
+        public Riding(Stage stage, Riding event)
         {
             this(stage,
                     event.getX(),

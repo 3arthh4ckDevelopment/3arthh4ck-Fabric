@@ -23,7 +23,7 @@ final class ListenerVelocity extends
 
         PlayerEntity playerSP = mc.player;
         if (playerSP != null
-                && event.getPacket().getId() == playerSP.getId())
+                && event.getPacket().getEntityId() == playerSP.getId())
         {
             module.motionY = event.getPacket().getVelocityY() / 8000.0;
             module.scaleTimer.reset();

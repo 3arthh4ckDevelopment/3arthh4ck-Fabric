@@ -5,6 +5,7 @@ import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.blocks.SpecialBlocks;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +28,7 @@ final class ListenerUseOnBlock extends
                             .getItem() == Items.EXPERIENCE_BOTTLE
             || module.foodBypass.getValue()
                 && mc.player.getStackInHand(event.getPacket().getHand())
-                            .getItem().isFood())
+                            .getItem().getComponents().contains(DataComponentTypes.FOOD))
         {
             if (Managers.ACTION.isSneaking()
                 || module.bypassContainers.getValue())

@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.modules.movement.elytraflight.mode.ElytraMode;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ElytraItem;
@@ -68,7 +69,7 @@ final class ListenerMotion extends
 
                             InventoryUtil.switchTo(slot);
 
-                            mc.getNetworkHandler().sendPacket(new PlayerInteractItemC2SPacket(hand, 0));
+                            NetworkUtil.sendSequenced(seq -> new PlayerInteractItemC2SPacket(hand, seq, event.getYaw(), event.getPitch()));
                             mc.player.swingHand(hand);
 
                             if (module.rocketSwitchBack.getValue()) {

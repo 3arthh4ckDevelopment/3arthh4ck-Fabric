@@ -13,6 +13,7 @@ import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
@@ -68,7 +69,7 @@ final class ListenerTick extends ModuleListener<AutoEat, TickEvent>
             return;
         }
 
-        int slot = findInHotbar(s -> s.getItem().isFood()
+        int slot = findInHotbar(s -> s.getItem().getComponents().contains(DataComponentTypes.FOOD)
                 && !hasBadEffect((IFoodComponent) s.getItem().getFoodComponent())
                 /*&& (!(s.getItem() instanceof ItemFishFood
                         && ItemFishFood.FishType.byItemStack(s)
@@ -115,7 +116,7 @@ final class ListenerTick extends ModuleListener<AutoEat, TickEvent>
         List<StatusEffect> effects = new ArrayList<>();
 
         for (int i = 0; i < itemFood.getStatusEffects().size(); i++) {
-            effects.add(itemFood.getStatusEffects().get(i).getFirst().getEffectType());
+            effects.add(itemFood.getStatusEffects().get(i).getFirst().getEffectType().value());
         }
 
         if (!effects.isEmpty())

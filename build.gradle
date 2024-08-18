@@ -1,6 +1,5 @@
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
-    id 'maven-publish'
     id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
@@ -65,13 +64,13 @@ remapJar {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
+    it.options.release = 21
 }
 
 java {
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
@@ -84,13 +83,5 @@ jar {
                 'Manifest-Version': 1.0,
                 "Main-Class": 'me.earth.earthhack.Main'
         )
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
     }
 }

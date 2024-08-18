@@ -143,7 +143,7 @@ public class Thirty2kCommand extends AbstractStackCommand
         addEnchantment(s, Enchantments.KNOCKBACK, 10);
         addEnchantment(s, Enchantments.FIRE_ASPECT, 255);
         addEnchantment(s, Enchantments.LOOTING, 10);
-        addEnchantment(s, Enchantments.SWEEPING, 3);
+        addEnchantment(s, Enchantments.SWEEPING_EDGE, 3);
         addEnchantment(s, Enchantments.UNBREAKING, 255);
         addEnchantment(s, Enchantments.MENDING, 1);
         addEnchantment(s, Enchantments.VANISHING_CURSE, 1);

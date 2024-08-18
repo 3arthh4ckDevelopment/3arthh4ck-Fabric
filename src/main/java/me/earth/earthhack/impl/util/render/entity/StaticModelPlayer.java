@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.util.render.entity;
 
 import me.earth.earthhack.api.util.interfaces.Globals;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
@@ -29,7 +28,7 @@ public class StaticModelPlayer<T extends PlayerEntity> extends PlayerEntityModel
         this.rightArmPose = getArmPose(player, player.getActiveHand() == Hand.MAIN_HAND ? player.getMainHandStack() : player.getOffHandStack());
         this.leftArmPose = getArmPose(player, player.getActiveHand() == Hand.MAIN_HAND ? player.getOffHandStack() : player.getMainHandStack());
         this.handSwingProgress = player.handSwingProgress;
-        this.animateModel(player, limbSwing, limbSwingAmount, mc.getTickDelta());
+        this.animateModel(player, limbSwing, limbSwingAmount, mc.getRenderTime());
     }
 
     // public void render(float scale) {
@@ -90,7 +89,7 @@ public class StaticModelPlayer<T extends PlayerEntity> extends PlayerEntityModel
         this.pitch = pitch;
     }
 
-    private static BipedEntityModel.ArmPose getArmPose(PlayerEntity player, ItemStack stack) {
+    private static ArmPose getArmPose(PlayerEntity player, ItemStack stack) {
         if (stack.isEmpty()) {
             return ArmPose.EMPTY;
         }

@@ -7,6 +7,7 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
@@ -247,7 +248,7 @@ final class ListenerMotion extends ModuleListener<Phase, MotionUpdateEvent>
             {
                 Hand hand =
                         mc.player.getOffHandStack()
-                                .getItem().isFood()
+                                .getItem().getComponents().contains(DataComponentTypes.FOOD)
                                 || mc.player.getOffHandStack()
                                 .getItem()
                                 == Items.TOTEM_OF_UNDYING

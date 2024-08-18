@@ -130,8 +130,7 @@ public class BoatFly extends Module
 
     protected void sendPackets(Entity riding)
     {
-        mc.getNetworkHandler().sendPacket(
-                new PlayerInteractItemC2SPacket(Hand.MAIN_HAND, 0));
+        NetworkUtil.sendSequenced(seq -> new PlayerInteractItemC2SPacket(Hand.MAIN_HAND, seq, mc.player.yaw, mc.player.pitch));
         if (invalid.getValue() && invalidTickCount++ >= invalidTicks.getValue())
         {
             Vec3d playerVec = invalidMode.getValue().createOutOfBounds(mc.player.getPos(), 1337);

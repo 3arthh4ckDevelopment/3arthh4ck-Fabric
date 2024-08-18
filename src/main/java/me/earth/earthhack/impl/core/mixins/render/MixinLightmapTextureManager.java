@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 /**
  * Since Minecraft doesn't allow you to set Gamma to higher than 100,
  * we can just set the world light to the maximum. =D
- * {@link me.earth.earthhack.impl.modules.render.fullbright.Fullbright}
+ * {@link Fullbright}
  *
  * I think we also need to set Ambience on here
  */

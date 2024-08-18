@@ -103,7 +103,7 @@ public class MovementUtil implements Globals
         float moveStrafe  = movementInput.movementSideways;
         float rotationYaw = entity.prevYaw
                 + (entity.getYaw() - entity.prevYaw)
-                * mc.getTickDelta();
+                * mc.getRenderTime();
 
         if (moveForward != 0.0f)
         {

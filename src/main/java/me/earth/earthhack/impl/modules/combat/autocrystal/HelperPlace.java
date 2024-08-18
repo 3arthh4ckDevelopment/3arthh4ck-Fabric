@@ -361,10 +361,7 @@ public class HelperPlace implements Globals
                         module.traceWidth.getValue());
 
                 //noinspection deprecation
-                if (!mc.world.getBlockState(ray.getResult().getBlockPos())
-                             .getBlock()
-                             .isShapeFullCube(mc.world.getBlockState(
-                                 ray.getResult().getBlockPos()), mc.world, ray.getResult().getBlockPos()))
+                if (!mc.world.getBlockState(ray.getResult().getBlockPos()).isFullCube(mc.world, ray.getResult().getBlockPos()))
                 {
                     return false;
                 }

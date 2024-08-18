@@ -20,7 +20,7 @@ final class ListenerVelocity extends
         EntityVelocityUpdateS2CPacket packet = event.getPacket();
         PlayerEntity player = mc.player;
         if (player != null
-                && packet.getId() == player.getId()
+                && packet.getEntityId() == player.getId()
                 && !module.directional.getValue()
                 && module.velocity.getValue())
         {

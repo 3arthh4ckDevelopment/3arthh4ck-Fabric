@@ -44,7 +44,7 @@ public class Confirmer extends SubscriberImpl
         {
             PlaySoundS2CPacket p = e.getPacket();
             if (p.getCategory() == SoundCategory.BLOCKS
-                && p.getSound() == Registries.SOUND_EVENT.getEntry(SoundEvents.ENTITY_GENERIC_EXPLODE))
+                && p.getSound() == Registries.SOUND_EVENT.getEntry(SoundEvents.ENTITY_GENERIC_EXPLODE.value()))
             {
                 confirmBreak(p.getX(), p.getY(), p.getZ());
             }

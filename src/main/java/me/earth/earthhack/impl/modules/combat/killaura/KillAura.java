@@ -284,7 +284,7 @@ public class KillAura extends EntityTypeModule
 
                 if (armor.getValue() != 0)
                 {
-                    for (ItemStack stack : entity.getArmorItems())
+                    for (ItemStack stack : entity.getControllingPassenger().getAllArmorItems())
                     {
                         if (!(stack.getItem() instanceof ElytraItem)
                              && DamageUtil.getPercent(stack) < armor.getValue())

@@ -18,7 +18,7 @@ final class ListenerUpdates extends ModuleListener<AntiPotion, UpdateEvent>
         mc.player.getStatusEffects().removeIf(effect ->
         {
             Setting<Boolean> setting = module
-                    .getSetting(AntiPotion.getPotionString(effect.getEffectType()),
+                    .getSetting(AntiPotion.getPotionString(effect.getEffectType().value()),
                                 BooleanSetting.class);
 
             return setting != null && setting.getValue();

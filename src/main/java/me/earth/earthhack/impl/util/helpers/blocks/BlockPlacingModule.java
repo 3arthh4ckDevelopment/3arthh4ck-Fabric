@@ -219,7 +219,7 @@ public abstract class BlockPlacingModule extends DisablingModule
                 {
                     BlockState placeState = mc.world.getBlockState(pos);
 
-                    BlockSoundGroup soundGroup = placeState.getBlock().getSoundGroup(placeState);
+                    BlockSoundGroup soundGroup = placeState.getBlock().getDefaultState().getSoundGroup();
                     mc.world.playSound((Entity) mc.player, pos, soundGroup.getPlaceSound(), SoundCategory.BLOCKS, (soundGroup.getVolume() + 1.0f) / 2, soundGroup.getPitch() * 0.8f);
 
                     if (!mc.player.isCreative() && stackPacket.getValue())

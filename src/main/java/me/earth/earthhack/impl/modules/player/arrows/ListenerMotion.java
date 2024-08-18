@@ -8,12 +8,12 @@ import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpectralArrowItem;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -91,7 +91,7 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
         else if (module.autoRelease.getValue()
                 && !mc.player.getActiveItem().isEmpty())
         {
-            Potion type = PotionUtil.getPotion(arrow);
+            Potion type = PotionContentsComponent.getPotion(arrow);
             if (arrow.getItem() instanceof SpectralArrowItem)
             {
                 type = Arrows.SPECTRAL;
@@ -104,7 +104,7 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
             }
 
             lastType = type;
-            float ticks = mc.player.getActiveItem().getMaxUseTime()
+            float ticks = mc.player.getActiveItem().getMaxUseTime(mc.player)
                     - mc.player.getInventory().getStack(mc.player.getInventory().selectedSlot).getCount()
                     - (module.tpsSync.getValue() ? 20.0f - Managers.TPS.getTps()
                                                  : 0.0f);

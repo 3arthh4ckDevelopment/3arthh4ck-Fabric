@@ -60,17 +60,16 @@ public class Render2DUtil implements Globals {
         if (Managers.TEXT.usingCustomFont()) {
             TextRenderer.FONTS.drawRect(startX, startY, endX, endY, color);
         } else {
-            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, startX, endY, zLevel).color(color).next();
-            bufferBuilder.vertex(posMatrix, endX, endY, zLevel).color(color).next();
-            bufferBuilder.vertex(posMatrix, endX, startY, zLevel).color(color).next();
-            bufferBuilder.vertex(posMatrix, startX, startY, zLevel).color(color).next();
+            BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, startX, endY, zLevel).color(color);
+            bufferBuilder.vertex(posMatrix, endX, endY, zLevel).color(color);
+            bufferBuilder.vertex(posMatrix, endX, startY, zLevel).color(color);
+            bufferBuilder.vertex(posMatrix, startX, startY, zLevel).color(color);
             BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
             RenderSystem.disableBlend();
         }
@@ -81,7 +80,6 @@ public class Render2DUtil implements Globals {
 
     public static void drawQuarterCircle(MatrixStack matrix, float x, float y, float radius, int color, int position) {
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
         Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
         double angle = 90;
@@ -89,35 +87,35 @@ public class Render2DUtil implements Globals {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-        bufferBuilder.begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR);
+        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.DEBUG_LINE_STRIP, VertexFormats.POSITION_COLOR);
         for (double i = angle * (position - 1); i < angle * (position - 1) + 90; i += 0.5f) {
-            bufferBuilder.vertex(posMatrix, (float) (x + Math.sin(i * 3.141593 / 180.0) * radius), (float) (y + Math.cos(i * 3.141593 / 180.0) * radius), 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, (float) (x + Math.sin(i * 3.141593 / 180.0) * radius), (float) (y + Math.cos(i * 3.141593 / 180.0) * radius), 0.0F).color(color);
         }
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
 
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-        bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
+        bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
 
         //TODO: fix this triangle drawing
         if (position == 1) {
-            bufferBuilder.vertex(posMatrix, x, y + radius, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x + radius, y, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y + radius, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x + radius, y, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color);
         }
         else if (position == 2) {
-            bufferBuilder.vertex(posMatrix, x, y - radius, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x + radius, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y - radius, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x + radius, y, 0.0F).color(color);
         }
         else if (position == 3) {
-            bufferBuilder.vertex(posMatrix, x, y - radius - 0.1f, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x - radius, y, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y - radius - 0.1f, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x - radius, y, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color);
         }
         else if (position == 4) {
-            bufferBuilder.vertex(posMatrix, x, y + radius, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x - radius, y, 0.0F).color(color).next();
+            bufferBuilder.vertex(posMatrix, x, y + radius, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x, y, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x - radius, y, 0.0F).color(color);
         }
 
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
@@ -167,7 +165,6 @@ public class Render2DUtil implements Globals {
         if (Managers.TEXT.usingCustomFont()) {
             TextRenderer.FONTS.drawLine(x, y, x1, y1, lineWidth, color);
         } else {
-            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
             float directionX = x1 - x;
@@ -182,11 +179,11 @@ public class Render2DUtil implements Globals {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            bufferBuilder.vertex(posMatrix, x + normalizedY * width, y + normalizedX * width, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x1 + normalizedY * width, y1 + normalizedX * width, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x1 - normalizedY * width, y1 - normalizedX * width, 0.0F).color(color).next();
-            bufferBuilder.vertex(posMatrix, x - normalizedY * width, y - normalizedX * width, 0.0F).color(color).next();
+            BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            bufferBuilder.vertex(posMatrix, x + normalizedY * width, y + normalizedX * width, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x1 + normalizedY * width, y1 + normalizedX * width, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x1 - normalizedY * width, y1 - normalizedX * width, 0.0F).color(color);
+            bufferBuilder.vertex(posMatrix, x - normalizedY * width, y - normalizedX * width, 0.0F).color(color);
             BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
             RenderSystem.disableBlend();
         }
@@ -220,23 +217,22 @@ public class Render2DUtil implements Globals {
             float f5 = (float) (endColor >> 16 & 255) / 255.0F;
             float f6 = (float) (endColor >> 8 & 255) / 255.0F;
             float f7 = (float) (endColor & 255) / 255.0F;
-            BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
             if (sideways) {
-                bufferBuilder.vertex(posMatrix, left, top, 0.0F).color(f1, f2, f3, f).next();
-                bufferBuilder.vertex(posMatrix, left, bottom, 0.0F).color(f1, f2, f3, f).next();
-                bufferBuilder.vertex(posMatrix, right, bottom, 0.0F).color(f5, f6, f7, f4).next();
-                bufferBuilder.vertex(posMatrix, right, top, 0.0F).color(f5, f6, f7, f4).next();
+                bufferBuilder.vertex(posMatrix, left, top, 0.0F).color(f1, f2, f3, f);
+                bufferBuilder.vertex(posMatrix, left, bottom, 0.0F).color(f1, f2, f3, f);
+                bufferBuilder.vertex(posMatrix, right, bottom, 0.0F).color(f5, f6, f7, f4);
+                bufferBuilder.vertex(posMatrix, right, top, 0.0F).color(f5, f6, f7, f4);
             } else {
-                bufferBuilder.vertex(posMatrix, right, top, 0.0F).color(f1, f2, f3, f).next();
-                bufferBuilder.vertex(posMatrix, left, top, 0.0F).color(f1, f2, f3, f).next();
-                bufferBuilder.vertex(posMatrix, left, bottom, 0.0F).color(f5, f6, f7, f4).next();
-                bufferBuilder.vertex(posMatrix, right, bottom, 0.0F).color(f5, f6, f7, f4).next();
+                bufferBuilder.vertex(posMatrix, right, top, 0.0F).color(f1, f2, f3, f);
+                bufferBuilder.vertex(posMatrix, left, top, 0.0F).color(f1, f2, f3, f);
+                bufferBuilder.vertex(posMatrix, left, bottom, 0.0F).color(f5, f6, f7, f4);
+                bufferBuilder.vertex(posMatrix, right, bottom, 0.0F).color(f5, f6, f7, f4);
             }
             BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
             RenderSystem.disableBlend();

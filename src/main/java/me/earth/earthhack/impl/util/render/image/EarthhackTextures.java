@@ -7,5 +7,5 @@ import net.minecraft.util.Identifier;
  * Textures the client uses.
  */
 public final class EarthhackTextures {
-    public static final Identifier SKIN = new Identifier("earthhack", "icon/skin");
+    public static final Identifier SKIN = Identifier.of("earthhack", "icon/skin");
 }

@@ -4,6 +4,7 @@ import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.modules.player.fasteat.mode.FastEatMode;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.util.Hand;
 
@@ -31,8 +32,8 @@ final class ListenerUpdate extends ModuleListener<FastEat, MotionUpdateEvent>
                         : Hand.MAIN_HAND;
             }
 
-            mc.player.networkHandler.sendPacket(
-                    new PlayerInteractItemC2SPacket(hand, 1)); //TODO: i still don't know what the sequence is
+            Hand finalHand = hand;
+            NetworkUtil.sendSequenced(seq -> new PlayerInteractItemC2SPacket(finalHand, seq, event.getYaw(), event.getPitch()));
         }
         else if (event.getStage() == Stage.POST
                 && module.mode.getValue() == FastEatMode.Packet

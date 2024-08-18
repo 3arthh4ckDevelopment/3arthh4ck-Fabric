@@ -25,7 +25,7 @@ final class ListenerAnimation extends
                 PlayerEntity player = module.player;
                 EntityAnimationS2CPacket packet = event.getPacket();
                 if (player != null
-                        && packet.getId() == player.getId())
+                        && packet.getEntityId() == player.getId())
                 {
                     if (packet.getAnimationId() == 0)
                     {

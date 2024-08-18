@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 
 /**
- * Duck Interface for {@link net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket}.
+ * Duck Interface for {@link PlayerInteractEntityC2SPacket}.
  */
 public interface IPlayerInteractEntityC2S
 {

@@ -14,6 +14,7 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -68,7 +69,7 @@ final class ListenerMotion extends ModuleListener<KillAura, MotionUpdateEvent>
         }
 
         if (!module.whileEating.getValue()
-            && mc.player.getActiveItem().getItem().isFood())
+            && mc.player.getActiveItem().getItem().getComponents().contains(DataComponentTypes.FOOD))
         {
             return;
         }
@@ -353,7 +354,7 @@ final class ListenerMotion extends ModuleListener<KillAura, MotionUpdateEvent>
                 {
                     for (EntityAttributeModifier modifier : modifiers)
                     {
-                        value += modifier.getValue();
+                        value += modifier.value();
                     }
                 }
 
