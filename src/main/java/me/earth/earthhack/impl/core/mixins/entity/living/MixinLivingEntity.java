@@ -257,7 +257,7 @@ public abstract class MixinLivingEntity extends MixinEntity
         return shouldCache()
                 ? armorToughness
                 : (float) this
-                .getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS)
+                .getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS.value())
                 .getValue();
     }
 

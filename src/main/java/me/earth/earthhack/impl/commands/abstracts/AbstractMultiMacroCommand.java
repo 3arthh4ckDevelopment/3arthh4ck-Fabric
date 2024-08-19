@@ -19,7 +19,6 @@ import me.earth.earthhack.impl.modules.client.commands.Commands;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.text.Text;
 
 import java.util.Arrays;
@@ -174,10 +173,8 @@ public abstract class AbstractMultiMacroCommand<T extends Macro>
 
                     registerMacro(macro, parsed, concatenated);
                 },
-                RealmsLongConfirmationScreen.Type.WARNING,
                 Text.empty().append("Do you want to delete the macros " + concatenated + " ?"),
-                    Text.empty().append(""),
-                    true)));
+                    Text.empty().append(""))));
     }
 
     @Override

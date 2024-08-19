@@ -10,7 +10,6 @@ import me.earth.earthhack.impl.managers.thread.scheduler.Scheduler;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.text.Text;
 
 public class HideCommand extends AbstractModuleCommand implements Globals {
@@ -35,10 +34,8 @@ public class HideCommand extends AbstractModuleCommand implements Globals {
                                 for (Module m : Managers.MODULES.getRegistered())
                                     m.setShown(false);
                             },
-                            RealmsLongConfirmationScreen.Type.WARNING,
                             Text.of("Hide every module?"),
-                            Text.of(""),
-                            true)
+                            Text.of(""))
                     ));
             return;
         }

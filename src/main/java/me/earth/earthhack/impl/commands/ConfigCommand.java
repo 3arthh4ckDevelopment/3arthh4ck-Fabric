@@ -24,7 +24,6 @@ import me.earth.earthhack.impl.util.text.ChatIDs;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -169,15 +168,13 @@ public class ConfigCommand extends Command implements Globals
                                     e.printStackTrace();
                                 }
                             },
-                            RealmsLongConfirmationScreen.Type.WARNING,
                             Text.of(TextColor.RED
                                     + "Reload the "
                                     + helper.getName()
                                     + " config from the disk."),
                             Text.of("This action will override your current "
                                     + helper.getName()
-                                    + " configs. Continue?"),
-                            true)));
+                                    + " configs. Continue?"))));
                         return;
                     default:
                         Managers.CHAT.sendDeleteMessage(
@@ -474,7 +471,6 @@ public class ConfigCommand extends Command implements Globals
                         e.printStackTrace();
                     }
                 },
-                RealmsLongConfirmationScreen.Type.WARNING,
                 Text.of(TextColor.RED
                         + action
                         + "ing the "
@@ -482,8 +478,7 @@ public class ConfigCommand extends Command implements Globals
                         + helper.getName()
                         + TextColor.RED
                         + " config."),
-                Text.of(message2),
-                true)));
+                Text.of(message2))));
     }
 
 }

@@ -65,7 +65,7 @@ public class CommandManager extends SubscriberImpl
                             {
                                 lastMessage = event.getPacket().chatMessage();
                             }
-
+                            mc.inGameHud.getChatHud().addToMessageHistory(event.getPacket().chatMessage());
                             event.setCancelled(true);
                         }
                     }

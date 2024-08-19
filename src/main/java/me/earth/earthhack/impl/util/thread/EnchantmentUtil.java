@@ -6,6 +6,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryKey;
 
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class EnchantmentUtil
      * @param level the level for the enchantment.
      * @throws NullPointerException if no Enchantment for the id is found.
      */
-    public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level)
+    public static void addEnchantment(ItemStack stack, RegistryKey<Enchantment> enchantment, int level)
     {
         NbtCompound nbt = new NbtCompound();
         nbt.putInt("lvl", level);

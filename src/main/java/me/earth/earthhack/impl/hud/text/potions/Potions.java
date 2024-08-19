@@ -17,6 +17,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Formatting;
 
 import java.awt.*;
@@ -43,20 +44,20 @@ public class Potions extends DynamicHudElement {
         ArrayList<StatusEffectInstance> sorted = new ArrayList<>(mc.player.getStatusEffects());
         effCounter = mc.player.getStatusEffects().size();
 
-        sorted.sort(Comparator.comparingDouble(effect -> -Managers.TEXT.getStringWidth(effect.getEffectType().getName().getString() + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "") + Formatting.GRAY + " " + getPotionDuration(effect))));
+        sorted.sort(Comparator.comparingDouble(effect -> -Managers.TEXT.getStringWidth(effect.getEffectType().value().getName().getString() + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "") + Formatting.GRAY + " " + getPotionDuration(effect))));
         int offset = 0;
         float yPos = (directionY() == TextDirectionY.BottomToTop ? getY() + (sorted.size() * (Managers.TEXT.getStringHeight() + textOffset.getValue())) - Managers.TEXT.getStringHeightI() : getY());
         float borderDistance = simpleCalcX(getWidth());
         if (!sorted.isEmpty()) {
             for (StatusEffectInstance effect : sorted) {
                 if (effect != null) {
-                    final String label = effect.getEffectType().getName().getString()
+                    final String label = effect.getEffectType().value().getName().getString()
                             + (effect.getAmplifier() > 0 ? " " + (effect.getAmplifier() + 1) : "")
                             + Formatting.GRAY + " " + getPotionDuration(effect);
 
                     RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                     float xPos = getX() - simpleCalcX(Managers.TEXT.getStringWidth(label));
-                    renderPotionText(context, label, borderDistance + xPos, yPos + offset * (directionY() == TextDirectionY.BottomToTop ? -1 : 1), effect.getEffectType());
+                    renderPotionText(context, label, borderDistance + xPos, yPos + offset * (directionY() == TextDirectionY.BottomToTop ? -1 : 1), effect.getEffectType().value());
                     offset += Managers.TEXT.getStringHeightI() + textOffset.getValue();
                 }
             }
@@ -127,7 +128,7 @@ public class Potions extends DynamicHudElement {
         potionColorMap.put(StatusEffects.UNLUCK, new Color(192, 164, 77));
     }
 
-    private final Map<StatusEffect, Color> potionColorMap = new HashMap<>();
+    private final Map<RegistryEntry<StatusEffect>, Color> potionColorMap = new HashMap<>();
 
     public Potions() {
         super("PotionEffects", "Displays active potion effects.", HudCategory.Text, 120, 120);

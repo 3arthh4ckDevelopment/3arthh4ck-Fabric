@@ -143,7 +143,7 @@ public class ReconnectScreen extends DisconnectedScreen
             // else
             {
                 ConnectScreen.connect(parent.getParentScreen(), client,
-                        new ServerAddress(serverData.address, 25565), serverData, false);
+                        new ServerAddress(serverData.address, 25565), serverData, false, null);
             }
         }
         else

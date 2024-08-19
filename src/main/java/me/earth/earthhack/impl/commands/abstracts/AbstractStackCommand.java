@@ -10,7 +10,6 @@ import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket;
@@ -72,10 +71,8 @@ public abstract class AbstractStackCommand extends Command implements Globals
                                         ghost);
                             }
                         },
-                        RealmsLongConfirmationScreen.Type.WARNING,
                         Text.empty().append(TextColor.RED + "Your inventory is full."),
-                                Text.empty().append("Should your MainHand Slot be replaced?"),
-                        true)));
+                                Text.empty().append("Should your MainHand Slot be replaced?"))));
                 return;
             }
         }
