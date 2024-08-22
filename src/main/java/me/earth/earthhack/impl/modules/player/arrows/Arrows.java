@@ -352,7 +352,7 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
 
         if (potion != null)
         {
-            return I18n.translate(potion.finishTranslationKey(null, ""));
+            return I18n.translate(Potion.finishTranslationKey(java.util.Optional.empty(), ""));
         }
 
         return null;
