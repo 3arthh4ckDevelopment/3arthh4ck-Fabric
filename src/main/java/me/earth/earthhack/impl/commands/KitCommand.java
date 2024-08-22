@@ -4,11 +4,15 @@ import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.commands.abstracts.AbstractStackCommand;
 import me.earth.earthhack.impl.commands.util.CommandDescriptions;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 
 public class KitCommand extends AbstractStackCommand implements Globals
@@ -19,46 +23,47 @@ public class KitCommand extends AbstractStackCommand implements Globals
     {
         ItemStack stack = new ItemStack(Blocks.LIGHT_BLUE_SHULKER_BOX);
 
+        // probably won't work but idrc rn
         ItemStack helmet = new ItemStack(Items.NETHERITE_HELMET);
-        helmet.setCustomName(Text.of("3arth's H3lmet"));
-        helmet.addEnchantment(Enchantments.UNBREAKING, 3);
-        helmet.addEnchantment(Enchantments.PROTECTION, 4);
-        helmet.addEnchantment(Enchantments.MENDING, 1);
-        helmet.addEnchantment(Enchantments.RESPIRATION, 3);
-        helmet.addEnchantment(Enchantments.AQUA_AFFINITY, 1);
+        helmet.set(DataComponentTypes.CUSTOM_NAME, Text.of("3arth's H3lmet"));
+        helmet.addEnchantment((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 3);
+        helmet.addEnchantment((RegistryEntry<Enchantment>) Enchantments.PROTECTION, 4);
+        helmet.addEnchantment((RegistryEntry<Enchantment>) Enchantments.MENDING, 1);
+        helmet.addEnchantment((RegistryEntry<Enchantment>) Enchantments.RESPIRATION, 3);
+        helmet.addEnchantment((RegistryEntry<Enchantment>) Enchantments.AQUA_AFFINITY, 1);
 
         ItemStack chestplate = new ItemStack(Items.NETHERITE_CHESTPLATE);
-        chestplate.setCustomName(Text.of("3arth's Ch3stpl4te"));
-        chestplate.addEnchantment(Enchantments.PROTECTION, 4);
-        chestplate.addEnchantment(Enchantments.UNBREAKING, 3);
-        chestplate.addEnchantment(Enchantments.MENDING, 1);
+        chestplate.set(DataComponentTypes.CUSTOM_NAME, Text.of("3arth's Ch3stpl4te"));
+        chestplate.addEnchantment((RegistryEntry<Enchantment>) Enchantments.PROTECTION, 4);
+        chestplate.addEnchantment((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 3);
+        chestplate.addEnchantment((RegistryEntry<Enchantment>) Enchantments.MENDING, 1);
 
         ItemStack leggings = new ItemStack(Items.NETHERITE_LEGGINGS);
-        leggings.setCustomName(Text.of("3arth's P4nts"));
-        leggings.addEnchantment(Enchantments.BLAST_PROTECTION, 4);
-        leggings.addEnchantment(Enchantments.UNBREAKING, 3);
-        leggings.addEnchantment(Enchantments.MENDING, 1);
+        leggings.set(DataComponentTypes.CUSTOM_NAME, Text.of("3arth's P4nts"));
+        leggings.addEnchantment((RegistryEntry<Enchantment>) Enchantments.BLAST_PROTECTION, 4);
+        leggings.addEnchantment((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 3);
+        leggings.addEnchantment((RegistryEntry<Enchantment>) Enchantments.MENDING, 1);
 
         ItemStack boots = new ItemStack(Items.NETHERITE_BOOTS);
-        boots.setCustomName(Text.of("3arth's B0ots"));
-        boots.addEnchantment(Enchantments.PROTECTION, 4);
-        boots.addEnchantment(Enchantments.UNBREAKING, 3);
-        boots.addEnchantment(Enchantments.MENDING, 1);
-        boots.addEnchantment(Enchantments.FEATHER_FALLING, 4);
-        boots.addEnchantment(Enchantments.DEPTH_STRIDER, 3);
+        boots.set(DataComponentTypes.CUSTOM_NAME, Text.of("3arth's B0ots"));
+        boots.addEnchantment((RegistryEntry<Enchantment>) Enchantments.PROTECTION, 4);
+        boots.addEnchantment((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 3);
+        boots.addEnchantment((RegistryEntry<Enchantment>) Enchantments.MENDING, 1);
+        boots.addEnchantment((RegistryEntry<Enchantment>) Enchantments.FEATHER_FALLING, 4);
+        boots.addEnchantment((RegistryEntry<Enchantment>) Enchantments.DEPTH_STRIDER, 3);
 
         ItemStack pickaxe = new ItemStack(Items.NETHERITE_PICKAXE);
-        pickaxe.setCustomName(Text.of("German Efficiency"));
-        pickaxe.addEnchantment(Enchantments.EFFICIENCY, 5);
-        pickaxe.addEnchantment(Enchantments.FORTUNE, 3);
-        pickaxe.addEnchantment(Enchantments.MENDING, 1);
-        pickaxe.addEnchantment(Enchantments.UNBREAKING, 3);
+        pickaxe.set(DataComponentTypes.CUSTOM_NAME, Text.of("German Efficiency"));
+        pickaxe.addEnchantment((RegistryEntry<Enchantment>) Enchantments.EFFICIENCY, 5);
+        pickaxe.addEnchantment((RegistryEntry<Enchantment>) Enchantments.FORTUNE, 3);
+        pickaxe.addEnchantment((RegistryEntry<Enchantment>) Enchantments.MENDING, 1);
+        pickaxe.addEnchantment((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 3);
 
         ItemStack sword = new ItemStack(Items.NETHERITE_SWORD);
-        sword.addEnchantment(Enchantments.FIRE_ASPECT, 2);
-        sword.addEnchantment(Enchantments.MENDING, 1);
-        sword.addEnchantment(Enchantments.UNBREAKING, 3);
-        sword.addEnchantment(Enchantments.SHARPNESS, 5);
+        sword.addEnchantment((RegistryEntry<Enchantment>) Enchantments.FIRE_ASPECT, 2);
+        sword.addEnchantment((RegistryEntry<Enchantment>) Enchantments.MENDING, 1);
+        sword.addEnchantment((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 3);
+        sword.addEnchantment((RegistryEntry<Enchantment>) Enchantments.SHARPNESS, 5);
 
         NbtList nbtList = new NbtList();
         nbtList.add(0, helmet.writeNbt(nbtCompoundSlot(0)));
@@ -105,7 +110,7 @@ public class KitCommand extends AbstractStackCommand implements Globals
         blockEntityTag.put("Items", nbtList);
         blockEntityTag.putString("id", "minecraft:shulker_box");
 
-        stack.getOrCreateNbt().put("BlockEntityTag", blockEntityTag);
+        stack.set(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.of(blockEntityTag));
         KIT = stack;
     }
 

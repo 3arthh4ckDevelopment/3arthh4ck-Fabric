@@ -12,6 +12,7 @@ import me.earth.earthhack.impl.modules.movement.step.mode.StepOffsetMode;
 import me.earth.earthhack.impl.util.helpers.disabling.DisablingModule;
 import me.earth.earthhack.impl.util.helpers.render.BlockESPModule;
 import me.earth.earthhack.impl.util.math.StopWatch;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.math.Box;
 
 import java.awt.*;
@@ -86,10 +87,10 @@ public class Step extends BlockESPModule
         {
             if (mc.player.getVehicle() != null)
             {
-                mc.player.getVehicle().setStepHeight(1.0f);
+                mc.player.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT).setBaseValue(1.0f);
             }
 
-            mc.player.setStepHeight(0.6f);
+            mc.player.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT).setBaseValue(0.6f);
         }
 
         Managers.TIMER.reset();

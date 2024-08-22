@@ -8,8 +8,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 
@@ -33,7 +31,7 @@ public class EnchantmentUtil
         int modifier = 0;
         for (ItemStack stack : stacks) {
             if (!stack.isEmpty()) {
-                modifier += EnchantmentHelper.getProtectionAmount(mc.getServer().getOverworld(),mc.player, source);
+                modifier += EnchantmentHelper.getProtectionAmount(mc.getServer().getOverworld(), mc.player, source);
             }
         }
 
@@ -51,17 +49,17 @@ public class EnchantmentUtil
      */
     public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level)
     {
-        NbtCompound nbt = new NbtCompound();
-        nbt.putInt("lvl", level);
-        nbt.putString("id", enchantment.getTranslationKey().replace("enchantment.minecraft.", "minecraft:"));
-        NbtList list = stack.getOrCreateNbt().getList("Enchantments", 10);
-        list.add(nbt);
-        stack.getOrCreateNbt().put("Enchantments", list);
+//        NbtCompound nbt = new NbtCompound();
+//        nbt.putInt("lvl", level);
+//        nbt.putString("id", enchantment.getTranslationKey().replace("enchantment.minecraft.", "minecraft:"));
+//        NbtList list = stack.getOrCreateNbt().getList("Enchantments", 10);
+//        list.add(nbt); //TODO: UPDATE
+//        stack.getOrCreateNbt().put("Enchantments", list);
     }
 
     /**
      * Thanks cattyan again
-     * https://github.com/mioclient/oyvey-ported/blob/master/src/main/java/me/alpha432/oyvey/util/EnchantmentUtil.java
+     * <a href="https://github.com/mioclient/oyvey-ported/blob/master/src/main/java/me/alpha432/oyvey/util/EnchantmentUtil.java">...</a>
      */
     public static int getLevel(RegistryKey<Enchantment> key, ItemStack stack) {
         if (stack.isEmpty()) return 0;
