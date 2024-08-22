@@ -8,6 +8,7 @@ import me.earth.earthhack.impl.util.minecraft.blocks.states.BlockStateHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
@@ -117,7 +118,7 @@ public class RayTraceFactory implements Globals
         {
             float[] r = rots(on, facing, from, access, state);
             Vec3d look = RotationUtil.getVec3d(r[0], r[1]);
-            double d = mc.interactionManager.getReachDistance();
+            double d = mc.player.getAttributes().getValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE);
             Vec3d rotations = start.add(look.x * d, look.y * d, look.z * d);
             BlockHitResult result = RayTracer.trace(mc.world,
                                                     access,

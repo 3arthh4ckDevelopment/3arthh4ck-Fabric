@@ -32,18 +32,18 @@ public abstract class MixinCamera {
             "Extend",
             false);
     @Unique
-    private static final SettingCache<Double, NumberSetting<Double>, CameraClip>
+    private static final SettingCache<Float, NumberSetting<Float>, CameraClip>
             DISTANCE = Caches.getSetting(CameraClip.class,
             Setting.class,
             "Distance",
-            10.0);
+            10F);
 
     @Inject(
             method = "clipToSpace",
             at = @At("HEAD"),
             cancellable = true
     )
-    private void clipToSpace(double desiredCameraDistance, CallbackInfoReturnable<Double> info)
+    private void clipToSpace(float desiredCameraDistance, CallbackInfoReturnable<Float> info)
     {
         if (CAMERA_CLIP.isEnabled()) {
             info.setReturnValue(EXTEND.getValue()

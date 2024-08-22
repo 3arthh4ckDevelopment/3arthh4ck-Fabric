@@ -13,6 +13,7 @@ import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
+import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -380,7 +381,7 @@ final class ListenerMotion extends ModuleListener<KillAura, MotionUpdateEvent>
             if (stack.getItem() instanceof SwordItem
                     || stack.getItem() instanceof AxeItem)
             {
-                int level = EnchantmentHelper.getLevel(
+                int level = EnchantmentUtil.getLevel(
                                         Enchantments.SHARPNESS, stack);
                 if (level > bestSharp)
                 {

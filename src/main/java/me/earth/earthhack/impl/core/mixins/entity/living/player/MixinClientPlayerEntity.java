@@ -342,7 +342,7 @@ public abstract class MixinClientPlayerEntity extends MixinAbstractClientPlayerE
     }
 
     @Redirect(
-            method = "updateNausea",
+            method = "tickNausea",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/screen/Screen;shouldPause()Z"))

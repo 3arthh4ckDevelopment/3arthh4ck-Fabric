@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityVelocityUpdateS2CPacket.class)
 public interface IEntityVelocityUpdateS2CPacket 
 {
-    @Accessor(value = "id")
+    @Accessor(value = "entityId")
     int getId();
 
     @Accessor(value = "velocityX")

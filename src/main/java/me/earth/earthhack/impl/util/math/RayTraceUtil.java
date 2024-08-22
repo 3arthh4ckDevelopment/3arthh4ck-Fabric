@@ -10,6 +10,7 @@ import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -52,12 +53,12 @@ public class RayTraceUtil implements Globals
 
     public static BlockHitResult getBlockHitResult(float yaw, float pitch)
     {
-        return getBlockHitResult(yaw, pitch, mc.interactionManager.getReachDistance());
+        return getBlockHitResult(yaw, pitch, (float) mc.player.getAttributes().getValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE));
     }
 
     public static BlockHitResult getBlockHitResultWithEntity(float yaw, float pitch, Entity from)
     {
-        return getBlockHitResult(yaw, pitch, mc.interactionManager.getReachDistance(), from);
+        return getBlockHitResult(yaw, pitch, (float) mc.player.getAttributes().getValue(EntityAttributes.PLAYER_BLOCK_INTERACTION_RANGE), from);
     }
     
     public static BlockHitResult getBlockHitResult(float yaw, float pitch, float distance)

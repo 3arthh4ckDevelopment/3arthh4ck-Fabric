@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpectralArrowItem;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 
@@ -35,8 +36,7 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
 {
     protected static Potion SPECTRAL;
     /** Potions that don't give lasting Effects */
-    protected static final Set<Potion> BAD_TYPES = Sets.newHashSet(
-            Potions.EMPTY,
+    protected static final Set<RegistryEntry<Potion>> BAD_TYPES = Sets.newHashSet(
             Potions.WATER,
             Potions.MUNDANE,
             Potions.THICK,
@@ -352,7 +352,7 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
 
         if (potion != null)
         {
-            return I18n.translate(potion.finishTranslationKey(""));
+            return I18n.translate(Potion.finishTranslationKey(java.util.Optional.empty(), ""));
         }
 
         return null;
