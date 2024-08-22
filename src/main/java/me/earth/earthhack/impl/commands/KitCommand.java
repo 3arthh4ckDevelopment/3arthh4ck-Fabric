@@ -23,7 +23,7 @@ public class KitCommand extends AbstractStackCommand implements Globals
     {
         ItemStack stack = new ItemStack(Blocks.LIGHT_BLUE_SHULKER_BOX);
 
-        // probably won't work but idrc rn
+        // This will not work !!
         ItemStack helmet = new ItemStack(Items.NETHERITE_HELMET);
         helmet.set(DataComponentTypes.CUSTOM_NAME, Text.of("3arth's H3lmet"));
         helmet.addEnchantment((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 3);

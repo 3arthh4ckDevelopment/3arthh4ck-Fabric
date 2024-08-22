@@ -9,7 +9,6 @@ import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.CobwebBlock;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

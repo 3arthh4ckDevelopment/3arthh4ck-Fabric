@@ -19,7 +19,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.Entity;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.server.SaveLoader;
@@ -82,11 +81,6 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
     @Override
     @Accessor(value = "itemUseCooldown")
     public abstract void earthhack$setRightClickDelay(int delay);
-
-    @Override
-    @Accessor(value = "renderTickCounter")
-    public abstract RenderTickCounter.Dynamic earthhack$getTimer();
-
 
     @Override
     public int earthhack$getGameLoop() {

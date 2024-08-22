@@ -70,7 +70,7 @@ final class ListenerTick extends ModuleListener<AutoEat, TickEvent>
         }
 
         int slot = findInHotbar(s -> s.getItem().getComponents().contains(DataComponentTypes.FOOD)
-                && !hasBadEffect((IFoodComponent) s.getItem().getFoodComponent())
+                && !hasBadEffect((IFoodComponent) s.getItem().getComponents())
                 /*&& (!(s.getItem() instanceof ItemFishFood
                         && ItemFishFood.FishType.byItemStack(s)
                                 == EntityType.PUFFERFISH))*/);

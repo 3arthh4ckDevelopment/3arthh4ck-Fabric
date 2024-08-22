@@ -11,11 +11,11 @@ import me.earth.earthhack.impl.modules.misc.packetdelay.PacketDelay;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -183,15 +183,15 @@ public abstract class MixinClientConnection implements IClientConnection
     }
 
     @Inject(
-            method = "disconnect",
+            method = "disconnect(Lnet/minecraft/network/DisconnectionInfo;)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/network/ClientConnection;isOpen()Z"))
-    public void onDisconnectHook(Text component, CallbackInfo info)
+    public void onDisconnectHook(DisconnectionInfo disconnectionInfo, CallbackInfo ci)
     {
         if (this.isOpen())
         {
-            Bus.EVENT_BUS.post(getDisconnect(MutableText.of(component.getContent())));
+            Bus.EVENT_BUS.post(getDisconnect(MutableText.of(disconnectionInfo.reason().getContent())));
         }
     }
 

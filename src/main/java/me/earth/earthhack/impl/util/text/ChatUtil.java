@@ -29,7 +29,7 @@ public class ChatUtil implements Globals {
     public static void sendMessage(IChatHud chat, Text message, @Nullable String identifier) {
         var signature = identifier != null ? new MessageSignatureData(forgeSignature(identifier)) : null;
         deleteMessage(signature);
-        chat.earthhack$invokeAddMessage(message, signature, mc.inGameHud.getTicks(), MessageIndicator.system(), false);
+        chat.earthhack$invokeAddMessage(message, signature, MessageIndicator.system());
     }
 
     public static void deleteMessage(@Nullable MessageSignatureData signature) {

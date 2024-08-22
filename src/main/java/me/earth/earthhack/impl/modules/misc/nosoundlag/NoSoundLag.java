@@ -8,6 +8,7 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.managers.minecraft.combat.util.SimpleSoundObserver;
 import me.earth.earthhack.impl.managers.minecraft.combat.util.SoundObserver;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 
@@ -15,15 +16,15 @@ import java.util.Set;
 
 public class NoSoundLag extends Module
 {
-    protected static final Set<SoundEvent> ARMOR_SOUNDS = Sets.newHashSet
+    protected static final Set<RegistryEntry<SoundEvent>> ARMOR_SOUNDS = Sets.newHashSet
     (
-        SoundEvents.ITEM_ARMOR_EQUIP_GENERIC.value(),
-        SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA.value(),
-        SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND.value(),
-        SoundEvents.ITEM_ARMOR_EQUIP_IRON.value(),
-        SoundEvents.ITEM_ARMOR_EQUIP_GOLD.value(),
-        SoundEvents.ITEM_ARMOR_EQUIP_CHAIN.value(),
-        SoundEvents.ITEM_ARMOR_EQUIP_LEATHER.value()
+        SoundEvents.ITEM_ARMOR_EQUIP_GENERIC,
+        SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA,
+        SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND,
+        SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+        SoundEvents.ITEM_ARMOR_EQUIP_GOLD,
+        SoundEvents.ITEM_ARMOR_EQUIP_CHAIN,
+        SoundEvents.ITEM_ARMOR_EQUIP_LEATHER
     );
 
     protected static final Set<SoundEvent> WITHER_SOUNDS = Sets.newHashSet

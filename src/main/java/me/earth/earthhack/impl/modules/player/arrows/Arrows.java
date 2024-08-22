@@ -16,7 +16,7 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
@@ -141,7 +141,7 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
                                boolean checkType,
                                Set<Potion> cycled)
     {
-        Potion type = PotionContentsComponent.getPotion(stack);
+        Potion type = stack.get(DataComponentTypes.POTION_CONTENTS).potion().get().value();
         if (stack.getItem() instanceof SpectralArrowItem)
         {
             type = SPECTRAL;
@@ -278,7 +278,8 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
             return;
         }
 
-        Potion type = PotionContentsComponent.getPotion(arrow);
+        //Temp
+        Potion type = arrow.get(DataComponentTypes.POTION_CONTENTS).potion().get().value();
         if (arrow.getItem() instanceof SpectralArrowItem)
         {
             type = SPECTRAL;

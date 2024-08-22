@@ -70,10 +70,10 @@ public abstract class MixinChatHud implements IChatHud
     @Shadow @Final private final ArrayListDeque<String> messageHistory = new ArrayListDeque<>(100);
     @Final @Shadow private final List<ChatHudLine.Visible> visibleMessages = Lists.newArrayList();
 
-    /*@Override
+    @Override
     @Invoker("addMessage")
-    public abstract void earthhack$invokeAddMessage(Text message, @Nullable MessageSignatureData signatureData, @Nullable MessageIndicator indicator);
-     */
+    public abstract void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, @Nullable MessageIndicator indicator);
+
 
     @Override
     @Accessor(value = "scrolledLines")
