@@ -15,7 +15,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Mixin(NetworkPhase.PacketHandlerInitializer.class)
+// TODO, chinese asf
+/*@Mixin(NetworkPhase.PacketHandlerInitializer.class)
 public abstract class MixinNetworkState implements INetworkState {
 
     @Unique private final Set<Class<? extends Packet<?>>> PACKETS = new HashSet<>();
@@ -48,4 +49,4 @@ public abstract class MixinNetworkState implements INetworkState {
     }
 
 
-}
+}*/

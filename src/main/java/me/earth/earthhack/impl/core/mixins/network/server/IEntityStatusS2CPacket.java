@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityStatusS2CPacket.class)
 public interface IEntityStatusS2CPacket
 {
-    @Accessor("id")
+    @Accessor("entityId")
     int getEntityId();
 
     @Accessor("status")

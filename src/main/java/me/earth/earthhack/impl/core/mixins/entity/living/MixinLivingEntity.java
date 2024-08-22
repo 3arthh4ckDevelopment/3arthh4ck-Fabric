@@ -28,6 +28,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -72,7 +73,7 @@ public abstract class MixinLivingEntity extends MixinEntity
     // @Shadow
     // protected int activeItemStackUseCount; // TODO: I forgot this... I'll add it later ~nuk
     @Shadow protected ItemStack activeItemStack;
-    @Shadow public abstract boolean hasStatusEffect(StatusEffect var1);
+    @Shadow public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
     @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
 
     /* Unique fields. */
@@ -91,7 +92,7 @@ public abstract class MixinLivingEntity extends MixinEntity
     @Unique protected int explosionModifier = Integer.MAX_VALUE;
 
     @Shadow
-    public abstract EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
+    public abstract EntityAttributeInstance getAttributeInstance(RegistryEntry<EntityAttribute> attribute);
 
     @Shadow
     public abstract int getArmor();
@@ -257,7 +258,7 @@ public abstract class MixinLivingEntity extends MixinEntity
         return shouldCache()
                 ? armorToughness
                 : (float) this
-                .getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS.value())
+                .getAttributeInstance(EntityAttributes.GENERIC_ARMOR_TOUGHNESS)
                 .getValue();
     }
 

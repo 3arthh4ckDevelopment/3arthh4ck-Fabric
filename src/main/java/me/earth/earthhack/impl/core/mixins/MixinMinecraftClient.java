@@ -85,7 +85,7 @@ public abstract class MixinMinecraftClient implements IMinecraftClient
 
     @Override
     @Accessor(value = "renderTickCounter")
-    public abstract RenderTickCounter earthhack$getTimer();
+    public abstract RenderTickCounter.Dynamic earthhack$getTimer();
 
 
     @Override

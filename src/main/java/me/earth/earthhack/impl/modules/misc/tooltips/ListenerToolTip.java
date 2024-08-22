@@ -71,7 +71,7 @@ public class ListenerToolTip extends ModuleListener<ToolTips, ToolTipEvent> {
     }
 
     private void renderMap(ToolTipEvent event) {
-        if (!event.getItemStack().hasNbt()) {
+        if (event.getItemStack().getComponents() == null) {
             return;
         }
 

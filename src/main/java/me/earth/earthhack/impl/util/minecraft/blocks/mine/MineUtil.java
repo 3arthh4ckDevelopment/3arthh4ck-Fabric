@@ -3,11 +3,13 @@ package me.earth.earthhack.impl.util.minecraft.blocks.mine;
 import me.earth.earthhack.api.util.interfaces.Globals;
 import me.earth.earthhack.impl.modules.combat.autocrystal.util.MineSlots;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
+import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -27,7 +29,7 @@ public class MineUtil implements Globals
 
         if (stack.isEmpty())
         {
-            return stack.getItem().isSuitableFor(state); //TODO: check
+            return stack.getItem().isCorrectForDrops(stack, state); //TODO: check
         }
 
         return false;
@@ -62,7 +64,7 @@ public class MineUtil implements Globals
     public static double getSpeed(BlockState state, ItemStack stack)
     {
         double str = stack.getMiningSpeedMultiplier(state);
-    int effect = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack);
+    int effect = EnchantmentUtil.getLevel(Enchantments.EFFICIENCY, stack);
         return Math.max(str + (str > 1.0 ? (effect * effect + 1.0) : 0.0), 0.0);
     }
 
@@ -108,7 +110,7 @@ public class MineUtil implements Globals
 
         if (digSpeed > 1.0F)
         {
-            int i = EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack);
+            int i = EnchantmentUtil.getLevel(Enchantments.EFFICIENCY, stack);
 
             if (i > 0 && !stack.isEmpty())
             {
@@ -149,7 +151,7 @@ public class MineUtil implements Globals
         }
 
         if (mc.player.isInsideWaterOrBubbleColumn()
-                && !EnchantmentHelper.hasAquaAffinity(mc.player))
+                && !EnchantmentUtil.has(Enchantments.AQUA_AFFINITY, EquipmentSlot.HEAD, mc.player))
         {
             digSpeed /= 5.0F;
         }

@@ -45,7 +45,7 @@ public class ReconnectScreen extends DisconnectedScreen
                            ServerInfo serverData,
                            int delay)
     {
-        super(parent.getParentScreen(), parent.getReason(), parent.getMessage());
+        super(parent.getParentScreen(), parent.getReason().reason(), parent.getMessage());
         this.parent    = parent;
         this.data      = serverData;
         this.delay     = delay;

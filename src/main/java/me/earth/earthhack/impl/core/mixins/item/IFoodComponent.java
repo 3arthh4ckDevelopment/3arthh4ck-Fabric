@@ -11,6 +11,6 @@ import java.util.List;
 @Mixin(FoodComponent.class)
 public interface IFoodComponent
 {
-    @Accessor("statusEffects")
+    @Accessor("effects")
     List<Pair<StatusEffectInstance, Float>> getStatusEffects();
 }

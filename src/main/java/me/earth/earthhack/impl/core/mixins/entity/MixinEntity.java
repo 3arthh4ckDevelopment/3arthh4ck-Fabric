@@ -401,7 +401,7 @@ public abstract class MixinEntity implements IEntity, Globals
         this.lastRenderY = this.pos.y;
         this.lastRenderZ = this.pos.z;
 
-        this.prevHeight = this.dimensions.height;
+        this.prevHeight = this.dimensions.height();
 
         this.prevPitch = this.pitch;
         this.prevYaw = this.yaw;
