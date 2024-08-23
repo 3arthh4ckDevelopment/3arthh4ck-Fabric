@@ -213,11 +213,11 @@ public class Thirty2kCommand extends AbstractStackCommand
     }
 
     private void basicArmorEnchants(ItemStack s) {
-        s.addEnchantment(Enchantments.PROTECTION, 255);
-        s.addEnchantment(Enchantments.THORNS, 255);
-        s.addEnchantment(Enchantments.UNBREAKING, 255);
-        s.addEnchantment(Enchantments.MENDING, 1);
-        s.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+        addEnchantment(s, Enchantments.PROTECTION, 255);
+        addEnchantment(s, Enchantments.THORNS, 255);
+        addEnchantment(s, Enchantments.UNBREAKING, 255);
+        addEnchantment(s, Enchantments.MENDING, 1);
+        addEnchantment(s, Enchantments.VANISHING_CURSE, 1);
     }
 
 }

@@ -1,7 +1,6 @@
 package me.earth.earthhack.impl.modules.misc.autoeat;
 
 import me.earth.earthhack.impl.core.ducks.util.IKeyBinding;
-import me.earth.earthhack.impl.core.mixins.item.IFoodComponent;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.managers.Managers;
@@ -14,11 +13,11 @@ import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.Registries;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static me.earth.earthhack.impl.util.minecraft.InventoryUtil.findInHotbar;
@@ -70,7 +69,7 @@ final class ListenerTick extends ModuleListener<AutoEat, TickEvent>
         }
 
         int slot = findInHotbar(s -> s.getItem().getComponents().contains(DataComponentTypes.FOOD)
-                && !hasBadEffect((IFoodComponent) s.getItem().getComponents())
+                && !hasBadEffect(s.getItem().getComponents().get(DataComponentTypes.FOOD))
                 /*&& (!(s.getItem() instanceof ItemFishFood
                         && ItemFishFood.FishType.byItemStack(s)
                                 == EntityType.PUFFERFISH))*/);
@@ -111,21 +110,17 @@ final class ListenerTick extends ModuleListener<AutoEat, TickEvent>
         return false;
     }
 
-    private boolean hasBadEffect(IFoodComponent itemFood)
+    private boolean hasBadEffect(FoodComponent itemFood)
     {
-        List<StatusEffect> effects = new ArrayList<>();
-
-        for (int i = 0; i < itemFood.getStatusEffects().size(); i++) {
-            effects.add(itemFood.getStatusEffects().get(i).getFirst().getEffectType().value());
-        }
+        List<FoodComponent.StatusEffectEntry> effects = itemFood.effects();
 
         if (!effects.isEmpty())
         {
-            for (StatusEffect effect : effects)
+            for (FoodComponent.StatusEffectEntry effect : effects)
             {
                 for (StatusEffect p : Registries.STATUS_EFFECT)
                 {
-                    if (!p.isBeneficial() && p.equals(effect))
+                    if (!p.isBeneficial() && p.equals(effect.effect().getEffectType().value()))
                     {
                         return true;
                     }
