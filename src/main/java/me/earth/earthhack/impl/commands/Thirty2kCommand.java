@@ -5,6 +5,8 @@ import me.earth.earthhack.impl.commands.util.CommandDescriptions;
 import me.earth.earthhack.impl.commands.util.CommandUtil;
 import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -33,7 +35,7 @@ public class Thirty2kCommand extends AbstractStackCommand
         if (Arrays.stream(args).anyMatch("bow"::equalsIgnoreCase))
         {
             ItemStack s = new ItemStack(Items.BOW);
-            s.setCustomName(Text.of("3\u00B2arthB0w"));
+            s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arthB0w"));
             s.setCount(64);
 
             addEnchantment(s, Enchantments.POWER, 255);
@@ -64,7 +66,7 @@ public class Thirty2kCommand extends AbstractStackCommand
         if (Arrays.stream(args).anyMatch("pick"::equalsIgnoreCase))
         {
             ItemStack s = new ItemStack(Items.NETHERITE_SWORD);
-            s.setCustomName(Text.of("3\u00B2arth P1ck"));
+            s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth P1ck"));
             s.setCount(64);
 
             addEnchantment(s, Enchantments.EFFICIENCY, 255);
@@ -90,26 +92,26 @@ public class Thirty2kCommand extends AbstractStackCommand
         ItemStack s = null;
         if (helmet) {
             s = new ItemStack(Items.NETHERITE_HELMET);
-            s.setCustomName(Text.of("3\u00B2arth H3lmet"));
+            s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth H3lmet"));
             s.setCount(64);
         }
 
         if (chest) {
             s = new ItemStack(Items.NETHERITE_CHESTPLATE);
-            s.setCustomName(Text.of("3\u00B2arth Ch3stPl4te"));
+            s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth Ch3stPl4te"));
             s.setCount(64);
         }
 
         if (legs) {
             s = new ItemStack(Items.NETHERITE_LEGGINGS);
-            s.setCustomName(Text.of("3\u00B2arth L3ggings"));
+            s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth L3ggings"));
             s.setCount(64);
             addEnchantment(s, Enchantments.BLAST_PROTECTION, 255);
         }
 
         if (boots) {
             s = new ItemStack(Items.NETHERITE_BOOTS);
-            s.setCustomName(Text.of("3\u00B2arth Bo0ts"));
+            s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth Bo0ts"));
             s.setCount(64);
         }
 
@@ -136,7 +138,7 @@ public class Thirty2kCommand extends AbstractStackCommand
 
     private ItemStack get32kSword() {
         ItemStack s = new ItemStack(Items.NETHERITE_SWORD);
-        s.setCustomName(Text.of("3\u00B2arthbl4de"));
+        s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arthbl4de"));
         s.setCount(64);
 
         addEnchantment(s, Enchantments.SHARPNESS, 255);
@@ -154,24 +156,24 @@ public class Thirty2kCommand extends AbstractStackCommand
         SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, mc.world);
         ItemStack s;
         s = new ItemStack(Items.NETHERITE_HELMET);
-        s.setCustomName(Text.of("3\u00B2arth H3lmet"));
+        s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth H3lmet"));
         basicArmorEnchants(s);
         skeleton.equipStack(EquipmentSlot.HEAD, s);
 
         s = new ItemStack(Items.NETHERITE_CHESTPLATE);
-        s.setCustomName(Text.of("3\u00B2arth Ch3stPl4te"));
+        s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth Ch3stPl4te"));
         basicArmorEnchants(s);
         skeleton.equipStack(EquipmentSlot.CHEST, s);
 
         s = new ItemStack(Items.NETHERITE_LEGGINGS);
-        s.setCustomName(Text.of("3\u00B2arth L3ggings"));
+        s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth L3ggings"));
         addEnchantment(s, Enchantments.BLAST_PROTECTION, 255);
         basicArmorEnchants(s);
         skeleton.equipStack(EquipmentSlot.LEGS, s);
 
 
         s = new ItemStack(Items.NETHERITE_BOOTS);
-        s.setCustomName(Text.of("3\u00B2arth Bo0ts"));
+        s.set(DataComponentTypes.CUSTOM_NAME, Text.of("3\u00B2arth Bo0ts"));
         basicArmorEnchants(s);
         skeleton.equipStack(EquipmentSlot.FEET, s);
 
@@ -188,7 +190,7 @@ public class Thirty2kCommand extends AbstractStackCommand
         entityTag.putString("id", "minecraft:skeleton");
         nbtTagCompound.put("EntityTag", entityTag);
         nbtTagCompound.putString("id", "minecraft:skeleton_spawn_egg");
-        s.setNbt(nbtTagCompound);
+        s.set(DataComponentTypes.ENTITY_DATA, NbtComponent.of(nbtTagCompound));
         s.setCount(64);
         return s;
     }
@@ -205,17 +207,17 @@ public class Thirty2kCommand extends AbstractStackCommand
 
         NbtCompound nbtTagCompound = new NbtCompound();
         nbtTagCompound.put("EntityTag", nbtSize);
-        s.setNbt(nbtTagCompound);
+        s.set(DataComponentTypes.ENTITY_DATA, NbtComponent.of(nbtTagCompound));
         s.setCount(64);
         return s;
     }
 
     private void basicArmorEnchants(ItemStack s) {
-        s.addEnchantment(Enchantments.PROTECTION, 255);
-        s.addEnchantment(Enchantments.THORNS, 255);
-        s.addEnchantment(Enchantments.UNBREAKING, 255);
-        s.addEnchantment(Enchantments.MENDING, 1);
-        s.addEnchantment(Enchantments.VANISHING_CURSE, 1);
+        addEnchantment(s, Enchantments.PROTECTION, 255);
+        addEnchantment(s, Enchantments.THORNS, 255);
+        addEnchantment(s, Enchantments.UNBREAKING, 255);
+        addEnchantment(s, Enchantments.MENDING, 1);
+        addEnchantment(s, Enchantments.VANISHING_CURSE, 1);
     }
 
 }

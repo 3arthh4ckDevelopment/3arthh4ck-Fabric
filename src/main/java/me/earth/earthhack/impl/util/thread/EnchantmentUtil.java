@@ -1,6 +1,8 @@
 package me.earth.earthhack.impl.util.thread;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import me.earth.earthhack.api.util.interfaces.Globals;
+import me.earth.earthhack.impl.Earthhack;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -9,12 +11,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 
 /**
  * Utility for {@link Enchantment}s.
  */
-public class EnchantmentUtil
+public class EnchantmentUtil implements Globals
 {
     /**
      * The part of minecraft's EnchantmentHelper needed
@@ -47,18 +50,25 @@ public class EnchantmentUtil
      * @param level the level for the enchantment.
      * @throws NullPointerException if no Enchantment for the id is found.
      */
-    public static void addEnchantment(ItemStack stack, Enchantment enchantment, int level)
+    public static void addEnchantment(ItemStack stack, RegistryKey<Enchantment> enchantment, int level)
     {
-//        NbtCompound nbt = new NbtCompound();
-//        nbt.putInt("lvl", level);
-//        nbt.putString("id", enchantment.getTranslationKey().replace("enchantment.minecraft.", "minecraft:"));
-//        NbtList list = stack.getOrCreateNbt().getList("Enchantments", 10);
-//        list.add(nbt); //TODO: UPDATE
-//        stack.getOrCreateNbt().put("Enchantments", list);
+        RegistryEntry<Enchantment> entry = convertEnchantmentKeyToEntry(enchantment);
+        if (entry != null) {
+            stack.addEnchantment(entry, level);
+        }
+        Earthhack.getLogger().error("Failed to apply enchantment: " + enchantment.getValue().toString());
     }
 
     /**
-     * Thanks cattyan again
+     * Converts {@link RegistryKey<Enchantment>} to a {@link RegistryEntry<Enchantment>}.
+     */
+    public static RegistryEntry<Enchantment> convertEnchantmentKeyToEntry(RegistryKey<Enchantment> key) {
+        if (mc.world == null) return null;
+        return mc.world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(key).orElse(null);
+    }
+
+    /**
+     * Thanks cattyn again
      * <a href="https://github.com/mioclient/oyvey-ported/blob/master/src/main/java/me/alpha432/oyvey/util/EnchantmentUtil.java">...</a>
      */
     public static int getLevel(RegistryKey<Enchantment> key, ItemStack stack) {
