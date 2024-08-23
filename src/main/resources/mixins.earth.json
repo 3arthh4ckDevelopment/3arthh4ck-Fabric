@@ -55,7 +55,6 @@
   },
   "mixins": [
     "entity.MixinEndCrystalEntity",
-    "item.IFoodComponent",
     "network.client.IClientOptionsC2SPacket",
     "network.client.ICPacketPlayer",
     "network.client.IPlayerInteractBlockC2SPacket",
