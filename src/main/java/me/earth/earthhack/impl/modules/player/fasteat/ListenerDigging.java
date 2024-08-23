@@ -2,6 +2,7 @@ package me.earth.earthhack.impl.modules.player.fasteat;
 
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -18,7 +19,7 @@ final class ListenerDigging extends
     public void invoke(PacketEvent.Send<PlayerActionC2SPacket> event)
     {
         if (module.cancel.getValue()
-                && mc.player.getActiveItem().getItem().isFood())
+                && mc.player.getActiveItem().getItem().getComponents().contains(DataComponentTypes.FOOD))
         {
             PlayerActionC2SPacket packet = event.getPacket();
             if (packet.getAction() == PlayerActionC2SPacket.Action.RELEASE_USE_ITEM

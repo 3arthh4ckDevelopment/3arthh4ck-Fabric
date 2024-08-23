@@ -18,7 +18,7 @@ final class ListenerEntityTeleport extends
         PlayerEntity player = mc.player;
         if (player != null && player.getVehicle() != null && module.noForceBoatMove.getValue())
         {
-            if (event.getPacket().getId() == player.getVehicle().getId())
+            if (event.getPacket().getEntityId() == player.getVehicle().getId())
             {
                 event.setCancelled(true);
             }

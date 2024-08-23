@@ -64,7 +64,7 @@ public class ConnectCommand extends Command
                 // mc.setScreen(new GuiConnectingPingBypass(new GuiMainMenu(), mc, serveraddress.getIP(), serveraddress.getPort()));
             } else {
                 ConnectScreen.connect(new TitleScreen(), mc, serveraddress,
-                        new ServerInfo(args[1], serveraddress.getAddress(), ServerInfo.ServerType.OTHER), true);
+                        new ServerInfo(args[1], serveraddress.getAddress(), ServerInfo.ServerType.OTHER), true, null);
             }
         }), 100);
     }

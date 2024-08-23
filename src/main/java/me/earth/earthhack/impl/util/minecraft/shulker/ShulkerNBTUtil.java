@@ -1,6 +1,8 @@
 package me.earth.earthhack.impl.util.minecraft.shulker;
 
 import net.minecraft.block.ShulkerBoxBlock;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -25,11 +27,15 @@ public class ShulkerNBTUtil {
     }
 
     public static DefaultedList<ItemStack> getShulkerItemList(ItemStack stack) {
-        if (!stack.hasNbt()) {
+        if (stack.getComponents().isEmpty()) {
             return null;
         }
 
-        NbtElement nbtElement = stack.getNbt().get("BlockEntityTag");
+        NbtComponent nbtComponent = stack.get(DataComponentTypes.BLOCK_ENTITY_DATA);
+        if (nbtComponent == null) {
+            return null;
+        }
+        NbtElement nbtElement = nbtComponent.copyNbt();
         if (!isItemShulkerBox(nbtElement)) {
             return null;
         }
@@ -44,7 +50,7 @@ public class ShulkerNBTUtil {
             NbtCompound item = list.getCompound(i);
             int slot = item.getByte("Slot");
             if (slot >= 0 && slot < items.size()) {
-                items.set(slot, ItemStack.fromNbt(item));
+                items.set(slot, ItemStack.fromNbtOrEmpty(null, item));
             }
         }
         return items;

@@ -15,7 +15,6 @@ import me.earth.earthhack.impl.util.helpers.disabling.DisablingModule;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.text.TextColor;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.text.Text;
 
 import java.util.Objects;
@@ -112,11 +111,9 @@ public class Suicide extends DisablingModule {
                     this.disable();
                 }
             },
-            RealmsLongConfirmationScreen.Type.WARNING,
                     Text.of(TextColor.RED + "Do you want to kill yourself? (recommended)"),
                     Text.of("If you don't want to get asked again," +
-                " turn off the \"Ask\" Setting."),
-            true));
+                " turn off the \"Ask\" Setting.")));
             return;
         }
 

@@ -1,26 +1,22 @@
 package me.earth.earthhack.impl.commands.gui;
 
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
+import net.minecraft.client.realms.gui.screen.RealmsConfirmScreen;
 import net.minecraft.text.Text;
 
 @SuppressWarnings("unused")
-public class YesNoNonPausing extends RealmsLongConfirmationScreen
+public class YesNoNonPausing extends RealmsConfirmScreen
 {
     /**
      *  Calls super constructor
-     *  {@link RealmsLongConfirmationScreen#RealmsLongConfirmationScreen(BooleanConsumer callback, Type type, Text line2, Text line3, boolean yesNoQuestion)}.
+     *  {@link RealmsConfirmScreen#RealmsConfirmScreen(BooleanConsumer callback, Text title1, Text title2)}.
      */
     public YesNoNonPausing(BooleanConsumer parentScreenIn,
-                           Type type,
                            Text messageLine1In,
-                           Text messageLine2In,
-                           boolean yesNoQuestion)
+                           Text messageLine2In)
     {
         super(parentScreenIn,
-                type,
                 messageLine1In,
-                messageLine2In,
-                yesNoQuestion);
+                messageLine2In);
     }
 }

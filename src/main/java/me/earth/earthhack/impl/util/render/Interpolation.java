@@ -2,12 +2,10 @@ package me.earth.earthhack.impl.util.render;
 
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.core.ducks.entity.IEntityNoInterp;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
 import me.earth.earthhack.impl.util.render.mutables.MutableBB;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,16 +21,16 @@ public class Interpolation implements Globals
 
     public static Vec3d interpolatedEyePos()
     {
-        return mc.player.getCameraPosVec(mc.getTickDelta());
+        return mc.player.getCameraPosVec(mc.getRenderTime());
     }
 
     public static Vec3d interpolatedEyeVec()
     {
-        return mc.player.getClientCameraPosVec(mc.getTickDelta());
+        return mc.player.getClientCameraPosVec(mc.getRenderTime());
     }
 
     public static Vec3d interpolatedEyeVec(PlayerEntity player) {
-        return player.getClientCameraPosVec(mc.getTickDelta());
+        return player.getClientCameraPosVec(mc.getRenderTime());
     }
 
     public static Vec3d interpolateEntity(Entity entity)
@@ -100,7 +98,7 @@ public class Interpolation implements Globals
 
     public static double interpolateLastTickPos(double pos, double lastPos)
     {
-        return lastPos + (pos - lastPos) * ((IMinecraftClient) mc).earthhack$getTimer().tickDelta;
+        return lastPos + (pos - lastPos) * mc.getRenderTickCounter().getTickDelta(true);
     }
 
     public static Box interpolatePos(BlockPos pos, float height)

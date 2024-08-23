@@ -45,7 +45,7 @@ public class ReconnectScreen extends DisconnectedScreen
                            ServerInfo serverData,
                            int delay)
     {
-        super(parent.getParentScreen(), parent.getReason(), parent.getMessage());
+        super(parent.getParentScreen(), parent.getReason().reason(), parent.getMessage());
         this.parent    = parent;
         this.data      = serverData;
         this.delay     = delay;
@@ -143,7 +143,7 @@ public class ReconnectScreen extends DisconnectedScreen
             // else
             {
                 ConnectScreen.connect(parent.getParentScreen(), client,
-                        new ServerAddress(serverData.address, 25565), serverData, false);
+                        new ServerAddress(serverData.address, 25565), serverData, false, null);
             }
         }
         else

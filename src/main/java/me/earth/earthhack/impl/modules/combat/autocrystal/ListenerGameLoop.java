@@ -31,7 +31,7 @@ final class ListenerGameLoop extends ModuleListener<AutoCrystal, GameLoopEvent>
         }
         else if (module.rotate.getValue() != ACRotate.None
             && module.rotationThread.getValue() == RotationThread.Predict
-            && mc.getTickDelta() >= module.partial.getValue())
+            && mc.getRenderTime() >= module.partial.getValue())
         {
             module.threadHelper.startThread();
         }

@@ -10,11 +10,11 @@ import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.entity.EntityUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.EnchantedGoldenAppleItem;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Items;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-
 
 final class ListenerStep extends ModuleListener<Step, StepEvent> {
     public ListenerStep(Step module) {
@@ -30,10 +30,10 @@ final class ListenerStep extends ModuleListener<Step, StepEvent> {
 
         if (event.getStage() == Stage.PRE) {
             if (mc.player.getVehicle() != null) {
-                mc.player.getVehicle().setStepHeight(
-                    module.entityStep.getValue()
-                        ? 256.0f
-                        : 1.0f);
+                EntityAttributeInstance attribute = mc.player.getAttributeInstance(EntityAttributes.GENERIC_STEP_HEIGHT);
+                if (attribute != null) {
+                    attribute.setBaseValue(module.entityStep.getValue() ? 256.0f : 1.0f);
+                }
             }
 
             if (module.mode.getValue() != StepMode.Slow || !module.stepping) {
@@ -92,7 +92,7 @@ final class ListenerStep extends ModuleListener<Step, StepEvent> {
                 && module.mode.getValue() != StepMode.Slow
                 && !module.breakTimer.passed(60)
                 && InventoryUtil.isHolding(PickaxeItem.class)
-                && !InventoryUtil.isHolding(EnchantedGoldenAppleItem.class)) {
+                && !InventoryUtil.isHolding(Items.ENCHANTED_GOLDEN_APPLE)) {
                 Entity closest = EntityUtil.getClosestEnemy();
                 if (closest != null && closest.squaredDistanceTo(mc.player) < 144) {
                     int slot = InventoryUtil.findHotbarItem(Items.GOLDEN_APPLE);

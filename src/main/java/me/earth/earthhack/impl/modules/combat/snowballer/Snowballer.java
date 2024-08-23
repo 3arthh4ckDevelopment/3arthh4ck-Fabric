@@ -10,6 +10,7 @@ import me.earth.earthhack.impl.util.math.RayTraceUtil;
 import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.item.Items;
@@ -83,9 +84,7 @@ public class Snowballer extends Module {
         if (shouldThrow && (timer.passed(delay.getValue()) || delay.getValue() == 0) && InventoryUtil.isHolding(Items.SNOWBALL)) {
             shouldThrow = false;
             boolean offhand = mc.player.getOffHandStack().getItem() == Items.SNOWBALL;
-            PlayerInteractItemC2SPacket packet =
-                    new PlayerInteractItemC2SPacket(offhand ? Hand.OFF_HAND : Hand.MAIN_HAND, 0);
-            mc.getNetworkHandler().sendPacket(packet);
+            NetworkUtil.sendSequenced(seq -> new PlayerInteractItemC2SPacket(offhand ? Hand.OFF_HAND : Hand.MAIN_HAND, seq, event.getYaw(), event.getPitch()));
             if (swap.getValue() && back.getValue()) {
                 InventoryUtil.switchTo(lastSlot);
             }

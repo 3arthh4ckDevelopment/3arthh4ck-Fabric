@@ -13,8 +13,6 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.util.RotationFunction;
 import me.earth.earthhack.impl.util.math.MathUtil;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.MouseFilter;
-import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 final class ListenerMotion extends

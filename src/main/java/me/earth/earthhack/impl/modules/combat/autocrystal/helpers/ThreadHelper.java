@@ -10,12 +10,10 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.Calculation;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.ACRotate;
 import me.earth.earthhack.impl.modules.combat.autocrystal.modes.RotationThread;
 import me.earth.earthhack.impl.util.math.StopWatch;
-import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

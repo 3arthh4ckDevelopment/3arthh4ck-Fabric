@@ -97,7 +97,7 @@ public class HelperInstantAttack implements Globals
 
         event.addPostEvent(() ->
         {
-            Entity entity = mc.world.getEntityById(packet.getId());
+            Entity entity = mc.world.getEntityById(packet.getEntityId());
             if (entity instanceof EndCrystalEntity)
             {
                 module.setCrystal(entity);
@@ -114,7 +114,7 @@ public class HelperInstantAttack implements Globals
         {
             event.addPostEvent(() ->
             {
-                Entity entity = mc.world.getEntityById(packet.getId());
+                Entity entity = mc.world.getEntityById(packet.getEntityId());
                 if (entity != null)
                 {
                     ((IEntity) entity).earthhack$setPseudoDead(true);
@@ -129,7 +129,7 @@ public class HelperInstantAttack implements Globals
             event.setCancelled(true);
             mc.execute(() ->
             {
-                Entity entity = mc.world.getEntityById(packet.getId());
+                Entity entity = mc.world.getEntityById(packet.getEntityId());
                 if (entity instanceof EndCrystalEntity crystal)
                 {
                     module.crystalRender.onSpawn(crystal);

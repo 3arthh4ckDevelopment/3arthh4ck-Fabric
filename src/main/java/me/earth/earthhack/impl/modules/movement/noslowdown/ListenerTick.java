@@ -5,6 +5,7 @@ import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.managers.Managers;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
@@ -30,7 +31,7 @@ final class ListenerTick extends ModuleListener<NoSlowDown, TickEvent>
         {
             Item item = mc.player.getActiveItem().getItem();
             if (MovementUtil.isMoving()
-                        && item.isFood()
+                        && item.getComponents().contains(DataComponentTypes.FOOD)
                         || item instanceof BowItem
                         || item instanceof PotionItem)
             {

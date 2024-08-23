@@ -94,7 +94,7 @@ public enum PushMode implements Globals {
     private static boolean isOpenBlockSpace(BlockPos pos)
     {
         BlockState iblockstate = mc.world.getBlockState(pos);
-        return !iblockstate.getBlock().isShapeFullCube(iblockstate, mc.world, pos);
+        return !iblockstate.isFullCube(mc.world, pos);
     }
 
 }

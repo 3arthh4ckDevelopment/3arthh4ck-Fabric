@@ -180,7 +180,7 @@ public class ClickGui extends Module
     {
         /*
         if (blur.getValue() == BlurStyle.Gaussian && OpenGlHelper.shadersSupported)
-                mc.entityRenderer(new Identifier("minecraft", "shaders/post/blur.json"));
+                mc.entityRenderer(Identifier.of("minecraft", "shaders/post/blur.json"));
         if(module.blur.getValue() != ClickGui.BlurStyle.Gaussian && OpenGlHelper.areShadersSupported())
            mc.entityRenderer.stopUseShader();
         */

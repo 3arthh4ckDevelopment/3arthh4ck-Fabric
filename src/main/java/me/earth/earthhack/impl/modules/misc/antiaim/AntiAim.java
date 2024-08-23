@@ -7,6 +7,7 @@ import me.earth.earthhack.api.setting.settings.BooleanSetting;
 import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.util.math.StopWatch;
+import net.minecraft.component.DataComponentTypes;
 
 public class AntiAim extends Module
 {
@@ -70,7 +71,7 @@ public class AntiAim extends Module
     public boolean dontRotate()
     {
         return strict.getValue()
-                && (((!(mc.player.getActiveItem().getItem().isFood())
+                && (((!(mc.player.getActiveItem().getItem().getComponents().contains(DataComponentTypes.FOOD))
                 || mc.options.attackKey.isPressed())
                 && (mc.options.attackKey.isPressed()
                 || mc.options.useKey.isPressed()))

@@ -1,6 +1,5 @@
 package me.earth.earthhack.impl.modules.combat.killaura;
 
-import com.google.common.collect.Multimap;
 import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.event.events.network.MotionUpdateEvent;
@@ -13,13 +12,13 @@ import me.earth.earthhack.impl.util.minecraft.DamageUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.minecraft.MovementUtil;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
+import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
@@ -28,8 +27,6 @@ import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-
-import java.util.Collection;
 
 final class ListenerMotion extends ModuleListener<KillAura, MotionUpdateEvent>
 {
@@ -68,7 +65,7 @@ final class ListenerMotion extends ModuleListener<KillAura, MotionUpdateEvent>
         }
 
         if (!module.whileEating.getValue()
-            && mc.player.getActiveItem().getItem().isFood())
+            && mc.player.getActiveItem().getItem().getComponents().contains(DataComponentTypes.FOOD))
         {
             return;
         }
@@ -344,16 +341,14 @@ final class ListenerMotion extends ModuleListener<KillAura, MotionUpdateEvent>
                 double value    = mc.player
                     .getAttributeValue(EntityAttributes.GENERIC_ATTACK_SPEED);
 
-                Multimap<EntityAttribute, EntityAttributeModifier> map = stack
-                    .getAttributeModifiers(EquipmentSlot.MAINHAND);
-                Collection<EntityAttributeModifier> modifiers = map
-                    .get(EntityAttributes.GENERIC_ATTACK_SPEED);
-
-                if (modifiers != null)
+                if (stack.contains(DataComponentTypes.ATTRIBUTE_MODIFIERS))
                 {
-                    for (EntityAttributeModifier modifier : modifiers)
+                    for (AttributeModifiersComponent.Entry modifier : stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS).modifiers())
                     {
-                        value += modifier.getValue();
+                        if (modifier.attribute() == EntityAttributes.GENERIC_ATTACK_SPEED && modifier.slot().matches(EquipmentSlot.MAINHAND)) {
+                            //TODO idk if correct
+                            value += modifier.attribute().value().getDefaultValue();
+                        }
                     }
                 }
 
@@ -379,7 +374,7 @@ final class ListenerMotion extends ModuleListener<KillAura, MotionUpdateEvent>
             if (stack.getItem() instanceof SwordItem
                     || stack.getItem() instanceof AxeItem)
             {
-                int level = EnchantmentHelper.getLevel(
+                int level = EnchantmentUtil.getLevel(
                                         Enchantments.SHARPNESS, stack);
                 if (level > bestSharp)
                 {

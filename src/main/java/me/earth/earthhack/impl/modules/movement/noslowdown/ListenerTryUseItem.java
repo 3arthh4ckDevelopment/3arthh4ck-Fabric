@@ -3,6 +3,7 @@ package me.earth.earthhack.impl.modules.movement.noslowdown;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.util.network.NetworkUtil;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.PotionItem;
@@ -22,7 +23,7 @@ final class ListenerTryUseItem
     {
         Item item = mc.player.getMainHandStack().getItem();
         if (module.superStrict.getValue() &&
-                (item.isFood()
+                (item.getComponents().contains(DataComponentTypes.FOOD)
                         || item instanceof BowItem
                         || item instanceof PotionItem))
         {

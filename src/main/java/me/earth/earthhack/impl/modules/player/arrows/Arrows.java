@@ -16,14 +16,15 @@ import me.earth.earthhack.impl.util.math.StopWatch;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpectralArrowItem;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 
@@ -35,8 +36,7 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
 {
     protected static Potion SPECTRAL;
     /** Potions that don't give lasting Effects */
-    protected static final Set<Potion> BAD_TYPES = Sets.newHashSet(
-            Potions.EMPTY,
+    protected static final Set<RegistryEntry<Potion>> BAD_TYPES = Sets.newHashSet(
             Potions.WATER,
             Potions.MUNDANE,
             Potions.THICK,
@@ -141,7 +141,7 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
                                boolean checkType,
                                Set<Potion> cycled)
     {
-        Potion type = PotionUtil.getPotion(stack);
+        Potion type = stack.get(DataComponentTypes.POTION_CONTENTS).potion().get().value();
         if (stack.getItem() instanceof SpectralArrowItem)
         {
             type = SPECTRAL;
@@ -278,7 +278,8 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
             return;
         }
 
-        Potion type = PotionUtil.getPotion(arrow);
+        //Temp
+        Potion type = arrow.get(DataComponentTypes.POTION_CONTENTS).potion().get().value();
         if (arrow.getItem() instanceof SpectralArrowItem)
         {
             type = SPECTRAL;
@@ -352,7 +353,7 @@ public class Arrows extends RegisteringModule<Boolean, SimpleRemovingSetting>
 
         if (potion != null)
         {
-            return I18n.translate(potion.finishTranslationKey(""));
+            return I18n.translate(Potion.finishTranslationKey(java.util.Optional.empty(), ""));
         }
 
         return null;

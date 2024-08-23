@@ -12,7 +12,7 @@ import me.earth.earthhack.impl.modules.combat.autocrystal.util.EmptySet;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.NetworkState;
+import net.minecraft.network.NetworkPhase;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
@@ -32,7 +32,7 @@ public class PacketUtil implements Globals
     {
         // TODO: fix this, it is chinese as hell right now
         try {
-            return INetworkState.class.cast(NetworkState.class).earthhack$getPackets();
+            return INetworkState.class.cast(NetworkPhase.class).earthhack$getPackets();
         } catch (ClassCastException ex) {
             Earthhack.getLogger().error("Failed to cast NetworkState to INetworkState!");
         }

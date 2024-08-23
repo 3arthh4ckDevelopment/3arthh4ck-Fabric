@@ -11,7 +11,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -367,7 +367,7 @@ public class InventoryUtil implements Globals
         return isHolding(mc.player, block);
     }
 
-    public static boolean isHolding(Entity entity, Item item)
+    public static boolean isHolding(LivingEntity entity, Item item)
     {
         ItemStack mainHand = entity.getHandItems().iterator().next().copyAndEmpty();
         ItemStack offHand  = entity.getHandItems().iterator().next().copyAndEmpty();
@@ -376,7 +376,7 @@ public class InventoryUtil implements Globals
                 || ItemUtil.areSame(offHand, item);
     }
 
-    public static boolean isHolding(Entity entity, Block block)
+    public static boolean isHolding(LivingEntity entity, Block block)
     {
         ItemStack mainHand = entity.getHandItems().iterator().next().copyAndEmpty();
         ItemStack offHand  = entity.getHandItems().iterator().next().copyAndEmpty();
@@ -543,8 +543,8 @@ public class InventoryUtil implements Globals
         return inSlot.isEmpty()
                 || inSlot.getItem() == stack.getItem()
                 && inSlot.isStackable()
-                && (!inSlot.hasNbt()
-                || inSlot.getNbt() == stack.getNbt())
+                && (inSlot.getComponents() == null
+                || inSlot.getComponents() == stack.getComponents())
                 && ItemStack.areItemsEqual(inSlot, stack);
     }
 
@@ -573,7 +573,7 @@ public class InventoryUtil implements Globals
         return empty1 == empty2
                 && stack1.getName().equals(stack2.getName())
                 && stack1.getItem() == stack1.getItem()
-                && stack1.getNbt() == stack2.getNbt()
+                && stack1.getComponents() == stack2.getComponents()
                 && ItemStack.areItemsEqual(stack1, stack2);
     }
 

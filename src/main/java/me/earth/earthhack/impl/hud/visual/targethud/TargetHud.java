@@ -19,10 +19,10 @@ import me.earth.earthhack.impl.util.minecraft.PlayerUtil;
 import me.earth.earthhack.impl.util.minecraft.PushMode;
 import me.earth.earthhack.impl.util.otherplayers.IgnoreSelfClosest;
 import me.earth.earthhack.impl.util.render.Render2DUtil;
+import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
@@ -112,10 +112,10 @@ public class TargetHud extends HudElement {
         DefaultedList<ItemStack> armor = closestPlayer.getInventory().armor;
         for (ItemStack stack : armor) {
             if (stack != null && !stack.isEmpty()) {
-                if (EnchantmentHelper.getLevel(Enchantment.byRawId(0), stack) != 0) {
+                if (EnchantmentUtil.getLevel(Enchantments.PROTECTION, stack) != 0) {
                     protVal++;
                 }
-                if (EnchantmentHelper.getLevel(Enchantment.byRawId(3), stack) != 0) {
+                if (EnchantmentUtil.getLevel(Enchantments.BLAST_PROTECTION, stack) != 0) {
                     blastVal++;
                 }
             }

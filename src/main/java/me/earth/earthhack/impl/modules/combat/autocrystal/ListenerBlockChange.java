@@ -3,9 +3,7 @@ package me.earth.earthhack.impl.modules.combat.autocrystal;
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 
 final class ListenerBlockChange extends ModuleListener<AutoCrystal,

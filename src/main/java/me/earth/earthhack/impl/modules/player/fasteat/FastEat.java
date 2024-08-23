@@ -8,6 +8,7 @@ import me.earth.earthhack.api.setting.settings.EnumSetting;
 import me.earth.earthhack.api.setting.settings.NumberSetting;
 import me.earth.earthhack.impl.modules.player.fasteat.mode.FastEatMode;
 import me.earth.earthhack.impl.util.client.SimpleData;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MilkBucketItem;
 import net.minecraft.item.PotionItem;
@@ -52,7 +53,7 @@ public class FastEat extends Module
     {
         return stack != null
                 && mc.player.isUsingItem()
-                && (stack.getItem().isFood()
+                && (stack.getItem().getComponents().contains(DataComponentTypes.FOOD)
                     || stack.getItem() instanceof PotionItem
                     || stack.getItem() instanceof MilkBucketItem);
     }

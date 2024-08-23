@@ -6,7 +6,7 @@ import net.minecraft.text.Text;
 import java.util.function.Supplier;
 
 /**
- * A duck interface for {@link net.minecraft.text.Text}.
+ * A duck interface for {@link Text}.
  *
  * Allows you to "override" the final methods
  * {@link Text#getWithStyle(Style)} and

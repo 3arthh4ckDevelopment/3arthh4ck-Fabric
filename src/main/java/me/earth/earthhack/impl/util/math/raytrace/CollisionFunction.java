@@ -18,7 +18,7 @@ public interface CollisionFunction
     BlockView blockView = MinecraftClient.getInstance().world;
 
     /**
-     * {@link net.minecraft.world.BlockView#raycastBlock(Vec3d, Vec3d, BlockPos, VoxelShape, BlockState)}
+     * {@link BlockView#raycastBlock(Vec3d, Vec3d, BlockPos, VoxelShape, BlockState)}
      */
     CollisionFunction DEFAULT = (start, end, pos, shape, state) -> blockView.raycastBlock(start, end, pos, shape, state);
 

@@ -80,7 +80,7 @@ public class EntityProvider extends SubscriberImpl implements Globals
      *  you are calling this from another thread!
      *  Might be null and might contain nullpointers.
      *
-     *  @return copy of {@link net.minecraft.client.world.ClientWorld#getEntities()}
+     *  @return copy of {@link ClientWorld#getEntities()}
      */
     public List<Entity> getEntities()
     {
@@ -92,7 +92,7 @@ public class EntityProvider extends SubscriberImpl implements Globals
      *  you are calling this from another thread!
      *  Might be null and might contain nullpointers.
      *
-     * @return copy of {@link net.minecraft.client.world.ClientWorld#getPlayers()}
+     * @return copy of {@link ClientWorld#getPlayers()}
      */
     public List<PlayerEntity> getPlayers()
     {

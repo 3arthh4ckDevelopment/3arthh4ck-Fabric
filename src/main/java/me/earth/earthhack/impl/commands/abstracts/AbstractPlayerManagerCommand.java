@@ -16,7 +16,6 @@ import me.earth.earthhack.impl.util.text.ChatUtil;
 import me.earth.earthhack.impl.util.text.TextColor;
 import me.earth.earthhack.impl.util.thread.LookUpUtil;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.realms.gui.screen.RealmsLongConfirmationScreen;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
@@ -284,7 +283,6 @@ public abstract class AbstractPlayerManagerCommand extends Command
                                                                 + verb
                                                                 + ".", getName());
                                     },
-                                    RealmsLongConfirmationScreen.Type.WARNING,
                                         Text.empty().append(""),
                                         Text.empty().append(color
                                         + name
@@ -292,8 +290,7 @@ public abstract class AbstractPlayerManagerCommand extends Command
                                         + " " +
                                         "will be un"
                                         + verb
-                                        + ". Continue?"),
-                                    true));
+                                        + ". Continue?")));
                             }))));
         }
 

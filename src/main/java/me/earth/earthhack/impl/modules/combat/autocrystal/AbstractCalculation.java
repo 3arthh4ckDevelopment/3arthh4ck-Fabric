@@ -1147,10 +1147,7 @@ public abstract class AbstractCalculation<T extends CrystalData>
                 // TODO: what even is this?
                 //noinspection deprecation
                 return module.ignoreNonFull.getValue()
-                    && !mc.world.getBlockState(result.getBlockPos())
-                                .getBlock()
-                                .isShapeFullCube(mc.world.getBlockState(
-                                    result.getBlockPos()), mc.world, result.getBlockPos());
+                    && !mc.world.getBlockState(result.getBlockPos()).isFullCube(mc.world, result.getBlockPos());
             }
 
             return result != null && result.getBlockPos().equals(pos);

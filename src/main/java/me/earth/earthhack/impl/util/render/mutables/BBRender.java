@@ -60,219 +60,214 @@ public class BBRender {
 
     public static void fillBox(MatrixStack matrix, BB boundingBox) {
         if (boundingBox != null) {
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferBuilder = tessellator.getBuffer();
             Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
             RenderSystem.setShader(GameRenderer::getPositionProgram);
-            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMaxY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMinZ()).next();
+                            (float) boundingBox.getMinZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMinX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
             bufferBuilder.vertex(posMatrix, (float) boundingBox.getMaxX(),
                             (float) boundingBox.getMinY(),
-                            (float) boundingBox.getMaxZ()).next();
+                            (float) boundingBox.getMaxZ());
 
-            tessellator.draw();
+            bufferBuilder.end();
         }
     }
 
     public static void fillOutline(MatrixStack matrix, BB bb) {
         if (bb != null) {
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferBuilder = tessellator.getBuffer();
             Matrix4f posMatrix = matrix.peek().getPositionMatrix();
 
             RenderSystem.setShader(GameRenderer::getPositionProgram);
-            bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION);
+            BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION);
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMinZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMinZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMinZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMinZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMinZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMaxZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMinZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMaxZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMaxZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMaxZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMaxZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMaxZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMaxZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMinZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMaxZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMinZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMinZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMinZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMinZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMinZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMinZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMinZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMinZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMinZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMaxZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMaxZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMinY(), (float) bb.getMaxZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMaxZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMaxZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMaxZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMinY(), (float) bb.getMaxZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMaxZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMinZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMinZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMinZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMinZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMinZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMaxZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMinZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMaxZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMaxZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMaxZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMaxX(), (float) bb.getMaxY(), (float) bb.getMaxZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMaxZ());
 
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMaxZ()).next();
-            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMinZ()).next();
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMaxZ());
+            bufferBuilder.vertex(posMatrix, (float) bb.getMinX(), (float) bb.getMaxY(), (float) bb.getMinZ());
 
-            tessellator.draw();
             bufferBuilder.end();
         }
     }

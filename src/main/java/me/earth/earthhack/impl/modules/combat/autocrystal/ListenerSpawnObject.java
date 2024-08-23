@@ -95,7 +95,7 @@ final class ListenerSpawnObject extends
                     return;
                 }
 
-                Entity e = mc.world.getEntityById(packet.getId());
+                Entity e = mc.world.getEntityById(packet.getEntityId());
                 if (e instanceof EndCrystalEntity)
                 {
                     module.crystalRender.onSpawn((EndCrystalEntity) e);
@@ -114,7 +114,7 @@ final class ListenerSpawnObject extends
         BlockPos pos = BlockPos.ofFloored(x, y, z);
         CrystalTimeStamp stamp = module.placed.get(pos);
         entity.setShowBottom(false);
-        entity.setId(packet.getId());
+        entity.setId(packet.getEntityId());
         entity.setUuid(packet.getUuid());
 
         boolean attacked = false;
@@ -145,7 +145,7 @@ final class ListenerSpawnObject extends
                 {
                     if (mc.world != null)
                     {
-                        Entity e = mc.world.getEntityById(packet.getId());
+                        Entity e = mc.world.getEntityById(packet.getEntityId());
                         if (e != null)
                         {
                             module.post.add(

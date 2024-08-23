@@ -58,7 +58,7 @@ final class ListenerSpawnObject extends
                 if (module.pop.getValue()
                               .shouldPop(damage, module.popTime.getValue()))
                 {
-                    PacketUtil.attack(Managers.ENTITIES.getEntity(event.getPacket().getId()));
+                    PacketUtil.attack(Managers.ENTITIES.getEntity(event.getPacket().getEntityId()));
                 }
             }
         }

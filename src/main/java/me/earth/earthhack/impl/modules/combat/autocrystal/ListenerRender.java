@@ -26,7 +26,7 @@ import java.util.Map;
 // TODO: Finish this up
 final class ListenerRender extends ModuleListener<AutoCrystal, Render3DEvent> {
     private final Map<BlockPos, Long> fadeList = new HashMap<>();
-    private static final Identifier CRYSTAL_LOCATION = new Identifier("earthhack:textures/client/crystal.png");
+    private static final Identifier CRYSTAL_LOCATION = Identifier.of("earthhack:textures/client/crystal.png");
     private final MutableBB bb = new MutableBB();
 
     public ListenerRender(AutoCrystal module) {

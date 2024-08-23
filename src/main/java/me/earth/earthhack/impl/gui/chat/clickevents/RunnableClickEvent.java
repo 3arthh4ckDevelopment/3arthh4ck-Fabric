@@ -11,7 +11,7 @@ import net.minecraft.text.ClickEvent;
 public class RunnableClickEvent extends ClickEvent
 {
     /**
-     * Calls the SuperConstructor for {@link ClickEvent.Action#RUN_COMMAND}, and
+     * Calls the SuperConstructor for {@link Action#RUN_COMMAND}, and
      * $runnable$, then calls {@link IClickEvent#setRunnable(Runnable)}
      * for the given Runnable.
      *
@@ -19,7 +19,7 @@ public class RunnableClickEvent extends ClickEvent
      */
     public RunnableClickEvent(Runnable runnable)
     {
-        super(ClickEvent.Action.RUN_COMMAND, "$runnable$");
+        super(Action.RUN_COMMAND, "$runnable$");
         ((IClickEvent) this).setRunnable(runnable);
     }
 

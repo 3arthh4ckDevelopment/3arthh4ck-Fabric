@@ -99,7 +99,7 @@ public class Cps extends HudElement {
                         time.add((int) System.currentTimeMillis());
                     }
                 } else {
-                    ids.put(e.getPacket().getId(), pos);
+                    ids.put(e.getPacket().getEntityId(), pos);
                 }
             }
         }));

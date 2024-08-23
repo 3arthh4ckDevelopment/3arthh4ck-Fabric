@@ -5,10 +5,10 @@ import me.earth.earthhack.impl.core.ducks.entity.ILivingEntity;
 import me.earth.earthhack.impl.util.math.DistanceUtil;
 import me.earth.earthhack.impl.util.math.raytrace.RayTracer;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
+import me.earth.earthhack.impl.util.thread.EnchantmentUtil;
 import net.minecraft.block.AnvilBlock;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.CobwebBlock;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -30,7 +30,7 @@ public class DamageUtil implements Globals
 {
     public static boolean isSharper(ItemStack stack, int level)
     {
-        return EnchantmentHelper.getLevel(
+        return EnchantmentUtil.getLevel(
                                         Enchantments.SHARPNESS, stack) > level;
     }
 

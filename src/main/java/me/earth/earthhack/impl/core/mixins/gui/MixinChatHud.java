@@ -72,8 +72,9 @@ public abstract class MixinChatHud implements IChatHud
 
     @Override
     @Invoker("addMessage")
-    public abstract void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, int addedTime,
-                                                               @Nullable MessageIndicator indicator, boolean refresh);
+    public abstract void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, @Nullable MessageIndicator indicator);
+
+
     @Override
     @Accessor(value = "scrolledLines")
     public abstract int earthhack$getScrollPos();
@@ -122,8 +123,8 @@ public abstract class MixinChatHud implements IChatHud
     @Inject(method = "logChatMessage",
             at = @At("HEAD"),
             cancellable = true)
-    public void logChatMessage(Text message, MessageIndicator indicator, CallbackInfo info){
-        ChatEvent.Log event = new ChatEvent.Log(message.getString());
+    public void logChatMessage(ChatHudLine message, CallbackInfo info){
+        ChatEvent.Log event = new ChatEvent.Log(message.toString());
         Bus.EVENT_BUS.post(event);
 
         if (event.isCancelled())

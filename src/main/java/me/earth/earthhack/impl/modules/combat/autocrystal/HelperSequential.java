@@ -73,7 +73,7 @@ public class HelperSequential extends SubscriberImpl implements Globals {
             Vec3d cPos = crystalPos;
             if (module.endSequenceOnExplosion.getValue()
                 && e.getPacket().getCategory() == SoundCategory.BLOCKS
-                && e.getPacket().getSound() == Registries.SOUND_EVENT.getEntry(SoundEvents.ENTITY_GENERIC_EXPLODE)
+                && e.getPacket().getSound() == Registries.SOUND_EVENT.getEntry(SoundEvents.ENTITY_GENERIC_EXPLODE.value())
                 && cPos != null
                 && cPos.squaredDistanceTo(e.getPacket().getX(), e.getPacket().getY(), e.getPacket().getZ()) < 144) {
                 setExpecting(null);

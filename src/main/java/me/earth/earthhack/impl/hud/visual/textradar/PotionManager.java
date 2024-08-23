@@ -40,7 +40,7 @@ public class PotionManager {
     public StatusEffectInstance[] getImportantPotions(PlayerEntity player) {
         StatusEffectInstance[] array = new StatusEffectInstance[3];
         for (StatusEffectInstance effect : getPlayerPotions(player)) {
-            switch(effect.getEffectType().getName().getString().toLowerCase()) {
+            switch(effect.getEffectType().value().getName().getString().toLowerCase()) {
                 case "strength" :
                     array[0] = effect;
                     break;

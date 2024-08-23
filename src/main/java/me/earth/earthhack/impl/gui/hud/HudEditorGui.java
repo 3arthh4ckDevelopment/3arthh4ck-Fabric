@@ -29,7 +29,6 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.NonnullDefault;
 
 import java.awt.*;
@@ -44,7 +43,7 @@ public class HudEditorGui extends Screen
     private static final SettingCache<Boolean, BooleanSetting, Commands> BACK =
             Caches.getSetting(Commands.class, BooleanSetting.class, "BackgroundGui", false);
     private static final Identifier BLACK_PNG =
-            new Identifier("earthhack:textures/gui/black.png");
+            Identifier.of("earthhack:textures/gui/black.png");
 
     private static final ModuleCache<ClickGui> CLICK_GUI = Caches.getModule(ClickGui.class);
     private static final ModuleCache<HudEditor> HUD_EDITOR = Caches.getModule(HudEditor.class);
@@ -106,17 +105,14 @@ public class HudEditorGui extends Screen
             {
                 RenderSystem.disableCull();
                 // RenderSystem.disableFog();
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder bufferbuilder = tessellator.getBuffer();
                 mc.getTextureManager().bindTexture(BLACK_PNG);
                 RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
-                bufferbuilder.begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION_TEXTURE_COLOR);
-                bufferbuilder.vertex(0.0D, this.height, 0.0D).texture(0.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
-                bufferbuilder.vertex(this.width, this.height, 0.0D).texture((float)this.width / 32.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255).next();
-                bufferbuilder.vertex(this.width, 0.0D, 0.0D).texture((float)this.width / 32.0F, 0).color(64, 64, 64, 255).next();
-                bufferbuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0F, 0).color(64, 64, 64, 255).next();
-                GL11.glPushMatrix();
-                tessellator.draw();
+                BufferBuilder bufferbuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.LINE_STRIP, VertexFormats.POSITION_TEXTURE_COLOR);
+                bufferbuilder.vertex(0.0f, this.height, 0.0f).texture(0.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255);
+                bufferbuilder.vertex(this.width, this.height, 0.0f).texture((float)this.width / 32.0F, (float)this.height / 32.0F + (float)0).color(64, 64, 64, 255);
+                bufferbuilder.vertex(this.width, 0.0f, 0.0f).texture((float)this.width / 32.0F, 0).color(64, 64, 64, 255);
+                bufferbuilder.vertex(0.0f, 0.0f, 0.0f).texture(0.0F, 0).color(64, 64, 64, 255);
+                bufferbuilder.end();
             }
         }
 

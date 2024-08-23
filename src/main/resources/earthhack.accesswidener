@@ -21,8 +21,6 @@ accessible method net/minecraft/text/Style <init> (Lnet/minecraft/text/TextColor
 accessible method net/minecraft/client/gui/screen/ChatScreen setText (Ljava/lang/String;)V
 
 # Network
-accessible class net/minecraft/network/NetworkState$PacketHandlerInitializer
-accessible method net/minecraft/network/NetworkState$PacketHandler getPacketIdToPacketMap ()Lit/unimi/dsi/fastutil/ints/Int2ObjectMap;
 accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler
 accessible field net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket ATTACK Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractTypeHandler; # this is ugly
 accessible class net/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$InteractAtHandler

@@ -39,7 +39,7 @@ final class ListenerEntity extends EntityS2CPacketListener
                 return;
             }
 
-            PlayerEntity p = getEntity(e.getPacket().getId());
+            PlayerEntity p = getEntity(e.getPacket().getEntityId());
             if (p != null)
             {
                 double x = e.getPacket().getX();

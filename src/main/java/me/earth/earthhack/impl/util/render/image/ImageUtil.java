@@ -51,7 +51,7 @@ public class ImageUtil implements Globals {
 
     public static BufferedImage bufferedImageFromFile(File file) throws IOException
     {
-        java.awt.Image image = ImageIO.read(file);
+        Image image = ImageIO.read(file);
         String format = file.getName().split("\\.")[1];
         BufferedImage bimage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 

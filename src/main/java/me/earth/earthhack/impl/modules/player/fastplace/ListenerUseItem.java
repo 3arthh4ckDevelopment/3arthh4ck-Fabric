@@ -2,6 +2,8 @@ package me.earth.earthhack.impl.modules.player.fastplace;
 
 import me.earth.earthhack.impl.event.events.network.PacketEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
+import me.earth.earthhack.impl.util.network.NetworkUtil;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 
 final class ListenerUseItem extends
@@ -20,14 +22,13 @@ final class ListenerUseItem extends
         if (!module.doubleEat.getValue()
             || sending
             || event.isCancelled()
-            || !(mc.player.getStackInHand(event.getPacket().getHand()).isFood()))
+            || !(mc.player.getStackInHand(event.getPacket().getHand()).getComponents().contains(DataComponentTypes.FOOD)))
         {
             return;
         }
 
         sending = true;
-        mc.player.networkHandler.sendPacket(
-                new PlayerInteractItemC2SPacket(event.getPacket().getHand(), event.getPacket().getSequence() + 1)); //TODO: sequence??
+        NetworkUtil.sendSequenced(seq -> new PlayerInteractItemC2SPacket(event.getPacket().getHand(), seq, event.getPacket().getYaw(), event.getPacket().getPitch()));
         sending = false;
         /*
         PingBypass.sendToActualServer(

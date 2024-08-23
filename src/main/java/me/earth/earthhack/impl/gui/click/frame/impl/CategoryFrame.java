@@ -44,8 +44,8 @@ public class CategoryFrame extends ModulesFrame {
         return moduleCategory;
     }
 
-    private static final Identifier LEFT_EAR = new Identifier("earthhack:textures/gui/left_ear.png");
-    private static final Identifier RIGHT_EAR = new Identifier("earthhack:textures/gui/right_ear.png");
+    private static final Identifier LEFT_EAR = Identifier.of("earthhack:textures/gui/left_ear.png");
+    private static final Identifier RIGHT_EAR = Identifier.of("earthhack:textures/gui/right_ear.png");
 
     public static void catEarsRender(DrawContext context, float x, float y, float width) {
         final Color clr = Click.CLICK_GUI.get().getCatEars();
