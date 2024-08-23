@@ -8,7 +8,6 @@ import me.earth.earthhack.impl.core.Core;
 import me.earth.earthhack.impl.managers.client.exception.BadPluginException;
 import net.fabricmc.loader.impl.FabricLoaderImpl;
 import net.fabricmc.loader.impl.launch.FabricLauncherBase;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.InputStreamReader;

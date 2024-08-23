@@ -57,7 +57,7 @@ public class Potions extends DynamicHudElement {
 
                     RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                     float xPos = getX() - simpleCalcX(Managers.TEXT.getStringWidth(label));
-                    renderPotionText(context, label, borderDistance + xPos, yPos + offset * (directionY() == TextDirectionY.BottomToTop ? -1 : 1), effect.getEffectType().value());
+                    renderPotionText(context, label, borderDistance + xPos, yPos + offset * (directionY() == TextDirectionY.BottomToTop ? -1 : 1), effect.getEffectType());
                     offset += Managers.TEXT.getStringHeightI() + textOffset.getValue();
                 }
             }
@@ -81,16 +81,16 @@ public class Potions extends DynamicHudElement {
         }
     }
 
-    public void renderPotionText(DrawContext context, String text, float x, float y, StatusEffect effect) {
+    public void renderPotionText(DrawContext context, String text, float x, float y, RegistryEntry<StatusEffect> effect) {
         String colorCode = (potionColor.getValue() == PotionColor.OldVersions || potionColor.getValue() == PotionColor.Phobos || potionColor.getValue() == PotionColor.Normal) ? "" : HUD_EDITOR.get().colorMode.getValue().getColor();
         Managers.TEXT.drawStringWithShadow(context, colorCode + text, x, y, getPotionColor(effect, y));
     }
 
-    private int getPotionColor(StatusEffect effect, float y) {
+    private int getPotionColor(RegistryEntry<StatusEffect> effect, float y) {
         if (potionColor.getValue() == PotionColor.OldVersions || potionColor.getValue() == PotionColor.Phobos)
             return potionColorMap.get(effect).getRGB();
         else if (potionColor.getValue() == PotionColor.Normal)
-            return effect.getColor();
+            return effect.value().getColor();
         else
             return HUD_EDITOR.get().colorMode.getValue() == HudRainbow.None
                     ? HUD_EDITOR.get().color.getValue().getRGB()

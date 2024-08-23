@@ -8,7 +8,7 @@ import me.earth.earthhack.impl.util.math.position.PositionUtil;
 import me.earth.earthhack.impl.util.math.rotation.RotationUtil;
 import me.earth.earthhack.impl.util.minecraft.InventoryUtil;
 import me.earth.earthhack.impl.util.thread.Locks;
-import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -91,7 +91,7 @@ final class ListenerMotion extends ModuleListener<Arrows, MotionUpdateEvent>
         else if (module.autoRelease.getValue()
                 && !mc.player.getActiveItem().isEmpty())
         {
-            Potion type = PotionContentsComponent.getPotion(arrow);
+            Potion type = arrow.get(DataComponentTypes.POTION_CONTENTS).potion().get().value();
             if (arrow.getItem() instanceof SpectralArrowItem)
             {
                 type = Arrows.SPECTRAL;

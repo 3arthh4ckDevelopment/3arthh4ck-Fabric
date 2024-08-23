@@ -4,7 +4,6 @@ import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.event.bus.EventListener;
 import me.earth.earthhack.api.event.bus.SubscriberImpl;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.core.mixins.util.ITimer;
 import me.earth.earthhack.impl.event.events.misc.TickEvent;
 import me.earth.earthhack.impl.modules.Caches;
@@ -39,12 +38,12 @@ public class TimerManager extends SubscriberImpl implements Globals {
     {
         if (MODULE.isEnabled())
         {
-            ((ITimer) ((IMinecraftClient) mc).earthhack$getTimer())
+            ((ITimer) mc.getRenderTickCounter())
                     .setTickLength(50.0f / MODULE.get().getSpeed());
         }
         else
         {
-            ((ITimer) ((IMinecraftClient) mc).earthhack$getTimer())
+            ((ITimer) mc.getRenderTickCounter())
                     .setTickLength(50.0f / speed);
         }
     }

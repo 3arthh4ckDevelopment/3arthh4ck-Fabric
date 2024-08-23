@@ -12,8 +12,8 @@ public interface IChatHud {
                     boolean wrap,
                     boolean returnFirst);
 
-    void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, int time,
-                                    @Nullable MessageIndicator indicator, boolean refresh);
+    void earthhack$invokeAddMessage(Text text, @Nullable MessageSignatureData sig, @Nullable MessageIndicator indicator);
+
     void earthhack$remove(@Nullable MessageSignatureData signature, boolean all);
 
     int earthhack$getScrollPos();

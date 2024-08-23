@@ -1,20 +1,5 @@
 package me.earth.earthhack.impl.core.mixins.network;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import me.earth.earthhack.impl.core.ducks.network.INetworkState;
-import net.minecraft.network.NetworkPhase;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.network.packet.Packet;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 // TODO, chinese asf
 /*@Mixin(NetworkPhase.PacketHandlerInitializer.class)
 public abstract class MixinNetworkState implements INetworkState {

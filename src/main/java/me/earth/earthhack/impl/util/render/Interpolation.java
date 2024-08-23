@@ -2,7 +2,6 @@ package me.earth.earthhack.impl.util.render;
 
 import me.earth.earthhack.api.cache.ModuleCache;
 import me.earth.earthhack.api.util.interfaces.Globals;
-import me.earth.earthhack.impl.core.ducks.IMinecraftClient;
 import me.earth.earthhack.impl.core.ducks.entity.IEntityNoInterp;
 import me.earth.earthhack.impl.modules.Caches;
 import me.earth.earthhack.impl.modules.misc.nointerp.NoInterp;
@@ -99,7 +98,7 @@ public class Interpolation implements Globals
 
     public static double interpolateLastTickPos(double pos, double lastPos)
     {
-        return lastPos + (pos - lastPos) * ((IMinecraftClient) mc).earthhack$getTimer().getTickDelta(true);
+        return lastPos + (pos - lastPos) * mc.getRenderTickCounter().getTickDelta(true);
     }
 
     public static Box interpolatePos(BlockPos pos, float height)

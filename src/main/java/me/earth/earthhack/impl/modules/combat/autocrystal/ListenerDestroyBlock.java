@@ -4,8 +4,6 @@ import me.earth.earthhack.api.event.events.Stage;
 import me.earth.earthhack.impl.event.events.misc.BlockDestroyEvent;
 import me.earth.earthhack.impl.event.listeners.ModuleListener;
 import me.earth.earthhack.impl.managers.Managers;
-import me.earth.earthhack.impl.util.misc.collections.CollectionUtil;
-import net.minecraft.entity.player.PlayerEntity;
 
 final class ListenerDestroyBlock extends
         ModuleListener<AutoCrystal, BlockDestroyEvent>
